@@ -62,7 +62,19 @@ python -m py_compile src/validar_planilha_experimento.py
 python src/validar_planilha_experimento.py --help
 ```
 
-## Validacao com Google Sheets
+## Validacao com Apps Script Web App
+
+Use este modo quando a planilha estiver conectada por Apps Script:
+
+```bash
+python src/validar_planilha_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
+```
+
+O comando apenas valida estrutura e contabiliza linhas nao vazias. Ele nao altera a planilha.
+
+Nao versionar a URL privada nem o token.
+
+## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:
 

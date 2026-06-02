@@ -10,6 +10,8 @@ import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 
 CONFIG_PADRAO = Path(__file__).resolve().parents[1] / "config_experimento.json"
@@ -97,6 +99,35 @@ def ler_google_sheets(config: dict[str, Any], credenciais: Path) -> list[list[An
     return aba.get(config.get("range_leitura", "A:M"))
 
 
+def validar_apps_script(config: dict[str, Any], url_base: str, token: str) -> ResultadoValidacao:
+    params = {
+        "action": "validar",
+        "sheet": config["aba_principal"],
+        "range": config.get("range_leitura", "A:M"),
+        "token": token,
+    }
+    url = url_base.rstrip() + "?" + urlencode(params)
+
+    with urlopen(url, timeout=120) as resposta:
+        payload = json.loads(resposta.read().decode("utf-8"))
+
+    if not payload.get("ok"):
+        raise RuntimeError("Falha Apps Script: " + json.dumps(payload, ensure_ascii=False))
+
+    header = payload.get("header") or []
+    matriz_minima = [header]
+    resultado = validar_matriz(matriz_minima, config["colunas_esperadas"])
+
+    return ResultadoValidacao(
+        total_linhas_lidas=int(payload.get("totalRowsRead", 0)),
+        total_linhas_dados=int(payload.get("totalDataRows", 0)),
+        total_linhas_nao_vazias=int(payload.get("totalNonEmptyRows", 0)),
+        cabecalho_ok=resultado.cabecalho_ok,
+        colunas_ausentes=resultado.colunas_ausentes,
+        colunas_extras=resultado.colunas_extras,
+    )
+
+
 def imprimir_resultado(resultado: ResultadoValidacao) -> None:
     print(f"total_linhas_lidas={resultado.total_linhas_lidas}")
     print(f"total_linhas_dados={resultado.total_linhas_dados}")
@@ -112,6 +143,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     parser.add_argument("--credenciais", type=Path, help="Arquivo JSON de credenciais Google.")
+    parser.add_argument("--apps-script-url", help="URL /exec do Web App do Apps Script.")
+    parser.add_argument("--token", help="Token simples configurado no Apps Script.")
     parser.add_argument(
         "--arquivo-valores",
         type=Path,
@@ -127,13 +160,19 @@ def main() -> int:
     if args.arquivo_valores:
         with args.arquivo_valores.open("r", encoding="utf-8") as arquivo:
             valores = json.load(arquivo)
+        resultado = validar_matriz(valores, config["colunas_esperadas"])
+    elif args.apps_script_url:
+        if not args.token:
+            print("Informe --token ao usar --apps-script-url.", file=sys.stderr)
+            return 2
+        resultado = validar_apps_script(config, args.apps_script_url, args.token)
     elif args.credenciais:
         valores = ler_google_sheets(config, args.credenciais)
+        resultado = validar_matriz(valores, config["colunas_esperadas"])
     else:
-        print("Informe --credenciais ou --arquivo-valores.", file=sys.stderr)
+        print("Informe --apps-script-url, --credenciais ou --arquivo-valores.", file=sys.stderr)
         return 2
 
-    resultado = validar_matriz(valores, config["colunas_esperadas"])
     imprimir_resultado(resultado)
     return 0 if resultado.cabecalho_ok else 1
 
