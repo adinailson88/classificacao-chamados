@@ -1,0 +1,42 @@
+{
+  "run_id": "EXP_CLASSIFICACAO_CHAMADOS_2026_06_001",
+  "spreadsheet_id": "1lohPUQOgxzt_DMxnNLKMxnieZq1sVmh4uwBLbbgvfiQ",
+  "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1lohPUQOgxzt_DMxnNLKMxnieZq1sVmh4uwBLbbgvfiQ/edit?gid=1090243921#gid=1090243921",
+  "aba_principal": "CHAMADOS_ESQUELETO_REDUZIDO",
+  "range_leitura": "A:M",
+  "ignorar_linhas_vazias": true,
+  "colunas_esperadas": [
+    "ID Chamado",
+    "TÍTULO",
+    "CATEGORIA COMPLETA",
+    "DESCRIÇÃO GLPI",
+    "TÍTULO O.S.M.",
+    "DESCRIÇÃO O.S.M.",
+    "Classificação IA",
+    "Avaliação (%)",
+    "Executor",
+    "Criticidade Atribuída por IA",
+    "Comparação",
+    "Classificado_Confiança_IA",
+    "CONFERÊNCIA"
+  ],
+  "classificacao": {
+    "tamanho_lote": 15,
+    "limiar_confianca_baixa": 0.7,
+    "limiar_alta_confianca": 0.95
+  },
+  "reclassificacao": {
+    "habilitada": false,
+    "tamanho_lote": 200,
+    "selecionar_confianca_menor_que": 0.95
+  },
+  "abas_experimento": {
+    "config": "EXPERIMENTO_CONFIG",
+    "log_turnos_classificacao": "LOG_TURNOS_CLASSIFICACAO",
+    "log_linha_a_linha": "LOG_LINHA_A_LINHA",
+    "snapshot_etapa_1": "SNAPSHOT_ETAPA_1",
+    "log_turnos_reclassificacao": "LOG_TURNOS_RECLASSIFICACAO",
+    "validacao_humana": "VALIDACAO_HUMANA",
+    "metricas": "METRICAS_EXPERIMENTO"
+  }
+}
