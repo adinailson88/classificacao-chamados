@@ -1,0 +1,36 @@
+CONTINUIDADE - TOKEN DO APPS SCRIPT ROTACIONADO
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+ETAPA CONCLUIDA
+Foi gerado um novo token forte para o Apps Script.
+O GitHub Secret APPS_SCRIPT_TOKEN foi atualizado.
+
+SECRETS CONFIRMADOS
+APPS_SCRIPT_URL
+APPS_SCRIPT_TOKEN
+
+IMPORTANTE
+O valor do token novo nao foi registrado neste arquivo.
+O usuario recebeu o token diretamente na conversa para atualizar o Apps Script.
+
+DECISAO TECNICA
+Somente um token e necessario neste momento.
+O mesmo token autentica as acoes GET e POST do Apps Script:
+1. listar_abas
+2. validar
+3. ler
+4. preparar_abas_experimento
+
+ALTERACAO NECESSARIA NO APPS SCRIPT
+No editor do Apps Script, alterar apenas a linha:
+const API_TOKEN = '...';
+
+Depois salvar e implantar nova versao do Web App.
+
+PROXIMO PASSO
+Depois que o Apps Script estiver com o token novo, testar:
+python src\validar_planilha_experimento.py --apps-script-url "URL_DO_APP" --token "TOKEN_NOVO"
+
+Se funcionar, executar o script de preparacao das abas com --aplicar.
