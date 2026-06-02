@@ -92,6 +92,22 @@ python src/preparar_abas_experimento.py --apps-script-url "URL_DO_WEB_APP" --tok
 
 O comando cria ou valida as abas experimentais e grava apenas cabecalhos. Ele nao classifica chamados e nao limpa a aba principal.
 
+## Registro da configuracao experimental
+
+Depois de atualizar e implantar o Apps Script com `apps_script/Code.gs`, rode primeiro:
+
+```bash
+python src/registrar_config_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
+```
+
+Para gravar a ficha tecnica na aba `EXPERIMENTO_CONFIG`:
+
+```bash
+python src/registrar_config_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN" --aplicar
+```
+
+Esse comando grava apenas a aba `EXPERIMENTO_CONFIG`.
+
 ## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:
