@@ -74,6 +74,24 @@ O comando apenas valida estrutura e contabiliza linhas nao vazias. Ele nao alter
 
 Nao versionar a URL privada nem o token.
 
+## Preparacao das abas experimentais
+
+Primeiro rode somente em modo seguro:
+
+```bash
+python src/preparar_abas_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
+```
+
+Para aplicar a criacao/atualizacao das abas, o Apps Script precisa conter o arquivo `apps_script/Code.gs` deste repositorio e estar implantado em nova versao.
+
+Depois disso:
+
+```bash
+python src/preparar_abas_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN" --aplicar
+```
+
+O comando cria ou valida as abas experimentais e grava apenas cabecalhos. Ele nao classifica chamados e nao limpa a aba principal.
+
 ## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:
