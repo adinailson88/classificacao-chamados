@@ -1,0 +1,60 @@
+CONTINUIDADE - ABAS EXPERIMENTAIS CRIADAS
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+ETAPA CONCLUIDA
+O Apps Script foi atualizado pelo usuario com suporte a doPost.
+O token novo foi testado com sucesso.
+As abas experimentais foram criadas na planilha via src\preparar_abas_experimento.py --aplicar.
+
+VALIDACAO ANTES DA ESCRITA
+python src\validar_planilha_experimento.py --apps-script-url "URL_OMITIDA" --token "TOKEN_OMITIDO"
+
+Resultado:
+total_linhas_lidas=18859
+total_linhas_dados=18858
+total_linhas_nao_vazias=13789
+cabecalho_ok=true
+colunas_ausentes=[]
+colunas_extras=[]
+
+DRY-RUN ANTES DA ESCRITA
+criar: EXPERIMENTO_CONFIG colunas=3
+criar: LOG_TURNOS_CLASSIFICACAO colunas=16
+criar: LOG_LINHA_A_LINHA colunas=13
+criar: SNAPSHOT_ETAPA_1 colunas=10
+criar: LOG_TURNOS_RECLASSIFICACAO colunas=16
+criar: VALIDACAO_HUMANA colunas=16
+criar: METRICAS_EXPERIMENTO colunas=8
+modo=dry-run
+
+APLICACAO EXECUTADA
+python src\preparar_abas_experimento.py --apps-script-url "URL_OMITIDA" --token "TOKEN_OMITIDO" --aplicar
+
+Resultado:
+ok=true
+action=preparar_abas_experimento
+
+Abas criadas:
+1. EXPERIMENTO_CONFIG - 3 colunas
+2. LOG_TURNOS_CLASSIFICACAO - 16 colunas
+3. LOG_LINHA_A_LINHA - 13 colunas
+4. SNAPSHOT_ETAPA_1 - 10 colunas
+5. LOG_TURNOS_RECLASSIFICACAO - 16 colunas
+6. VALIDACAO_HUMANA - 16 colunas
+7. METRICAS_EXPERIMENTO - 8 colunas
+
+CONFERENCIA APOS ESCRITA
+Dry-run posterior retornou todas as abas como existentes.
+
+IMPORTANTE
+A aba principal CHAMADOS_ESQUELETO_REDUZIDO nao foi limpa nem classificada.
+A escrita desta etapa criou/atualizou apenas cabecalhos das abas experimentais.
+URL e token nao foram registrados neste arquivo.
+
+PROXIMO PASSO RECOMENDADO
+Criar script de registro da configuracao experimental:
+1. preencher EXPERIMENTO_CONFIG com run_id, planilha, aba, total de linhas nao vazias e parametros;
+2. ainda sem classificacao;
+3. depois criar snapshot inicial controlado da base nao vazia.
