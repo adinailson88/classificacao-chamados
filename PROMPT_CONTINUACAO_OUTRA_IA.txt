@@ -1,0 +1,230 @@
+PROMPT DE CONTINUACAO PARA OUTRA IA - CLASSIFICACAO DE CHAMADOS
+Data local: 2026-06-02
+Fuso correto do projeto: America/Bahia, UTC-03:00
+
+CONTEXTO GERAL
+Voce esta continuando o projeto experimental "classifica-o-chamados", separado do Malha IA operacional.
+Repositorio GitHub:
+https://github.com/adinailson88/classifica-o-chamados
+
+Pasta local principal:
+C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+Objetivo:
+Executar experimento controlado de classificacao e reclassificacao automatica de chamados, conforme roteiro metodologico do Malha IA, preservando rastreabilidade, logs, snapshot inicial, validacao humana futura e separacao entre ambiente experimental e ambiente operacional.
+
+REGRA DE OURO
+Nao presumir totais fixos de linhas.
+Todas as quantidades como total_linhas_lidas, total_linhas_dados e total_linhas_nao_vazias sao valores observados dinamicamente no momento da execucao.
+A planilha pode crescer.
+Scripts devem sempre reler a planilha.
+
+PLANILHA
+Planilha experimental:
+CHAMADOS_ESQUELETO_REDUZIDO
+
+Aba principal:
+CHAMADOS_ESQUELETO_REDUZIDO
+
+Intervalo util:
+A:M
+
+Colunas da aba principal:
+A  ID Chamado
+B  TÍTULO
+C  CATEGORIA COMPLETA
+D  DESCRIÇÃO GLPI
+E  TÍTULO O.S.M.
+F  DESCRIÇÃO O.S.M.
+G  Classificação IA
+H  Avaliação (%)
+I  Executor
+J  Criticidade Atribuída por IA
+K  Comparação
+L  Classificado_Confiança_IA
+M  CONFERÊNCIA
+
+IMPORTANTE SOBRE ESCRITA NA ABA PRINCIPAL
+As colunas de escrita da classificacao sao:
+G  Classificação IA
+H  Avaliação (%)
+I  Executor
+J  Criticidade Atribuída por IA
+
+Ate o momento, nada foi escrito em G:J pela IA.
+A aba principal nao foi limpa.
+A aba principal nao foi classificada.
+
+APPS SCRIPT E SEGREDOS
+O projeto usa Apps Script Web App como ponte com a planilha.
+Nao usar credencial JSON local neste fluxo.
+Nao versionar URL do Web App nem token.
+
+GitHub Secrets existentes:
+APPS_SCRIPT_URL
+APPS_SCRIPT_TOKEN
+
+Se executar localmente, o usuario pode fornecer URL/token ou configurar variaveis de ambiente.
+Nao salvar valores sensiveis em arquivo TXT, README, codigo ou commit.
+
+ARQUIVOS TXT DE HISTORICO
+Leia os arquivos CONTINUIDADE_*.txt na pasta do repositorio. Eles registram cada etapa executada.
+Arquivos principais:
+1. CONTINUIDADE_CLASSIFICACAO_CHAMADOS.txt
+2. CONTINUIDADE_2026-06-01_APPS_SCRIPT_VALIDADO.txt
+3. CONTINUIDADE_2026-06-01_VALIDACAO_TERMINAL_APPS_SCRIPT.txt
+4. CONTINUIDADE_2026-06-01_GITHUB_SECRETS_APPS_SCRIPT.txt
+5. CONTINUIDADE_2026-06-01_TOKEN_APPS_SCRIPT_ROTACIONADO.txt
+6. CONTINUIDADE_2026-06-01_PREPARACAO_ABAS_DRY_RUN.txt
+7. CONTINUIDADE_2026-06-01_ABAS_EXPERIMENTAIS_CRIADAS.txt
+8. CONTINUIDADE_2026-06-01_CONFIG_EXPERIMENTO_DRY_RUN.txt
+9. CONTINUIDADE_2026-06-01_CORRECAO_TOTAL_LINHAS_DINAMICO.txt
+10. CONTINUIDADE_2026-06-01_CONFIG_EXPERIMENTO_GRAVADA.txt
+11. CONTINUIDADE_2026-06-01_SNAPSHOT_INICIAL_DRY_RUN.txt
+12. CONTINUIDADE_2026-06-01_SNAPSHOT_INICIAL_GRAVADO.txt
+13. CONTINUIDADE_2026-06-01_CLASSIFICACAO_LOTE_DRY_RUN.txt
+14. CONTINUIDADE_2026-06-01_BASELINE_TFIDF_DRY_RUN.txt
+15. CONTINUIDADE_2026-06-01_AJUSTE_HORARIO_BAHIA.txt
+
+ESTADO JA CONCLUIDO
+1. Repositorio novo criado e clonado.
+2. Apps Script Web App criado.
+3. GitHub Secrets criados: APPS_SCRIPT_URL e APPS_SCRIPT_TOKEN.
+4. Validacao via Apps Script funcionando.
+5. Abas experimentais criadas:
+   - EXPERIMENTO_CONFIG
+   - LOG_TURNOS_CLASSIFICACAO
+   - LOG_LINHA_A_LINHA
+   - SNAPSHOT_ETAPA_1
+   - LOG_TURNOS_RECLASSIFICACAO
+   - VALIDACAO_HUMANA
+   - METRICAS_EXPERIMENTO
+6. EXPERIMENTO_CONFIG gravada.
+7. Snapshot inicial gravado em SNAPSHOT_ETAPA_1.
+8. Script de selecao do lote inicial criado e testado em dry-run.
+9. Baseline TF-IDF + LogisticRegression criado e testado em dry-run.
+
+RESULTADOS OBSERVADOS EM EXECUCOES ANTERIORES
+Estes numeros sao apenas observados no momento em que foram medidos:
+linhas_lidas_observado=18859
+linhas_nao_vazias_observado=13789
+
+Nunca tratar esses numeros como limite fixo.
+
+PRIMEIRO LOTE SELECIONADO EM DRY-RUN
+Linhas:
+2 a 16
+
+IDs:
+1102, 2019050189, 1284, 1331, 1560, 1568, 1574, 1607, 1693, 1800, 1962, 1963, 2000, 2001, 2013
+
+BASELINE TF-IDF DRY-RUN
+Executor:
+Baseline_TFIDF_LogReg_DRY_RUN
+
+Resultado observado:
+candidatos_lote=15
+concordancia_aparente_lote=10/15
+
+Importante:
+Essa concordancia e apenas comparacao preliminar com a classificacao historica.
+Nao e acuracia validada.
+A validacao humana ainda nao foi feita.
+
+PROBLEMA DE HORARIO IDENTIFICADO PELO USUARIO
+O usuario observou que timestamps com sufixo Z estavam em UTC, nao no horario local de Itabuna/Bahia.
+
+Regra correta:
+Usar America/Bahia, UTC-03:00.
+
+Formato correto:
+YYYY-MM-DDTHH:mm:ss-03:00
+
+Exemplo:
+2026-06-01T23:40:37-03:00
+
+O QUE FOI AJUSTADO NO CODIGO
+Commit:
+cc27b1f - Ajustar timestamps para horario Bahia
+
+Alteracoes:
+1. src\registrar_config_experimento.py passou a gerar data_registro_bahia.
+2. apps_script\Code.gs passou a ter formatarDataBahia_ para data_snapshot.
+3. README foi atualizado com a regra de horario local.
+
+O QUE FOI CORRIGIDO NA PLANILHA
+EXPERIMENTO_CONFIG foi regravada com:
+data_registro_bahia=2026-06-01T23:59:37-03:00
+
+O QUE AINDA PRECISA SER CORRIGIDO PELO USUARIO NA PLANILHA/APPS SCRIPT
+SNAPSHOT_ETAPA_1 ainda estava com data_snapshot em UTC com sufixo Z quando foi conferido:
+2026-06-02T02:40:37.312Z
+e apos uma tentativa de regravacao ainda retornou:
+2026-06-02T03:00:17.489Z
+
+Isso indica que a implantacao ativa do Apps Script provavelmente ainda nao estava usando o Code.gs atualizado com formatarDataBahia_.
+
+O usuario interrompeu a correcao automatica e disse que corrigiria la.
+Portanto, antes de prosseguir com escritas novas de snapshot/log, confirmar:
+1. Apps Script esta com o Code.gs mais recente.
+2. A primeira linha contem o token real.
+3. Foi feita nova implantacao: Gerenciar implantacoes > Editar > Versao: Nova versao > Implantar.
+4. SNAPSHOT_ETAPA_1 foi corrigida para data_snapshot em America/Bahia ou regravada com o Apps Script atualizado.
+
+ARQUIVOS PYTHON EXISTENTES
+src\validar_planilha_experimento.py
+src\preparar_abas_experimento.py
+src\registrar_config_experimento.py
+src\registrar_snapshot_inicial.py
+src\classificar_lote_inicial.py
+src\classificar_lote_baseline.py
+
+APPS SCRIPT
+Arquivo local de referencia:
+apps_script\Code.gs
+
+Antes de pedir ao usuario para colar no Apps Script, lembre:
+1. Manter o token real na primeira linha.
+2. Nao deixar const API_TOKEN = 'TROQUE_PELO_TOKEN_DO_SECRET';
+3. Salvar.
+4. Implantar nova versao.
+
+PROXIMOS PASSOS RECOMENDADOS
+1. Confirmar/corrigir horario em SNAPSHOT_ETAPA_1.
+2. Nao escrever em G:J ainda sem nova etapa dry-run.
+3. Criar mecanismo de escrita controlada para o lote:
+   - dry-run com previsoes;
+   - confirmacao explicita;
+   - escrita em G:J apenas com --aplicar.
+4. Ao escrever G:J:
+   - G = Classificação IA
+   - H = Avaliação (%)
+   - I = Executor
+   - J = Criticidade Atribuída por IA
+5. Registrar tambem:
+   - LOG_TURNOS_CLASSIFICACAO
+   - LOG_LINHA_A_LINHA
+6. Manter todos os timestamps em America/Bahia.
+7. Criar novo CONTINUIDADE_*.txt a cada etapa importante.
+8. Subir commits para GitHub apos cada etapa validada.
+
+COMANDOS DE VALIDACAO UTEIS
+Validar sintaxe:
+python -m py_compile src\validar_planilha_experimento.py
+python -m py_compile src\registrar_config_experimento.py
+python -m py_compile src\registrar_snapshot_inicial.py
+python -m py_compile src\classificar_lote_inicial.py
+python -m py_compile src\classificar_lote_baseline.py
+
+Validar planilha:
+python src\validar_planilha_experimento.py --apps-script-url "URL_DO_APP" --token "TOKEN"
+
+Selecionar lote sem escrever:
+python src\classificar_lote_inicial.py --apps-script-url "URL_DO_APP" --token "TOKEN"
+
+Rodar baseline sem escrever:
+python src\classificar_lote_baseline.py --apps-script-url "URL_DO_APP" --token "TOKEN"
+
+REGRA FINAL
+Se faltar evidencia, responder exatamente:
+Informação insuficiente para verificar.
