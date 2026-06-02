@@ -108,6 +108,8 @@ python src/registrar_config_experimento.py --apps-script-url "URL_DO_WEB_APP" --
 
 Esse comando grava apenas a aba `EXPERIMENTO_CONFIG`.
 
+Os totais de linhas gravados nessa aba sao valores observados no momento da execucao. Eles nao sao limites fixos; a planilha pode crescer e os scripts devem sempre reler a quantidade atual.
+
 ## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:
