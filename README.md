@@ -142,6 +142,16 @@ Uma linha e elegivel quando:
 
 O tamanho padrao do lote vem de `config_experimento.json`.
 
+## Classificacao inicial - baseline dry-run
+
+Para gerar previsoes sem escrever na planilha:
+
+```bash
+python src/classificar_lote_baseline.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
+```
+
+O baseline atual usa TF-IDF + LogisticRegression, treinado com categorias historicas da planilha e excluindo o lote selecionado do treino. O resultado e apenas comparacao preliminar com a classificacao historica, nao acuracia validada.
+
 ## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:
