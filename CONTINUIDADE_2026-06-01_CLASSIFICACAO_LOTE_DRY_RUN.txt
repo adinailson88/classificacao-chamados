@@ -1,0 +1,41 @@
+CONTINUIDADE - CLASSIFICACAO INICIAL LOTE DRY-RUN
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+ETAPA CONCLUIDA
+Foi criado o script src\classificar_lote_inicial.py.
+
+ESCOPO DO SCRIPT
+1. Relê a aba principal no momento da execução.
+2. Ignora linhas vazias.
+3. Seleciona linhas em que a coluna Classificação IA ainda está vazia.
+4. Usa texto de TÍTULO, DESCRIÇÃO GLPI, TÍTULO O.S.M. e DESCRIÇÃO O.S.M.
+5. Não escreve em G:J.
+6. Não classifica ainda.
+
+VALIDACOES EXECUTADAS
+python -m py_compile src\classificar_lote_inicial.py
+python src\classificar_lote_inicial.py --apps-script-url "URL_OMITIDA" --token "TOKEN_OMITIDO"
+
+RESULTADO DO DRY-RUN
+modo=dry-run
+run_id=EXP_CLASSIFICACAO_CHAMADOS_2026_06_001
+aba=CHAMADOS_ESQUELETO_REDUZIDO
+linhas_lidas_observado=18859
+candidatos_lote=15
+
+Linhas selecionadas no primeiro lote:
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+IDs selecionados:
+1102, 2019050189, 1284, 1331, 1560, 1568, 1574, 1607, 1693, 1800, 1962, 1963, 2000, 2001, 2013
+
+REGRA CONFIRMADA
+O script apenas leu a planilha.
+Nao escreveu em G:J.
+Nao classificou automaticamente.
+Nao usou quantidade fixa de linhas.
+
+PROXIMO PASSO
+Definir o classificador inicial: reutilizar/adaptar modelo existente do Malha IA ou criar baseline inicial novo e simples para teste controlado.

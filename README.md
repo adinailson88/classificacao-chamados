@@ -126,6 +126,22 @@ python src/registrar_snapshot_inicial.py --apps-script-url "URL_DO_WEB_APP" --to
 
 Esse comando rele a aba principal no momento da execucao, ignora linhas vazias e nao usa quantidade fixa.
 
+## Classificacao inicial - selecao de lote
+
+A primeira versao do motor apenas seleciona o proximo lote elegivel, sem classificar e sem escrever em `G:J`:
+
+```bash
+python src/classificar_lote_inicial.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
+```
+
+Uma linha e elegivel quando:
+
+1. nao esta vazia;
+2. possui texto classificavel em titulo/descricoes;
+3. `Classificacao IA` ainda esta vazia.
+
+O tamanho padrao do lote vem de `config_experimento.json`.
+
 ## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:
