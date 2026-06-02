@@ -1,0 +1,93 @@
+CONTINUIDADE - CLASSIFICACAO DE CHAMADOS
+Data: 2026-06-01
+Repositorio GitHub: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+OBJETIVO
+Criar um projeto novo, separado do Malha IA operacional, para executar experimento de classificacao e reclassificacao automatica de chamados conforme roteiro metodologico.
+
+DECISOES CONFIRMADAS PELO USUARIO
+1. Trabalhar no novo repositorio GitHub chamado classificacao-chamados, identificado no GitHub como adinailson88/classifica-o-chamados.
+2. Usar pasta local na Area de Trabalho.
+3. A nova planilha vai somente ate a coluna M; colunas apos M estao vazias.
+4. O script deve considerar somente linhas nao vazias.
+5. A quantidade de linhas pode aumentar; nao assumir total fixo.
+6. A planilha sera tratada no Google Drive/Google Sheets.
+7. Podem ser criadas abas na propria planilha quando necessario, mas ainda nao foi autorizado escrever nela.
+8. O usuario ainda nao liberou app token/credencial para essa planilha.
+9. A cada etapa importante, criar um arquivo TXT de continuidade na pasta da Area de Trabalho para permitir continuacao por outra IA.
+
+PLANILHA EXPERIMENTAL
+URL: https://docs.google.com/spreadsheets/d/1lohPUQOgxzt_DMxnNLKMxnieZq1sVmh4uwBLbbgvfiQ/edit?gid=1090243921#gid=1090243921
+ID: 1lohPUQOgxzt_DMxnNLKMxnieZq1sVmh4uwBLbbgvfiQ
+Aba: CHAMADOS_ESQUELETO_REDUZIDO
+Metadados verificados anteriormente: 18.859 linhas e 26 colunas no metadata da API, mas o usuario confirmou que a estrutura util vai ate M e o restante esta vazio.
+Leitura de amostras reais da aba: ainda pendente por falta de credencial/token liberado.
+
+CABECALHOS ESPERADOS ATE A COLUNA M
+A  ID Chamado
+B  TÍTULO
+C  CATEGORIA COMPLETA
+D  DESCRIÇÃO GLPI
+E  TÍTULO O.S.M.
+F  DESCRIÇÃO O.S.M.
+G  Classificação IA
+H  Avaliação (%)
+I  Executor
+J  Criticidade Atribuída por IA
+K  Comparação
+L  Classificado_Confiança_IA
+M  CONFERÊNCIA
+
+ARQUIVOS CRIADOS NO REPOSITORIO
+1. .gitignore
+2. AGENTS.md
+3. README.md
+4. config_experimento.json
+5. requirements.txt
+6. src/validar_planilha_experimento.py
+7. tests/amostra_valores.json
+
+VALIDACOES JA EXECUTADAS
+1. python -m py_compile src\validar_planilha_experimento.py
+2. python src\validar_planilha_experimento.py --arquivo-valores tests\amostra_valores.json
+
+Resultado do teste offline:
+total_linhas_lidas=3
+total_linhas_dados=2
+total_linhas_nao_vazias=1
+cabecalho_ok=true
+colunas_ausentes=[]
+colunas_extras=[]
+
+COMMIT JA ENVIADO
+Commit: 6ca3f93 - Estruturar experimento de classificacao de chamados
+Branch: main
+Remote: origin/main
+
+ESTADO TECNICO DO SCRIPT ATUAL
+O script src/validar_planilha_experimento.py:
+1. le config_experimento.json;
+2. aceita teste offline via --arquivo-valores;
+3. aceita leitura Google Sheets via --credenciais;
+4. valida cabecalho esperado;
+5. conta somente linhas nao vazias;
+6. usa range A:M;
+7. nao escreve na planilha.
+
+PROXIMO PASSO RECOMENDADO
+1. Usuario liberar credencial/token Google Sheets para a planilha.
+2. Executar:
+   python src\validar_planilha_experimento.py --credenciais CAMINHO_DO_JSON
+3. Confirmar cabecalho real e total de linhas nao vazias.
+4. Depois disso, criar script seguro para criar abas experimentais, ainda sem executar classificacao.
+
+REGRA DE CONTINUIDADE
+A cada etapa importante, gerar novo TXT na pasta do repositorio local na Area de Trabalho com:
+1. data;
+2. objetivo da etapa;
+3. arquivos alterados;
+4. comandos executados;
+5. resultados de validacao;
+6. pendencias;
+7. proximo passo recomendado.
