@@ -185,7 +185,7 @@ function registrarSnapshotInicial_(body) {
   const origemNome = body.origem || 'CHAMADOS_ESQUELETO_REDUZIDO';
   const destinoNome = body.destino || 'SNAPSHOT_ETAPA_1';
   const runId = body.run_id || '';
-  const dataSnapshot = new Date().toISOString();
+  const dataSnapshot = formatarDataBahia_(new Date());
 
   const origem = ss.getSheetByName(origemNome);
   if (!origem) {
@@ -261,6 +261,10 @@ function gravarEmBlocos_(sheet, linhas, colunas, tamanhoBloco) {
     const bloco = linhas.slice(inicio, inicio + tamanhoBloco);
     sheet.getRange(inicio + 1, 1, bloco.length, colunas).setValues(bloco);
   }
+}
+
+function formatarDataBahia_(data) {
+  return Utilities.formatDate(data, 'America/Bahia', "yyyy-MM-dd'T'HH:mm:ss") + '-03:00';
 }
 
 function getSheetOrError_(sheetName) {
