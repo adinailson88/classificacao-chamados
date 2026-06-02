@@ -1,0 +1,59 @@
+CONTINUIDADE - APPS SCRIPT VALIDADO
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+ETAPA CONCLUIDA
+O usuario criou e implantou um Apps Script Web App vinculado a planilha experimental.
+
+VALIDACAO INFORMADA PELO USUARIO
+Comando navegador:
+URL_DO_APP?action=listar_abas&token=123
+
+Retorno:
+ok=true
+action=listar_abas
+sheet=CHAMADOS_ESQUELETO_REDUZIDO
+lastRow=18859
+lastColumn=13
+
+Comando navegador:
+URL_DO_APP?action=validar&sheet=CHAMADOS_ESQUELETO_REDUZIDO&range=A:M&token=123
+
+Retorno:
+ok=true
+sheet=CHAMADOS_ESQUELETO_REDUZIDO
+range=A:M
+lastRow=18859
+lastColumn=13
+totalRowsRead=18859
+totalDataRows=18858
+totalNonEmptyRows=13789
+
+Cabecalho validado:
+ID Chamado
+TÍTULO
+CATEGORIA COMPLETA
+DESCRIÇÃO GLPI
+TÍTULO O.S.M.
+DESCRIÇÃO O.S.M.
+Classificação IA
+Avaliação (%)
+Executor
+Criticidade Atribuída por IA
+Comparação
+Classificado_Confiança_IA
+CONFERÊNCIA
+
+ALTERACAO PREPARADA NO REPOSITORIO
+O script src/validar_planilha_experimento.py foi adaptado para aceitar:
+--apps-script-url
+--token
+
+Regra: URL e token nao devem ser versionados.
+
+PROXIMO PASSO RECOMENDADO
+1. Usuario informar somente a URL do Web App se quiser que o Codex execute a validacao pelo terminal.
+2. Rodar:
+   python src\validar_planilha_experimento.py --apps-script-url "URL_DO_APP" --token "123"
+3. Depois criar script de preparacao das abas experimentais, com escrita somente mediante flag explicita.
