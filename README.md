@@ -110,6 +110,22 @@ Esse comando grava apenas a aba `EXPERIMENTO_CONFIG`.
 
 Os totais de linhas gravados nessa aba sao valores observados no momento da execucao. Eles nao sao limites fixos; a planilha pode crescer e os scripts devem sempre reler a quantidade atual.
 
+## Snapshot inicial
+
+Antes de classificar, gere um snapshot do estado atual das linhas nao vazias:
+
+```bash
+python src/registrar_snapshot_inicial.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
+```
+
+Para gravar em `SNAPSHOT_ETAPA_1`:
+
+```bash
+python src/registrar_snapshot_inicial.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN" --aplicar
+```
+
+Esse comando rele a aba principal no momento da execucao, ignora linhas vazias e nao usa quantidade fixa.
+
 ## Validacao com credencial Google Sheets
 
 Depois de liberar a credencial/token:

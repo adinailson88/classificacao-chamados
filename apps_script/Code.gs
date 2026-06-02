@@ -32,6 +32,10 @@ function doPost(e) {
     return registrarConfigExperimento_(body);
   }
 
+  if (action === 'registrar_snapshot_inicial') {
+    return registrarSnapshotInicial_(body);
+  }
+
   return jsonResponse_({
     ok: false,
     erro: 'acao_post_desconhecida',
@@ -174,6 +178,89 @@ function registrarConfigExperimento_(body) {
     lastRow: sheet.getLastRow(),
     lastColumn: sheet.getLastColumn()
   });
+}
+
+function registrarSnapshotInicial_(body) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const origemNome = body.origem || 'CHAMADOS_ESQUELETO_REDUZIDO';
+  const destinoNome = body.destino || 'SNAPSHOT_ETAPA_1';
+  const runId = body.run_id || '';
+  const dataSnapshot = new Date().toISOString();
+
+  const origem = ss.getSheetByName(origemNome);
+  if (!origem) {
+    return jsonResponse_({
+      ok: false,
+      erro: 'aba_origem_nao_encontrada',
+      origem: origemNome
+    });
+  }
+
+  let destino = ss.getSheetByName(destinoNome);
+  let criada = false;
+  if (!destino) {
+    destino = ss.insertSheet(destinoNome);
+    criada = true;
+  }
+
+  const lastRow = origem.getLastRow();
+  const values = lastRow > 0 ? origem.getRange(1, 1, lastRow, 13).getValues() : [];
+  const cabecalho = [
+    'run_id',
+    'linha_planilha',
+    'id_chamado',
+    'categoria_original',
+    'categoria_ia_etapa_1',
+    'confianca_etapa_1',
+    'executor_etapa_1',
+    'criticidade_etapa_1',
+    'conferencia_etapa_1',
+    'data_snapshot'
+  ];
+
+  const linhas = [cabecalho];
+  const dados = values.slice(1);
+
+  dados.forEach((row, idx) => {
+    const vazia = row.every(cell => String(cell || '').trim() === '');
+    if (vazia) return;
+
+    linhas.push([
+      runId,
+      idx + 2,
+      row[0] || '',
+      row[2] || '',
+      row[6] || '',
+      row[7] || '',
+      row[8] || '',
+      row[9] || '',
+      row[12] || '',
+      dataSnapshot
+    ]);
+  });
+
+  destino.clearContents();
+  gravarEmBlocos_(destino, linhas, 10, 1000);
+  destino.setFrozenRows(1);
+
+  return jsonResponse_({
+    ok: true,
+    action: 'registrar_snapshot_inicial',
+    origem: origemNome,
+    destino: destinoNome,
+    criada,
+    linhas_origem_lidas: values.length,
+    linhas_snapshot: linhas.length - 1,
+    lastRow: destino.getLastRow(),
+    lastColumn: destino.getLastColumn()
+  });
+}
+
+function gravarEmBlocos_(sheet, linhas, colunas, tamanhoBloco) {
+  for (let inicio = 0; inicio < linhas.length; inicio += tamanhoBloco) {
+    const bloco = linhas.slice(inicio, inicio + tamanhoBloco);
+    sheet.getRange(inicio + 1, 1, bloco.length, colunas).setValues(bloco);
+  }
 }
 
 function getSheetOrError_(sheetName) {
