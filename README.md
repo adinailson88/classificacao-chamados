@@ -110,6 +110,8 @@ Esse comando grava apenas a aba `EXPERIMENTO_CONFIG`.
 
 Os totais de linhas gravados nessa aba sao valores observados no momento da execucao. Eles nao sao limites fixos; a planilha pode crescer e os scripts devem sempre reler a quantidade atual.
 
+Datas e horas do experimento devem usar horario local de Itabuna/Bahia (`America/Bahia`, UTC-03:00), por exemplo `2026-06-01T23:40:37-03:00`.
+
 ## Snapshot inicial
 
 Antes de classificar, gere um snapshot do estado atual das linhas nao vazias:
