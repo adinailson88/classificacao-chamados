@@ -1,0 +1,44 @@
+CONTINUIDADE - VALIDACAO PELO TERMINAL VIA APPS SCRIPT
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+ETAPA CONCLUIDA
+O Codex executou a validacao da planilha pelo terminal usando o script:
+src\validar_planilha_experimento.py
+
+IMPORTANTE
+A URL do Web App e o token foram usados apenas na execucao local.
+Eles nao foram gravados neste arquivo nem no repositorio.
+
+COMANDO EXECUTADO
+python src\validar_planilha_experimento.py --apps-script-url "URL_OMITIDA" --token "TOKEN_OMITIDO"
+
+RESULTADO
+total_linhas_lidas=18859
+total_linhas_dados=18858
+total_linhas_nao_vazias=13789
+cabecalho_ok=true
+colunas_ausentes=[]
+colunas_extras=[]
+
+CONCLUSAO TECNICA
+A aba principal esta acessivel via Apps Script.
+O cabecalho A:M esta aderente ao esperado.
+O script esta contando apenas linhas nao vazias.
+A quantidade real atual de linhas nao vazias do experimento e 13.789.
+
+PROXIMO PASSO RECOMENDADO
+Criar script de preparacao das abas experimentais com:
+1. modo --dry-run obrigatorio por padrao;
+2. flag --aplicar para escrita real;
+3. criacao ou validacao das abas:
+   - EXPERIMENTO_CONFIG
+   - LOG_TURNOS_CLASSIFICACAO
+   - LOG_LINHA_A_LINHA
+   - SNAPSHOT_ETAPA_1
+   - LOG_TURNOS_RECLASSIFICACAO
+   - VALIDACAO_HUMANA
+   - METRICAS_EXPERIMENTO
+4. sem classificacao automatica ainda;
+5. sem limpar colunas da aba principal ainda.
