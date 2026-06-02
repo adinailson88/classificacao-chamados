@@ -1,0 +1,41 @@
+CONTINUIDADE - SNAPSHOT INICIAL GRAVADO
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+ETAPA CONCLUIDA
+O token do Apps Script foi corrigido pelo usuario.
+O Codex executou src\registrar_snapshot_inicial.py com --aplicar.
+
+COMANDO EXECUTADO
+python src\registrar_snapshot_inicial.py --apps-script-url "URL_OMITIDA" --token "TOKEN_OMITIDO" --aplicar
+
+RESULTADO
+ok=true
+action=registrar_snapshot_inicial
+origem=CHAMADOS_ESQUELETO_REDUZIDO
+destino=SNAPSHOT_ETAPA_1
+criada=false
+linhas_origem_lidas=18859
+linhas_snapshot=13789
+lastRow=13790
+lastColumn=10
+
+REGRA CONFIRMADA
+As quantidades sao observadas dinamicamente no momento da execucao.
+O snapshot ignorou linhas vazias.
+A aba principal nao foi alterada.
+
+VALIDACAO APOS SNAPSHOT
+python src\validar_planilha_experimento.py --apps-script-url "URL_OMITIDA" --token "TOKEN_OMITIDO"
+
+Resultado:
+total_linhas_lidas=18859
+total_linhas_dados=18858
+total_linhas_nao_vazias=13789
+cabecalho_ok=true
+colunas_ausentes=[]
+colunas_extras=[]
+
+PROXIMO PASSO RECOMENDADO
+Criar o motor de classificacao inicial em modo dry-run, processando apenas o proximo lote elegivel e sem escrever em G:J ate validacao previa.
