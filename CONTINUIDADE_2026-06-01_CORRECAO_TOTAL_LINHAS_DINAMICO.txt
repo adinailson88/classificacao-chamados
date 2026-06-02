@@ -1,0 +1,23 @@
+CONTINUIDADE - CORRECAO SOBRE TOTAL DE LINHAS DINAMICO
+Data: 2026-06-01
+Repositorio: https://github.com/adinailson88/classifica-o-chamados
+Pasta local: C:\Users\adina\OneDrive\Área de Trabalho\classifica-o-chamados
+
+CORRECAO DO USUARIO
+O usuario observou corretamente que total_linhas_nao_vazias nao pode ser tratado como quantidade fixa, pois a planilha pode crescer.
+
+CORRECAO APLICADA
+O script src\registrar_config_experimento.py foi ajustado para gravar os campos como valores observados:
+1. total_linhas_lidas_observado
+2. total_linhas_dados_observado
+3. total_linhas_nao_vazias_observado
+4. last_row_observado
+5. last_column_observado
+
+REGRA TECNICA
+Esses valores sao medidos dinamicamente no momento de cada execucao.
+Eles nao sao limites fixos e nao devem ser usados para impedir leitura de linhas novas.
+
+PROXIMO PASSO
+Revalidar o dry-run de src\registrar_config_experimento.py.
+Depois atualizar o Apps Script e gravar EXPERIMENTO_CONFIG com os nomes corrigidos.
