@@ -28,6 +28,10 @@ function doPost(e) {
     return prepararAbasExperimento_(body);
   }
 
+  if (action === 'registrar_config_experimento') {
+    return registrarConfigExperimento_(body);
+  }
+
   return jsonResponse_({
     ok: false,
     erro: 'acao_post_desconhecida',
@@ -134,6 +138,41 @@ function prepararAbasExperimento_(body) {
     ok: true,
     action: 'preparar_abas_experimento',
     resultado
+  });
+}
+
+function registrarConfigExperimento_(body) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheetName = body.sheet || 'EXPERIMENTO_CONFIG';
+  const linhas = body.linhas || [];
+
+  if (!Array.isArray(linhas) || linhas.length === 0) {
+    return jsonResponse_({
+      ok: false,
+      erro: 'linhas_invalidas'
+    });
+  }
+
+  let sheet = ss.getSheetByName(sheetName);
+  let criada = false;
+
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    criada = true;
+  }
+
+  sheet.clearContents();
+  sheet.getRange(1, 1, linhas.length, 3).setValues(linhas);
+  sheet.setFrozenRows(1);
+
+  return jsonResponse_({
+    ok: true,
+    action: 'registrar_config_experimento',
+    sheet: sheetName,
+    criada,
+    linhas_gravadas: linhas.length,
+    lastRow: sheet.getLastRow(),
+    lastColumn: sheet.getLastColumn()
   });
 }
 
