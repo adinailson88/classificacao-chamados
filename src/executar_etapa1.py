@@ -187,7 +187,7 @@ def main() -> int:
     tam = args.tamanho_turno
 
     try:
-        sh = pl.abrir_planilha(config["spreadsheet_id"], args.credenciais)
+        sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
         ws = sh.worksheet(aba)
         valores = pl.ler_valores(ws, config["range_leitura"])
     except FileNotFoundError as e:
@@ -333,7 +333,7 @@ def main() -> int:
     if cfg_vazia:
         branch, commit = git_info(args)
         pl.escrever_aba(sh, abas["config"], ["campo", "valor"], [
-            ["run_id", run_id], ["data_inicio", gerado], ["spreadsheet_id", config["spreadsheet_id"]],
+            ["run_id", run_id], ["data_inicio", gerado],
             ["aba_principal", aba], ["total_chamados", total], ["total_elegiveis", len(elegiveis)],
             ["tamanho_turno", tam], ["limiar_confianca_baixa", lim_baixa],
             ["limiar_alta_confianca", lim_alta], ["modelo", nome_modelo], ["branch", branch],

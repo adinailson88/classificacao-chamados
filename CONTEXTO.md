@@ -60,7 +60,8 @@ Script `src/executar_etapa1.py` + workflow `etapa1_turnos.yml` (agendado `*/15`)
 - Faltando evidência: responder exatamente `Informação insuficiente para verificar.`
 
 ## Planilha experimental
-- ID `<SPREADSHEET_ID>`, aba `CHAMADOS_ESQUELETO_REDUZIDO`, range `A:M`.
+- ID da planilha: **não versionado** (Secret/env `SPREADSHEET_ID` no CI, ou arquivo
+  local `spreadsheet_id.local`). Aba `CHAMADOS_ESQUELETO_REDUZIDO`, range `A:M`.
 - Colunas: A ID Chamado · B TÍTULO · C CATEGORIA COMPLETA · D DESCRIÇÃO GLPI ·
   E TÍTULO O.S.M. · F DESCRIÇÃO O.S.M. · **G Classificação IA · H Avaliação (%) ·
   I Executor · J Criticidade Atribuída por IA** · K Comparação ·
@@ -77,7 +78,8 @@ Desde 2026-06-03 o acesso é via **conta de serviço Google Cloud + Sheets API
 (gspread)**, no lugar do Apps Script Web App (que exigia reimplantar a cada
 rotação de token).
 - Projeto GCP: `classificacao-chamados`; Google Sheets API ativada.
-- Conta de serviço: `<SERVICE_ACCOUNT_EMAIL>`.
+- Conta de serviço: e-mail **não versionado** (a planilha foi compartilhada com a
+  conta de serviço; a chave fica no Secret `GCP_SA_KEY`).
 - A planilha foi **compartilhada com esse e-mail (Editor)**.
 - Chave JSON salva em `credenciais_sa.json` na raiz — **NUNCA versionada** (.gitignore).
   Para Actions, guardar o conteúdo como Secret e recriar o arquivo no runner.

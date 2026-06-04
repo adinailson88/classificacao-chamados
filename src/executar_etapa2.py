@@ -129,7 +129,7 @@ def main() -> int:
     tam = args.tamanho_turno
 
     try:
-        sh = pl.abrir_planilha(config["spreadsheet_id"], args.credenciais)
+        sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
         ws = sh.worksheet(aba)
         valores = pl.ler_valores(ws, config["range_leitura"])
     except FileNotFoundError as e:
