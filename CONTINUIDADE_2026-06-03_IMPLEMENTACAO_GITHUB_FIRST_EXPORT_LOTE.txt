@@ -1,0 +1,59 @@
+CONTINUIDADE - IMPLEMENTACAO: GITHUB-FIRST, EXPORT EM LOTE
+Data: 2026-06-03 (America/Bahia, UTC-03:00)
+Branch: feat/github-first-export-lote
+
+O QUE FOI IMPLEMENTADO
+Concretiza a arquitetura registrada em
+CONTINUIDADE_2026-06-03_ARQUITETURA_PROCESSAR_NO_GITHUB_EXPORTAR_EM_LOTE.txt:
+processar no GitHub usando JSON no repo e exportar para a planilha 1x por etapa.
+
+DECISOES CONFIRMADAS PELO USUARIO
+1. Conjunto de 6 arquivos JSON em dados/ (ver dados/README.md).
+2. Exportacao em lote grava colunas G:J (4 saidas da IA).
+3. A exportacao pula linhas com CONFERENCIA (coluna M) = TRUE.
+4. Decisao tecnica adicional: a exportacao nao sobrescreve celula com valor
+   vazio (read-modify-write em bloco). Assim o J (Criticidade), vazio no
+   baseline, e preservado na planilha.
+
+ARQUIVOS
+- src/registrar_snapshot_inicial.py  (MODIFICADO)
+  Le a planilha 1x (action=ler) e grava dados/snapshot_etapa_1.json no repo.
+  --aplicar continua gravando a aba SNAPSHOT_ETAPA_1 (legado, opcional).
+- src/classificar_etapa.py           (NOVO)
+  Le o snapshot JSON, classifica out-of-fold (StratifiedKFold) com baseline
+  TF-IDF + LogReg, grava classificacao_etapa_1.json + log_turnos.jsonl +
+  log_linha_a_linha.jsonl + metricas_experimento.json. NAO toca na planilha.
+- src/exportar_etapa.py              (NOVO)
+  1 doPost (action=exportar_lote) com G:J das linhas; atualiza
+  manifest_exportacao.json. Dry-run por padrao; grava so com --aplicar.
+- apps_script/Code.gs                (MODIFICADO)
+  Nova acao POST exportar_lote: read-modify-write em bloco (1 leitura + 1
+  escrita), pula M=TRUE (ehVerdadeiro_) e ignora valores vazios.
+- dados/README.md, dados/.gitkeep    (NOVO) - schemas dos 6 arquivos.
+- tests/test_github_first.py         (NOVO) - testes sem rede.
+
+FLUXO DE USO
+  export APPS_SCRIPT_URL=...; export APPS_SCRIPT_TOKEN=...
+  python src/registrar_snapshot_inicial.py           # gera snapshot JSON (1 leitura)
+  python src/classificar_etapa.py                     # classifica no repo (0 API)
+  python src/exportar_etapa.py                        # dry-run do lote
+  python src/exportar_etapa.py --aplicar              # 1 escrita em lote (G:J)
+
+API POR ETAPA: 1 leitura (snapshot) + 1 escrita (exportar) = 2 chamadas/etapa,
+em vez de N por linha/turno.
+
+VALIDACAO FEITA
+- python -m py_compile dos 3 scripts: OK.
+- Smoke test offline (80 linhas sinteticas): snapshot -> classificar -> export
+  dry-run gerou payload G:J correto, com Criticidade vazia.
+- tests/test_github_first.py: 4/4 OK.
+NAO validado com a planilha real (sem credenciais nesta sessao); a acao
+exportar_lote do Code.gs precisa ser publicada no Web App antes do uso real.
+
+PENDENCIAS / PROXIMOS PASSOS
+1. Publicar o Code.gs atualizado no Web App (deploy) para habilitar exportar_lote.
+2. Rodar com credenciais reais: snapshot -> classificar -> exportar --aplicar.
+3. Avaliar privacidade antes de versionar dados/*.json reais (repo publico).
+4. Opcional: GitHub Action por etapa (atualiza JSON, commita; exporta sob trigger).
+5. Demais pendencias do projeto: corrigir formula AE defasada; decidir camada de
+   dados definitiva (GitHub-static vs Supabase); relatorio final.
