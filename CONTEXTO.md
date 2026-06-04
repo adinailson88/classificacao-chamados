@@ -12,6 +12,32 @@ Experimento controlado de **classificação e reclassificação automática de
 chamados**, separado do Malha IA operacional, preservando rastreabilidade, logs,
 snapshot inicial, validação humana futura e separação experimento/produção.
 
+## 🎯 OBJETIVO FINAL (meta do projeto)
+Chegar a um **modelo de IA bem treinado** que, para a **maioria das categorias**,
+indique com **confiança ≥95% CALIBRADA** se a categoria de um chamado está correta
+ou não. "Calibrada" = quando o modelo diz "≥95%", ele realmente acerta ~≥95% das
+vezes (confiança ligada ao acerto real, não só softmax inflado). A meta não é só
+acurácia média — é **confiabilidade por faixa e por categoria**.
+
+### Estratégia — ciclo de melhoria contínua
+1. Classificar (Etapa 1) → reclassificar baixa confiança (Etapa 2) → **validação
+   humana** dos divergentes/duvidosos → **base validada** (`usar_para_treino=SIM`).
+2. **Re-treinar** o modelo com a base validada (rótulos de maior qualidade) — etapas 41-42.
+3. Repetir, **subindo a confiança calibrada e a cobertura** por categoria.
+
+### Alavancas (acionar conforme a necessidade, guiado por dados)
+- **Aumentar a capacidade do LSTM**: mais `units`/`embed_dim`/vocabulário/épocas,
+  ou embeddings PT pré-treinados (parâmetros em `src/modelo_lstm.py`).
+- **Reforçar a reclassificação**: lotes maiores, mais rodadas, critérios de melhoria.
+- **Memória mais robusta**: a base validada cresce e vira a **memória de treino** —
+  quanto mais validada, melhor o re-treino e a confiança.
+- **Modelo robusto (quase-LLM local)**: roda em **baixa frequência** e **devagar**,
+  só nos casos difíceis/baixa confiança, elevando a qualidade onde o LSTM não chega.
+
+### Como medir o sucesso
+- **Confiança × acerto** (Etapa 38): na faixa ≥95%, o acerto **validado** deve ser ~≥95%.
+- **Cobertura**: maioria das categorias com bom desempenho (métricas por categoria).
+
 ## ⭐ FONTE DE VERDADE: roteiro metodológico (50 etapas)
 O desenho do experimento segue o **"Roteiro Metodológico para Avaliação da
 Evolução da Classificação e Reclassificação Automática de Chamados no Malha IA"**
