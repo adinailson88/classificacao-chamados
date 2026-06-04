@@ -59,7 +59,7 @@ def main() -> int:
     SAIDA.mkdir(parents=True, exist_ok=True)
 
     try:
-        sh = pl.abrir_planilha(config["spreadsheet_id"])
+        sh = pl.abrir_planilha(pl.id_planilha(config))
     except FileNotFoundError as e:
         print(str(e), file=sys.stderr); return 2
     except Exception as e:  # noqa: BLE001

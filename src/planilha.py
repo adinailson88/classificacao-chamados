@@ -22,6 +22,29 @@ import gspread
 
 RAIZ = Path(__file__).resolve().parents[1]
 CREDENCIAIS_PADRAO = RAIZ / "credenciais_sa.json"
+ID_LOCAL = RAIZ / "spreadsheet_id.local"  # arquivo gitignored (uso local)
+
+
+def id_planilha(config: dict) -> str:
+    """ID da planilha SEM expor no repo público.
+
+    Ordem: variável de ambiente SPREADSHEET_ID (GitHub Secret no CI) ->
+    arquivo local `spreadsheet_id.local` (gitignored) -> config (se preenchido).
+    """
+    env = os.getenv("SPREADSHEET_ID")
+    if env and env.strip():
+        return env.strip()
+    if ID_LOCAL.exists():
+        valor = ID_LOCAL.read_text(encoding="utf-8").strip()
+        if valor:
+            return valor
+    valor = str((config or {}).get("spreadsheet_id") or "").strip()
+    if not valor:
+        raise RuntimeError(
+            "ID da planilha não definido. Configure o Secret/variável SPREADSHEET_ID "
+            "(CI) ou crie o arquivo spreadsheet_id.local na raiz (uso local)."
+        )
+    return valor
 
 
 def resolver_credenciais(caminho: str | Path | None = None) -> Path:
