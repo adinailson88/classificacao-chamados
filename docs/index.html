@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malha IA — Painel da Classificação de Chamados</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{--bg:#0f1419;--card:#1a2129;--bd:#2a333d;--tx:#e6edf3;--mut:#8b98a5;
+        --ok:#2ea043;--mid:#d29922;--bad:#cf3b3b;--ac:#2f81f7;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",system-ui,Arial,sans-serif}
+  header{padding:18px 24px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:18px;margin:0;font-weight:600}
+  header .meta{color:var(--mut);font-size:12px}
+  .wrap{padding:18px 24px;max-width:1280px;margin:0 auto}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+  .kpi{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+  .kpi .v{font-size:26px;font-weight:700}
+  .kpi .l{color:var(--mut);font-size:12px;margin-top:4px}
+  .tabs{display:flex;gap:6px;margin:6px 0 16px;flex-wrap:wrap}
+  .tabs button{background:var(--card);color:var(--mut);border:1px solid var(--bd);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+  .tabs button.on{color:#fff;border-color:var(--ac);background:#11243d}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px}
+  .card h3{margin:0 0 10px;font-size:14px;font-weight:600}
+  .card.full{grid-column:1/-1}
+  canvas{max-height:320px}
+  input[type=text]{background:#0d1117;color:var(--tx);border:1px solid var(--bd);border-radius:7px;padding:7px 10px;width:100%;margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  th{color:var(--mut);cursor:pointer;user-select:none;position:sticky;top:0;background:var(--card)}
+  .tablebox{max-height:460px;overflow:auto;border:1px solid var(--bd);border-radius:8px}
+  .bar{height:8px;border-radius:4px;background:#0d1117;overflow:hidden;display:inline-block;width:80px;vertical-align:middle;margin-left:6px}
+  .bar>i{display:block;height:100%}
+  .hide{display:none}
+  .muted{color:var(--mut)}
+  a{color:var(--ac)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔧 Malha IA — Painel da Classificação de Chamados</h1>
+  <div class="meta" id="meta">carregando…</div>
+</header>
+<div class="wrap">
+  <div class="kpis" id="kpis"></div>
+  <div class="tabs">
+    <button data-t="class" class="on">Classificação (Etapa 1)</button>
+    <button data-t="cat">Por categoria</button>
+    <button data-t="reclass">Reclassificação (Etapa 2)</button>
+  </div>
+
+  <section id="tab-class">
+    <div class="grid">
+      <div class="card full"><h3>Evolução da concordância por turno</h3><canvas id="cEvol"></canvas></div>
+      <div class="card"><h3>Distribuição por faixa de confiança</h3><canvas id="cFaixa"></canvas></div>
+      <div class="card"><h3>Confiança média por turno</h3><canvas id="cConf"></canvas></div>
+    </div>
+  </section>
+
+  <section id="tab-cat" class="hide">
+    <div class="card full">
+      <h3>Concordância por categoria (IA × histórico)</h3>
+      <input type="text" id="filtroCat" placeholder="filtrar categoria…">
+      <div class="tablebox"><table id="tabCat"><thead><tr>
+        <th data-k="categoria">Categoria</th>
+        <th data-k="qtd_classificados">Qtd</th>
+        <th data-k="taxa_concordancia">Concordância</th>
+        <th data-k="confianca_media">Conf. média</th>
+        <th data-k="qtd_acima_95">≥95%</th>
+        <th data-k="qtd_70_95">70–95%</th>
+        <th data-k="qtd_abaixo_70">&lt;70%</th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="tab-reclass" class="hide">
+    <div class="kpis" id="kpisR"></div>
+    <div class="grid">
+      <div class="card full"><h3>Ganho líquido por turno (corrigidos − prejudicados)</h3><canvas id="cGanho"></canvas></div>
+      <div class="card"><h3>Concordância antes × depois</h3><canvas id="cAntesDepois"></canvas></div>
+      <div class="card"><h3>Corrigidos vs prejudicados (total)</h3><canvas id="cCorr"></canvas></div>
+    </div>
+    <p class="muted" id="reclassVazio"></p>
+  </section>
+</div>
+
+<script>
+const N = v => { const f = parseFloat(String(v).replace(",", ".")); return isFinite(f) ? f : 0; };
+const pct = v => (N(v)*100).toFixed(1) + "%";
+const cor = t => t>=0.9?"var(--ok)":t>=0.7?"var(--mid)":"var(--bad)";
+async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
+
+let CAT=[], sortK="qtd_classificados", sortDir=-1;
+
+function kpi(v,l){ return `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`; }
+
+function renderClass(turnos){
+  const labels = turnos.map(t=>t.turno);
+  const taxa = turnos.map(t=>N(t.taxa_concordancia)*100);
+  const acum = turnos.map(t=>N(t.concordancia_acumulada)*100);
+  const conf = turnos.map(t=>N(t.confianca_media)*100);
+  new Chart(cEvol,{type:"line",data:{labels,datasets:[
+    {label:"Concordância do turno (%)",data:taxa,borderColor:"#8b98a5",pointRadius:0,borderWidth:1},
+    {label:"Concordância acumulada (%)",data:acum,borderColor:"#2f81f7",pointRadius:0,borderWidth:2}
+  ]},options:opt("%")});
+  const lo=turnos.reduce((s,t)=>s+N(t.qtd_abaixo_70),0), mi=turnos.reduce((s,t)=>s+N(t.qtd_70_95),0), hi=turnos.reduce((s,t)=>s+N(t.qtd_acima_95),0);
+  new Chart(cFaixa,{type:"doughnut",data:{labels:["≥95%","70–95%","<70%"],datasets:[{data:[hi,mi,lo],backgroundColor:["#2ea043","#d29922","#cf3b3b"]}]},options:{plugins:{legend:{labels:{color:"#e6edf3"}}}}});
+  new Chart(cConf,{type:"line",data:{labels,datasets:[{label:"Confiança média (%)",data:conf,borderColor:"#a371f7",pointRadius:0,borderWidth:1.5,fill:false}]},options:opt("%")});
+}
+function opt(suf){return{responsive:true,plugins:{legend:{labels:{color:"#e6edf3",boxWidth:12}}},scales:{x:{ticks:{color:"#8b98a5"},grid:{color:"#222a33"}},y:{ticks:{color:"#8b98a5",callback:v=>v+(suf||"")},grid:{color:"#222a33"}}}};}
+
+function renderCat(){
+  const f = document.getElementById("filtroCat").value.toLowerCase();
+  let rows = CAT.filter(c=>String(c.categoria).toLowerCase().includes(f));
+  rows.sort((a,b)=> (N(a[sortK])-N(b[sortK]))*sortDir || String(a.categoria).localeCompare(b.categoria));
+  if(sortK==="categoria") rows.sort((a,b)=>a.categoria.localeCompare(b.categoria)*(sortDir));
+  const tb = document.querySelector("#tabCat tbody");
+  tb.innerHTML = rows.map(c=>{const t=N(c.taxa_concordancia);return `<tr>
+    <td>${c.categoria}</td><td>${c.qtd_classificados}</td>
+    <td style="color:${cor(t)}">${pct(c.taxa_concordancia)}<span class="bar"><i style="width:${(t*100).toFixed(0)}%;background:${cor(t)}"></i></span></td>
+    <td>${pct(c.confianca_media)}</td><td>${c.qtd_acima_95}</td><td>${c.qtd_70_95}</td><td>${c.qtd_abaixo_70}</td></tr>`;}).join("");
+}
+
+function renderReclass(rt){
+  const box=document.getElementById("kpisR"), vazio=document.getElementById("reclassVazio");
+  if(!rt.length){ box.innerHTML=""; vazio.textContent="Ainda não há dados de reclassificação (Etapa 2)."; return; }
+  vazio.textContent="";
+  const tot=k=>rt.reduce((s,t)=>s+N(t[k]),0);
+  box.innerHTML = kpi(tot("qtd_reclassificados"),"Reclassificados")+kpi(tot("qtd_corrigidos"),"Corrigidos")
+    +kpi(tot("qtd_prejudicados"),"Prejudicados")+kpi(tot("ganho_liquido"),"Ganho líquido");
+  const labels=rt.map(t=>t.turno);
+  new Chart(cGanho,{type:"bar",data:{labels,datasets:[{label:"Ganho líquido",data:rt.map(t=>N(t.ganho_liquido)),backgroundColor:rt.map(t=>N(t.ganho_liquido)>=0?"#2ea043":"#cf3b3b")}]},options:opt("")});
+  new Chart(cAntesDepois,{type:"line",data:{labels,datasets:[
+    {label:"Antes (%)",data:rt.map(t=>N(t.taxa_concordancia_antes)*100),borderColor:"#8b98a5",pointRadius:0},
+    {label:"Depois (%)",data:rt.map(t=>N(t.taxa_concordancia_depois)*100),borderColor:"#2ea043",pointRadius:0,borderWidth:2}
+  ]},options:opt("%")});
+  new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],
+    datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],
+    backgroundColor:["#2ea043","#cf3b3b","#2f81f7","#6e7681"]}]},options:{plugins:{legend:{labels:{color:"#e6edf3"}}}}});
+}
+
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  ["class","cat","reclass"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+});
+document.getElementById("filtroCat").addEventListener("input",renderCat);
+document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{
+  const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat();
+});
+
+(async function(){
+  const [turnos,cat,rt,met,resumo] = await Promise.all([
+    getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
+    getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"), getJSON("resumo.json")
+  ]);
+  CAT = cat;
+  const proc = turnos.reduce((s,t)=>s+N(t.qtd_processados),0);
+  const acumFinal = turnos.length? N(turnos[turnos.length-1].concordancia_acumulada) : 0;
+  const mGet = k => { const m=(met||[]).find(x=>x.metrica===k); return m? m.valor : "—"; };
+  document.getElementById("kpis").innerHTML =
+    kpi(proc.toLocaleString("pt-BR"),"Chamados classificados")+
+    kpi(pct(acumFinal),"Concordância acumulada")+
+    kpi(turnos.length,"Turnos processados")+
+    kpi(CAT.length,"Categorias")+
+    kpi((resumo&&resumo.run_id)||"—","run_id");
+  document.getElementById("meta").textContent = "Atualizado em: "+((resumo&&resumo.gerado_em)||"—");
+  if(turnos.length) renderClass(turnos);
+  renderCat();
+  renderReclass(rt);
+})();
+</script>
+</body>
+</html>
