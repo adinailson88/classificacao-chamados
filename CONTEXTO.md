@@ -42,6 +42,13 @@ Script `src/executar_etapa1.py` + workflow `etapa1_turnos.yml` (agendado `*/15`)
   não há pendentes ("Etapa 1 concluída").
 - Disparo manual: `gh workflow run etapa1_turnos.yml -f modelo=producao -f max_turnos=60`.
 
+## 📚 Documentação do repositório
+- `docs/GUIA_TECNICO.md` — o que **cada script/arquivo** faz, como funciona, com o
+  que se relaciona e como executar; + significado de **G/H/I/J** e de cada
+  **executor** (LSTM vs LSTM_BAIXA_CONF, por que existe baixa_conf acima de 90%).
+- `docs/contexto_projeto.txt` — panorama geral do projeto (mascarado).
+- `dados/README.md` — schemas dos arquivos JSON.
+
 ## Regras de ouro
 - Não presumir totais fixos de linhas: `total_linhas_*` são **observados** na
   execução; a planilha cresce; os scripts releem a fonte.
@@ -180,13 +187,12 @@ modelo) e `src/comparar_modelos.py` (requer `tensorflow`, não usado pelo cron).
 Trabalho futuro: embeddings PT pré-treinados + tuning (payoff incerto).
 
 ## Pendências (próximos passos do roteiro)
-1. **Etapa 2 (reclassificação) COMPLETA do roteiro** (etapas 17-23): estado
-   antes/depois por chamado, casos corrigidos × prejudicados, **ganho líquido**,
-   aba `LOG_TURNOS_RECLASSIFICACAO`, executor `Reclass_LSTM`. Hoje só existe um
-   `--modo reclassificacao` básico em `classificar_etapa.py` (não no padrão completo).
-2. **3º modelo mais pesado (quase-LLM local)** — pedido do usuário: roda no FINAL
-   (após reclassificação total), em baixa frequência (a cada muitas horas) e em
-   poucos chamados. Workflow separado de baixa frequência. NÃO implementado ainda.
+1. (FEITO 2026-06-04) **Etapa 2 (reclassificação)** — `src/executar_etapa2.py` +
+   `etapa2_reclassificacao.yml`: progressiva, antes/depois, **ganho líquido**, aba
+   `LOG_TURNOS_RECLASSIFICACAO`, executor `Reclass_<tag>`. Dry-run validado.
+2. (FEITO 2026-06-04) **3º modelo "quase-LLM" local** — `src/classificador_robusto.py`
+   (embeddings de transformer multilíngue + LogReg; fallback LSTM) usado em
+   `reclassificacao_robusta.yml` (a cada 6h, poucos chamados). `requirements-robusto.txt`.
 3. Validação humana + métricas finais (etapas 24-50): `VALIDACAO_HUMANA`
    (IA_CERTA/GLPI_CERTO/AMBOS_ERRADOS/CASO_AMBIGUO/NAO_AVALIADO, usar_para_treino),
    matriz de confusão, métricas por categoria, indicadores consolidados, gráficos.

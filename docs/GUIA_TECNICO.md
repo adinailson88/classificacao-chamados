@@ -108,6 +108,36 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
   faixa (<70 / 70-95 / >=95). Recalculada a cada execução a partir do SNAPSHOT.
   Base para o dashboard HTML. (Roteiro, Etapa 37.)
 
+### `src/executar_etapa2.py` — Etapa 2 (reclassificação) do roteiro
+- **O que faz:** reavalia os chamados de **baixa confiança** (<95% na Etapa 1),
+  em **turnos**, comparando **antes** (SNAPSHOT_ETAPA_1) × **depois** e medindo o
+  **ganho líquido** (corrigidos − prejudicados). (Roteiro, etapas 17-23.)
+- **Candidatos:** SNAPSHOT com confiança < 95%, não conferidos (M≠TRUE) e ainda
+  não reclassificados (executor não começa com `Reclass`).
+- **Saída:** grava G:J com nova categoria/confiança e executor `Reclass_<tag>`
+  (`Reclass_LSTM`, `Reclass_Robusto`...); APPEND em `LOG_TURNOS_RECLASSIFICACAO`
+  (antes/depois, corrigidos, prejudicados, mantidos, ganho líquido, variação de
+  confiança) e `LOG_LINHA_A_LINHA` (etapa 2).
+- **Executado:** `python src/executar_etapa2.py --modelo producao --max-turnos 40 --aplicar`;
+  ou workflow `etapa2_reclassificacao.yml` (manual). Sem `--aplicar` = dry-run.
+
+### `src/classificador_robusto.py` — 3º modelo "quase-LLM" local
+- **O que faz:** modelo **mais pesado** baseado em **embeddings de transformer
+  multilíngue** (`sentence-transformers`, 100% local) + LogisticRegression. Usado
+  na reclassificação dos casos difíceis. Se a lib não estiver instalada, faz
+  **fallback automático** para LSTM/RF (o fluxo nunca quebra).
+- **Executado:** via `executar_etapa2.py --modelo robusto`, no workflow
+  `reclassificacao_robusta.yml` (**a cada 6h, poucos chamados por vez** — é pesado).
+  Dependência em `requirements-robusto.txt` (instalada só nesse workflow).
+
+### Workflows (`.github/workflows/`)
+- `etapa1_turnos.yml` — Etapa 1 progressiva (LSTM), agendado a cada 15 min.
+- `etapa2_reclassificacao.yml` — Etapa 2 (reclassificação), disparo manual.
+- `reclassificacao_robusta.yml` — modelo robusto, a cada 6h, poucos chamados.
+- `resetar.yml` — reset ao zero (manual, exige digitar `RESETAR`).
+- `classificacao_incremental.yml` — operacional incremental (manual; agendamento desativado).
+- Todos os que escrevem na planilha usam a concorrência `escrita-planilha` (não rodam em paralelo).
+
 ## Legados (era do Apps Script — não usados no fluxo atual)
 - `src/validar_planilha_experimento.py`, `preparar_abas_experimento.py`,
   `registrar_config_experimento.py`, `classificar_lote_inicial.py`,
