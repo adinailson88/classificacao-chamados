@@ -1,0 +1,58 @@
+name: Preparar validacao humana
+
+# Roteiro, etapas 24-27: monta a aba VALIDACAO_HUMANA com os casos a revisar
+# (por padrao os divergentes IA x original) + colunas vazias e listas suspensas.
+# Disparo MANUAL. Rode depois que a Etapa 1 (e idealmente a 2) estiver concluida.
+# Cuidado: re-rodar sobrescreve a aba (ha trava se ja houver decisoes; use forcar).
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "divergentes (prioridade) ou todos"
+        type: choice
+        default: divergentes
+        options:
+          - divergentes
+          - todos
+      max:
+        description: "Limite de casos (0 = todos)"
+        default: "0"
+      forcar:
+        description: "Sobrescrever validacoes existentes? (sim para forcar)"
+        default: "nao"
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install gspread google-auth
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Preparar VALIDACAO_HUMANA
+        run: >
+          python src/preparar_validacao_humana.py
+          --modo "${{ github.event.inputs.modo || 'divergentes' }}"
+          --max "${{ github.event.inputs.max || '0' }}"
+          --aplicar
+          ${{ github.event.inputs.forcar == 'sim' && '--forcar' || '' }}
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json

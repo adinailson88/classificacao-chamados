@@ -6,8 +6,10 @@ name: Reclassificacao robusta (modelo pesado)
 # Se a lib falhar no runner, o classificador faz fallback automatico para LSTM.
 
 on:
-  schedule:
-    - cron: "0 */6 * * *"
+  # Agendamento DESATIVADO ate a Etapa 1 concluir (evita reclassificar cedo demais).
+  # Para reativar, descomente o bloco schedule abaixo.
+  # schedule:
+  #   - cron: "0 */6 * * *"
   workflow_dispatch:
     inputs:
       max_turnos:

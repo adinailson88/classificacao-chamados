@@ -130,10 +130,22 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
   `reclassificacao_robusta.yml` (**a cada 6h, poucos chamados por vez** — é pesado).
   Dependência em `requirements-robusto.txt` (instalada só nesse workflow).
 
+### `src/preparar_validacao_humana.py` — Etapa de validação (roteiro 24-27)
+- **O que faz:** monta a aba `VALIDACAO_HUMANA` com os casos a revisar (por padrão os
+  **divergentes** IA×original) + contexto (título/descrições, categoria original,
+  IA etapa 1 e 2) e colunas **vazias** para o humano: `categoria_validada`,
+  `decisao` (lista: IA_CERTA/GLPI_CERTO/AMBOS_ERRADOS/AMBOS_CORRETOS/CASO_AMBIGUO/
+  NAO_AVALIADO), `justificativa`, `avaliador`, `data_validacao`, `usar_para_treino`
+  (lista: SIM/NAO/REVISAR), `versao_taxonomia`. Cria listas suspensas.
+- **Segurança:** aborta se já houver decisões preenchidas (use `--forcar`).
+- **Executado:** workflow `preparar_validacao.yml` (manual) — **rodar após a Etapa 1/2**.
+
 ### Workflows (`.github/workflows/`)
 - `etapa1_turnos.yml` — Etapa 1 progressiva (LSTM), agendado a cada 15 min.
 - `etapa2_reclassificacao.yml` — Etapa 2 (reclassificação), disparo manual.
-- `reclassificacao_robusta.yml` — modelo robusto, a cada 6h, poucos chamados.
+- `reclassificacao_robusta.yml` — modelo robusto; **agendamento desativado** (só manual) até a Etapa 1 concluir.
+- `preparar_validacao.yml` — monta VALIDACAO_HUMANA (manual; após Etapa 1/2).
+- `dashboard.yml` — atualiza os JSON do painel (a cada 30 min).
 - `resetar.yml` — reset ao zero (manual, exige digitar `RESETAR`).
 - `classificacao_incremental.yml` — operacional incremental (manual; agendamento desativado).
 - Todos os que escrevem na planilha usam a concorrência `escrita-planilha` (não rodam em paralelo).

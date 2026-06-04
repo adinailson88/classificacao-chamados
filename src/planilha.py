@@ -141,6 +141,20 @@ def escrever_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]],
     return len(linhas)
 
 
+def dropdown(ws, col_1based: int, linha_ini: int, linha_fim: int, opcoes: list[str]) -> None:
+    """Aplica validação de dados (lista suspensa) numa coluna."""
+    req = {"setDataValidation": {
+        "range": {"sheetId": ws.id, "startRowIndex": linha_ini - 1, "endRowIndex": linha_fim,
+                  "startColumnIndex": col_1based - 1, "endColumnIndex": col_1based},
+        "rule": {"condition": {"type": "ONE_OF_LIST",
+                               "values": [{"userEnteredValue": o} for o in opcoes]},
+                 "showCustomUi": True, "strict": False}}}
+    try:
+        ws.spreadsheet.batch_update({"requests": [req]})
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def ler_valores(ws, range_a1: str = "A:M") -> list[list[Any]]:
     """Lê os valores do intervalo (1 chamada de API), sem formatação.
 
