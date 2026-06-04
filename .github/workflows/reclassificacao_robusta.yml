@@ -1,0 +1,49 @@
+name: Reclassificacao robusta (modelo pesado)
+
+# 3o modelo: "quase-LLM" local (embeddings de transformer multilingue, sem APIs
+# externas). PESADO -> roda raramente (a cada 6h) e em POUCOS chamados por vez
+# (os de menor confianca ainda nao reclassificados). Instala sentence-transformers.
+# Se a lib falhar no runner, o classificador faz fallback automatico para LSTM.
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      max_turnos:
+        description: "Turnos de 15 por execucao (poucos!)"
+        default: "2"
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  robusto:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Instalar modelo robusto (transformer)
+        run: pip install -r requirements-robusto.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Reclassificar com modelo robusto (poucos chamados)
+        run: >
+          python src/executar_etapa2.py --modelo robusto
+          --max-turnos "${{ github.event.inputs.max_turnos || '2' }}"
+          --aplicar
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
