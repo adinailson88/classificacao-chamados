@@ -107,7 +107,7 @@ export: **13.801 linhas gravadas em G2:J13802 numa única escrita em lote**, 0 p
 - `src/registrar_snapshot_inicial.py` — lê a planilha (gspread) e gera `dados/snapshot_etapa_1.json`.
 - `src/classificar_lote_inicial.py` — seleção de lote em dry-run (legado, via Apps Script).
 - `src/classificar_lote_baseline.py` — baseline TF-IDF+LogReg em dry-run (legado, via Apps Script).
-- `src/classificar_etapa.py` — classificação github-first (lê snapshot, grava JSON).
+- `src/classificar_etapa.py` — classificação github-first (lê snapshot, grava JSON); modos full/incremental/reclassificacao.
 - `src/exportar_etapa.py` — exportação em lote G:J via gspread + manifest.
 - `apps_script/Code.gs` — Web App (LEGADO; inclui `exportar_lote`, não usado pelo fluxo atual).
 - `credenciais_sa.json` — chave da conta de serviço (gitignored, NUNCA versionar).
@@ -122,11 +122,20 @@ python -m py_compile src/classificar_etapa.py src/exportar_etapa.py src/registra
 python tests/test_github_first.py
 
 # fluxo real (conta de serviço: credenciais_sa.json na raiz)
-python src/registrar_snapshot_inicial.py     # snapshot JSON (1 leitura)
-python src/classificar_etapa.py              # classifica no repo (0 API)
+python src/registrar_snapshot_inicial.py                 # snapshot JSON (1 leitura)
+python src/classificar_etapa.py --modo incremental       # só linhas novas (cron)
+#   modos: full (out-of-fold, base toda) | incremental (só G vazio) | reclassificacao
 python src/exportar_etapa.py                 # dry-run do lote
 python src/exportar_etapa.py --aplicar       # 1 escrita em lote (G:J)
 ```
+
+### Etapa 2 — Reclassificação (`--modo reclassificacao`)
+Reavalia linhas já classificadas com **baixa confiança** (< `reclassificacao.
+selecionar_confianca_menor_que`, padrão 0,95), até `tamanho_lote` (200),
+pulando `CONFERÊNCIA=TRUE`. Treina na base rotulada, reprediz e só sobrescreve
+quem **melhora** (confiança nova > antiga + 0,05, ou categoria muda com
+confiança ≥). Com o mesmo modelo e sem dados novos, é **no-op** (nada melhora);
+passa a agir quando a base cresce. Disponível também no workflow (dispatch manual).
 
 ## Comparação de modelos (2026-06-04) — baseline vence
 Holdout estratificado 80/20 (11.039 treino / 2.760 teste, 52 classes):
@@ -144,5 +153,5 @@ Trabalho futuro: embeddings PT pré-treinados + tuning (payoff incerto).
 1. (Opcional) GitHub Action por etapa: guardar a chave SA como Secret, recriar
    `credenciais_sa.json` no runner e rodar snapshot→classificar→exportar.
 2. (Opcional) Métricas/logs também em abas da planilha (hoje vão só p/ dados/).
-3. Reclassificação (etapa 2) seguindo o mesmo padrão github-first, se desejado.
+3. (FEITO 2026-06-04) Reclassificação (etapa 2) via `--modo reclassificacao`.
 4. Remover de vez o Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.
