@@ -102,8 +102,8 @@ def main() -> int:
     print(f"linhas_para_exportar={len(linhas)}")
 
     if not linhas:
-        print("Informação insuficiente para verificar.")
-        return 1
+        print("nada a exportar (0 linhas) — no-op")
+        return 0
 
     if not args.aplicar:
         print("modo=dry-run (nenhuma escrita na planilha)")
