@@ -128,9 +128,21 @@ python src/exportar_etapa.py                 # dry-run do lote
 python src/exportar_etapa.py --aplicar       # 1 escrita em lote (G:J)
 ```
 
+## Comparação de modelos (2026-06-04) — baseline vence
+Holdout estratificado 80/20 (11.039 treino / 2.760 teste, 52 classes):
+- baseline TF-IDF + LogReg: **77,57%** concordância · acc 0,7757 · F1-macro 0,5916
+- LSTM Bidirecional (sem class_weight): 75,04% · acc 0,7504 · F1-macro 0,3336
+- LSTM Bidirecional (com class_weight): 69,35% · acc 0,6935 · F1-macro 0,4718
+
+O LSTM (arquitetura espelhada do motor de produção, treinada do zero) NÃO superou
+o baseline nesta base (média, 52 classes desbalanceadas, textos curtos). Decisão:
+**manter o baseline** no fluxo/cron. Scripts: `src/modelo_lstm.py` (BiLSTM, persiste
+modelo) e `src/comparar_modelos.py` (requer `tensorflow`, não usado pelo cron).
+Trabalho futuro: embeddings PT pré-treinados + tuning (payoff incerto).
+
 ## Pendências
 1. (Opcional) GitHub Action por etapa: guardar a chave SA como Secret, recriar
    `credenciais_sa.json` no runner e rodar snapshot→classificar→exportar.
-2. Avaliar trocar o baseline TF-IDF pelo classificador LSTM (alinhar ao motor de produção).
+2. (Opcional) Métricas/logs também em abas da planilha (hoje vão só p/ dados/).
 3. Reclassificação (etapa 2) seguindo o mesmo padrão github-first, se desejado.
 4. Remover de vez o Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.
