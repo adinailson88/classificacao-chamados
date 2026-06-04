@@ -1,0 +1,40 @@
+name: Resetar experimento (zero)
+
+# Apaga tudo que a IA gravou (G:K na principal + abas do experimento) e volta ao
+# zero. SO roda por disparo manual e exige digitar RESETAR no campo de confirmacao.
+# Use para recomecar a classificacao/reclassificacao do zero.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmar:
+        description: "Digite RESETAR para confirmar (apaga tudo)"
+        required: true
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  resetar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias
+        run: pip install gspread google-auth
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Resetar
+        run: >
+          python src/resetar_experimento.py --aplicar
+          --confirmar "${{ github.event.inputs.confirmar }}"
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json

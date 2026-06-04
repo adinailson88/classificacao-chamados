@@ -95,8 +95,12 @@ def append_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]],
     return len(linhas)
 
 
-def escrever_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]]) -> int:
-    """Limpa e grava cabeçalho + linhas em UMA escrita em lote (1 chamada)."""
+def escrever_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]],
+                 colunas_percentuais: list[int] | None = None) -> int:
+    """Limpa e grava cabeçalho + linhas em UMA escrita em lote (1 chamada).
+
+    colunas_percentuais: índices 1-based formatados como % (valores em fração 0-1).
+    """
     ws = aba_por_nome(sh, nome, linhas=len(linhas) + 10, colunas=len(cabecalho))
     ws.clear()
     ws.update(range_name="A1", values=[cabecalho] + linhas, value_input_option="RAW")
@@ -104,6 +108,13 @@ def escrever_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]]) -
         ws.freeze(rows=1)
     except Exception:  # noqa: BLE001
         pass
+    for c in (colunas_percentuais or []):
+        letra = _coluna_letra(c)
+        try:
+            ws.format(f"{letra}2:{letra}{len(linhas) + 1}",
+                      {"numberFormat": {"type": "PERCENT", "pattern": "0.00%"}})
+        except Exception:  # noqa: BLE001
+            pass
     return len(linhas)
 
 

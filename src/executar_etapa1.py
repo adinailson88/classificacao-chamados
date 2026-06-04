@@ -109,6 +109,60 @@ def ler_cumulativo_turnos(sh, nome) -> tuple[int, int, int]:
     return len(linhas), soma_proc, soma_true
 
 
+def escrever_metricas_categoria(sh, abas, run_id, gerado) -> int:
+    """Recalcula e grava METRICAS_POR_CATEGORIA (1 linha por categoria original).
+
+    Lê o SNAPSHOT_ETAPA_1 (todas as linhas classificadas até agora) e agrega por
+    `categoria_original`: qtd, concordância (IA==original), confiança média e a
+    distribuição por faixa (<70 / 70-95 / >=95). Equivale ao LOG_TURNOS, mas por
+    categoria, e é CUMULATIVA. (Roteiro, Etapa 37.)
+    """
+    from collections import defaultdict
+    try:
+        ws = sh.worksheet(abas["snapshot_etapa_1"])
+        vals = ws.get_values("A:J", value_render_option="UNFORMATTED_VALUE")
+    except Exception:  # noqa: BLE001
+        return 0
+    if len(vals) < 2:
+        return 0
+    # SNAPSHOT cols: 0 run_id,1 linha,2 id,3 categoria_original,4 categoria_ia,
+    #                5 confianca,6 executor,7 criticidade,8 conferencia,9 data
+    agg = defaultdict(lambda: {"n": 0, "true": 0, "soma": 0.0, "lo": 0, "mid": 0, "hi": 0})
+    for r in vals[1:]:
+        if len(r) < 9:
+            continue
+        cat = str(r[3]).strip()
+        if not cat:
+            continue
+        try:
+            conf = float(r[5])
+        except (ValueError, TypeError):
+            conf = 0.0
+        d = agg[cat]
+        d["n"] += 1
+        d["true"] += int(str(r[8]).strip().lower() in ("true", "verdadeiro", "sim"))
+        d["soma"] += conf
+        if conf >= 0.95:
+            d["hi"] += 1
+        elif conf >= 0.70:
+            d["mid"] += 1
+        else:
+            d["lo"] += 1
+
+    linhas = []
+    for cat, d in sorted(agg.items(), key=lambda kv: -kv[1]["n"]):
+        n = d["n"]
+        linhas.append([run_id, cat, n, d["true"], n - d["true"],
+                       round(d["true"] / n, 4), round(d["soma"] / n, 4),
+                       d["lo"], d["mid"], d["hi"], gerado])
+    cab = ["run_id", "categoria", "qtd_classificados", "qtd_true", "qtd_false",
+           "taxa_concordancia", "confianca_media", "qtd_abaixo_70", "qtd_70_95",
+           "qtd_acima_95", "atualizado_em"]
+    pl.escrever_aba(sh, abas["metricas_por_categoria"], cab, linhas,
+                    colunas_percentuais=[6, 7])
+    return len(linhas)
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Etapa 1 progressiva (turnos de 15).")
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
@@ -299,8 +353,11 @@ def main() -> int:
             met.append([f"ultimo_lote_faixa_{fx}_concordancia", round(tt / len(sub), 4)])
     pl.escrever_aba(sh, abas["metricas"], ["metrica", "valor"], met)
 
+    # METRICAS_POR_CATEGORIA (cumulativa, lida do SNAPSHOT) — Etapa 37.
+    n_cat = escrever_metricas_categoria(sh, abas, run_id, gerado)
+
     print(f"OK: {len(lote)} classificados | restam {len(pendentes) - len(lote)} pendentes | "
-          "abas atualizadas (turnos/linha/snapshot/config/metricas).")
+          f"abas atualizadas (turnos/linha/snapshot/config/metricas + {n_cat} categorias).")
     return 0
 
 
