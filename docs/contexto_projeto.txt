@@ -1,0 +1,233 @@
+================================================================================
+CONTEXTO DO PROJETO — PANORAMA ÚNICO (Malha IA / PPG Biossistemas / UFSB)
+NOTA: copia versionada (dados sensiveis mascarados: IDs de planilha, URL Apps Script, e-mail da conta de servico).
+Autor: Adinailson Guimarães de Oliveira
+Consolidado em: 2026-06-03 (America/Bahia, UTC-03:00)
+Substitui e unifica: memoria_trabalho.txt, DOSSIER_TRANSFERENCIA_CONTEXTO_GERAL_IA.md,
+                      PACOTE_TRANSFERENCIA_CODEX_MALHA_IA.md (todos removidos).
+Arquivos de INSTRUÇÃO que continuam separados: CLAUDE.md, AGENTS.md, contexto_usuario.md.
+================================================================================
+
+REGRA DE OURO DESTE ARQUIVO
+- Este é o ÚNICO arquivo de panorama da pasta. Não criar novos arquivos de
+  "memória"/"dossiê"/"pacote": atualizar ESTE. Versões de um mesmo conteúdo vão
+  para o mesmo arquivo (ou planilha com colunas de versão), não para arquivos novos.
+- Não tratar como verdade absoluta: antes de publicar, enviar e-mail, citar
+  métricas ou rodar workflow, verificar a fonte vigente.
+- Faltando evidência, responder exatamente: "Informação insuficiente para verificar."
+
+================================================================================
+1. OBJETIVO CENTRAL E REQUISITOS FIXOS
+================================================================================
+Sistema de governança preditiva para manutenção predial universitária (UFSB),
+em 5 eixos analíticos, cada um com motor Python + dashboard HTML modular:
+
+  Eixo 1: Classificação via BiLSTM         -> motor_classificacao_v1.py
+  Eixo 2: 8 modelos preditivos + Ensemble  -> motor_previsao_chamados.py
+  Eixo 3: Previsão de custos               -> motor_previsao_custos.py
+  Eixo 4: ODS / multicritério (MCDM-ESG)   -> motor_ods.py
+  Eixo 5: Previsão por filtros             -> motor_previsao_filtros.py
+
+RESTRIÇÕES FIXAS:
+  - Python 3.x | Google Colab + local | TF 2.17.0
+  - pmdarima 2.0.4 | prophet 1.1.6 | statsmodels 0.14.4
+  - NUNCA APIs externas de LLM (classificação é local-only: BiLSTM, fallback RF)
+  - COL_VALOR = coluna Q (R$) | MIN_PONTOS_SERIE_CUSTO = 12
+  - APPS_SCRIPT_URL compartilhada entre módulos:
+    <APPS_SCRIPT_URL>
+
+MODEL_COLORS (copiar literalmente nos módulos com previsão temporal):
+  ARIMA:#8b3a00 | SARIMAX-12:#b07000 | SARIMAX-6:#e69900
+  Holt-Winters:#1a6e35 | Prophet:#0055cc | UC:#0055cc
+  GradientBoosting:#8b1a1a | LSTM_Forecast:#00897b | Theta:#6a1b9a | Ensemble:#c62828
+
+================================================================================
+2. REPOSITÓRIOS E LOCAIS
+================================================================================
+GitHub (usuário adinailson88; perfil antigo: adinailson88-jpg — VERIFICAR remoto vigente):
+  - malha-ia ............... projeto principal (motores + dashboard). Pages:
+                             https://adinailson88.github.io/malha-ia/
+  - classificacao-chamados . experimento de classificação (ver seção 5)
+  - glpi-google-sheets-sync  (privado) extração GLPI -> Sheets
+  - catalogo-geo, lerArquivosReferencias, malha-ia-regras-llm (priv)
+
+Pasta local principal: C:\Users\adina\Downloads\arquivos_projeto_pesquisa\
+Monolítico de REFERÊNCIA (NÃO EDITAR, só extrair funções JS):
+  C:\Users\adina\OneDrive\Área de Trabalho\ARQUIVOS - CLAUDE\dashboard_malha_ia_v36.html
+  (5.834 linhas | v4.1.2)
+Clones de trabalho dentro da pasta local: repo_malha_tmp, repo_classif_tmp.
+Pasta Drive p/ continuidade compartilhada: C:\Users\adina\Meu Drive\ARQUIVOS CODEX.
+
+================================================================================
+3. MALHA IA OPERACIONAL — ESTADO DOS MÓDULOS
+================================================================================
+MOTORES PYTHON (pasta local) — todos COMPLETOS:
+  motor_classificacao_v1.py (1.103 L) | motor_previsao_chamados.py (4.615 L)
+  motor_previsao_custos.py (4.709 L)  | motor_ods.py (1.080 L)
+  motor_previsao_filtros.py (5.182 L)
+
+DASHBOARDS MODULARES:
+  index.html ........................ no GitHub (5 cards)
+  dashboard_classificacao.html ...... COMPLETO (Módulo 1)
+  dashboard_previsao_chamados.html .. COMPLETO (Módulo 2, 1.960 L, 25/25 checks)
+  dashboard_previsao_custos.html .... PENDENTE (Módulo 3)  <-- próximo do trilho dashboards
+  dashboard_ods.html ................ PENDENTE (Módulo 4)
+  dashboard_filtros.html ............ PENDENTE (Módulo 5)
+
+Dashboard publicado roda 100% do GitHub Pages em modo JSON estático
+(USAR_JSON_ESTATICO=true; lê dados/*.json; chamados.json ~7,74MB/48.418 linhas,
+atualizado por GitHub Action). Material acadêmico NÃO fica no repo público (vai p/ Drive).
+
+DECISÕES CRÍTICAS DO MÓDULO 2 (referência para o 3):
+  - carregarDadosPreditivos() NÃO contém custoFiltroSufixo=s; nem carregarDadosCusto();
+    (isso é do Módulo 3).
+  - carregarTudo() do M2 busca EXATAMENTE 12 abas: PREVISAO_TEMPORAL{s},
+    PREVISAO_DETALHES{s}, PREVISAO_INCERTEZAS{s}, PREVISAO_DIAGNOSTICO{s},
+    PREVISAO_RESIDUOS{s}, PREVISAO_QQPLOT{s}, PREVISAO_VALIDACAO{s},
+    PREVISAO_PRESSUPOSTOS{s}, FILTROS_DISPONIVEIS, CONTEXTO_SAZONAL,
+    "Área Manutenção", PREVISAO_POR_CATEGORIA.
+    NÃO busca: CHAMADOS/METRICAS_TREINO/LOG_CLASSIFICACAO (M1) nem PREVISAO_CUSTO_* (M3).
+  - Libs M2 (SEM Leaflet): Chart.js 4.4.1 + chartjs-chart-boxplot 4.2.6 +
+    HammerJS 2.0.8 + chartjs-plugin-zoom 2.0.1.
+  - Tabs M2: screen-preditivo | screen-residuos | screen-pressupostos | screen-contexto.
+  - renderModeloRecomendado() usa #ranking-modelos-content (filho de #ranking-modelos).
+
+MÓDULO 3 (a fazer) — dashboard_previsao_custos.html:
+  - Padrão do M2; extrair seção "PREVISÃO DE CUSTOS" do monolítico (~L3801).
+  - Eixo Y 'R$/mês'; COL_VALOR=Q; MIN_PONTOS_SERIE_CUSTO=12; SEM Leaflet.
+  - carregarTudo() busca: PREVISAO_CUSTO_{s}, PREVISAO_CUSTO_DETALHES_{s},
+    PREVISAO_CUSTO_INCERTEZAS_{s}, PREVISAO_CUSTO_DIAGNOSTICO_{s},
+    PREVISAO_CUSTO_RESIDUOS_{s}, PREVISAO_CUSTO_QQPLOT_{s},
+    PREVISAO_CUSTO_VALIDACAO_{s}, PREVISAO_CUSTO_PRESSUPOSTOS_{s},
+    FILTROS_DISPONIVEIS, CONTEXTO_SAZONAL, "Área Manutenção", PREVISAO_CUSTO_POR_CATEGORIA.
+  - Estado global com prefixo custo (dadosCustoPrevisao, ...; custoFiltroSufixo='').
+  - Tabs: screen-custo-preditivo | -residuos | -pressupostos | -contexto.
+  - Funções-chave: popularCustoFiltros, buildCustoFiltroSufixo, onCustoFiltroChange,
+    resetCustoFiltros, carregarDadosCusto, processarPrevisaoCusto, atualizarGraficoCusto.
+
+================================================================================
+4. AS 3 PLANILHAS GOOGLE (fluxo real, confirmado por fórmulas)
+================================================================================
+1) CHAMADOS (<CHAMADOS_PROD_ID>) — produção.
+   Aba CHAMADOS = 32 colunas (A->AF). Q=Valor, U=Lat/Long.
+2) GLPI_..._TESTE (<GLPI_TESTE_ID>) — workbench GLPI.
+   Abas: GLPI_OFF, GLPI (29 col), ALTERACOES_GLPI, regras-LLM, classificador-chamados,
+   previsoes-chamados. Zero fórmulas (script-driven).
+3) Histórico - Planilha de manutenção (<HISTORICO_ID>)
+   — manual original; só conduíte de dados.
+
+Fluxo:
+  GLPI API -> glpi_to_sheets.py -> TESTE 'GLPI' (29 col)
+  Aba descrição_GLPI (na CHAMADOS): A<-IMPORTRANGE TESTE GLPI!A; C<-GLPI!Q(descricao);
+    D<-GLPI!S(solucao); B=CONCAT("Descrição - ";C;CHAR(10)x2;"Solução - ";D)
+  Aba CHAMADOS:
+    A–L <- IMPORTRANGE Histórico 'CHAMADOS GLPI'!A:L
+    M–V <- IMPORTRANGE Histórico 'CHAMADOS GLPI'!M:V
+    W   <- FILTER descrição_GLPI!B por id
+    X,Y <- IMPORTRANGE Histórico 'Ordens de Serviços'!C/!E por id
+    Z,AB,AC,AD <- motor Python (VALORES)
+    AA  = SE(Z="";"";Z=M)
+    AE  = IFS(AC)  *** DEFASADA: cita TF-IDF+RF/LLM antigos, não o LSTM atual -> corrigir ***
+    AF  = manual (CONFERÊNCIA: TRUE => não sobrescrever)
+
+Colunas da classificação (motor_classificacao_v1.py):
+  Entrada (texto concatenado): B TÍTULO + W DESCRIÇÃO GLPI + X TÍTULO O.S.M. + Y DESCRIÇÃO O.S.M.
+  Rótulo: M CATEGORIA COMPLETA
+  Saída IA: Z Classificação IA, AB Avaliação%, AC Executor, AD Criticidade
+  Controle: AF CONFERÊNCIA=TRUE => não sobrescreve. Reclass filtra confiança < 0,80 (AB).
+
+================================================================================
+5. EXPERIMENTO classificacao-chamados (repo separado)
+================================================================================
+Repo: adinailson88/classificacao-chamados (clone local: repo_classif_tmp).
+Planilha experimental (alvo confirmado pelo usuário 2026-06-03; é o arquivo a tratar):
+  ID <EXPERIMENTO_SPREADSHEET_ID> | aba CHAMADOS_ESQUELETO_REDUZIDO (13 col, A:M)
+  É a MESMA já apontada no config_experimento.json (nenhuma troca necessária).
+  NÃO confundir com: produção "CHAMADOS" (ID 1VgH..., 32 col, tem a AE) nem com
+  o workbench "GLPI_..._TESTE" (ID 15_fsb...). A coluna AE (pendência nº 2) NÃO
+  existe nesta planilha experimental.
+  A=ID, B=TÍTULO, C=CATEGORIA COMPLETA, D=DESCRIÇÃO GLPI, E=TÍTULO O.S.M.,
+  F=DESCRIÇÃO O.S.M., G=Classificação IA, H=Avaliação%, I=Executor,
+  J=Criticidade, K=Comparação, L=Classificado_Confiança_IA, M=CONFERÊNCIA.
+  Saída da IA = G:J. Medições observadas (não fixas): ~18.859 linhas lidas,
+  ~13.789 não-vazias. run_id EXP_CLASSIFICACAO_CHAMADOS_2026_06_001.
+
+FONTE DE VERDADE: "Roteiro Metodológico ... Malha IA" (PDF do usuário, 50 etapas).
+  Toda escolha técnica deve aderir a ele. PDF em C:\Users\adina\Downloads\.
+
+ACESSO À PLANILHA: CONTA DE SERVIÇO (gspread) — desde 2026-06-04, NÃO mais Apps Script.
+  Projeto GCP classificacao-chamados; conta <SERVICE_ACCOUNT_EMAIL> (compartilhada Editor). Chave credenciais_sa.json
+  (gitignored); no CI vem do GitHub Secret GCP_SA_KEY. Apps Script Code.gs = legado.
+  Abas: EXPERIMENTO_CONFIG, LOG_TURNOS_CLASSIFICACAO, LOG_LINHA_A_LINHA,
+  SNAPSHOT_ETAPA_1, LOG_TURNOS_RECLASSIFICACAO, VALIDACAO_HUMANA, METRICAS_EXPERIMENTO.
+  Timestamps America/Bahia (YYYY-MM-DDTHH:mm:ss-03:00).
+
+ETAPA 1 PROGRESSIVA (estado atual 2026-06-04) — alinhada ao roteiro:
+  src/executar_etapa1.py + workflow etapa1_turnos.yml (agendado */15).
+  - Classifica os PENDENTES (G vazia) em TURNOS de 15, --max-turnos por execução
+    (padrão 60), com LSTM primário + RF fallback (executor por faixa: LSTM,
+    LSTM_BAIXA_CONF, RF_Fallback*). Criticidade por heurística.
+  - APPEND em LOG_TURNOS_CLASSIFICACAO (taxa por turno + acumulada), LOG_LINHA_A_LINHA,
+    SNAPSHOT_ETAPA_1; atualiza EXPERIMENTO_CONFIG e METRICAS; grava G:J + fórmula K.
+  - Conferência = IA × ORIGINAL (col C): K = =SE(G="";"";G=C).  [no reduzido, original = C]
+  - Taxas/confianças gravadas como FRAÇÃO 0-1 + formato % (corrigido bug 100x).
+  - Validado no CI (verde): modelo LSTM_Bidirecional, 60 turnos/run.
+  Modelos no escopo: LSTM (primário), RF (fallback), Baseline_TFIDF_LogReg (comparativo).
+  OBS: teste mediu baseline melhor que LSTM, mas o roteiro (Etapa 15) manda LSTM+RF.
+
+PENDÊNCIAS DO EXPERIMENTO (próximas):
+  1. Etapa 2 (reclassificação) COMPLETA do roteiro (17-23): antes/depois, ganho
+     líquido, aba LOG_TURNOS_RECLASSIFICACAO, executor Reclass_LSTM.
+  2. 3º modelo mais pesado (quase-LLM local), no final, baixa frequência/poucos chamados.
+  3. Validação humana + métricas finais (24-50): VALIDACAO_HUMANA, matriz de confusão, etc.
+  Detalhe completo e vivo: CONTEXTO.md do repo classificacao-chamados.
+  PRs desta jornada: #1 github-first, #2 conta de serviço+H%, #5 reclass básica,
+  #6 Etapa 1 progressiva, #7 doc.
+
+================================================================================
+6. OUTROS WORKSTREAMS
+================================================================================
+ARTIGO ENMC/ECTM 2026 (ODS/ESG, corpus DINFRA):
+  Pasta: paper\enmc_ectm_2026_ods_esg. Começar por matriz de evidências, não prosa.
+  Corpus textual correto: repo_glpi_sync_atual\dados\glpi_chamados.csv (NÃO o JSON
+  reduzido do dashboard). Slice DINFRA registrado: 13.835 (revalidar antes de citar).
+  Não publicar métricas sem fronteira do corpus validada.
+
+GLPI / Google Sheets (repo_glpi_sync_atual):
+  glpi_to_sheets.py, sync_json_to_google_sheets.py, json_to_csv.py,
+  apply_glpi_updates.py, apps_script/Code.gs. Fluxo reverso via aba ALTERACOES_GLPI.
+  NUNCA aplicar update real no GLPI sem dry-run/validação (conferir locations_id/entidades).
+
+Painel privado "Planilha BM 2026" (Apps Script):
+  Planilha orientada por fórmulas; o HTML NÃO deve reimplementar a lógica em JS.
+  Fluxo: escrever em Painel!B3 -> SpreadsheetApp.flush() -> reler valores calculados.
+  Conector Sheets não lê código .gs; pedir exports .gs.txt quando preciso.
+
+Instruções/skills (repo malha-ia):
+  docs/instrucoes_ia/*, .agents/skills/*, prompts_antigos.md. Skills Codex persistentes:
+  malha-ia-article-evidence, staged-large-artifact-build.
+
+================================================================================
+7. PRÓXIMOS PASSOS PENDENTES (visão geral)
+================================================================================
+1. classificacao-chamados: publicar Code.gs no Web App e rodar o fluxo github-first
+   com credenciais reais (snapshot -> classificar -> exportar_etapa.py --aplicar).
+2. Corrigir fórmula DEFASADA da coluna AE (rótulos do LSTM atual).
+3. Decidir camada de dados definitiva: GitHub-static vs Supabase
+   (Supabase: Postgres+REST grátis 500MB, mas serviço externo e free pausa ~7 dias;
+   agente não pode criar conta/credenciais).
+4. Dashboards: criar Módulo 3 (custos), depois 4 (ODS) e 5 (filtros).
+5. Artigo ENMC/ECTM: relatório/entrega final na pasta Drive "ARTIGO - CLASSIFICAÇÃO".
+
+================================================================================
+8. CUIDADOS TÉCNICOS RECORRENTES
+================================================================================
+- HTML grande: build em etapas (head/CSS, body, script, validação); extrair do
+  monolítico por âncora de função, não lendo tudo. Não reintroduzir Leaflet em
+  módulos preditivos sem mapa.
+- Python: validar com python -m py_compile (ou ast.parse).
+- GitHub: operar via gh CLI / REST com token de gh auth token. Mudanças vão em
+  branch + PR; só aparecem na main após merge.
+- Há referências antigas com remoto adinailson88-jpg e adinailson88: checar o
+  remoto vigente antes de agir.
+================================================================================
