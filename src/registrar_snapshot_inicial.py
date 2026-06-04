@@ -66,6 +66,7 @@ def construir_snapshot(config: dict[str, Any], valores: list[list[Any]]) -> dict
     idx_id = idx.get(normalizar_cabecalho("ID Chamado"))
     idx_categoria = idx.get(normalizar_cabecalho("CATEGORIA COMPLETA"))
     idx_classificacao = idx.get(normalizar_cabecalho("Classificação IA"))
+    idx_avaliacao = idx.get(normalizar_cabecalho("Avaliação (%)"))
     idx_conferencia = idx.get(normalizar_cabecalho("CONFERÊNCIA"))
 
     linhas: list[dict[str, Any]] = []
@@ -79,6 +80,7 @@ def construir_snapshot(config: dict[str, Any], valores: list[list[Any]]) -> dict
                 "id_chamado": obter(linha, idx_id),
                 "categoria_original": obter(linha, idx_categoria),
                 "classificacao_ia": obter(linha, idx_classificacao),
+                "avaliacao_atual": obter(linha, idx_avaliacao),
                 "conferencia": obter(linha, idx_conferencia),
                 "texto_classificacao": montar_texto(linha, idx),
             }

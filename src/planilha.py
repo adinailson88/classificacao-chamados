@@ -51,8 +51,12 @@ def abrir_worksheet(spreadsheet_id: str, aba: str, credenciais: str | Path | Non
 
 
 def ler_valores(ws, range_a1: str = "A:M") -> list[list[Any]]:
-    """Lê os valores do intervalo (1 chamada de API)."""
-    return ws.get_values(range_a1)
+    """Lê os valores do intervalo (1 chamada de API), sem formatação.
+
+    UNFORMATTED_VALUE retorna números crus (ex.: 0.8887 em vez de "88,87%"),
+    o que permite comparar confiança numericamente na reclassificação.
+    """
+    return ws.get_values(range_a1, value_render_option="UNFORMATTED_VALUE")
 
 
 def _coluna_letra(indice_1based: int) -> str:
