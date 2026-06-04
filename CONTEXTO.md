@@ -46,8 +46,10 @@ Script `src/executar_etapa1.py` + workflow `etapa1_turnos.yml` (agendado `*/15`)
 - `docs/GUIA_TECNICO.md` — o que **cada script/arquivo** faz, como funciona, com o
   que se relaciona e como executar; + significado de **G/H/I/J** e de cada
   **executor** (LSTM vs LSTM_BAIXA_CONF, por que existe baixa_conf acima de 90%).
-- `docs/contexto_projeto.txt` — panorama geral do projeto (mascarado).
 - `dados/README.md` — schemas dos arquivos JSON.
+- Panorama GERAL do Malha IA (5 eixos, dashboards, motores) fica no repositório
+  **`malha-ia`** (`contexto_projeto.txt`). Este repo é só o experimento de
+  classificação/reclassificação.
 
 ## Regras de ouro
 - Não presumir totais fixos de linhas: `total_linhas_*` são **observados** na
