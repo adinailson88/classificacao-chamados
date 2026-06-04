@@ -35,13 +35,20 @@ snapshot inicial, validação humana futura e separação experimento/produção
 - Parâmetros (config_experimento.json): tamanho_lote 15; limiar_confianca_baixa 0.7;
   limiar_alta_confianca 0.95; reclassificação (desabilitada) lote 200, conf < 0.95.
 
-## Apps Script (ponte)
-- `apps_script/Code.gs` exposto como Web App. Token na 1ª linha (`API_TOKEN`),
-  igual ao GitHub Secret `APPS_SCRIPT_TOKEN`. Após editar: salvar e **implantar
-  nova versão** (Gerenciar implantações > Editar > Nova versão > Implantar).
-- Ações GET: `listar_abas`, `validar`, `ler`.
-- Ações POST: `preparar_abas_experimento`, `registrar_config_experimento`,
-  `registrar_snapshot_inicial`, **`exportar_lote`** (novo, ver abaixo).
+## Acesso à planilha: CONTA DE SERVIÇO (gspread) — atual
+Desde 2026-06-03 o acesso é via **conta de serviço Google Cloud + Sheets API
+(gspread)**, no lugar do Apps Script Web App (que exigia reimplantar a cada
+rotação de token).
+- Projeto GCP: `classificacao-chamados`; Google Sheets API ativada.
+- Conta de serviço: `<SERVICE_ACCOUNT_EMAIL>`.
+- A planilha foi **compartilhada com esse e-mail (Editor)**.
+- Chave JSON salva em `credenciais_sa.json` na raiz — **NUNCA versionada** (.gitignore).
+  Para Actions, guardar o conteúdo como Secret e recriar o arquivo no runner.
+- Módulo de acesso: `src/planilha.py` (abre worksheet, lê e grava em lote).
+
+### Apps Script (LEGADO, opcional)
+`apps_script/Code.gs` (Web App com token) continua no repo, mas **não é mais usado
+pelo fluxo principal**. Mantido só como alternativa/histórico.
 
 ## Abas experimentais (já criadas na planilha)
 EXPERIMENTO_CONFIG · LOG_TURNOS_CLASSIFICACAO · LOG_LINHA_A_LINHA ·
@@ -74,24 +81,36 @@ classificar_etapa.py          -> dados/classificacao_etapa_1.json
                                  dados/log_turnos.jsonl
                                  dados/log_linha_a_linha.jsonl
                                  dados/metricas_experimento.json
-exportar_etapa.py --aplicar   -> grava G:J na planilha (1 doPost exportar_lote)
+exportar_etapa.py --aplicar   -> grava G:J na planilha (1 update gspread em lote)
                                  dados/manifest_exportacao.json
 ```
 Decisões confirmadas: 6 arquivos JSON em `dados/` (schemas em `dados/README.md`);
 exportação grava **G:J**; **pula M=TRUE**; **não sobrescreve célula vazia**
 (preserva J/Criticidade, que o baseline não gera). Classificação é **out-of-fold**
 (StratifiedKFold) para evitar vazamento. Nenhum script escreve sem `--aplicar`.
+Acesso à planilha via conta de serviço (`src/planilha.py`).
+
+### Execução validada (2026-06-03, planilha real)
+snapshot: 18.858 linhas (13.801 com categoria+texto, elegíveis) ·
+classificação baseline TF-IDF+LogReg out-of-fold: **concordância 11.625/13.801 =
+84,23%** (acc 0,8423 · F1-macro 0,8386) ·
+export: **13.801 linhas gravadas em G2:J13802 numa única escrita em lote**, 0 puladas.
+
+> Os arquivos `dados/*.json` e `*.jsonl` contêm texto real de chamados e estão
+> no `.gitignore` (repo público). Não versionar.
 
 ## Arquivos do repositório
 - `src/validar_planilha_experimento.py` — validação de cabeçalho/linhas (offline e via Web App).
 - `src/preparar_abas_experimento.py` — cria abas experimentais (`--aplicar`).
 - `src/registrar_config_experimento.py` — grava EXPERIMENTO_CONFIG (`--aplicar`).
-- `src/registrar_snapshot_inicial.py` — gera `dados/snapshot_etapa_1.json`; `--aplicar` grava a aba (legado).
-- `src/classificar_lote_inicial.py` — seleção de lote em dry-run (legado).
-- `src/classificar_lote_baseline.py` — baseline TF-IDF+LogReg em dry-run (legado).
+- `src/planilha.py` — acesso à planilha via conta de serviço (abrir, ler, exportar lote).
+- `src/registrar_snapshot_inicial.py` — lê a planilha (gspread) e gera `dados/snapshot_etapa_1.json`.
+- `src/classificar_lote_inicial.py` — seleção de lote em dry-run (legado, via Apps Script).
+- `src/classificar_lote_baseline.py` — baseline TF-IDF+LogReg em dry-run (legado, via Apps Script).
 - `src/classificar_etapa.py` — classificação github-first (lê snapshot, grava JSON).
-- `src/exportar_etapa.py` — exportação em lote G:J (1 doPost) + manifest.
-- `apps_script/Code.gs` — Web App (inclui `exportar_lote`).
+- `src/exportar_etapa.py` — exportação em lote G:J via gspread + manifest.
+- `apps_script/Code.gs` — Web App (LEGADO; inclui `exportar_lote`, não usado pelo fluxo atual).
+- `credenciais_sa.json` — chave da conta de serviço (gitignored, NUNCA versionar).
 - `dados/README.md` — schemas dos 6 arquivos JSON.
 - `tests/test_github_first.py` — testes sem rede.
 - `config_experimento.json`, `requirements.txt`, `AGENTS.md`, `README.md`.
@@ -102,8 +121,7 @@ exportação grava **G:J**; **pula M=TRUE**; **não sobrescreve célula vazia**
 python -m py_compile src/classificar_etapa.py src/exportar_etapa.py src/registrar_snapshot_inicial.py
 python tests/test_github_first.py
 
-# fluxo real (com credenciais)
-export APPS_SCRIPT_URL=...; export APPS_SCRIPT_TOKEN=...
+# fluxo real (conta de serviço: credenciais_sa.json na raiz)
 python src/registrar_snapshot_inicial.py     # snapshot JSON (1 leitura)
 python src/classificar_etapa.py              # classifica no repo (0 API)
 python src/exportar_etapa.py                 # dry-run do lote
@@ -111,8 +129,8 @@ python src/exportar_etapa.py --aplicar       # 1 escrita em lote (G:J)
 ```
 
 ## Pendências
-1. Publicar o `Code.gs` atualizado no Web App (deploy) p/ habilitar `exportar_lote`.
-2. Rodar o fluxo github-first com credenciais reais.
-3. Confirmar timestamps America/Bahia no deploy ativo.
-4. Avaliar privacidade antes de versionar `dados/*.json` reais (repo público).
-5. Opcional: GitHub Action por etapa (atualiza JSON, commita; exporta sob trigger).
+1. (Opcional) GitHub Action por etapa: guardar a chave SA como Secret, recriar
+   `credenciais_sa.json` no runner e rodar snapshot→classificar→exportar.
+2. Avaliar trocar o baseline TF-IDF pelo classificador LSTM (alinhar ao motor de produção).
+3. Reclassificação (etapa 2) seguindo o mesmo padrão github-first, se desejado.
+4. Remover de vez o Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.

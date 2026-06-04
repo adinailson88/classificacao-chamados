@@ -1,26 +1,23 @@
 #!/usr/bin/env python3
-"""Registra o snapshot inicial da base nao vazia (arquitetura GitHub-first).
+"""Gera dados/snapshot_etapa_1.json lendo a planilha 1x (conta de serviço).
 
-Le a aba principal UMA vez via Apps Script (action=ler) e grava o estado em
-dados/snapshot_etapa_1.json no repositorio. Esse arquivo e o INPUT congelado das
-etapas seguintes (classificacao), evitando reler a planilha a cada passo.
-
-Opcionalmente, com --aplicar, tambem grava a aba SNAPSHOT_ETAPA_1 na planilha
-(comportamento legado, 1 doPost).
+Arquitetura GitHub-first: lê a aba principal UMA vez via Google Sheets API
+(conta de serviço) e congela o estado em dados/snapshot_etapa_1.json no repo.
+Esse arquivo é o INPUT das etapas seguintes; não escreve nada na planilha.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import unicodedata
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import planilha as pl  # noqa: E402
 
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -34,8 +31,7 @@ def agora_bahia() -> str:
 
 
 def normalizar_cabecalho(valor: Any) -> str:
-    texto = str(valor or "").strip()
-    texto = unicodedata.normalize("NFKC", texto)
+    texto = unicodedata.normalize("NFKC", str(valor or "").strip())
     return " ".join(texto.split()).casefold()
 
 
@@ -52,28 +48,6 @@ def obter(linha: list[Any], idx: int | None) -> str:
 def carregar_config(caminho: Path) -> dict[str, Any]:
     with caminho.open("r", encoding="utf-8") as arquivo:
         return json.load(arquivo)
-
-
-def chamar_get(url_base: str, token: str, params: dict[str, str]) -> dict[str, Any]:
-    query = dict(params)
-    query["token"] = token
-    url = url_base.rstrip() + "?" + urlencode(query)
-    with urlopen(url, timeout=180) as resposta:
-        return json.loads(resposta.read().decode("utf-8"))
-
-
-def chamar_post(url_base: str, token: str, payload: dict[str, Any]) -> dict[str, Any]:
-    body = dict(payload)
-    body["token"] = token
-    dados = json.dumps(body, ensure_ascii=False).encode("utf-8")
-    req = Request(
-        url_base.rstrip(),
-        data=dados,
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    with urlopen(req, timeout=240) as resposta:
-        return json.loads(resposta.read().decode("utf-8"))
 
 
 def montar_texto(linha: list[Any], idx: dict[str, int]) -> str:
@@ -131,59 +105,28 @@ def gravar_json(caminho: Path, dados: dict[str, Any]) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Gera dados/snapshot_etapa_1.json lendo a planilha uma vez. "
-        "Com --aplicar tambem grava a aba SNAPSHOT_ETAPA_1 (legado)."
+        description="Gera dados/snapshot_etapa_1.json lendo a planilha 1x (conta de serviço)."
     )
     parser.add_argument("--config", type=Path, default=CONFIG_PADRAO)
-    parser.add_argument("--apps-script-url", default=os.getenv("APPS_SCRIPT_URL"))
-    parser.add_argument("--token", default=os.getenv("APPS_SCRIPT_TOKEN"))
+    parser.add_argument("--credenciais", default=None, help="Caminho da chave JSON da conta de serviço.")
     parser.add_argument("--snapshot-json", type=Path, default=SNAPSHOT_PADRAO)
-    parser.add_argument(
-        "--aplicar",
-        action="store_true",
-        help="Alem do JSON no repo, grava a aba SNAPSHOT_ETAPA_1 na planilha.",
-    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    if not args.apps_script_url or not args.token:
-        print(
-            "Informe --apps-script-url e --token, ou defina APPS_SCRIPT_URL/APPS_SCRIPT_TOKEN.",
-            file=sys.stderr,
-        )
-        return 2
-
     config = carregar_config(args.config)
 
-    validacao = chamar_get(
-        args.apps_script_url,
-        args.token,
-        {
-            "action": "validar",
-            "sheet": config["aba_principal"],
-            "range": config["range_leitura"],
-        },
-    )
-    if not validacao.get("ok"):
-        print(json.dumps(validacao, ensure_ascii=False), file=sys.stderr)
+    try:
+        ws = pl.abrir_worksheet(config["spreadsheet_id"], config["aba_principal"], args.credenciais)
+        valores = pl.ler_valores(ws, config["range_leitura"])
+    except FileNotFoundError as e:
+        print(str(e), file=sys.stderr)
+        return 2
+    except Exception as e:  # noqa: BLE001
+        print(f"Falha ao acessar a planilha: {type(e).__name__}: {e}", file=sys.stderr)
         return 1
 
-    leitura = chamar_get(
-        args.apps_script_url,
-        args.token,
-        {
-            "action": "ler",
-            "sheet": config["aba_principal"],
-            "range": config["range_leitura"],
-        },
-    )
-    if not leitura.get("ok"):
-        print(json.dumps(leitura, ensure_ascii=False), file=sys.stderr)
-        return 1
-
-    valores = leitura.get("values") or []
     snapshot = construir_snapshot(config, valores)
     gravar_json(args.snapshot_json, snapshot)
 
@@ -192,24 +135,7 @@ def main() -> int:
     print(f"linhas_lidas_observado={snapshot['total_linhas_lidas']}")
     print(f"linhas_nao_vazias_observado={snapshot['total_nao_vazias']}")
     print(f"snapshot_json={args.snapshot_json}")
-
-    if not args.aplicar:
-        print("modo=github-first (sem escrita na planilha)")
-        return 0
-
-    destino = config["abas_experimento"]["snapshot_etapa_1"]
-    resultado = chamar_post(
-        args.apps_script_url,
-        args.token,
-        {
-            "action": "registrar_snapshot_inicial",
-            "origem": config["aba_principal"],
-            "destino": destino,
-            "run_id": config["run_id"],
-        },
-    )
-    print(json.dumps(resultado, ensure_ascii=False, indent=2))
-    return 0 if resultado.get("ok") else 1
+    return 0
 
 
 if __name__ == "__main__":
