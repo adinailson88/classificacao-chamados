@@ -93,6 +93,21 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
 - **O que faz:** holdout estratificado 80/20 comparando baseline TF-IDF e LSTM,
   para medir qual acerta mais. **Requer tensorflow.** Não escreve na planilha.
 
+### `src/resetar_experimento.py` — recomeçar do ZERO (reutilizável)
+- **O que faz:** limpa `G:K` na planilha principal (preserva C original, L e M) e o
+  conteúdo de **todas as abas do experimento**, para recomeçar a classificação/
+  reclassificação do zero.
+- **Trava de segurança:** só executa com `--aplicar` **E** `--confirmar RESETAR`.
+- **Executado:** `python src/resetar_experimento.py --aplicar --confirmar RESETAR`,
+  ou pelo workflow `resetar.yml` (digitando `RESETAR` no campo de confirmação).
+
+### Aba `METRICAS_POR_CATEGORIA` (gerada pelo `executar_etapa1.py`)
+- **O que é:** mesma ideia do `LOG_TURNOS_CLASSIFICACAO`, mas **por categoria de
+  chamado** (1 linha por categoria original, cumulativa). Colunas: qtd, concordância
+  (TRUE/FALSE), taxa de concordância (%), confiança média (%) e distribuição por
+  faixa (<70 / 70-95 / >=95). Recalculada a cada execução a partir do SNAPSHOT.
+  Base para o dashboard HTML. (Roteiro, Etapa 37.)
+
 ## Legados (era do Apps Script — não usados no fluxo atual)
 - `src/validar_planilha_experimento.py`, `preparar_abas_experimento.py`,
   `registrar_config_experimento.py`, `classificar_lote_inicial.py`,
