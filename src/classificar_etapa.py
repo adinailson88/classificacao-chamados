@@ -186,6 +186,29 @@ def predizer_incremental(
     return preds, confs
 
 
+def classificar_subset(modelo: str, textos_treino, cats_treino, subset):
+    """Classifica `subset` treinando em (textos_treino, cats_treino).
+
+    baseline -> retorna (preds, confs, None, None).
+    producao -> LSTM/RF + faixas: retorna (preds_categoria, confs, executores, criticidades).
+    """
+    textos_alvo = [l["texto_classificacao"] for l in subset]
+    if modelo == "producao":
+        import classificador_producao as cp
+        clf, eh_lstm = cp.treinar_classificador(textos_treino, cats_treino)
+        preds_raw, confs = cp.predizer(clf, eh_lstm, textos_alvo)
+        preds, executores, criticidades = [], [], []
+        for l, p, c in zip(subset, preds_raw, confs):
+            cat, exe = cp.aplicar_faixa(p, float(c), eh_lstm)
+            preds.append(cat)
+            executores.append(exe)
+            criticidades.append(cp.estimar_criticidade(l["texto_classificacao"]))
+        return (np.array(preds, dtype=object), np.asarray(confs, dtype=float),
+                executores, criticidades)
+    preds, confs = predizer_incremental(textos_treino, cats_treino, textos_alvo)
+    return preds, confs, None, None
+
+
 def montar_saidas(
     snapshot: dict[str, Any],
     subset: list[dict[str, Any]],
@@ -197,18 +220,26 @@ def montar_saidas(
     limiar_baixa: float,
     limiar_alta: float,
     saida: Path,
+    executores: list[str] | None = None,
+    criticidades: list[str] | None = None,
 ) -> None:
-    """Constrói e grava classificacao_etapa_1.json + logs + metricas."""
+    """Constrói e grava classificacao_etapa_1.json + logs + metricas.
+
+    executores/criticidades: opcionais, por linha (modo produção LSTM/RF).
+    Sem eles, usa o nome do modelo baseline e criticidade vazia.
+    """
     gerado_em = agora_bahia()
     resultado_linhas: list[dict[str, Any]] = []
     log_linhas: list[dict[str, Any]] = []
     acertos = 0
 
-    for linha, pred, conf, turno in zip(subset, preds, confs, turnos):
+    for i, (linha, pred, conf, turno) in enumerate(zip(subset, preds, confs, turnos)):
         avaliacao = round(float(conf), 4)  # fração 0-1; coluna H formatada como %
         confere = str(pred) == linha["categoria_original"]
         acertos += int(confere)
         rotulo = label_confianca(float(conf), limiar_baixa, limiar_alta)
+        executor = executores[i] if executores is not None else MODELO
+        criticidade = criticidades[i] if criticidades is not None else ""
 
         resultado_linhas.append(
             {
@@ -217,8 +248,8 @@ def montar_saidas(
                 "categoria_original": linha["categoria_original"],
                 "classificacao_ia": str(pred),
                 "avaliacao": avaliacao,
-                "executor": MODELO,
-                "criticidade": "",
+                "executor": executor,
+                "criticidade": criticidade,
                 "comparacao": confere,
                 "confianca_label": rotulo,
             }
@@ -300,6 +331,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--snapshot-json", type=Path, default=SNAPSHOT_PADRAO)
     parser.add_argument("--saida", type=Path, default=SAIDA_PADRAO)
     parser.add_argument("--modo", choices=["full", "incremental", "reclassificacao"], default="full")
+    parser.add_argument("--modelo", choices=["baseline", "producao"], default="baseline",
+                        help="baseline=TF-IDF+LogReg; producao=LSTM primário + RF fallback + faixas.")
     parser.add_argument("--n-splits", type=int, default=5)
     return parser.parse_args()
 
@@ -330,12 +363,14 @@ def main() -> int:
             return 0
         textos_treino = [l["texto_classificacao"] for l in elegiveis]
         cats_treino = [l["categoria_original"] for l in elegiveis]
-        textos_pend = [l["texto_classificacao"] for l in pendentes]
-        preds, confs = predizer_incremental(textos_treino, cats_treino, textos_pend)
+        preds, confs, executores, criticidades = classificar_subset(
+            args.modelo, textos_treino, cats_treino, pendentes
+        )
         turnos = [1] * len(pendentes)
         montar_saidas(
             snapshot, pendentes, preds, confs, turnos,
-            "incremental", "treino_total_predict_pendentes", limiar_baixa, limiar_alta, args.saida,
+            "incremental", f"treino_total_predict_pendentes_{args.modelo}",
+            limiar_baixa, limiar_alta, args.saida, executores, criticidades,
         )
         return 0
 
@@ -367,11 +402,13 @@ def main() -> int:
 
         textos_treino = [l["texto_classificacao"] for l in elegiveis]
         cats_treino = [l["categoria_original"] for l in elegiveis]
-        textos_cand = [l["texto_classificacao"] for l, _ in candidatos]
-        preds, confs = predizer_incremental(textos_treino, cats_treino, textos_cand)
+        cand_linhas = [l for l, _ in candidatos]
+        preds, confs, executores, criticidades = classificar_subset(
+            args.modelo, textos_treino, cats_treino, cand_linhas
+        )
 
-        subset, sub_preds, sub_confs = [], [], []
-        for (l, conf_ant), pred, conf_novo in zip(candidatos, preds, confs):
+        subset, sub_preds, sub_confs, sub_exec, sub_crit = [], [], [], [], []
+        for i, ((l, conf_ant), pred, conf_novo) in enumerate(zip(candidatos, preds, confs)):
             cat_ant = l.get("classificacao_ia", "").strip()
             melhorou = (float(conf_novo) > conf_ant + delta) or \
                        (str(pred) != cat_ant and float(conf_novo) >= conf_ant)
@@ -379,11 +416,15 @@ def main() -> int:
                 subset.append(l)
                 sub_preds.append(pred)
                 sub_confs.append(conf_novo)
+                if executores is not None:
+                    sub_exec.append(executores[i])
+                    sub_crit.append(criticidades[i])
 
         montar_saidas(snapshot, subset, np.array(sub_preds, dtype=object),
                       np.array(sub_confs), [1] * len(subset),
-                      "reclassificacao", "treino_total_reavalia_baixa_conf",
-                      limiar_baixa, limiar_alta, args.saida)
+                      "reclassificacao", f"treino_total_reavalia_baixa_conf_{args.modelo}",
+                      limiar_baixa, limiar_alta, args.saida,
+                      sub_exec or None, sub_crit or None)
         print(f"candidatos={len(candidatos)} reclassificados={len(subset)}")
         return 0
 
