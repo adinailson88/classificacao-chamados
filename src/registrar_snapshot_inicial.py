@@ -120,7 +120,7 @@ def main() -> int:
     config = carregar_config(args.config)
 
     try:
-        ws = pl.abrir_worksheet(config["spreadsheet_id"], config["aba_principal"], args.credenciais)
+        ws = pl.abrir_worksheet(pl.id_planilha(config), config["aba_principal"], args.credenciais)
         valores = pl.ler_valores(ws, config["range_leitura"])
     except FileNotFoundError as e:
         print(str(e), file=sys.stderr)

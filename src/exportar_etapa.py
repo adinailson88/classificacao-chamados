@@ -111,7 +111,7 @@ def main() -> int:
         return 0
 
     try:
-        ws = pl.abrir_worksheet(config["spreadsheet_id"], aba, args.credenciais)
+        ws = pl.abrir_worksheet(pl.id_planilha(config), aba, args.credenciais)
         resposta = pl.exportar_lote_gj(
             ws,
             linhas,

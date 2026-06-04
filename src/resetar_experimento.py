@@ -45,7 +45,7 @@ def main() -> int:
     aba = config["aba_principal"]
     abas = list(config["abas_experimento"].values())
 
-    print(f"planilha={config['spreadsheet_id']}")
+    print("planilha=<via SPREADSHEET_ID/local>")
     print(f"principal={aba} -> limpar G:K (preserva C, L, M)")
     print(f"abas a limpar: {', '.join(abas)}")
 
@@ -58,7 +58,7 @@ def main() -> int:
         return 2
 
     try:
-        sh = pl.abrir_planilha(config["spreadsheet_id"], args.credenciais)
+        sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
         ws = sh.worksheet(aba)
     except FileNotFoundError as e:
         print(str(e), file=sys.stderr)

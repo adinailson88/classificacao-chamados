@@ -37,6 +37,8 @@ permissions:
 jobs:
   classificar:
     runs-on: ubuntu-latest
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

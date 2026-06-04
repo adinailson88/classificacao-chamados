@@ -25,6 +25,8 @@ jobs:
   robusto:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
