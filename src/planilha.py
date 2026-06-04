@@ -12,6 +12,7 @@ padrão é credenciais_sa.json na raiz do repositório; pode ser sobrescrito por
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from typing import Any
@@ -41,7 +42,10 @@ def abrir_worksheet(spreadsheet_id: str, aba: str, credenciais: str | Path | Non
             "Salve a chave JSON como credenciais_sa.json na raiz do repo, ou "
             "defina GOOGLE_APPLICATION_CREDENTIALS."
         )
-    gc = gspread.service_account(filename=str(cred))
+    # utf-8-sig tolera BOM (que pode ser inserido ao gravar a chave a partir de secret).
+    with cred.open("r", encoding="utf-8-sig") as arquivo:
+        info = json.load(arquivo)
+    gc = gspread.service_account_from_dict(info)
     planilha = gc.open_by_key(spreadsheet_id)
     return planilha.worksheet(aba)
 
