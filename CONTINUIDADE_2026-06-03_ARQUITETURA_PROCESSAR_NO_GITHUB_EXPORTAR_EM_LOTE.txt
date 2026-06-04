@@ -1,0 +1,85 @@
+CONTINUIDADE - ARQUITETURA: PROCESSAR NO GITHUB, EXPORTAR EM LOTE
+Data: 2026-06-03 (America/Bahia, UTC-03:00)
+Repositorio GitHub: https://github.com/adinailson88/classifica-o-chamados
+
+OBJETIVO DESTA ETAPA
+Registrar a decisao de arquitetura para reduzir uso de API do Google Sheets:
+fazer todo o processamento dentro do GitHub usando arquivos JSON no repositorio
+e exportar para a planilha apenas UMA vez por etapa concluida (gravacao em lote),
+em vez de ler e escrever na planilha a cada linha/turno.
+
+MOTIVACAO
+Os 4 pontos de API do fluxo atual (GLPI, Apps Script, Google Sheets/gspread,
+IMPORTRANGE) vinham dando erro de cota/fluxo. O gargalo principal e a gravacao
+linha a linha (LOG_LINHA_A_LINHA) e os varios round-trips ler-processar-escrever.
+
+DECISAO (CONFIRMADA PELO USUARIO)
+1. O estado intermediario do experimento fica em arquivos no repositorio
+   (JSON/JSONL), nao na planilha.
+2. Pode ser mais de um arquivo: um por etapa/artefato (recomendado).
+3. A API do Google Sheets so e usada para EXPORTAR o resultado de cada etapa,
+   em uma unica chamada em lote (nao por celula).
+4. Fluxo por etapas: etapa 1 -> atualiza JSON -> exporta uma vez;
+   etapa 2 -> atualiza JSON -> exporta uma vez; e assim por diante.
+
+POR QUE E UMA BOA IDEIA (PROS)
+- Reduz drasticamente o numero de chamadas de API: de N escritas (por linha/turno)
+  para 1 escrita em lote por etapa. O apps_script/Code.gs ja suporta gravacao em
+  lote (acoes start/append/finish e setValues), entao 1 doPost por etapa = 1 chamada.
+- Elimina o LOG_LINHA_A_LINHA na planilha (maior gerador de escritas): vira um
+  arquivo JSONL no repositorio.
+- Evita round-trips ler-depois-escrever: le a fonte UMA vez, processa tudo em
+  arquivos, escreve UMA vez.
+- Estado versionado e reproduzivel (bom para a tese): cada etapa fica registrada
+  no Git, sobrevive a falhas e e retomavel.
+- Custo zero: GitHub (repositorio + Actions gratuitos) + 1 chamada de API por etapa.
+
+CONTRAS / CUIDADOS
+- A planilha continua sendo a fonte do INPUT; ler a fonte UMA vez por execucao e
+  snapshotar em JSON no repo (evita reler a cada passo).
+- Exportar "uma vez por etapa" deve usar gravacao em bloco (ex.: colunas G:J das
+  linhas processadas em uma unica values.update / um unico doPost), nunca celula a celula.
+- Logs linha a linha podem crescer: usar JSONL (append) e, se preciso, dividir por
+  etapa/lote (sharding).
+- Segredos (URL do Web App e token) ficam em GitHub Secrets, nunca versionados.
+- Conflitos/merge: cada etapa escreve seu proprio arquivo para evitar colisao.
+
+ESTRUTURA DE ARQUIVOS PROPOSTA (MULTIPLOS ARQUIVOS - VIAVEL E RECOMENDADO)
+dados/
+  snapshot_etapa_1.json          (estado inicial das linhas nao vazias)
+  classificacao_etapa_1.json     (resultado por linha: colunas G:J)
+  log_turnos.jsonl               (1 registro por turno/lote)
+  log_linha_a_linha.jsonl        (1 registro por linha processada)
+  metricas_experimento.json      (concordancia IA x historico, etc.)
+  manifest_exportacao.json       (o que ja foi exportado para a planilha e quando)
+
+FLUXO POR ETAPAS (GITHUB-FIRST, EXPORT EM LOTE)
+Etapa 0 - Snapshot:
+  le a aba principal UMA vez -> grava dados/snapshot_etapa_1.json (repo).
+Etapa 1 - Classificacao:
+  le snapshot JSON -> classifica tudo -> grava classificacao_etapa_1.json +
+  log_*.jsonl (repo). NENHUMA escrita na planilha durante o processamento.
+  Exportacao (1 vez): grava G:J das linhas processadas em UMA chamada em lote;
+  atualiza manifest_exportacao.json.
+Etapa 2 - Reclassificacao:
+  mesmo padrao, lendo o JSON da etapa anterior, exportando uma vez no fim.
+Metricas:
+  metricas_experimento.json no repo, exportado uma vez para METRICAS_EXPERIMENTO.
+
+IMPACTO NOS SCRIPTS ATUAIS (src/)
+- registrar_snapshot_inicial.py: passar a gravar snapshot em arquivo no repo
+  (alem de, opcionalmente, exportar uma vez).
+- classificar_lote_inicial.py / classificar_lote_baseline.py: ler do snapshot JSON,
+  acumular resultado em arquivo, sem escrever por linha na planilha.
+- Novo passo de exportacao em lote (1 doPost por etapa) usando apps_script/Code.gs.
+
+PENDENCIAS
+1. Confirmar com usuario o conjunto de arquivos JSON/JSONL e seus nomes.
+2. Implementar o passo de exportacao em lote (start/append/finish do Code.gs).
+3. Liberar token/URL do Web App como GitHub Secret para a exportacao automatica.
+
+PROXIMO PASSO RECOMENDADO
+1. Adaptar registrar_snapshot_inicial.py para gravar dados/snapshot_etapa_1.json no repo.
+2. Adaptar classificar_lote_* para ler esse JSON e acumular resultado em arquivo.
+3. Criar src/exportar_etapa.py que faz 1 gravacao em lote por etapa via Code.gs.
+4. Opcional: GitHub Action por etapa (atualiza JSON, commita; exporta sob trigger).
