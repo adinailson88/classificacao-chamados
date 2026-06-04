@@ -33,8 +33,7 @@ def resolver_credenciais(caminho: str | Path | None = None) -> Path:
     return CREDENCIAIS_PADRAO
 
 
-def abrir_worksheet(spreadsheet_id: str, aba: str, credenciais: str | Path | None = None):
-    """Abre a aba da planilha usando a conta de serviço."""
+def _cliente(credenciais: str | Path | None = None):
     cred = resolver_credenciais(credenciais)
     if not cred.exists():
         raise FileNotFoundError(
@@ -45,9 +44,67 @@ def abrir_worksheet(spreadsheet_id: str, aba: str, credenciais: str | Path | Non
     # utf-8-sig tolera BOM (que pode ser inserido ao gravar a chave a partir de secret).
     with cred.open("r", encoding="utf-8-sig") as arquivo:
         info = json.load(arquivo)
-    gc = gspread.service_account_from_dict(info)
-    planilha = gc.open_by_key(spreadsheet_id)
-    return planilha.worksheet(aba)
+    return gspread.service_account_from_dict(info)
+
+
+def abrir_planilha(spreadsheet_id: str, credenciais: str | Path | None = None):
+    """Abre o workbook (Spreadsheet) inteiro, para acessar várias abas."""
+    return _cliente(credenciais).open_by_key(spreadsheet_id)
+
+
+def abrir_worksheet(spreadsheet_id: str, aba: str, credenciais: str | Path | None = None):
+    """Abre uma aba específica usando a conta de serviço."""
+    return abrir_planilha(spreadsheet_id, credenciais).worksheet(aba)
+
+
+def aba_por_nome(sh, nome: str, linhas: int = 1000, colunas: int = 26):
+    """Retorna a aba; cria se não existir."""
+    try:
+        return sh.worksheet(nome)
+    except gspread.WorksheetNotFound:
+        return sh.add_worksheet(title=nome, rows=max(linhas, 100), cols=max(colunas, 1))
+
+
+def append_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]],
+               colunas_percentuais: list[int] | None = None) -> int:
+    """Acrescenta linhas ao fim da aba (cria + cabeçalho + formato % na 1ª vez).
+
+    colunas_percentuais: índices 1-based de colunas a formatar como porcentagem
+    (os valores devem ser frações 0-1).
+    """
+    ws = aba_por_nome(sh, nome, linhas=20000, colunas=max(len(cabecalho), 1))
+    try:
+        tem_header = bool(ws.acell("A1").value)
+    except Exception:  # noqa: BLE001
+        tem_header = False
+    if not tem_header:
+        ws.update(range_name="A1", values=[cabecalho], value_input_option="RAW")
+        try:
+            ws.freeze(rows=1)
+        except Exception:  # noqa: BLE001
+            pass
+        for c in (colunas_percentuais or []):
+            letra = _coluna_letra(c)
+            try:
+                ws.format(f"{letra}2:{letra}20000",
+                          {"numberFormat": {"type": "PERCENT", "pattern": "0.00%"}})
+            except Exception:  # noqa: BLE001
+                pass
+    if linhas:
+        ws.append_rows([list(r) for r in linhas], value_input_option="RAW")
+    return len(linhas)
+
+
+def escrever_aba(sh, nome: str, cabecalho: list[str], linhas: list[list[Any]]) -> int:
+    """Limpa e grava cabeçalho + linhas em UMA escrita em lote (1 chamada)."""
+    ws = aba_por_nome(sh, nome, linhas=len(linhas) + 10, colunas=len(cabecalho))
+    ws.clear()
+    ws.update(range_name="A1", values=[cabecalho] + linhas, value_input_option="RAW")
+    try:
+        ws.freeze(rows=1)
+    except Exception:  # noqa: BLE001
+        pass
+    return len(linhas)
 
 
 def ler_valores(ws, range_a1: str = "A:M") -> list[list[Any]]:
