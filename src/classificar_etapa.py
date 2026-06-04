@@ -193,7 +193,7 @@ def main() -> int:
     acertos = 0
 
     for linha, pred, conf, turno in zip(elegiveis, preds, confs, turnos):
-        avaliacao_pct = round(float(conf) * 100.0, 2)
+        avaliacao = round(float(conf), 4)  # fração 0-1; coluna H é formatada como %
         confere = str(pred) == linha["categoria_original"]
         acertos += int(confere)
         rotulo = label_confianca(float(conf), limiar_baixa, limiar_alta)
@@ -204,7 +204,7 @@ def main() -> int:
                 "id_chamado": linha.get("id_chamado", ""),
                 "categoria_original": linha["categoria_original"],
                 "classificacao_ia": str(pred),
-                "avaliacao_pct": avaliacao_pct,
+                "avaliacao": avaliacao,
                 "executor": MODELO,
                 "criticidade": "",
                 "comparacao": confere,
@@ -220,7 +220,7 @@ def main() -> int:
                 "turno": turno,
                 "categoria_original": linha["categoria_original"],
                 "classificacao_ia": str(pred),
-                "avaliacao_pct": avaliacao_pct,
+                "avaliacao": avaliacao,
                 "confere_historico": confere,
                 "confianca_label": rotulo,
             }

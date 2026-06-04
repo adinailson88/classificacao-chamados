@@ -5,3 +5,10 @@ venv/
 .env
 credenciais*.json
 autenticacao_google.json
+# Chaves de conta de servico do Google Cloud (NUNCA versionar)
+classificacao-chamados-*.json
+*serviceaccount*.json
+*-sa.json
+# Dados reais do experimento (repo publico — nao versionar conteudo de chamados)
+dados/*.json
+dados/*.jsonl
