@@ -1,0 +1,65 @@
+name: Classificacao incremental
+
+# Roda a cada 30 min (best-effort do GitHub; pode atrasar/pular) e sob demanda.
+# Fluxo GitHub-first: snapshot (1 leitura) -> classificar -> exportar (1 escrita em lote).
+# Padrao: modo incremental (so classifica linhas novas com G vazio; no-op se nada pendente).
+# Acesso a planilha via conta de servico (secret GCP_SA_KEY). Nao versiona dados.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "Modo de classificacao"
+        type: choice
+        default: incremental
+        options:
+          - incremental
+          - full
+
+# Evita execucoes sobrepostas (uma escrita em lote por vez na planilha).
+concurrency:
+  group: classificacao-export
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  classificar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Recriar chave da conta de servico (a partir do secret)
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then
+            echo "Secret GCP_SA_KEY ausente." >&2
+            exit 1
+          fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+
+      - name: Snapshot (le a planilha 1x)
+        run: python src/registrar_snapshot_inicial.py
+
+      - name: Classificar
+        run: python src/classificar_etapa.py --modo "${{ github.event.inputs.modo || 'incremental' }}"
+
+      - name: Exportar em lote para a planilha (G:J)
+        run: python src/exportar_etapa.py --aplicar
+
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json

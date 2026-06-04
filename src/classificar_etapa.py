@@ -1,26 +1,28 @@
 #!/usr/bin/env python3
-"""Classifica a etapa 1 lendo o snapshot do repo (arquitetura GitHub-first).
+"""Classifica a partir do snapshot do repo (arquitetura GitHub-first).
 
-Le dados/snapshot_etapa_1.json, treina o baseline TF-IDF + LogReg e gera
-predicoes out-of-fold (StratifiedKFold) para todas as linhas rotuladas, de modo
-que nenhuma linha e prevista por um modelo treinado nela mesma. NAO escreve na
-planilha: acumula tudo em arquivos no repositorio.
+Modos:
+  full        (padrão) — classifica TODAS as linhas elegíveis com predições
+              out-of-fold (StratifiedKFold), sem vazamento. Uso científico:
+              mede a concordância IA x histórico em toda a base.
+  incremental — classifica apenas as linhas PENDENTES (com categoria+texto mas
+              sem Classificação IA), treinando no conjunto rotulado. Uso
+              operacional/cron: conforme novos chamados entram, classifica só eles.
+              Se não houver pendentes, é no-op (0 linhas).
 
-Saidas (em dados/):
-  classificacao_etapa_1.json  -> resultado por linha (G:J em G,H,I,J)
-  log_turnos.jsonl            -> 1 registro por fold/turno
-  log_linha_a_linha.jsonl     -> 1 registro por linha processada
-  metricas_experimento.json   -> concordancia IA x historico, acuracia, F1 macro
+Lê dados/snapshot_etapa_1.json e grava classificacao_etapa_1.json + logs +
+metricas. NÃO escreve na planilha.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+
+import json
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -92,15 +94,13 @@ def construir_modelo() -> Pipeline:
 
 
 def selecionar_elegiveis(linhas: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Linhas rotuladas e com texto util (base historica do experimento)."""
-    elegiveis = []
-    for linha in linhas:
-        if not linha.get("categoria_original"):
-            continue
-        if not (linha.get("texto_classificacao") or "").strip():
-            continue
-        elegiveis.append(linha)
-    return elegiveis
+    """Linhas rotuladas e com texto útil (base histórica do experimento)."""
+    return [
+        linha
+        for linha in linhas
+        if linha.get("categoria_original", "").strip()
+        and (linha.get("texto_classificacao") or "").strip()
+    ]
 
 
 def label_confianca(conf: float, baixa: float, alta: float) -> str:
@@ -116,7 +116,7 @@ def predizer_out_of_fold(
     categorias: list[str],
     n_splits: int,
 ) -> tuple[np.ndarray, np.ndarray, list[int]]:
-    """Predicoes e confiancas out-of-fold. Retorna (preds, confs, turnos_por_linha)."""
+    """Predições e confianças out-of-fold. Retorna (preds, confs, turno_por_linha)."""
     n = len(textos)
     preds = np.empty(n, dtype=object)
     confs = np.zeros(n, dtype=float)
@@ -124,14 +124,11 @@ def predizer_out_of_fold(
 
     contagem = Counter(categorias)
     minimo_classe = min(contagem.values())
-    splits_efetivos = max(2, min(n_splits, minimo_classe))
 
     X = np.array(textos, dtype=object)
     y = np.array(categorias, dtype=object)
 
     if minimo_classe < 2:
-        # Sem folds confiaveis: treina em tudo e prediz tudo (com vazamento
-        # assumido e sinalizado nas metricas). Caminho de contingencia.
         modelo = construir_modelo()
         modelo.fit(list(X), list(y))
         probs = modelo.predict_proba(list(X))
@@ -141,6 +138,7 @@ def predizer_out_of_fold(
         confs[:] = probs[np.arange(n), idx_max]
         return preds, confs, turno_por_linha
 
+    splits_efetivos = max(2, min(n_splits, minimo_classe))
     skf = StratifiedKFold(n_splits=splits_efetivos, shuffle=True, random_state=42)
     for turno, (treino_idx, teste_idx) in enumerate(skf.split(X, y), start=1):
         modelo = construir_modelo()
@@ -156,44 +154,42 @@ def predizer_out_of_fold(
     return preds, confs, turno_por_linha
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Classifica a etapa 1 a partir do snapshot do repo, sem escrever na planilha."
-    )
-    parser.add_argument("--config", type=Path, default=CONFIG_PADRAO)
-    parser.add_argument("--snapshot-json", type=Path, default=SNAPSHOT_PADRAO)
-    parser.add_argument("--saida", type=Path, default=SAIDA_PADRAO)
-    parser.add_argument("--n-splits", type=int, default=5)
-    return parser.parse_args()
+def predizer_incremental(
+    textos_treino: list[str],
+    categorias_treino: list[str],
+    textos_pendentes: list[str],
+) -> tuple[np.ndarray, np.ndarray]:
+    """Treina no conjunto rotulado e prediz só as linhas pendentes."""
+    modelo = construir_modelo()
+    modelo.fit(textos_treino, categorias_treino)
+    probs = modelo.predict_proba(textos_pendentes)
+    classes = modelo.named_steps["clf"].classes_
+    idx_max = probs.argmax(axis=1)
+    preds = classes[idx_max]
+    confs = probs[np.arange(len(textos_pendentes)), idx_max]
+    return preds, confs
 
 
-def main() -> int:
-    args = parse_args()
-    config = carregar_json(args.config)
-    limiares = config.get("classificacao", {})
-    limiar_baixa = float(limiares.get("limiar_confianca_baixa", 0.7))
-    limiar_alta = float(limiares.get("limiar_alta_confianca", 0.95))
-
-    snapshot = carregar_json(args.snapshot_json)
-    linhas = snapshot.get("linhas") or []
-    elegiveis = selecionar_elegiveis(linhas)
-
-    if len(elegiveis) < 2:
-        print("Informação insuficiente para verificar.")
-        return 1
-
-    textos = [linha["texto_classificacao"] for linha in elegiveis]
-    categorias = [linha["categoria_original"] for linha in elegiveis]
-
-    preds, confs, turnos = predizer_out_of_fold(textos, categorias, args.n_splits)
-
+def montar_saidas(
+    snapshot: dict[str, Any],
+    subset: list[dict[str, Any]],
+    preds,
+    confs,
+    turnos: list[int],
+    modo: str,
+    estrategia: str,
+    limiar_baixa: float,
+    limiar_alta: float,
+    saida: Path,
+) -> None:
+    """Constrói e grava classificacao_etapa_1.json + logs + metricas."""
     gerado_em = agora_bahia()
     resultado_linhas: list[dict[str, Any]] = []
     log_linhas: list[dict[str, Any]] = []
     acertos = 0
 
-    for linha, pred, conf, turno in zip(elegiveis, preds, confs, turnos):
-        avaliacao_pct = round(float(conf) * 100.0, 2)
+    for linha, pred, conf, turno in zip(subset, preds, confs, turnos):
+        avaliacao = round(float(conf), 4)  # fração 0-1; coluna H formatada como %
         confere = str(pred) == linha["categoria_original"]
         acertos += int(confere)
         rotulo = label_confianca(float(conf), limiar_baixa, limiar_alta)
@@ -204,7 +200,7 @@ def main() -> int:
                 "id_chamado": linha.get("id_chamado", ""),
                 "categoria_original": linha["categoria_original"],
                 "classificacao_ia": str(pred),
-                "avaliacao_pct": avaliacao_pct,
+                "avaliacao": avaliacao,
                 "executor": MODELO,
                 "criticidade": "",
                 "comparacao": confere,
@@ -220,29 +216,30 @@ def main() -> int:
                 "turno": turno,
                 "categoria_original": linha["categoria_original"],
                 "classificacao_ia": str(pred),
-                "avaliacao_pct": avaliacao_pct,
+                "avaliacao": avaliacao,
                 "confere_historico": confere,
                 "confianca_label": rotulo,
             }
         )
 
-    y_true = categorias
+    total = len(resultado_linhas)
+    y_true = [linha["categoria_original"] for linha in subset]
     y_pred = [str(p) for p in preds]
     metricas = {
         "run_id": snapshot.get("run_id", ""),
         "gerado_em": gerado_em,
         "modelo": MODELO,
-        "estrategia": "out_of_fold_stratified_kfold",
-        "total_classificadas": len(resultado_linhas),
+        "modo": modo,
+        "estrategia": estrategia,
+        "total_classificadas": total,
         "concordancia_ia_historico": acertos,
-        "concordancia_pct": round(100.0 * acertos / len(resultado_linhas), 2),
-        "acuracia": round(float(accuracy_score(y_true, y_pred)), 4),
-        "f1_macro": round(float(f1_score(y_true, y_pred, average="macro", zero_division=0)), 4),
-        "f1_weighted": round(float(f1_score(y_true, y_pred, average="weighted", zero_division=0)), 4),
-        "n_classes": len(set(categorias)),
+        "concordancia_pct": round(100.0 * acertos / total, 2) if total else 0.0,
+        "acuracia": round(float(accuracy_score(y_true, y_pred)), 4) if total else 0.0,
+        "f1_macro": round(float(f1_score(y_true, y_pred, average="macro", zero_division=0)), 4) if total else 0.0,
+        "f1_weighted": round(float(f1_score(y_true, y_pred, average="weighted", zero_division=0)), 4) if total else 0.0,
+        "n_classes": len(set(y_true)),
     }
 
-    # Resumo por turno para o log de turnos.
     turnos_contagem = Counter(turnos)
     log_turnos = [
         {
@@ -251,29 +248,89 @@ def main() -> int:
             "turno": turno,
             "linhas_no_turno": qtd,
             "modelo": MODELO,
+            "modo": modo,
         }
         for turno, qtd in sorted(turnos_contagem.items())
     ]
 
-    saida = {
+    saida_obj = {
         "run_id": snapshot.get("run_id", ""),
         "gerado_em": gerado_em,
         "modelo": MODELO,
-        "estrategia": "out_of_fold_stratified_kfold",
-        "total_classificadas": len(resultado_linhas),
+        "modo": modo,
+        "estrategia": estrategia,
+        "total_classificadas": total,
         "linhas": resultado_linhas,
     }
 
-    gravar_json(args.saida, saida)
+    gravar_json(saida, saida_obj)
     gravar_jsonl(LOG_TURNOS, log_turnos)
     gravar_jsonl(LOG_LINHAS, log_linhas)
     gravar_json(METRICAS, metricas)
 
     print(f"modelo={MODELO}")
-    print(f"total_classificadas={metricas['total_classificadas']}")
-    print(f"concordancia={metricas['concordancia_ia_historico']}/{metricas['total_classificadas']} ({metricas['concordancia_pct']}%)")
-    print(f"acuracia={metricas['acuracia']} f1_macro={metricas['f1_macro']}")
-    print(f"saida={args.saida}")
+    print(f"modo={modo}")
+    print(f"total_classificadas={total}")
+    if total:
+        print(f"concordancia={acertos}/{total} ({metricas['concordancia_pct']}%)")
+        print(f"acuracia={metricas['acuracia']} f1_macro={metricas['f1_macro']}")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Classifica a partir do snapshot do repo, sem escrever na planilha."
+    )
+    parser.add_argument("--config", type=Path, default=CONFIG_PADRAO)
+    parser.add_argument("--snapshot-json", type=Path, default=SNAPSHOT_PADRAO)
+    parser.add_argument("--saida", type=Path, default=SAIDA_PADRAO)
+    parser.add_argument("--modo", choices=["full", "incremental"], default="full")
+    parser.add_argument("--n-splits", type=int, default=5)
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    config = carregar_json(args.config)
+    limiares = config.get("classificacao", {})
+    limiar_baixa = float(limiares.get("limiar_confianca_baixa", 0.7))
+    limiar_alta = float(limiares.get("limiar_alta_confianca", 0.95))
+
+    snapshot = carregar_json(args.snapshot_json)
+    elegiveis = selecionar_elegiveis(snapshot.get("linhas") or [])
+
+    if len(elegiveis) < 2:
+        print("Informação insuficiente para verificar.")
+        return 1
+
+    if args.modo == "incremental":
+        pendentes = [l for l in elegiveis if not l.get("classificacao_ia", "").strip()]
+        if not pendentes:
+            # Nenhuma linha nova: grava resultado vazio e encerra (no-op).
+            montar_saidas(
+                snapshot, [], np.array([]), np.array([]), [],
+                "incremental", "treino_total_predict_pendentes", limiar_baixa, limiar_alta, args.saida,
+            )
+            print("pendentes=0 (nada a classificar)")
+            return 0
+        textos_treino = [l["texto_classificacao"] for l in elegiveis]
+        cats_treino = [l["categoria_original"] for l in elegiveis]
+        textos_pend = [l["texto_classificacao"] for l in pendentes]
+        preds, confs = predizer_incremental(textos_treino, cats_treino, textos_pend)
+        turnos = [1] * len(pendentes)
+        montar_saidas(
+            snapshot, pendentes, preds, confs, turnos,
+            "incremental", "treino_total_predict_pendentes", limiar_baixa, limiar_alta, args.saida,
+        )
+        return 0
+
+    # modo full (out-of-fold)
+    textos = [l["texto_classificacao"] for l in elegiveis]
+    categorias = [l["categoria_original"] for l in elegiveis]
+    preds, confs, turnos = predizer_out_of_fold(textos, categorias, args.n_splits)
+    montar_saidas(
+        snapshot, elegiveis, preds, confs, turnos,
+        "full", "out_of_fold_stratified_kfold", limiar_baixa, limiar_alta, args.saida,
+    )
     return 0
 
 

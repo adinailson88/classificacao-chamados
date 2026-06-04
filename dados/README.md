@@ -68,7 +68,7 @@ Resultado por linha. As 4 primeiras saídas (`classificacao_ia`, `avaliacao_pct`
       "id_chamado": "...",
       "categoria_original": "...",
       "classificacao_ia": "...",
-      "avaliacao_pct": 87.34,
+      "avaliacao": 0.8734,
       "executor": "Baseline_TFIDF_LogReg",
       "criticidade": "",
       "comparacao": true,
