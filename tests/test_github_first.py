@@ -35,7 +35,7 @@ def test_montar_linhas_gera_GJ_com_criticidade_vazia():
             {
                 "linha_planilha": 5,
                 "classificacao_ia": "Eletrica",
-                "avaliacao_pct": 87.3,
+                "avaliacao": 0.873,
                 "executor": "Baseline_TFIDF_LogReg",
                 "criticidade": "",
             }
@@ -43,7 +43,7 @@ def test_montar_linhas_gera_GJ_com_criticidade_vazia():
     }
     linhas = ee.montar_linhas(resultado)
     assert linhas == [
-        {"linha": 5, "valores": ["Eletrica", 87.3, "Baseline_TFIDF_LogReg", ""]}
+        {"linha": 5, "valores": ["Eletrica", 0.873, "Baseline_TFIDF_LogReg", ""]}
     ]
 
 

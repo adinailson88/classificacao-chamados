@@ -111,6 +111,22 @@ def label_confianca(conf: float, baixa: float, alta: float) -> str:
     return "baixa"
 
 
+def eh_conferido(valor: Any) -> bool:
+    return str(valor or "").strip().upper() in {"TRUE", "VERDADEIRO", "SIM"}
+
+
+def parse_conf(valor: Any) -> float | None:
+    """Converte a confiança armazenada (fração 0-1 ou 0-100) em fração 0-1."""
+    txt = str(valor or "").replace("%", "").replace(",", ".").strip()
+    if not txt:
+        return None
+    try:
+        v = float(txt)
+    except ValueError:
+        return None
+    return v / 100.0 if v > 1 else v
+
+
 def predizer_out_of_fold(
     textos: list[str],
     categorias: list[str],
@@ -283,7 +299,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     parser.add_argument("--snapshot-json", type=Path, default=SNAPSHOT_PADRAO)
     parser.add_argument("--saida", type=Path, default=SAIDA_PADRAO)
-    parser.add_argument("--modo", choices=["full", "incremental"], default="full")
+    parser.add_argument("--modo", choices=["full", "incremental", "reclassificacao"], default="full")
     parser.add_argument("--n-splits", type=int, default=5)
     return parser.parse_args()
 
@@ -321,6 +337,54 @@ def main() -> int:
             snapshot, pendentes, preds, confs, turnos,
             "incremental", "treino_total_predict_pendentes", limiar_baixa, limiar_alta, args.saida,
         )
+        return 0
+
+    if args.modo == "reclassificacao":
+        rcfg = config.get("reclassificacao", {})
+        limiar_sel = float(rcfg.get("selecionar_confianca_menor_que", 0.95))
+        tam_lote = int(rcfg.get("tamanho_lote", 200))
+        delta = 0.05  # melhoria mínima de confiança para sobrescrever
+
+        candidatos = []  # (linha, conf_antiga)
+        for l in elegiveis:
+            if not l.get("classificacao_ia", "").strip():
+                continue  # ainda não classificado -> é tarefa do modo incremental
+            if eh_conferido(l.get("conferencia", "")):
+                continue  # revisão humana: não mexer
+            conf_ant = parse_conf(l.get("avaliacao_atual", ""))
+            if conf_ant is None or conf_ant >= limiar_sel:
+                continue
+            candidatos.append((l, conf_ant))
+            if len(candidatos) >= tam_lote:
+                break
+
+        if not candidatos:
+            montar_saidas(snapshot, [], np.array([]), np.array([]), [],
+                          "reclassificacao", "treino_total_reavalia_baixa_conf",
+                          limiar_baixa, limiar_alta, args.saida)
+            print("candidatos=0 (nada para reclassificar)")
+            return 0
+
+        textos_treino = [l["texto_classificacao"] for l in elegiveis]
+        cats_treino = [l["categoria_original"] for l in elegiveis]
+        textos_cand = [l["texto_classificacao"] for l, _ in candidatos]
+        preds, confs = predizer_incremental(textos_treino, cats_treino, textos_cand)
+
+        subset, sub_preds, sub_confs = [], [], []
+        for (l, conf_ant), pred, conf_novo in zip(candidatos, preds, confs):
+            cat_ant = l.get("classificacao_ia", "").strip()
+            melhorou = (float(conf_novo) > conf_ant + delta) or \
+                       (str(pred) != cat_ant and float(conf_novo) >= conf_ant)
+            if melhorou:
+                subset.append(l)
+                sub_preds.append(pred)
+                sub_confs.append(conf_novo)
+
+        montar_saidas(snapshot, subset, np.array(sub_preds, dtype=object),
+                      np.array(sub_confs), [1] * len(subset),
+                      "reclassificacao", "treino_total_reavalia_baixa_conf",
+                      limiar_baixa, limiar_alta, args.saida)
+        print(f"candidatos={len(candidatos)} reclassificados={len(subset)}")
         return 0
 
     # modo full (out-of-fold)
