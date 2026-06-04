@@ -36,6 +36,10 @@ function doPost(e) {
     return registrarSnapshotInicial_(body);
   }
 
+  if (action === 'exportar_lote') {
+    return exportarLote_(body);
+  }
+
   return jsonResponse_({
     ok: false,
     erro: 'acao_post_desconhecida',
@@ -254,6 +258,96 @@ function registrarSnapshotInicial_(body) {
     lastRow: destino.getLastRow(),
     lastColumn: destino.getLastColumn()
   });
+}
+
+function exportarLote_(body) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheetName = body.sheet || '';
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    return jsonResponse_({ ok: false, erro: 'aba_nao_encontrada', sheet: sheetName });
+  }
+
+  const linhas = body.linhas || [];
+  if (!Array.isArray(linhas) || linhas.length === 0) {
+    return jsonResponse_({ ok: false, erro: 'linhas_invalidas' });
+  }
+
+  const colInicio = Number(body.col_inicio) || 7;   // G
+  const colFim = Number(body.col_fim) || 10;         // J
+  const colConferencia = Number(body.col_conferencia) || 13; // M
+  const respeitarConf = body.respeitar_conferencia !== false;
+  const ignorarVazios = body.ignorar_vazios !== false;
+  const numCols = colFim - colInicio + 1;
+
+  // Faixa contigua minima que cobre todas as linhas alvo (read-modify-write).
+  let minLinha = Infinity;
+  let maxLinha = -Infinity;
+  linhas.forEach(item => {
+    const n = Number(item.linha);
+    if (n >= 2) {
+      if (n < minLinha) minLinha = n;
+      if (n > maxLinha) maxLinha = n;
+    }
+  });
+
+  if (!isFinite(minLinha) || !isFinite(maxLinha)) {
+    return jsonResponse_({ ok: false, erro: 'linhas_sem_numero_valido' });
+  }
+
+  const numRows = maxLinha - minLinha + 1;
+  const bloco = sheet.getRange(minLinha, colInicio, numRows, numCols).getValues();
+  const conferencia = respeitarConf
+    ? sheet.getRange(minLinha, colConferencia, numRows, 1).getValues()
+    : null;
+
+  let gravadas = 0;
+  let puladasConferencia = 0;
+  let foraDoBloco = 0;
+
+  linhas.forEach(item => {
+    const n = Number(item.linha);
+    const offset = n - minLinha;
+    if (offset < 0 || offset >= numRows) {
+      foraDoBloco += 1;
+      return;
+    }
+
+    if (respeitarConf && ehVerdadeiro_(conferencia[offset][0])) {
+      puladasConferencia += 1;
+      return;
+    }
+
+    const valores = item.valores || [];
+    for (let c = 0; c < numCols; c++) {
+      const novo = c < valores.length ? valores[c] : '';
+      const vazio = novo === '' || novo === null || novo === undefined;
+      if (ignorarVazios && vazio) continue;
+      bloco[offset][c] = novo;
+    }
+    gravadas += 1;
+  });
+
+  sheet.getRange(minLinha, colInicio, numRows, numCols).setValues(bloco);
+
+  return jsonResponse_({
+    ok: true,
+    action: 'exportar_lote',
+    sheet: sheetName,
+    etapa: body.etapa || '',
+    intervalo_linhas: [minLinha, maxLinha],
+    colunas: [colInicio, colFim],
+    linhas_recebidas: linhas.length,
+    linhas_gravadas: gravadas,
+    linhas_puladas_conferencia: puladasConferencia,
+    linhas_fora_do_bloco: foraDoBloco
+  });
+}
+
+function ehVerdadeiro_(valor) {
+  if (valor === true) return true;
+  const texto = String(valor || '').trim().toUpperCase();
+  return texto === 'TRUE' || texto === 'VERDADEIRO' || texto === 'SIM';
 }
 
 function gravarEmBlocos_(sheet, linhas, colunas, tamanhoBloco) {
