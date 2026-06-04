@@ -1,0 +1,57 @@
+name: Etapa 1 - classificacao progressiva
+
+# Roteiro metodologico, Etapa 1: classifica a base em TURNOS de 15, de forma
+# PROGRESSIVA. A cada execucao processa so os pendentes (coluna G vazia), ate
+# --max-turnos turnos, e faz APPEND nas abas (LOG_TURNOS_CLASSIFICACAO,
+# LOG_LINHA_A_LINHA, SNAPSHOT_ETAPA_1) alem de G:J + formula K e METRICAS.
+# Assim da para observar a evolucao da concordancia turno a turno ao longo do tempo.
+# Modelo padrao: producao (LSTM primario + RF fallback). Acesso via conta de servico.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      modelo:
+        description: "Modelo (producao=LSTM+RF; baseline=TF-IDF)"
+        type: choice
+        default: producao
+        options:
+          - producao
+          - baseline
+      max_turnos:
+        description: "Turnos de 15 por execucao"
+        default: "60"
+
+concurrency:
+  group: etapa1-progressiva
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  etapa1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Classificar proximo lote de turnos
+        run: >
+          python src/executar_etapa1.py
+          --modelo "${{ github.event.inputs.modelo || 'producao' }}"
+          --max-turnos "${{ github.event.inputs.max_turnos || '60' }}"
+          --aplicar
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
