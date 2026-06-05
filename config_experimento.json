@@ -44,9 +44,10 @@
   },
   "modelo_ia": {
     "lstm": {
-      "perfil": "padrao",
+      "perfil": "robusto",
       "perfil_robusto_disponivel": true,
-      "usar_class_weight": true
+      "usar_class_weight": true,
+      "_nota_perfil": "robusto e o padrao global (Etapa 2/re-treino). A Etapa 1 (cron 15min) e fixada em padrao via env LSTM_PERFIL no etapa1_turnos.yml, por velocidade."
     },
     "robusto": {
       "modelo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
