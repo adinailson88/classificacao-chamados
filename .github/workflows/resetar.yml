@@ -15,6 +15,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
 jobs:
   resetar:
     runs-on: ubuntu-latest

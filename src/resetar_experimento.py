@@ -5,7 +5,7 @@ Limpa na planilha principal as colunas G:K (Classificação IA, Avaliação,
 Executor, Criticidade e a fórmula de conferência) e LIMPA o conteúdo das abas do
 experimento (EXPERIMENTO_CONFIG, LOG_TURNOS_CLASSIFICACAO, LOG_LINHA_A_LINHA,
 SNAPSHOT_ETAPA_1, LOG_TURNOS_RECLASSIFICACAO, VALIDACAO_HUMANA,
-METRICAS_EXPERIMENTO, METRICAS_POR_CATEGORIA).
+METRICAS_EXPERIMENTO, METRICAS_POR_CATEGORIA e abas multimodelo, quando existirem).
 
 NÃO mexe na coluna C (categoria original/histórica), em L (fórmula do usuário) nem
 em M (CONFERÊNCIA manual). Acesso via conta de serviço (gspread).
@@ -44,6 +44,18 @@ def main() -> int:
         config = json.load(f)
     aba = config["aba_principal"]
     abas = list(config["abas_experimento"].values())
+    mm = config.get("multimodelo", {})
+    modelos = list(mm.get("modelos_leves", [])) + list(mm.get("modelos_pesados", []))
+    if mm:
+        for modelo in modelos:
+            abas.append(mm.get("aba_classificacao", "").replace("{modelo}", modelo))
+            abas.append(mm.get("aba_reclassificacao", "").replace("{modelo}", modelo))
+        abas.extend([
+            mm.get("aba_turnos", ""),
+            mm.get("aba_metricas", ""),
+            mm.get("aba_turnos", "").replace("TURNOS", "RECLASS_TURNOS"),
+        ])
+    abas = [a for a in dict.fromkeys(abas) if a]
 
     print("planilha=<via SPREADSHEET_ID/local>")
     print(f"principal={aba} -> limpar G:K (preserva C, L, M)")

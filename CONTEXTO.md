@@ -424,3 +424,15 @@ Observação de execução:
   `MULTIMODELO_TURNOS`, `MULTIMODELO_METRICAS` e `MULTIMODELO_RECLASS_TURNOS`.
   A primeira tentativa bateu limite de cota do Sheets e foi retomada após aguardar
   a janela de escrita; conferência final indicou que todas existem.
+
+## Reset e retomada automática — 2026-06-05
+- Reset completo executado a pedido do usuário: `CHAMADOS_ESQUELETO_REDUZIDO!G:K`
+  limpo, preservando categoria histórica (C), fórmula descritiva (L) e conferência
+  manual (M).
+- Abas experimentais e multimodelo limpas: logs, snapshot, métricas,
+  `COMPARACAO_*`, `CLASSIF__*`, `RECLASS__*`, `MULTIMODELO_*`.
+- `src/resetar_experimento.py` atualizado para incluir abas multimodelo no reset.
+- `dashboard.yml` atualizado para rodar automaticamente após conclusão bem-sucedida
+  de Etapa 1, Etapa 2, comparação de modelos, multimodelo e reset.
+- Dashboard regenerado com estado zerado (`registros=0`) antes do disparo das novas
+  rodadas.

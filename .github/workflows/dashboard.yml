@@ -7,6 +7,16 @@ on:
   schedule:
     - cron: "*/30 * * * *"
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Etapa 1 - classificacao progressiva"
+      - "Etapa 2 - reclassificacao"
+      - "Comparar modelos (lote)"
+      - "Multimodelo - classificacao completa"
+      - "Multimodelo - reclassificacao"
+      - "Resetar experimento (zero)"
+    types:
+      - completed
 
 concurrency:
   group: dashboard
@@ -17,6 +27,7 @@ permissions:
 
 jobs:
   dashboard:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
