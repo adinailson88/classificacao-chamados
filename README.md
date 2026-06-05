@@ -13,6 +13,7 @@ O objetivo e manter um experimento rastreavel, com processamento por turnos, log
 5. Os dados reais gerados em `dados/*.json` e `dados/*.jsonl` ficam ignorados no Git.
 6. Os dados publicos do dashboard ficam em `docs/dados`.
 7. Nenhum script escreve na planilha sem flag explicita `--aplicar`, exceto workflows ja configurados para a etapa correspondente.
+8. A validacao humana ja pode ser preparada, mas a revisao manual fica pausada ate o fortalecimento dos scripts/modelos.
 
 ## Colunas da aba principal
 
@@ -42,8 +43,23 @@ Saida da IA: `G:J`.
 
 1. Etapa 1: classificacao progressiva em turnos de 15.
 2. Etapa 2: reclassificacao de casos de baixa confianca.
-3. Etapa 3: preparacao da validacao humana.
-4. Etapas finais: matriz de confusao, metricas por categoria, confianca calibrada e indicadores consolidados.
+3. Fortalecimento antes da etapa manual: LSTM configuravel, memoria validada, reclassificacao priorizando menor confianca e modelo robusto local.
+4. Etapa 3: validacao humana.
+5. Etapas finais: matriz de confusao, metricas por categoria, confianca calibrada e indicadores consolidados.
+
+## Objetivo final do modelo
+
+Arquivo de referencia: `OBJETIVO_FINAL_MODELO_IA.txt`.
+
+A meta e chegar a um modelo treinado e calibrado que indique, para a maioria das categorias, se a categoria historica do chamado esta correta ou nao. A confianca minima alvo e `>=95%`, mas essa confianca precisa ser validada/calibrada: softmax alto sozinho nao comprova acerto.
+
+O reforco automatico antes da revisao manual esta em:
+
+1. `config_experimento.json`: define `objetivo_final`, `modelo_ia` e `memoria_validada`.
+2. `src/modelo_lstm.py`: aceita perfil LSTM `robusto`.
+3. `src/memoria_validada.py`: le apenas exemplos humanos com `categoria_validada` e `usar_para_treino=SIM`.
+4. `src/executar_etapa1.py` e `src/executar_etapa2.py`: usam a memoria validada quando ela existir.
+5. `src/executar_etapa2.py`: prioriza menor confianca antes de reclassificar.
 
 ## Comandos locais
 

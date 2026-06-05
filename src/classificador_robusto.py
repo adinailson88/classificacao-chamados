@@ -50,7 +50,7 @@ class ClassificadorTransformer:
         return self.classes_[idx], probs[np.arange(len(idx)), idx]
 
 
-def treinar(textos, categorias):
+def treinar(textos, categorias, lstm_config: dict | None = None):
     """Retorna (modelo, tag). Tenta transformer; se indisponível, cai para LSTM/RF.
 
     tag é usada no nome do executor (ex.: Reclass_<tag>).
@@ -64,7 +64,7 @@ def treinar(textos, categorias):
               "fallback LSTM/RF.", file=sys.stderr)
         import classificador_producao as cp
 
-        clf, eh_lstm = cp.treinar_classificador(textos, categorias)
+        clf, eh_lstm = cp.treinar_classificador(textos, categorias, lstm_config=lstm_config)
 
         class _Wrap:
             def predict_com_conf(self, x):

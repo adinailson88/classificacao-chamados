@@ -31,6 +31,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
 import classificador_producao as cp  # noqa: E402
+import memoria_validada as mv  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
@@ -73,9 +74,10 @@ def cel(linha, idx) -> str:
     return str(linha[idx] or "").strip() if (idx is not None and idx < len(linha)) else ""
 
 
-def treinar_e_prever(modelo, textos_treino, cats_treino, textos_alvo):
+def treinar_e_prever(modelo, textos_treino, cats_treino, textos_alvo, config=None):
     if modelo == "producao":
-        clf, eh_lstm = cp.treinar_classificador(textos_treino, cats_treino)
+        lstm_config = (config or {}).get("modelo_ia", {}).get("lstm", {})
+        clf, eh_lstm = cp.treinar_classificador(textos_treino, cats_treino, lstm_config=lstm_config)
         preds, confs = cp.predizer(clf, eh_lstm, textos_alvo)
         return preds, confs, eh_lstm
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -230,11 +232,25 @@ def main() -> int:
     n_lote = len(pendentes) if args.max_turnos <= 0 else min(len(pendentes), args.max_turnos * tam)
     lote = pendentes[:n_lote]
 
+    memoria_cfg = config.get("memoria_validada", {})
+    memoria = []
+    if memoria_cfg.get("habilitada", True):
+        memoria = mv.carregar_memoria_validada(sh, abas["validacao_humana"])
+    resumo_mem = mv.resumir_memoria(memoria)
+    peso_mem = int(memoria_cfg.get("peso_treino", 3))
+    textos_treino, cats_treino = mv.expandir_treino_com_memoria(
+        [e["texto"] for e in elegiveis],
+        [e["categoria_original"] for e in elegiveis],
+        memoria,
+        peso=peso_mem,
+    )
+    print(f"memoria_validada={resumo_mem['exemplos_validados']} | "
+          f"categorias_memoria={resumo_mem['categorias_validadas']} | peso={peso_mem}")
+
     # Treina na base rotulada (todos elegíveis) e prediz só o lote
     print("treinando modelo...")
     preds, confs, eh_lstm = treinar_e_prever(
-        args.modelo, [e["texto"] for e in elegiveis], [e["categoria_original"] for e in elegiveis],
-        [e["texto"] for e in lote])
+        args.modelo, textos_treino, cats_treino, [e["texto"] for e in lote], config=config)
     nome_modelo = ("LSTM_Bidirecional" if eh_lstm else
                    ("RandomForest_Fallback" if args.modelo == "producao" else "Baseline_TFIDF_LogReg"))
 

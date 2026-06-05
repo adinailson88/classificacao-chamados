@@ -39,14 +39,22 @@ def estimar_criticidade(texto: str) -> str:
     return "Baixa"
 
 
-def treinar_classificador(textos, categorias, verbose: int = 2):
+def treinar_classificador(textos, categorias, verbose: int = 2, lstm_config: dict | None = None):
     """Treina LSTM (primário) ou RF (fallback). Retorna (clf, eh_lstm)."""
     try:
         import tensorflow  # noqa: F401
-        from modelo_lstm import ClassificadorLSTM
+        from modelo_lstm import ClassificadorLSTM, resolver_parametros_lstm
         if len(textos) >= MIN_BASE_LSTM:
-            clf = ClassificadorLSTM()
-            clf.fit(textos, categorias, verbose=verbose)
+            params = resolver_parametros_lstm(lstm_config)
+            fit_params = {
+                "epochs": int(params.pop("epochs", 15)),
+                "batch_size": int(params.pop("batch_size", 128)),
+                "paciencia": int(params.pop("paciencia", 3)),
+                "validation_split": float(params.pop("validation_split", 0.1)),
+                "usar_class_weight": bool(params.pop("usar_class_weight", True)),
+            }
+            clf = ClassificadorLSTM(**params)
+            clf.fit(textos, categorias, verbose=verbose, **fit_params)
             return clf, True
         print(f"[producao] base pequena ({len(textos)}) — fallback RF.", file=sys.stderr)
     except Exception as e:  # noqa: BLE001

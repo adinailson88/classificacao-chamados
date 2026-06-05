@@ -31,6 +31,34 @@
     "limiar_confianca_baixa": 0.7,
     "limiar_alta_confianca": 0.95
   },
+  "objetivo_final": {
+    "meta": "Modelo treinado e calibrado para indicar, na maioria das categorias, se a categoria historica do chamado esta correta ou nao.",
+    "confianca_minima_alvo": 0.95,
+    "criterio": "A faixa >=95% precisa manter acerto validado proximo ou superior a 95%; softmax alto sem validacao humana nao basta.",
+    "prioridade_antes_validacao_manual": [
+      "aumentar capacidade configuravel do LSTM",
+      "usar memoria validada quando existir",
+      "reclassificar primeiro os chamados de menor confianca",
+      "rodar modelo robusto local em baixa frequencia nos casos dificeis"
+    ]
+  },
+  "modelo_ia": {
+    "lstm": {
+      "perfil": "robusto",
+      "usar_class_weight": true
+    },
+    "robusto": {
+      "modelo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "frequencia_recomendada": "baixa",
+      "uso": "reclassificacao lenta de chamados dificeis ou de baixa confianca"
+    }
+  },
+  "memoria_validada": {
+    "habilitada": true,
+    "aba_origem": "VALIDACAO_HUMANA",
+    "usar_quando": "categoria_validada preenchida e usar_para_treino=SIM",
+    "peso_treino": 3
+  },
   "reclassificacao": {
     "habilitada": false,
     "tamanho_lote": 200,

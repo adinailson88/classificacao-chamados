@@ -23,6 +23,44 @@ LSTM_VOCAB_SIZE = 8000
 LSTM_MAX_LEN = 120
 LSTM_EMBED_DIM = 128
 LSTM_UNITS = 64
+LSTM_DENSE_UNITS = 64
+LSTM_DROPOUT = 0.5
+LSTM_LAYERS = 1
+
+PERFIS_LSTM = {
+    "padrao": {
+        "vocab_size": 8000,
+        "max_len": 120,
+        "embed_dim": 128,
+        "units": 64,
+        "dense_units": 64,
+        "dropout": 0.5,
+        "layers": 1,
+        "epochs": 15,
+        "batch_size": 128,
+        "paciencia": 3,
+    },
+    "robusto": {
+        "vocab_size": 20000,
+        "max_len": 220,
+        "embed_dim": 192,
+        "units": 128,
+        "dense_units": 128,
+        "dropout": 0.45,
+        "layers": 2,
+        "epochs": 25,
+        "batch_size": 96,
+        "paciencia": 5,
+    },
+}
+
+
+def resolver_parametros_lstm(config: dict | None = None) -> dict:
+    cfg = dict(config or {})
+    perfil = str(cfg.pop("perfil", "padrao") or "padrao").lower()
+    params = dict(PERFIS_LSTM.get(perfil, PERFIS_LSTM["padrao"]))
+    params.update({k: v for k, v in cfg.items() if v not in (None, "")})
+    return params
 
 
 def _tf():
@@ -37,11 +75,17 @@ class ClassificadorLSTM:
         max_len: int = LSTM_MAX_LEN,
         embed_dim: int = LSTM_EMBED_DIM,
         units: int = LSTM_UNITS,
+        dense_units: int = LSTM_DENSE_UNITS,
+        dropout: float = LSTM_DROPOUT,
+        layers: int = LSTM_LAYERS,
     ):
         self.vocab_size = vocab_size
         self.max_len = max_len
         self.embed_dim = embed_dim
         self.units = units
+        self.dense_units = dense_units
+        self.dropout = dropout
+        self.layers = max(1, int(layers))
         self.model = None
         self.tokenizer = None
         self.classes_ = None  # np.ndarray de categorias (índice = id da classe)
@@ -82,13 +126,18 @@ class ClassificadorLSTM:
         X = self._vetorizar(textos)
 
         n_classes = len(self.classes_)
-        self.model = Sequential([
-            Embedding(self.vocab_size, self.embed_dim, input_length=self.max_len),
-            Bidirectional(LSTM(self.units)),
-            Dropout(0.5),
-            Dense(64, activation="relu"),
+        camadas = [Embedding(self.vocab_size, self.embed_dim, input_length=self.max_len)]
+        for idx_camada in range(self.layers):
+            camadas.append(Bidirectional(LSTM(
+                self.units,
+                return_sequences=(idx_camada < self.layers - 1),
+            )))
+            camadas.append(Dropout(float(self.dropout)))
+        camadas.extend([
+            Dense(int(self.dense_units), activation="relu"),
             Dense(n_classes, activation="softmax"),
         ])
+        self.model = Sequential(camadas)
         self.model.compile(
             optimizer="adam",
             loss="sparse_categorical_crossentropy",
@@ -124,7 +173,9 @@ class ClassificadorLSTM:
         with (d / "config.json").open("w", encoding="utf-8") as f:
             json.dump(
                 {"vocab_size": self.vocab_size, "max_len": self.max_len,
-                 "embed_dim": self.embed_dim, "units": self.units}, f,
+                 "embed_dim": self.embed_dim, "units": self.units,
+                 "dense_units": self.dense_units, "dropout": self.dropout,
+                 "layers": self.layers}, f,
             )
 
     @classmethod

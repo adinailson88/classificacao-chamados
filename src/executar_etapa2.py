@@ -30,6 +30,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
 import classificador_producao as cp  # noqa: E402
+import memoria_validada as mv  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
@@ -54,11 +55,12 @@ def parse_conf(v) -> float:
         return 0.0
 
 
-def treinar_reclass(modelo, textos, cats):
+def treinar_reclass(modelo, textos, cats, config=None):
     """Retorna (predict_fn, tag). predict_fn(textos) -> (preds, confs)."""
     if modelo == "robusto":
         import classificador_robusto as cr
-        clf, tag = cr.treinar(textos, cats)
+        lstm_config = (config or {}).get("modelo_ia", {}).get("lstm", {})
+        clf, tag = cr.treinar(textos, cats, lstm_config=lstm_config)
         return (lambda x: clf.predict_com_conf(x)), tag
     if modelo == "baseline":
         from sklearn.feature_extraction.text import TfidfVectorizer
@@ -76,7 +78,8 @@ def treinar_reclass(modelo, textos, cats):
             i = p.argmax(axis=1)
             return clf.classes_[i], p[np.arange(len(i)), i]
         return f, "Baseline"
-    clf, eh_lstm = cp.treinar_classificador(textos, cats)
+    lstm_config = (config or {}).get("modelo_ia", {}).get("lstm", {})
+    clf, eh_lstm = cp.treinar_classificador(textos, cats, lstm_config=lstm_config)
     return (lambda x: cp.predizer(clf, eh_lstm, x)), ("LSTM" if eh_lstm else "RF")
 
 
@@ -171,7 +174,7 @@ def main() -> int:
         if conf_1 < lim_alta:
             candidatos.append((ln, cat_ia_1, conf_1, d))
 
-    candidatos.sort(key=lambda c: c[0])
+    candidatos.sort(key=lambda c: (c[2], c[0]))
     total_cand = len(candidatos)
     print(f"run_id={run_id} | elegiveis={len(elegiveis)} | candidatos_reclass={total_cand} | modelo={args.modelo}")
 
@@ -182,8 +185,24 @@ def main() -> int:
     n_lote = total_cand if args.max_turnos <= 0 else min(total_cand, args.max_turnos * tam)
     lote = candidatos[:n_lote]
 
+    memoria_cfg = config.get("memoria_validada", {})
+    memoria = []
+    if memoria_cfg.get("habilitada", True):
+        memoria = mv.carregar_memoria_validada(sh, abas["validacao_humana"])
+    resumo_mem = mv.resumir_memoria(memoria)
+    peso_mem = int(memoria_cfg.get("peso_treino", 3))
+    textos_treino, cats_treino = mv.expandir_treino_com_memoria(
+        [t for t, _ in elegiveis],
+        [c for _, c in elegiveis],
+        memoria,
+        peso=peso_mem,
+    )
+    print(f"memoria_validada={resumo_mem['exemplos_validados']} | "
+          f"categorias_memoria={resumo_mem['categorias_validadas']} | peso={peso_mem} | "
+          "prioridade=menor_confianca")
+
     print("treinando modelo de reclassificação...")
-    predict_fn, tag = treinar_reclass(args.modelo, [t for t, _ in elegiveis], [c for _, c in elegiveis])
+    predict_fn, tag = treinar_reclass(args.modelo, textos_treino, cats_treino, config=config)
     executor_reclass = f"Reclass_{tag}"
     preds, confs = predict_fn([d["texto"] for (_, _, _, d) in lote])
 
