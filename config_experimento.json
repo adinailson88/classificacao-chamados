@@ -44,10 +44,10 @@
   },
   "modelo_ia": {
     "lstm": {
-      "perfil": "robusto",
+      "perfil": "padrao",
       "perfil_robusto_disponivel": true,
       "usar_class_weight": true,
-      "_nota_perfil": "robusto e o padrao global (Etapa 2/re-treino). A Etapa 1 (cron 15min) e fixada em padrao via env LSTM_PERFIL no etapa1_turnos.yml, por velocidade."
+      "_nota_perfil": "padrao e o perfil seguro global. O perfil robusto permanece disponivel para execucoes lentas por LSTM_PERFIL=robusto ou workflows especificos."
     },
     "robusto": {
       "modelo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
@@ -82,5 +82,19 @@
   "comparacao": {
     "limiar_revisao": 0.95,
     "lote_padrao": 200
+  },
+  "multimodelo": {
+    "_nota": "Materializa o ciclo completo (classificacao + confianca + calibracao + reclassificacao) por IA, uma aba por modelo, com predicao OUT-OF-FOLD (a IA que rotula a linha nunca treinou nela). Lote dinamico: processa o que estiver pendente, mesmo que reste apenas 1 chamado.",
+    "habilitado": true,
+    "modelos_leves": ["naive_bayes", "regressao_logistica", "linear_svc", "sgd", "extra_trees", "random_forest"],
+    "modelos_pesados": ["lstm"],
+    "k_folds": 5,
+    "min_base_treino": 200,
+    "fracao_topup": 0.25,
+    "tamanho_turno": 15,
+    "aba_classificacao": "CLASSIF__{modelo}",
+    "aba_reclassificacao": "RECLASS__{modelo}",
+    "aba_turnos": "MULTIMODELO_TURNOS",
+    "aba_metricas": "MULTIMODELO_METRICAS"
   }
 }

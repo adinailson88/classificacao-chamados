@@ -152,8 +152,21 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
 - **Executado:** `python src/comparar_modelos_lote.py --modelo todos --inicio 0 --limite 200 --aplicar`
   (sem `--aplicar` = dry-run); ou workflow `comparar_modelos.yml`. Não altera etapa1/etapa2.
 
+### `src/classificacao_multimodelo.py` + `src/reclassificacao_multimodelo.py` — ciclo completo por modelo
+- **O que faz:** materializa uma classificação própria por IA em `CLASSIF__<modelo>`
+  e depois reclassifica os casos de baixa confiança em `RECLASS__<modelo>`.
+- **Método:** usa predição out-of-fold para evitar vazamento; a linha prevista não
+  participa do treino do modelo que a rotulou.
+- **Memória:** usa `VALIDACAO_HUMANA` quando houver `categoria_validada` e
+  `usar_para_treino=SIM`, com peso configurado em `memoria_validada`.
+- **Executado:** `python src/classificacao_multimodelo.py --modelos leves --max-turnos 1`
+  e `python src/reclassificacao_multimodelo.py --modelos leves --max-turnos 1`.
+  Acrescente `--aplicar` somente quando for gravar na planilha.
+
 ### Workflows (`.github/workflows/`)
 - `comparar_modelos.yml` — comparação multi-modelo por lote (manual; inputs modelo/inicio/limite).
+- `multimodelo_classificacao.yml` — materializa `CLASSIF__<modelo>` por IA (manual; dry-run por padrão).
+- `multimodelo_reclassificacao.yml` — materializa `RECLASS__<modelo>` por IA (manual; dry-run por padrão).
 - `etapa1_turnos.yml` — Etapa 1 progressiva (LSTM), agendado a cada 15 min.
 - `etapa2_reclassificacao.yml` — Etapa 2 (reclassificação), disparo manual.
 - `reclassificacao_robusta.yml` — modelo robusto; **agendamento desativado** (só manual) até a Etapa 1 concluir.

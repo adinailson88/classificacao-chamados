@@ -60,6 +60,7 @@ O reforco automatico antes da revisao manual esta em:
 3. `src/memoria_validada.py`: le apenas exemplos humanos com `categoria_validada` e `usar_para_treino=SIM`.
 4. `src/executar_etapa1.py` e `src/executar_etapa2.py`: usam a memoria validada quando ela existir.
 5. `src/executar_etapa2.py`: prioriza menor confianca antes de reclassificar.
+6. `src/classificacao_multimodelo.py` e `src/reclassificacao_multimodelo.py`: executam o ciclo completo por modelo em abas separadas, com predicao out-of-fold.
 
 ## Comandos locais
 
@@ -98,6 +99,13 @@ python src/executar_etapa2.py --modelo producao --max-turnos 40
 python src/executar_etapa2.py --modelo producao --max-turnos 40 --aplicar
 ```
 
+Multimodelo completo:
+
+```bash
+python src/classificacao_multimodelo.py --modelos leves --max-turnos 1
+python src/reclassificacao_multimodelo.py --modelos leves --max-turnos 1
+```
+
 Preparacao da validacao humana:
 
 ```bash
@@ -121,6 +129,8 @@ python src/resetar_experimento.py --aplicar --confirmar RESETAR
 5. `preparar_validacao.yml`: monta a aba `VALIDACAO_HUMANA`, disparo manual.
 6. `resetar.yml`: reset seguro, disparo manual com confirmacao.
 7. `classificacao_incremental.yml`: fluxo incremental antigo, mantido manual.
+8. `multimodelo_classificacao.yml`: classificacao por modelo em `CLASSIF__<modelo>`, manual, dry-run por padrao.
+9. `multimodelo_reclassificacao.yml`: reclassificacao por modelo em `RECLASS__<modelo>`, manual, dry-run por padrao.
 
 ## Dashboard publico
 

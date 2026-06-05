@@ -115,6 +115,21 @@ Estrutura para comparar VÁRIOS modelos locais sobre o **mesmo lote** de registr
 - 1º dry-run (lote [0:200], holdout): linear_svc acc 0,65 > logreg/rf 0,61 > sgd 0,605
   > extra_trees 0,585 > naive_bayes 0,50. (holdout estrito, fatia específica.)
 
+## MULTIMODELO COMPLETO (2026-06-05) — classificação e reclassificação por IA
+Implementado ciclo completo por modelo, ainda como fluxo manual/controlado:
+- `src/classificacao_multimodelo.py` materializa `CLASSIF__<modelo>` para cada IA,
+  com predição out-of-fold. A IA que rotula uma linha não treina naquela linha.
+- `src/reclassificacao_multimodelo.py` reclassifica baixa confiança por modelo,
+  preservando `CLASSIF__<modelo>` e gravando em `RECLASS__<modelo>`.
+- `config_experimento.json` ganhou bloco `multimodelo`: modelos leves, LSTM pesado,
+  K-fold, tamanho de turno 15, abas de classificação/reclassificação/métricas.
+- Workflows manuais:
+  - `multimodelo_classificacao.yml`
+  - `multimodelo_reclassificacao.yml`
+- Segurança: ambos têm input `aplicar=false` por padrão; sem aplicar, rodam dry-run.
+- Perfil LSTM seguro global permanece `padrao`. O perfil `robusto` fica disponível
+  por `LSTM_PERFIL=robusto` ou input `lstm_perfil`, para execuções mais lentas.
+
 ## Regras de ouro
 - Não presumir totais fixos de linhas: `total_linhas_*` são **observados** na
   execução; a planilha cresce; os scripts releem a fonte.
