@@ -87,6 +87,53 @@ def main() -> int:
     except Exception as e:  # noqa: BLE001
         print(f"calibracao falhou: {type(e).__name__}: {e}", file=sys.stderr)
 
+    # Registros por chamado (SEM texto de chamado) para os filtros do painel.
+    try:
+        snap = sh.worksheet(abas_cfg["snapshot_etapa_1"]).get_values(
+            "A:J", value_render_option="UNFORMATTED_VALUE")
+    except Exception:  # noqa: BLE001
+        snap = []
+    valida = {}
+    try:
+        vv = sh.worksheet(abas_cfg["validacao_humana"]).get_all_values()
+        if len(vv) > 1:
+            cabv = {(" ".join(str(c).split()).casefold()): i for i, c in enumerate(vv[0])}
+            iln, idec = cabv.get("linha_planilha"), cabv.get("decisao")
+            if iln is not None and idec is not None:
+                for rr in vv[1:]:
+                    ln = str(rr[iln]).strip() if iln < len(rr) else ""
+                    dec = str(rr[idec]).strip() if idec < len(rr) else ""
+                    if ln and dec:
+                        valida[ln] = dec
+    except Exception:  # noqa: BLE001
+        pass
+
+    def _conf(x):
+        try:
+            f = float(str(x).replace("%", "").replace(",", ".").strip())
+            return f / 100.0 if f > 1 else f
+        except (ValueError, TypeError):
+            return 0.0
+
+    regs = []
+    for rr in snap[1:]:
+        if len(rr) < 6:
+            continue
+        ln = str(rr[1]).strip()
+        orig = str(rr[3]).strip()
+        cia = str(rr[4]).strip()
+        if not cia:
+            continue
+        c = _conf(rr[5])
+        ex = str(rr[6]).strip() if len(rr) > 6 else ""
+        fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
+        regs.append({"l": ln, "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
+                     "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex,
+                     "k": 1 if cia == orig else 0, "v": valida.get(ln, "")})
+    (SAIDA / "registros.json").write_text(json.dumps(regs, ensure_ascii=False), encoding="utf-8")
+    resumo["registros"] = len(regs)
+    print(f"registros={len(regs)}")
+
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"gerado_em={resumo['gerado_em']}")
     return 0
