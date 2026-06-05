@@ -516,3 +516,14 @@ Observação de execução:
 - Problema do dashboard a corrigir: deixar muito explícito que `validados=0` e
   que as métricas atuais são concordância contra histórico, não acerto validado
   humanamente.
+
+## Execucao pos-Claude - 2026-06-05 13:48
+
+- Verificado run `27026916670`: `Multimodelo - classificacao completa` concluiu com sucesso.
+- As 7 IAs estao materializadas com 13.825 registros por modelo e 0 pendentes.
+- `src/analise_estatistica.py` foi executado localmente com `PYTHONPATH=.codex_deps` e gerou `docs/dados/estatistica.json` para 13.825 linhas comuns e 7 modelos.
+- `docs/index.html` ganhou aba `Estatistica`, consumindo `estatistica.json`, e seletor no grafico de modelos para acuracia/F1 por lote e acumulados.
+- Criado workflow `.github/workflows/estatistica.yml` para recalcular estatistica manualmente ou apos `Multimodelo - classificacao completa`.
+- Criado `requirements-estatistica.txt` para dependencias estatisticas sem pesar o dashboard de 30 em 30 minutos.
+- Criado `DOCUMENTACAO_MODELOS_E_ESTATISTICA.md` e PDFs em `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
+- Reclassificacao segue sem prioridade por decisao do usuario; proximo foco e estatistica/documentacao/dashboard.

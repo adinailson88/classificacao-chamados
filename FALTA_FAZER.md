@@ -172,3 +172,16 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 > Ordem recomendada: **P0 (painel) → P1 (materializar multimodelo) → P2 (workflows)
 > → P3 (calibração) → P4 (validação humana)**. O foco imediato é o painel refletir
 > corretamente o que já existe, não processar mais registros.
+
+---
+
+## Atualizacao executada pelo Codex - 2026-06-05 13:48
+
+- O LSTM da materializacao multimodelo concluiu com sucesso no run `27026916670`.
+- As 7 IAs estao materializadas com 13.825 registros por modelo e 0 pendentes: `naive_bayes`, `regressao_logistica`, `linear_svc`, `sgd`, `extra_trees`, `random_forest`, `lstm`.
+- Ranking atual vs categoria historica: `linear_svc` 80,26% > `extra_trees` 78,47% > `sgd` 77,51% > `random_forest` 76,80% > `regressao_logistica` 76,59% > `naive_bayes` 70,07% > `lstm` 67,57%.
+- `src/analise_estatistica.py` foi executado com sucesso e gerou `docs/dados/estatistica.json` com 13.825 linhas comuns e 7 modelos.
+- Foi criada a aba `Estatistica` em `docs/index.html`, consumindo `estatistica.json` com bootstrap, correlacao confianca x acerto, Kappa, normalidade, residuos, Cochran Q, McNemar e Friedman/Nemenyi.
+- O grafico de evolucao em `Modelos` ganhou seletor para acuracia do lote, acuracia acumulada, F1-macro do lote, F1-macro acumulado e balanced accuracy.
+- Foram criados PDFs em `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
+- Reclassificacao continua sem prioridade, conforme decisao do usuario: so depois de concluir toda Etapa 1/multimodelo, estatistica e documentacao.

@@ -40,11 +40,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: |
+            requirements.txt
+            requirements-robusto.txt
       - name: Instalar dependencias
         run: |
-          pip install -r requirements.txt
+          python -m pip install --retries 5 --timeout 120 -r requirements.txt
           if [ "${{ github.event.inputs.modelo || 'producao' }}" = "robusto" ]; then
-            pip install -r requirements-robusto.txt
+            python -m pip install --retries 5 --timeout 120 -r requirements-robusto.txt
           fi
       - name: Recriar chave da conta de servico
         env:

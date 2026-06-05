@@ -121,3 +121,13 @@ incorporar análise estatística formal aos resultados:
 > **Próximo do roteiro**: concluir o LSTM (Ext. A) → rodar Etapa 2 multimodelo →
 > implementar a Extensão B (estatística) → quando liberado, validação humana (24–35) e
 > métricas validadas (28, 36, 38–43).
+
+## Atualizacao pos-Claude - 2026-06-05 13:48
+
+- O run `27026916670` concluiu a materializacao do LSTM; a Extensao A agora tem as 7 IAs completas.
+- Multimodelo atual: 13.825 registros por IA, 0 pendentes em cada modelo.
+- Ranking vs historico: `linear_svc` 80,26%, `extra_trees` 78,47%, `sgd` 77,51%, `random_forest` 76,80%, `regressao_logistica` 76,59%, `naive_bayes` 70,07%, `lstm` 67,57%.
+- A Extensao B foi iniciada e executada: `src/analise_estatistica.py` gerou `docs/dados/estatistica.json` com correlacao confianca x acerto, normalidade, residuos/tendencia, bootstrap IC 95%, Kappa, Cochran Q, McNemar e Friedman/Nemenyi.
+- O dashboard ganhou aba `Estatistica` e o grafico de modelos ganhou seletor de metrica/acumulado.
+- PDFs gerados: `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
+- A reclassificacao permanece sem prioridade ate concluir toda Etapa 1/multimodelo, estatistica e documentacao.

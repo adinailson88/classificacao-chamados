@@ -1,0 +1,398 @@
+{
+  "gerado_em": "05/06/2026 13:48",
+  "n_linhas_comuns": 13825,
+  "modelos": [
+    "naive_bayes",
+    "regressao_logistica",
+    "linear_svc",
+    "sgd",
+    "extra_trees",
+    "random_forest",
+    "lstm"
+  ],
+  "alpha": 0.05,
+  "observacao": "Acerto = IA x categoria historica (preliminar; a validacao humana qualifica). Sem texto de chamado.",
+  "correlacao_conf_acerto": [
+    {
+      "modelo": "naive_bayes",
+      "pointbiserial_r": 0.5824,
+      "p_pb": 0.0,
+      "spearman_r": 0.5588,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "pointbiserial_r": 0.4526,
+      "p_pb": 0.0,
+      "spearman_r": 0.469,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    },
+    {
+      "modelo": "linear_svc",
+      "pointbiserial_r": 0.4265,
+      "p_pb": 0.0,
+      "spearman_r": 0.4719,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    },
+    {
+      "modelo": "sgd",
+      "pointbiserial_r": 0.4369,
+      "p_pb": 0.0,
+      "spearman_r": 0.457,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    },
+    {
+      "modelo": "extra_trees",
+      "pointbiserial_r": 0.5381,
+      "p_pb": 0.0,
+      "spearman_r": 0.5233,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    },
+    {
+      "modelo": "random_forest",
+      "pointbiserial_r": 0.5319,
+      "p_pb": 0.0,
+      "spearman_r": 0.5226,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    },
+    {
+      "modelo": "lstm",
+      "pointbiserial_r": 0.648,
+      "p_pb": 0.0,
+      "spearman_r": 0.6255,
+      "p_sp": 0.0,
+      "interpretacao": "positiva = mais confianca -> mais acerto"
+    }
+  ],
+  "normalidade_concordancia_turno": [
+    {
+      "modelo": "naive_bayes",
+      "n_turnos": 922,
+      "shapiro_W": 0.9669,
+      "p": 1.23e-13,
+      "normal_5pct": false
+    },
+    {
+      "modelo": "regressao_logistica",
+      "n_turnos": 922,
+      "shapiro_W": 0.9407,
+      "p": 9.9e-19,
+      "normal_5pct": false
+    },
+    {
+      "modelo": "linear_svc",
+      "n_turnos": 922,
+      "shapiro_W": 0.9312,
+      "p": 3.66e-20,
+      "normal_5pct": false
+    },
+    {
+      "modelo": "sgd",
+      "n_turnos": 922,
+      "shapiro_W": 0.9392,
+      "p": 5.78e-19,
+      "normal_5pct": false
+    },
+    {
+      "modelo": "extra_trees",
+      "n_turnos": 922,
+      "shapiro_W": 0.9404,
+      "p": 8.9e-19,
+      "normal_5pct": false
+    },
+    {
+      "modelo": "random_forest",
+      "n_turnos": 922,
+      "shapiro_W": 0.9478,
+      "p": 1.57e-17,
+      "normal_5pct": false
+    },
+    {
+      "modelo": "lstm",
+      "n_turnos": 922,
+      "shapiro_W": 0.9709,
+      "p": 1.32e-12,
+      "normal_5pct": false
+    }
+  ],
+  "residuos_tendencia": [
+    {
+      "modelo": "naive_bayes",
+      "n_turnos": 922,
+      "slope": 2.4e-05,
+      "r2": 0.0011,
+      "p_tendencia": 0.311,
+      "durbin_watson": 1.451,
+      "tendencia": "estavel"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "n_turnos": 922,
+      "slope": 0.000181,
+      "r2": 0.0816,
+      "p_tendencia": 8.77e-19,
+      "durbin_watson": 1.41,
+      "tendencia": "sobe"
+    },
+    {
+      "modelo": "linear_svc",
+      "n_turnos": 922,
+      "slope": 0.000147,
+      "r2": 0.0712,
+      "p_tendencia": 1.72e-16,
+      "durbin_watson": 1.414,
+      "tendencia": "sobe"
+    },
+    {
+      "modelo": "sgd",
+      "n_turnos": 922,
+      "slope": 0.000177,
+      "r2": 0.0831,
+      "p_tendencia": 4.21e-19,
+      "durbin_watson": 1.432,
+      "tendencia": "sobe"
+    },
+    {
+      "modelo": "extra_trees",
+      "n_turnos": 922,
+      "slope": 0.000128,
+      "r2": 0.0478,
+      "p_tendencia": 1.95e-11,
+      "durbin_watson": 1.339,
+      "tendencia": "sobe"
+    },
+    {
+      "modelo": "random_forest",
+      "n_turnos": 922,
+      "slope": 0.000152,
+      "r2": 0.0637,
+      "p_tendencia": 7.21e-15,
+      "durbin_watson": 1.384,
+      "tendencia": "sobe"
+    },
+    {
+      "modelo": "lstm",
+      "n_turnos": 922,
+      "slope": 0.000128,
+      "r2": 0.0299,
+      "p_tendencia": 1.28e-07,
+      "durbin_watson": 1.316,
+      "tendencia": "sobe"
+    }
+  ],
+  "acuracia_bootstrap": [
+    {
+      "modelo": "linear_svc",
+      "acuracia": 0.8026,
+      "ic95_min": 0.7959,
+      "ic95_max": 0.8092
+    },
+    {
+      "modelo": "extra_trees",
+      "acuracia": 0.7847,
+      "ic95_min": 0.778,
+      "ic95_max": 0.7916
+    },
+    {
+      "modelo": "sgd",
+      "acuracia": 0.7751,
+      "ic95_min": 0.7682,
+      "ic95_max": 0.7819
+    },
+    {
+      "modelo": "random_forest",
+      "acuracia": 0.768,
+      "ic95_min": 0.761,
+      "ic95_max": 0.7756
+    },
+    {
+      "modelo": "regressao_logistica",
+      "acuracia": 0.7659,
+      "ic95_min": 0.759,
+      "ic95_max": 0.7729
+    },
+    {
+      "modelo": "naive_bayes",
+      "acuracia": 0.7007,
+      "ic95_min": 0.6929,
+      "ic95_max": 0.7081
+    },
+    {
+      "modelo": "lstm",
+      "acuracia": 0.6757,
+      "ic95_min": 0.6681,
+      "ic95_max": 0.6836
+    }
+  ],
+  "kappa_cohen_historico": [
+    {
+      "modelo": "linear_svc",
+      "kappa": 0.7876
+    },
+    {
+      "modelo": "extra_trees",
+      "kappa": 0.7665
+    },
+    {
+      "modelo": "sgd",
+      "kappa": 0.7588
+    },
+    {
+      "modelo": "random_forest",
+      "kappa": 0.7505
+    },
+    {
+      "modelo": "regressao_logistica",
+      "kappa": 0.7494
+    },
+    {
+      "modelo": "naive_bayes",
+      "kappa": 0.6715
+    },
+    {
+      "modelo": "lstm",
+      "kappa": 0.6539
+    }
+  ],
+  "fleiss_kappa_entre_ias": 0.7721,
+  "cochran_q": {
+    "Q": 2618.842,
+    "p": 0.0,
+    "df": 6,
+    "conclusao": "acuracias diferentes (p<0,05)"
+  },
+  "mcnemar": {
+    "modelos": [
+      "naive_bayes",
+      "regressao_logistica",
+      "linear_svc",
+      "sgd",
+      "extra_trees",
+      "random_forest",
+      "lstm"
+    ],
+    "p": [
+      [
+        null,
+        1.22e-61,
+        6.8e-165,
+        7.72e-86,
+        2.42e-141,
+        8.69e-69,
+        5.45e-10
+      ],
+      [
+        1.22e-61,
+        null,
+        4.49e-51,
+        1.34e-11,
+        5.58e-10,
+        0.404,
+        1.76e-151
+      ],
+      [
+        6.8e-165,
+        4.49e-51,
+        null,
+        1.52e-33,
+        4.09e-11,
+        2.92e-39,
+        4.42e-276
+      ],
+      [
+        7.72e-86,
+        1.34e-11,
+        1.52e-33,
+        null,
+        0.000848,
+        0.00271,
+        2.05e-183
+      ],
+      [
+        2.42e-141,
+        5.58e-10,
+        4.09e-11,
+        0.000848,
+        null,
+        9.43e-12,
+        1.16e-197
+      ],
+      [
+        8.69e-69,
+        0.404,
+        2.92e-39,
+        0.00271,
+        9.43e-12,
+        null,
+        7.8e-149
+      ],
+      [
+        5.45e-10,
+        1.76e-151,
+        4.42e-276,
+        2.05e-183,
+        1.16e-197,
+        7.8e-149,
+        null
+      ]
+    ]
+  },
+  "friedman": {
+    "stat": 20.522,
+    "p": 0.00224,
+    "blocos": [
+      "0-200",
+      "200-400",
+      "400-600",
+      "600-800",
+      "800-1000"
+    ],
+    "modelos": [
+      "naive_bayes",
+      "regressao_logistica",
+      "linear_svc",
+      "sgd",
+      "extra_trees",
+      "random_forest",
+      "lstm"
+    ],
+    "rank_medio": [
+      {
+        "modelo": "linear_svc",
+        "rank_medio": 1.4
+      },
+      {
+        "modelo": "regressao_logistica",
+        "rank_medio": 3.0
+      },
+      {
+        "modelo": "sgd",
+        "rank_medio": 3.2
+      },
+      {
+        "modelo": "extra_trees",
+        "rank_medio": 4.0
+      },
+      {
+        "modelo": "random_forest",
+        "rank_medio": 4.2
+      },
+      {
+        "modelo": "naive_bayes",
+        "rank_medio": 5.2
+      },
+      {
+        "modelo": "lstm",
+        "rank_medio": 7.0
+      }
+    ],
+    "diferenca_critica_nemenyi": 4.029,
+    "nota": "Diferenca de rank_medio > CD => diferenca significativa (Nemenyi, alpha=0,05)."
+  }
+}

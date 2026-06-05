@@ -108,6 +108,7 @@
     <button data-t="metrics">Metricas</button>
     <button data-t="modelos">Modelos</button>
     <button data-t="multi">Multimodelo</button>
+    <button data-t="estat">Estatistica</button>
     <button data-t="reclass">Reclassificacao</button>
     <button data-t="docs">Documentacao</button>
   </nav>
@@ -193,6 +194,13 @@
       </div>
       <div class="card full">
         <h2>Acuracia por lote (evolucao entre recortes)</h2>
+        <select id="selMetricaModelo" style="margin-bottom:10px;border:1px solid var(--bd);border-radius:6px;padding:7px 9px;background:#fff;color:var(--tx)">
+          <option value="acuracia">Acuracia do lote</option>
+          <option value="acuracia_acumulada">Acuracia acumulada ate o lote</option>
+          <option value="f1_macro">F1-macro do lote</option>
+          <option value="f1_acumulado">F1-macro acumulado ate o lote</option>
+          <option value="balanced_accuracy">Balanced accuracy do lote</option>
+        </select>
         <canvas id="cModelosLote"></canvas>
       </div>
     </div>
@@ -239,6 +247,36 @@
           <th>Turno</th><th>Reclassificados</th><th>Antes</th><th>Depois</th><th>Corrigidos</th><th>Prejudicados</th><th>Ganho liquido</th><th>Executor</th>
         </tr></thead><tbody></tbody></table></div>
         <p class="muted" id="reclassVazio"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-estat" class="hide">
+    <div class="alerta" id="estatAviso">As estatisticas sao calculadas sobre as 7 IAs materializadas, comparando IA x categoria historica. Como `validados=0`, estes resultados ainda nao sao acerto humano validado.</div>
+    <div class="grid">
+      <div class="card">
+        <h2>Acuracia com IC 95% (bootstrap)</h2>
+        <canvas id="cEstAcc"></canvas>
+      </div>
+      <div class="card">
+        <h2>Correlacao confianca x acerto</h2>
+        <canvas id="cEstCorr"></canvas>
+      </div>
+      <div class="card full">
+        <h2>Resumo dos testes estatisticos</h2>
+        <div class="tablebox"><table id="tabEstResumo"><thead><tr><th>Teste</th><th>Resultado</th><th>Como interpretar</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Ranking por acuracia e intervalo</h2>
+        <div class="tablebox"><table id="tabEstAcc"><thead><tr><th>Modelo</th><th>Acuracia</th><th>IC 95%</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Kappa IA x historico</h2>
+        <div class="tablebox"><table id="tabEstKappa"><thead><tr><th>Modelo</th><th>Kappa</th><th>Leitura</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card full">
+        <h2>Normalidade e residuos por turno</h2>
+        <div class="tablebox"><table id="tabEstDiag"><thead><tr><th>Modelo</th><th>Normal?</th><th>Shapiro p</th><th>Tendencia</th><th>R2</th><th>Durbin-Watson</th></tr></thead><tbody></tbody></table></div>
       </div>
     </div>
   </section>
@@ -310,6 +348,7 @@ const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
 
 let CAT=[], MET=[], TURNOS=[], RESUMO={}, sortK="qtd_classificados", sortDir=-1, charts={};
+let MODELOS_ROWS=[];
 function kpi(v,l){ return `<div class="kpi"><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div></div>`; }
 function metric(k){ const m=(MET||[]).find(x=>x.metrica===k); return m ? m.valor : ""; }
 function destroy(id){ if(charts[id]) charts[id].destroy(); }
@@ -477,6 +516,7 @@ const PALETA=["#0f766e","#b7791f","#2f5f9e","#b42318","#1f7a4d","#7c3aed","#0891
 function renderModelos(rows){
   const tb = document.querySelector("#tabModelos tbody");
   const tr = document.querySelector("#tabRankModelos tbody");
+  MODELOS_ROWS = Array.isArray(rows) ? rows : [];
   if(!Array.isArray(rows) || !rows.length){ if(tb)tb.innerHTML=""; if(tr)tr.innerHTML=""; destroy("cModelos"); destroy("cModelosLote"); return; }
   // tabela completa (todos os recortes), ordenada por modelo e lote
   const ord=[...rows].sort((a,b)=> String(a.modelo).localeCompare(String(b.modelo)) || N(a.inicio)-N(b.inicio));
@@ -497,16 +537,81 @@ function renderModelos(rows){
     {label:"Acuracia media (%)",data:meds.map(d=>d.acc*100),backgroundColor:"#0f766e"},
     {label:"F1-macro media (%)",data:meds.map(d=>d.f1*100),backgroundColor:"#b7791f"}
   ]},options:chartOpts("%")});
-  // evolucao por lote: 1 serie por modelo (acuracia), x = lote
+  renderModelosLote();
+}
+function renderModelosLote(){
+  const rows = MODELOS_ROWS || [];
+  if(!rows.length){ destroy("cModelosLote"); return; }
+  const sel = document.getElementById("selMetricaModelo");
+  const metrica = sel ? sel.value : "acuracia";
+  const base = metrica === "acuracia_acumulada" ? "acuracia" : (metrica === "f1_acumulado" ? "f1_macro" : metrica);
+  const acumulada = metrica === "acuracia_acumulada" || metrica === "f1_acumulado";
   const lotes=[...new Set(rows.map(r=>`${r.inicio}-${r.limite}`))]
     .sort((a,b)=>N(a.split("-")[0])-N(b.split("-")[0]));
-  const porMod={}; rows.forEach(r=>{ (porMod[r.modelo]||(porMod[r.modelo]={}))[`${r.inicio}-${r.limite}`]=N(r.acuracia)*100; });
-  const nomes=meds.map(d=>d.modelo);
+  const agg={};
+  rows.forEach(r=>{ const m=r.modelo; (agg[m]||(agg[m]={modelo:m,n:0,sa:0}));
+    agg[m].n++; agg[m].sa+=N(r.acuracia); });
+  const nomes=Object.values(agg).map(d=>({modelo:d.modelo,acc:d.sa/d.n})).sort((a,b)=>b.acc-a.acc).map(d=>d.modelo);
+  const porMod={};
+  rows.forEach(r=>{ (porMod[r.modelo]||(porMod[r.modelo]=[])).push(r); });
+  Object.values(porMod).forEach(a=>a.sort((x,y)=>N(x.inicio)-N(y.inicio)));
   destroy("cModelosLote");
   charts.cModelosLote = new Chart(cModelosLote,{type:"line",data:{labels:lotes,datasets:nomes.map((m,i)=>(
-    {label:m,data:lotes.map(l=>porMod[m]&&porMod[m][l]!=null?porMod[m][l]:null),
+    {label:m,data:(porMod[m]||[]).map((r,idx,arr)=>{
+      if(!acumulada) return N(r[base])*100;
+      const s = arr.slice(0, idx+1).reduce((acc,x)=>acc+N(x[base]),0);
+      return (s/(idx+1))*100;
+    }),
      borderColor:PALETA[i%PALETA.length],backgroundColor:PALETA[i%PALETA.length],pointRadius:2,borderWidth:1.5,spanGaps:true}
   ))},options:chartOpts("%")});
+}
+
+function leituraKappa(k){
+  k=N(k);
+  if(k>=0.81) return "quase perfeito";
+  if(k>=0.61) return "substancial";
+  if(k>=0.41) return "moderado";
+  if(k>=0.21) return "baixo";
+  return "fraco";
+}
+function renderEstatistica(est){
+  if(!est || !Array.isArray(est.modelos)){
+    document.getElementById("estatAviso").innerHTML = "Estatistica ainda nao publicada. Execute `src/analise_estatistica.py`.";
+    return;
+  }
+  document.getElementById("estatAviso").innerHTML =
+    `<strong>Base estatistica:</strong> ${fmt(est.n_linhas_comuns)} linhas comuns em ${fmt(est.modelos.length)} modelos. `+
+    `Alpha=${esc(est.alpha)}. ${esc(est.observacao || "")}`;
+  const acc = Array.isArray(est.acuracia_bootstrap) ? est.acuracia_bootstrap : [];
+  document.querySelector("#tabEstAcc tbody").innerHTML = acc.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.ic95_min)} a ${pct(r.ic95_max)}</td></tr>`).join("");
+  destroy("cEstAcc");
+  charts.cEstAcc = new Chart(cEstAcc,{type:"bar",data:{labels:acc.map(r=>r.modelo),datasets:[
+    {label:"Acuracia (%)",data:acc.map(r=>N(r.acuracia)*100),backgroundColor:"#0f766e"},
+    {label:"IC95 min (%)",data:acc.map(r=>N(r.ic95_min)*100),backgroundColor:"#d9ded7"},
+    {label:"IC95 max (%)",data:acc.map(r=>N(r.ic95_max)*100),backgroundColor:"#bcd6cb"}
+  ]},options:chartOpts("%")});
+  const corr = Array.isArray(est.correlacao_conf_acerto) ? est.correlacao_conf_acerto : [];
+  destroy("cEstCorr");
+  charts.cEstCorr = new Chart(cEstCorr,{type:"bar",data:{labels:corr.map(r=>r.modelo),datasets:[
+    {label:"Spearman r",data:corr.map(r=>N(r.spearman_r)),backgroundColor:"#2f5f9e"},
+    {label:"Ponto-bisserial r",data:corr.map(r=>N(r.pointbiserial_r)),backgroundColor:"#b7791f"}
+  ]},options:chartOpts("")});
+  const kappa = Array.isArray(est.kappa_cohen_historico) ? est.kappa_cohen_historico : [];
+  document.querySelector("#tabEstKappa tbody").innerHTML = kappa.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${N(r.kappa).toFixed(4)}</td><td>${leituraKappa(r.kappa)}</td></tr>`).join("");
+  const norm = Array.isArray(est.normalidade_concordancia_turno) ? est.normalidade_concordancia_turno : [];
+  const res = Array.isArray(est.residuos_tendencia) ? est.residuos_tendencia : [];
+  const byRes={}; res.forEach(r=>byRes[r.modelo]=r);
+  document.querySelector("#tabEstDiag tbody").innerHTML = norm.map(r=>{
+    const d=byRes[r.modelo]||{};
+    return `<tr><td>${esc(r.modelo)}</td><td>${r.normal_5pct?"sim":"nao"}</td><td>${esc(r.p)}</td><td>${esc(d.tendencia||"")}</td><td>${esc(d.r2??"")}</td><td>${esc(d.durbin_watson??"")}</td></tr>`;
+  }).join("");
+  const cq=est.cochran_q||{}, fr=est.friedman||{};
+  document.querySelector("#tabEstResumo tbody").innerHTML = [
+    ["Cochran Q", cq.p!=null?`Q=${cq.Q}; p=${cq.p}; ${cq.conclusao}`:"indisponivel", "Compara se as 7 IAs têm a mesma taxa de acerto nas mesmas linhas."],
+    ["Friedman + Nemenyi", fr.p!=null?`stat=${fr.stat}; p=${fr.p}; CD=${fr.diferenca_critica_nemenyi}`:"indisponivel", "Compara ranks dos modelos entre recortes; diferença de rank maior que CD sugere diferença significativa."],
+    ["Fleiss Kappa", est.fleiss_kappa_entre_ias!=null?String(est.fleiss_kappa_entre_ias):"indisponivel", "Mede concordancia entre as IAs; quanto maior, mais elas classificam de forma parecida."],
+    ["McNemar par a par", est.mcnemar?"matriz calculada no JSON":"indisponivel", "Compara dois modelos linha a linha para saber se erram/acertam de modo significativamente diferente."]
+  ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("");
 }
 function renderMulti(mm, turnos, rt){
   const aviso=document.getElementById("multiAviso");
@@ -578,19 +683,21 @@ function ajustarFiltros(aba){
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
-  ["class","cat","metrics","modelos","multi","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["class","cat","metrics","modelos","multi","estat","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
   ajustarFiltros(b.dataset.t);
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
+document.getElementById("selMetricaModelo").addEventListener("change",renderModelosLote);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiTurnos,multiRecl] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json"),
     getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
-    getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json")
+    getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
+    getJSON("estatistica.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -605,6 +712,7 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : []);
   renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);
+  renderEstatistica(estat);
   renderReclass(Array.isArray(rt) ? rt : []);
 })();
 </script>
