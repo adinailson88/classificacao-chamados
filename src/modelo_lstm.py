@@ -61,7 +61,8 @@ def resolver_parametros_lstm(config: dict | None = None) -> dict:
     perfil = os.getenv("LSTM_PERFIL") or perfil_config or "padrao"
     perfil = str(perfil).lower()
     params = dict(PERFIS_LSTM.get(perfil, PERFIS_LSTM["padrao"]))
-    params.update({k: v for k, v in cfg.items() if v not in (None, "")})
+    chaves_validas = set(params) | {"validation_split", "usar_class_weight"}
+    params.update({k: v for k, v in cfg.items() if k in chaves_validas and v not in (None, "")})
     return params
 
 

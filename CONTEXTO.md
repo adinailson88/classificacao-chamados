@@ -347,3 +347,7 @@ Observação de execução:
   `LSTM_PERFIL` deixava a chave `perfil` sobrar nos parâmetros do LSTM, causando
   fallback para RF. Correção aplicada em `src/modelo_lstm.py`: remover `perfil`
   do dicionário antes de aplicar override por variável de ambiente.
+- Run `26989233293` executou dry-run com sucesso e sem gravação, mas revelou que
+  a chave documental `perfil_robusto_disponivel` também chegava ao construtor do
+  LSTM. Correção aplicada: `resolver_parametros_lstm()` agora filtra apenas chaves
+  válidas de arquitetura/treino.
