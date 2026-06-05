@@ -133,6 +133,11 @@
         <h2>Resumo tecnico</h2>
         <div class="tablebox"><table id="tabResumo"><thead><tr><th>Item</th><th>Valor</th></tr></thead><tbody></tbody></table></div>
       </div>
+      <div class="card full">
+        <h2>Calibracao da confianca (confianca x acerto)</h2>
+        <p class="muted" id="calibInfo">Carregando calibracao...</p>
+        <canvas id="cCalib"></canvas>
+      </div>
     </div>
   </section>
 
@@ -256,6 +261,25 @@ function renderReclass(rt){
   charts.cCorr = new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],backgroundColor:["#1f7a4d","#b42318","#2f5f9e","#68737d"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
 
+function renderCalibracao(cal){
+  const el = document.getElementById("calibInfo");
+  if(!cal || !Array.isArray(cal.por_faixa) || !cal.por_faixa.length){ if(el) el.textContent="Sem dados de calibracao publicados ainda."; return; }
+  const a = cal.faixa_alvo_95 || {};
+  const ok = N(a.concordancia_historico) >= 0.95;
+  el.innerHTML = `Meta: na faixa <strong>&gt;=95%</strong>, o acerto deve ficar perto de &gt;=95%. `
+    + `Hoje (vs historico): <strong class="${ok?'status-ok':'status-mid'}">${pct(a.concordancia_historico)}</strong> em ${fmt(a.n)} chamados. `
+    + `ECE (erro de calibracao)=${pct(cal.ece_historico)}. Validados: ${fmt(cal.validados)} `
+    + `(o acerto VALIDADO so aparece apos a validacao humana). Acerto vs historico e preliminar.`;
+  const labels = cal.por_faixa.map(f=>f.faixa);
+  const ds = [
+    {type:"bar",label:"Acerto vs historico (%)",data:cal.por_faixa.map(f=>N(f.concordancia_historico)*100),backgroundColor:"#0f766e"},
+    {type:"line",label:"Confianca media (%)",data:cal.por_faixa.map(f=>N(f.confianca_media)*100),borderColor:"#b7791f",pointRadius:3,borderWidth:2}
+  ];
+  if(N(cal.validados)>0){ ds.push({type:"line",label:"Acerto validado (%)",data:cal.por_faixa.map(f=>f.acerto_validado==null?null:N(f.acerto_validado)*100),borderColor:"#1f7a4d",pointRadius:3,borderWidth:2,spanGaps:true}); }
+  destroy("cCalib");
+  charts.cCalib = new Chart(cCalib,{type:"bar",data:{labels,datasets:ds},options:chartOpts("%")});
+}
+
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
@@ -265,9 +289,10 @@ document.getElementById("filtroCat").addEventListener("input",renderCat);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
-    getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"), getJSON("resumo.json")
+    getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
+    getJSON("resumo.json"), getJSON("calibracao.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -288,6 +313,7 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   if(Array.isArray(turnos) && turnos.length) renderClass(turnos);
   renderCat();
   renderMetrics(resumo, turnos || []);
+  renderCalibracao(cal);
   renderReclass(Array.isArray(rt) ? rt : []);
 })();
 </script>

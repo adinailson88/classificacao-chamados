@@ -75,6 +75,17 @@ def main() -> int:
         resumo["abas"][chave_json] = len(dados)
         print(f"{chave_json}: {len(dados)} linhas")
 
+    # Calibração (confiança × acerto) — critério central do objetivo final.
+    try:
+        import calibracao
+        cal = calibracao.calcular(sh, config)
+        (SAIDA / "calibracao.json").write_text(json.dumps(cal, ensure_ascii=False), encoding="utf-8")
+        resumo["calibracao"] = {"total": cal.get("total", 0), "ece_historico": cal.get("ece_historico"),
+                                "validados": cal.get("validados", 0)}
+        print(f"calibracao: total={cal.get('total')} ECE={cal.get('ece_historico')} validados={cal.get('validados')}")
+    except Exception as e:  # noqa: BLE001
+        print(f"calibracao falhou: {type(e).__name__}: {e}", file=sys.stderr)
+
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"gerado_em={resumo['gerado_em']}")
     return 0
