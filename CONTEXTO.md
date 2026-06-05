@@ -73,6 +73,13 @@ Script `src/executar_etapa1.py` + workflow `etapa1_turnos.yml` (agendado `*/15`)
   que se relaciona e como executar; + significado de **G/H/I/J** e de cada
   **executor** (LSTM vs LSTM_BAIXA_CONF, por que existe baixa_conf acima de 90%).
 - `dados/README.md` — schemas dos arquivos JSON.
+- **Dashboard** (`docs/index.html`, GitHub Pages): abas Classificação/Categorias/
+  Métricas/Modelos/Reclassificação/Documentação. Tem **filtros multi-seleção**
+  (Grupo, Faixa, Executor, Situação concorda/diverge, Validação humana) que
+  recalculam faixa/categorias/métricas a partir de `docs/dados/registros.json`
+  (por chamado, SEM texto: linha, grupo, categoria original/IA, confiança, faixa,
+  executor, concorda, validação). Gerado por `exportar_dashboard.py`. O filtro de
+  Validação humana fica pronto para a comparação após a revisão manual.
 - Panorama GERAL do Malha IA (5 eixos, dashboards, motores) fica no repositório
   **`malha-ia`** (`contexto_projeto.txt`). Este repo é só o experimento de
   classificação/reclassificação.
