@@ -1,0 +1,68 @@
+name: Comparar modelos (lote)
+
+# Roda 1 modelo (ou 'todos' os leves) sobre o MESMO lote [inicio, inicio+limite),
+# na mesma ordem, e grava metricas comparaveis (COMPARACAO_MODELOS / _CATEGORIA /
+# _PREVISOES). Nao altera o fluxo de classificacao (etapa1/etapa2). Disparo manual.
+
+on:
+  workflow_dispatch:
+    inputs:
+      modelo:
+        description: "Modelo (ou 'todos' = leves)"
+        type: choice
+        default: todos
+        options:
+          - todos
+          - naive_bayes
+          - regressao_logistica
+          - linear_svc
+          - sgd
+          - extra_trees
+          - random_forest
+          - lstm
+      inicio:
+        description: "Indice inicial do lote"
+        default: "0"
+      limite:
+        description: "Tamanho do lote (0 = todos)"
+        default: "200"
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  comparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Dependencias (leves)
+        run: pip install gspread google-auth scikit-learn
+      - name: TensorFlow (apenas se modelo=lstm)
+        if: ${{ github.event.inputs.modelo == 'lstm' }}
+        run: pip install tensorflow==2.17.0
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Comparar
+        run: >
+          python src/comparar_modelos_lote.py
+          --modelo "${{ github.event.inputs.modelo || 'todos' }}"
+          --inicio "${{ github.event.inputs.inicio || '0' }}"
+          --limite "${{ github.event.inputs.limite || '200' }}"
+          --aplicar
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
