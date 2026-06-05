@@ -126,6 +126,25 @@ agora — só após fortalecer modelo/scripts/painel.
 
 ---
 
+## P5 — ANÁLISES ESTATÍSTICAS (novo, solicitado 2026-06-05)
+Além das métricas já existentes (concordância, F1, calibração/ECE, ganho líquido),
+adicionar análise estatística formal (detalhe em `ESTADO_DO_ROTEIRO.md`, Extensão B):
+- [ ] **Correlação** (Pearson/Spearman): confiança×acerto, volume×concordância, texto×acerto.
+- [ ] **Normalidade**: Shapiro–Wilk / D'Agostino / KS + QQ-plots (decide paramétrico vs não).
+- [ ] **Análise de resíduos**: resíduos de concordância por turno/categoria; homocedasticidade,
+      autocorrelação (Durbin–Watson), tendência.
+- [ ] **Significância entre as 7 IAs**: McNemar par a par; Cochran's Q / Friedman + Nemenyi;
+      IC 95% por bootstrap de acurácia/F1.
+- [ ] **Concordância**: Kappa de Cohen (IA×histórico; IA×validação) e Fleiss entre as IAs.
+- [ ] Saída: tabelas/figuras ABNT + JSON agregado (sem texto) para o painel.
+
+## P6 — Comparar TODAS as IAs juntas (incl. LSTM)
+- [x] 6 leves materializados.
+- [ ] ⏳ **LSTM** (7ª IA) em materialização — quando concluir, a aba Multimodelo terá as 7.
+- [ ] Conferir as 7 lado a lado (Multimodelo + Modelos) e rodar P5 sobre elas.
+
+> 📄 **Mapa completo do estado das 50 etapas do roteiro**: ver `ESTADO_DO_ROTEIRO.md`.
+
 ## Housekeeping
 - [ ] Remover Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.
 - [ ] **Atualizar `CONTEXTO.md`** a cada correção (o quê, workflow/run ID, estado dos JSONs, pendências).
