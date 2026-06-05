@@ -444,3 +444,18 @@ Observação de execução:
   progressiva para falhas transitórias de API.
 - `dashboard.yml` passou a enfileirar atualizações do dashboard sem cancelar uma
   execução em curso.
+
+## Execuções após reset — 2026-06-05 04:22
+- Reset completo aplicado e confirmado antes da retomada das classificações.
+- Etapa 1 foi executada em rodadas sucessivas, com dashboard automático após cada
+  finalização bem-sucedida.
+- Estado publicado no dashboard em `docs/dados/resumo.json`: 6.300 registros,
+  420 turnos de classificação, 48 categorias em métricas e calibração total de
+  6.300 registros (`ece_historico=0.0645`, sem validação humana).
+- Comparação de modelos publicada em 4 recortes completos de 200 registros:
+  `0-200`, `200-400`, `400-600` e `600-800`, totalizando 28 linhas
+  comparativas (`naive_bayes`, `regressao_logistica`, `linear_svc`, `sgd`,
+  `extra_trees`, `random_forest`, `lstm`).
+- Observação de evidência: nos quatro recortes publicados até aqui, os modelos
+  lineares/TF-IDF superaram o LSTM em acurácia; o LSTM ainda não atingiu o
+  patamar objetivo de confiança/acurácia para uso automático sem revisão.
