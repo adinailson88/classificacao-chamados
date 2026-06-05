@@ -527,3 +527,11 @@ Observação de execução:
 - Criado `requirements-estatistica.txt` para dependencias estatisticas sem pesar o dashboard de 30 em 30 minutos.
 - Criado `DOCUMENTACAO_MODELOS_E_ESTATISTICA.md` e PDFs em `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
 - Reclassificacao segue sem prioridade por decisao do usuario; proximo foco e estatistica/documentacao/dashboard.
+
+## Ajuste do dashboard - fonte da aba Classificacao (2026-06-05)
+
+- Problema identificado pelo usuario: a aba `Classificacao` continuava aparentando ter apenas `LSTM` e `LSTM_BAIXA_CONF`, porque consumia somente `docs/dados/registros.json`, derivado do `SNAPSHOT_ETAPA_1`.
+- Correcao aplicada: `src/exportar_dashboard.py` passou a publicar `docs/dados/multimodelo_registros.json`, agregado e sem texto de chamado, lendo as abas `CLASSIF__<modelo>` das 7 IAs.
+- `docs/index.html` ganhou seletor de fonte nos filtros: `Multimodelo (7 IAs)` ou `Etapa 1 (LSTM)`. A fonte multimodelo fica como padrao quando existir.
+- Os filtros da aba `Classificacao`, `Categorias` e `Metricas` agora incluem `Modelo`, alem de Grupo, Faixa, Executor, Situacao e Validacao humana.
+- Normalidade: os resultados estatisticos publicados rejeitam normalidade a 5% nos modelos avaliados. Isso nao deve ser forcado; a leitura metodologica deve usar testes nao parametricos e intervalos por bootstrap.

@@ -63,6 +63,8 @@
   .btnlimpar.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
   .btnlimpar:disabled{opacity:.5;cursor:default}
   .ms>button.has{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
+  .fonteClass{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--mut);background:var(--panel-soft);border:1px solid var(--bd);border-radius:6px;padding:4px 8px}
+  .fonteClass select{border:0;background:transparent;color:var(--tx);font-size:13px;font-weight:700;outline:none}
   .fchips{display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:4px}
   .fchips:empty{margin:0}
   .chip{display:inline-flex;align-items:center;gap:6px;background:#eaf2ee;border:1px solid #bcd6cb;color:#18463e;border-radius:14px;padding:2px 6px 2px 9px;font-size:12px}
@@ -91,7 +93,14 @@
 
   <div class="filtros" id="filtros">
     <strong>Filtros (multi):</strong>
+    <label class="fonteClass">Fonte
+      <select id="fonteClassificacao">
+        <option value="multi">Multimodelo (7 IAs)</option>
+        <option value="etapa1">Etapa 1 (LSTM)</option>
+      </select>
+    </label>
     <span class="notefiltro">afetam Classificacao, Categorias e Metricas</span>
+    <div class="ms" data-campo="m"></div>
     <div class="ms" data-campo="g"></div>
     <div class="ms" data-campo="f"></div>
     <div class="ms" data-campo="e"></div>
@@ -306,7 +315,7 @@
       <div class="definition"><strong>Executor</strong>: modelo ou etapa que gerou a classificacao, como LSTM, RF_Fallback ou Reclass_LSTM.</div>
       <div class="definition"><strong>Ganho liquido</strong>: quantidade de chamados corrigidos na reclassificacao menos a quantidade de chamados prejudicados.</div>
       <div class="definition"><strong>Validacao humana</strong>: etapa ainda necessaria para confirmar se a IA ou a classificacao historica esta correta nos casos divergentes ou ambiguos.</div>
-      <div class="definition"><strong>Filtros (multi-selecao)</strong>: na barra superior da pagina, escolha varias opcoes de Grupo, Faixa de confianca, Executor, Situacao (concorda/diverge) e Validacao humana. Eles recalculam a distribuicao por faixa (Classificacao), as tabelas por categoria (Categorias) e o contador de metricas filtradas no topo (registros, concordancia, confianca media). O filtro de Validacao humana fica pronto para, apos a revisao manual, comparar os resultados pela categoria validada. A evolucao por turno e a aba Reclassificacao sao series temporais (por lote/turno) e nao usam esses filtros.</div>
+      <div class="definition"><strong>Filtros (multi-selecao)</strong>: na barra superior da pagina, escolha a fonte dos dados (Multimodelo com 7 IAs ou Etapa 1 LSTM) e varias opcoes de Modelo, Grupo, Faixa de confianca, Executor, Situacao (concorda/diverge) e Validacao humana. Eles recalculam a distribuicao por faixa (Classificacao), as tabelas por categoria (Categorias) e o contador de metricas filtradas no topo (registros, concordancia, confianca media). O filtro de Validacao humana fica pronto para, apos a revisao manual, comparar os resultados pela categoria validada. A evolucao por turno e a aba Reclassificacao sao series temporais (por lote/turno) e nao usam esses filtros.</div>
       <div class="definition"><strong>Dados dinamicos</strong>: os numeros NAO sao fixos. A base de chamados cresce com o tempo e a classificacao avanca por turnos; cada indicador e recontado a cada atualizacao. Um valor visto hoje (ex.: total de registros) tende a aumentar.</div>
     </div>
 
@@ -354,13 +363,26 @@ function metric(k){ const m=(MET||[]).find(x=>x.metrica===k); return m ? m.valor
 function destroy(id){ if(charts[id]) charts[id].destroy(); }
 function chartOpts(suf){return{responsive:true,plugins:{legend:{labels:{color:"#24303a",boxWidth:12}}},scales:{x:{ticks:{color:"#68737d"},grid:{color:"#edf0ea"}},y:{ticks:{color:"#68737d",callback:v=>v+(suf||"")},grid:{color:"#edf0ea"}}}};}
 
-let REG=[], FILTRADO=[];
-const FILT={g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
-const ROT_CAMPO={g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
+let REG=[], REG_ETAPA1=[], REG_MULTI=[], FILTRADO=[];
+const FILT={m:new Set(),g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
+const ROT_CAMPO={m:"Modelo",g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
 const ROT_FAIXA={acima_95:">=95%",entre_70_95:"70-95%",abaixo_70:"<70%"};
 function valDe(x,c){ if(c==="k")return x.k?"concorda":"diverge"; if(c==="v")return x.v||"(sem validacao)"; return x[c]||""; }
 function rotDe(c,v){ return c==="f" ? (ROT_FAIXA[v]||v) : v; }
 function passa(x){ return Object.keys(FILT).every(c=> !FILT[c].size || FILT[c].has(valDe(x,c))); }
+function normalizarEtapa1(rows){ return (Array.isArray(rows)?rows:[]).map(x=>Object.assign({},x,{m:x.m||"etapa1_lstm"})); }
+function normalizarMulti(rows){ return (Array.isArray(rows)?rows:[]).map(x=>Object.assign({},x,{m:x.m||"modelo_indefinido"})); }
+function fonteAtual(){ return document.getElementById("fonteClassificacao")?.value || "multi"; }
+function rotuloFonte(){
+  return fonteAtual()==="multi" ? "Multimodelo (7 IAs)" : "Etapa 1 (LSTM)";
+}
+function selecionarFonteClassificacao(){
+  const preferida = fonteAtual();
+  REG = preferida==="multi" && REG_MULTI.length ? REG_MULTI : REG_ETAPA1;
+  Object.values(FILT).forEach(s=>s.clear());
+  construirFiltros();
+  aplicarFiltros();
+}
 function agrupaCategorias(reg){
   const m={};
   reg.forEach(x=>{ const d=m[x.o]||(m[x.o]={categoria:x.o,qtd_classificados:0,_t:0,_sc:0,qtd_acima_95:0,qtd_70_95:0,qtd_abaixo_70:0});
@@ -383,9 +405,10 @@ function renderKpisFiltrados(reg){
   const n=reg.length, ok=reg.reduce((s,x)=>s+x.k,0), conf=reg.reduce((s,x)=>s+N(x.c),0);
   const cats = new Set(reg.map(x=>x.o)).size;
   const ativo = filtrosAtivos();
+  const fonte = rotuloFonte();
   const pend = N(metric("pendentes_restantes"));
   const el=document.getElementById("fcount");
-  el.innerHTML = `<strong>${fmt(n)}</strong> registros | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
+  el.innerHTML = `${esc(fonte)} | <strong>${fmt(n)}</strong> registros | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
   document.getElementById("kpis").innerHTML =
     kpi(fmt(n), ativo ? "Registros filtrados" : "Chamados classificados")+
     kpi(n ? pct(ok/n) : "-", ativo ? "Concordancia filtrada" : "Concordancia acumulada")+
@@ -393,13 +416,14 @@ function renderKpisFiltrados(reg){
     kpi(fmt(cats), ativo ? "Categorias filtradas" : "Categorias")+
     kpi(fmt(pend), "Pendentes globais");
   document.getElementById("notice").innerHTML = ativo
-    ? `Filtros aplicados: ${fmt(n)} registros exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
+    ? `Fonte ${esc(fonte)} com filtros aplicados: ${fmt(n)} registros exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
     : (pend > 0
-      ? `Experimento em andamento: ${fmt(n)} chamados classificados e ${fmt(pend)} pendentes nos dados publicados. Os graficos representam resultado parcial.`
-      : `Experimento sem pendentes nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`);
+      ? `Fonte ${esc(fonte)}: ${fmt(n)} registros classificados e ${fmt(pend)} pendentes globais nos dados publicados. Os graficos representam resultado parcial.`
+      : `Fonte ${esc(fonte)}: sem pendentes globais nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`);
   renderMetrics(RESUMO, TURNOS, reg);
 }
 function construirFiltros(){
+  document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide"));
   document.querySelectorAll("#filtros .ms").forEach(div=>{
     const campo=div.dataset.campo;
     const vals=[...new Set(REG.map(x=>valDe(x,campo)))].filter(v=>v!=="").sort();
@@ -415,7 +439,6 @@ function construirFiltros(){
     });
   });
   document.getElementById("limparFiltros").onclick=limparTodos;
-  document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 }
 function limparTodos(){
   Object.values(FILT).forEach(s=>s.clear());
@@ -579,9 +602,14 @@ function renderEstatistica(est){
     document.getElementById("estatAviso").innerHTML = "Estatistica ainda nao publicada. Execute `src/analise_estatistica.py`.";
     return;
   }
+  const norm = Array.isArray(est.normalidade_concordancia_turno) ? est.normalidade_concordancia_turno : [];
+  const normOk = norm.filter(r=>r.normal_5pct).length;
+  const leituraNormalidade = norm.length
+    ? (normOk ? `${normOk}/${norm.length} modelos nao rejeitam normalidade a 5%.` : `Normalidade rejeitada nos ${norm.length} modelos a 5%; usar testes nao parametricos e bootstrap.`)
+    : "Normalidade ainda sem diagnostico publicado.";
   document.getElementById("estatAviso").innerHTML =
     `<strong>Base estatistica:</strong> ${fmt(est.n_linhas_comuns)} linhas comuns em ${fmt(est.modelos.length)} modelos. `+
-    `Alpha=${esc(est.alpha)}. ${esc(est.observacao || "")}`;
+    `Alpha=${esc(est.alpha)}. ${esc(leituraNormalidade)} ${esc(est.observacao || "")}`;
   const acc = Array.isArray(est.acuracia_bootstrap) ? est.acuracia_bootstrap : [];
   document.querySelector("#tabEstAcc tbody").innerHTML = acc.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.ic95_min)} a ${pct(r.ic95_max)}</td></tr>`).join("");
   destroy("cEstAcc");
@@ -598,7 +626,6 @@ function renderEstatistica(est){
   ]},options:chartOpts("")});
   const kappa = Array.isArray(est.kappa_cohen_historico) ? est.kappa_cohen_historico : [];
   document.querySelector("#tabEstKappa tbody").innerHTML = kappa.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${N(r.kappa).toFixed(4)}</td><td>${leituraKappa(r.kappa)}</td></tr>`).join("");
-  const norm = Array.isArray(est.normalidade_concordancia_turno) ? est.normalidade_concordancia_turno : [];
   const res = Array.isArray(est.residuos_tendencia) ? est.residuos_tendencia : [];
   const byRes={}; res.forEach(r=>byRes[r.modelo]=r);
   document.querySelector("#tabEstDiag tbody").innerHTML = norm.map(r=>{
@@ -689,13 +716,14 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
 document.getElementById("filtroCat").addEventListener("input",renderCat);
 document.getElementById("selMetricaModelo").addEventListener("change",renderModelosLote);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
+document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiReg,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json"),
-    getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
+    getJSON("registros.json"), getJSON("multimodelo_registros.json"), getJSON("multimodelo_metricas.json"),
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
     getJSON("estatistica.json")
   ]);
@@ -704,7 +732,11 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   TURNOS = Array.isArray(turnos) ? turnos : [];
   RESUMO = resumo || {};
   document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
-  REG = Array.isArray(registros) ? registros : [];
+  REG_ETAPA1 = normalizarEtapa1(registros);
+  REG_MULTI = normalizarMulti(multiReg);
+  if(!REG_MULTI.length) document.getElementById("fonteClassificacao").value = "etapa1";
+  document.getElementById("fonteClassificacao").addEventListener("change",selecionarFonteClassificacao);
+  REG = fonteAtual()==="multi" && REG_MULTI.length ? REG_MULTI : REG_ETAPA1;
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }

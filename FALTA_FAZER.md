@@ -185,3 +185,11 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - O grafico de evolucao em `Modelos` ganhou seletor para acuracia do lote, acuracia acumulada, F1-macro do lote, F1-macro acumulado e balanced accuracy.
 - Foram criados PDFs em `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
 - Reclassificacao continua sem prioridade, conforme decisao do usuario: so depois de concluir toda Etapa 1/multimodelo, estatistica e documentacao.
+
+## Atualizacao - dashboard Classificacao e normalidade (2026-06-05)
+
+- [x] Publicar `docs/dados/multimodelo_registros.json` agregado, sem texto de chamado, lendo as abas `CLASSIF__<modelo>`.
+- [x] Incluir seletor de fonte na barra de filtros: `Multimodelo (7 IAs)` ou `Etapa 1 (LSTM)`.
+- [x] Incluir filtro `Modelo` para que a aba `Classificacao` nao fique limitada a `LSTM` e `LSTM_BAIXA_CONF`.
+- [x] Mostrar na aba `Estatistica` quando a normalidade for rejeitada e indicar uso de testes nao parametricos/bootstrap.
+- [ ] Regenerar e publicar o dashboard pelo workflow `dashboard.yml`, depois conferir o GitHub Pages.

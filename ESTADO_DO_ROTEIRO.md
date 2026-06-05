@@ -111,10 +111,11 @@ incorporar análise estatística formal aos resultados:
 ## Atualizações no PAINEL (feitas)
 - Filtros: chips dos ativos, botões destacados, Limpar com contagem; **aparecem só nas
   abas onde funcionam** (Classificacao/Categorias/Metricas) e somem nas demais.
-- ⚠️ Na aba **Classificacao**, o filtro **Executor** só mostra `LSTM`/`LSTM_BAIXA_CONF`
-  porque o `registros.json` vem do `SNAPSHOT_ETAPA_1` (Etapa 1 = só LSTM). A comparação
-  das 7 IAs está na aba **Multimodelo** (e na aba **Modelos**). Para filtrar por IA na
-  própria Classificacao seria preciso publicar registros por modelo (decisão futura).
+- A aba **Classificacao** agora tem seletor de fonte: **Multimodelo (7 IAs)** ou
+  **Etapa 1 (LSTM)**. O dashboard publica `multimodelo_registros.json` agregado,
+  sem texto de chamado, para permitir filtro por **Modelo** na propria Classificacao.
+  Assim, o filtro deixa de ficar restrito a `LSTM`/`LSTM_BAIXA_CONF` quando a fonte
+  multimodelo esta selecionada.
 - Aba **Modelos**: média + ranking + evolução por lote (todos os recortes).
 - Overflow horizontal corrigido.
 
@@ -131,3 +132,4 @@ incorporar análise estatística formal aos resultados:
 - O dashboard ganhou aba `Estatistica` e o grafico de modelos ganhou seletor de metrica/acumulado.
 - PDFs gerados: `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
 - A reclassificacao permanece sem prioridade ate concluir toda Etapa 1/multimodelo, estatistica e documentacao.
+- Diagnostico de normalidade: a normalidade nao deve ser forcada nos modelos. Quando Shapiro rejeitar normalidade a 5%, usar testes nao parametricos, bootstrap e modelos apropriados para proporcoes.

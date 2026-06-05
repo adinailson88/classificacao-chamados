@@ -52,6 +52,55 @@ def _abas_multimodelo(config):
     ]
 
 
+def registros_multimodelo(sh, config):
+    """Exporta registros agregados das CLASSIF__<modelo>, sem texto de chamado."""
+    mm = config.get("multimodelo", {}) or {}
+    modelos = list(mm.get("modelos_leves", [])) + list(mm.get("modelos_pesados", []))
+    template = mm.get("aba_classificacao", "CLASSIF__{modelo}")
+    regs = []
+
+    def _conf(x):
+        try:
+            f = float(str(x).replace("%", "").replace(",", ".").strip())
+            return f / 100.0 if f > 1 else f
+        except (ValueError, TypeError):
+            return 0.0
+
+    for modelo in modelos:
+        aba = template.replace("{modelo}", modelo)
+        try:
+            vals = com_retentativa(
+                f"ler {aba}",
+                lambda a=aba: sh.worksheet(a).get_values("A:K", value_render_option="UNFORMATTED_VALUE"),
+            )
+        except Exception:  # noqa: BLE001
+            continue
+        for rr in vals[1:]:
+            if len(rr) < 6:
+                continue
+            ln = str(rr[1]).strip() if len(rr) > 1 else ""
+            orig = str(rr[3]).strip() if len(rr) > 3 else ""
+            cia = str(rr[4]).strip() if len(rr) > 4 else ""
+            if not ln or not orig or not cia:
+                continue
+            c = _conf(rr[5])
+            ex = str(rr[7]).strip() if len(rr) > 7 else modelo
+            fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
+            regs.append({
+                "l": ln,
+                "m": modelo,
+                "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
+                "o": orig,
+                "p": cia,
+                "c": round(c, 4),
+                "f": fa,
+                "e": ex,
+                "k": 1 if cia == orig else 0,
+                "v": "",
+            })
+    return regs
+
+
 def _erro_transitorio(exc: Exception) -> bool:
     msg = str(exc).lower()
     return any(t in msg for t in ("429", "quota exceeded", "rate limit", "temporarily unavailable"))
@@ -180,6 +229,12 @@ def main() -> int:
     (SAIDA / "registros.json").write_text(json.dumps(regs, ensure_ascii=False), encoding="utf-8")
     resumo["registros"] = len(regs)
     print(f"registros={len(regs)}")
+
+    regs_multi = registros_multimodelo(sh, config)
+    (SAIDA / "multimodelo_registros.json").write_text(
+        json.dumps(regs_multi, ensure_ascii=False), encoding="utf-8")
+    resumo["multimodelo_registros"] = len(regs_multi)
+    print(f"multimodelo_registros={len(regs_multi)}")
 
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"gerado_em={resumo['gerado_em']}")
