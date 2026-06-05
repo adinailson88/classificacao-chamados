@@ -336,3 +336,10 @@ gravar na planilha. O workflow:
 
 Uso recomendado antes de qualquer nova escrita automática:
 `gh workflow run reclassificacao_dry_run.yml -f modelo=producao -f max_turnos=2`
+
+Observação de execução:
+- Run `26988684880` foi disparado em `2026-06-05` com o perfil LSTM robusto ainda
+  como padrão e precisou ser cancelado por demora excessiva para um dry-run rápido.
+- Ajuste aplicado: `config_experimento.json` voltou a usar `perfil=padrao`, o
+  perfil `robusto` permanece disponível e pode ser acionado por `LSTM_PERFIL` ou
+  pelo input `lstm_perfil` do workflow dry-run.

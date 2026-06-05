@@ -17,6 +17,13 @@ on:
       max_turnos:
         description: "Turnos de 15 para simular"
         default: "2"
+      lstm_perfil:
+        description: "Perfil LSTM (padrao ou robusto)"
+        type: choice
+        default: padrao
+        options:
+          - padrao
+          - robusto
 
 permissions:
   contents: read
@@ -27,6 +34,7 @@ jobs:
     timeout-minutes: 60
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      LSTM_PERFIL: ${{ github.event.inputs.lstm_perfil || 'padrao' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
