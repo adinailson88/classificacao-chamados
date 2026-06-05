@@ -459,3 +459,31 @@ Observação de execução:
 - Observação de evidência: nos cinco recortes publicados até aqui, os modelos
   lineares/TF-IDF superaram o LSTM em acurácia; o LSTM ainda não atingiu o
   patamar objetivo de confiança/acurácia para uso automático sem revisão.
+
+## Continuidade para Claude — 2026-06-05 11:55
+- Arquivo de handoff criado: `CLAUDE_CONTINUACAO_2026-06-05.md`.
+- Estado mais recente do dashboard após `git pull --rebase`: `docs/dados/resumo.json`
+  com `gerado_em=05/06/2026 11:55`, `registros=8100`,
+  `log_turnos_classificacao=540`, `metricas_por_categoria=49`,
+  `comparacao_modelos=35`, `calibracao.total=8100`, `ece_historico=0.0537`,
+  `validados=0`.
+- `docs/dados/metricas_experimento.json` indica `processados_acumulado=8100`,
+  `pendentes_restantes=5725`, `concordancia_acumulada_global=0.7765` e modelo
+  `LSTM_Bidirecional`.
+- Run manual `27001950857` da Etapa 1 falhou antes de executar o script por
+  download incompleto de `tensorflow==2.17.0` no `pip`
+  (`IncompleteRead`, exit code 2). Não foi erro de lógica do classificador.
+  Execuções agendadas posteriores continuaram e avançaram o experimento.
+- Correção necessária de workflow: adicionar cache/retry de `pip`, separar
+  dependências leves de TensorFlow quando possível e reduzir chance de falha por
+  download grande.
+- Problema do dashboard a corrigir: a aba `Modelos` usa apenas a última execução
+  por modelo no gráfico (`ult[r.modelo]=r`), escondendo os recortes anteriores.
+  Deve mostrar médias, ranking, evolução por lote e todos os recortes.
+- Problema do dashboard a corrigir: `exportar_dashboard.py` não publica
+  `COMPARACAO_CATEGORIA`, `COMPARACAO_PREVISOES` nem as abas multimodelo
+  (`MULTIMODELO_*`, `CLASSIF__*`, `RECLASS__*`). O painel, portanto, não mostra
+  tudo que o experimento já produz.
+- Problema do dashboard a corrigir: deixar muito explícito que `validados=0` e
+  que as métricas atuais são concordância contra histórico, não acerto validado
+  humanamente.
