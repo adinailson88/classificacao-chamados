@@ -408,3 +408,19 @@ Observação de execução:
   `max_turnos=2`, `lstm_perfil=padrao`. Resultado: LSTM treinou sem fallback por
   erro de parâmetros; `memoria_validada=0`; `candidatos_reclass=4632`; lote de 30;
   `corrigidos=7`, `prejudicados=6`, `GANHO_LIQUIDO=1`; modo dry-run, sem gravação.
+
+## Registro operacional — 2026-06-05
+- Verificado o ponto crítico do texto de treino: os fluxos de classificação e
+  reclassificação usam a concatenação de `TÍTULO` (B), `DESCRIÇÃO GLPI` (D),
+  `TÍTULO O.S.M.` (E) e `DESCRIÇÃO O.S.M.` (F). A coluna `titulo` no
+  `LOG_LINHA_A_LINHA` é apenas um resumo/auditoria; não significa treino só pelo
+  título. Por isso não foi feito reset por suspeita de treino incompleto.
+- Dashboard: filtros ajustados para recalcular também cards superiores, aviso e
+  resumo técnico, além das tabelas e gráfico de faixa.
+- Planilha: fórmula descritiva da coluna L (`Classificado_Confiança_IA`) aplicada
+  em `CHAMADOS_ESQUELETO_REDUZIDO!L2:L18859`, contemplando `LSTM`, `RF_Fallback`,
+  `*_BAIXA_CONF`, `Reclass_*`, baseline e modelos multimodelo.
+- Abas multimodelo criadas com cabeçalhos: `CLASSIF__*`, `RECLASS__*`,
+  `MULTIMODELO_TURNOS`, `MULTIMODELO_METRICAS` e `MULTIMODELO_RECLASS_TURNOS`.
+  A primeira tentativa bateu limite de cota do Sheets e foi retomada após aguardar
+  a janela de escrita; conferência final indicou que todas existem.

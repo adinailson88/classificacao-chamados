@@ -258,7 +258,7 @@ function fmtData(v){
 const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
 
-let CAT=[], MET=[], sortK="qtd_classificados", sortDir=-1, charts={};
+let CAT=[], MET=[], TURNOS=[], RESUMO={}, sortK="qtd_classificados", sortDir=-1, charts={};
 function kpi(v,l){ return `<div class="kpi"><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div></div>`; }
 function metric(k){ const m=(MET||[]).find(x=>x.metrica===k); return m ? m.valor : ""; }
 function destroy(id){ if(charts[id]) charts[id].destroy(); }
@@ -288,10 +288,26 @@ function renderFaixaFiltrada(reg){
     datasets:[{data:[c.acima_95,c.entre_70_95,c.abaixo_70],backgroundColor:["#1f7a4d","#b7791f","#b42318"]}]},
     options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
+function filtrosAtivos(){ return Object.values(FILT).some(s=>s.size); }
 function renderKpisFiltrados(reg){
   const n=reg.length, ok=reg.reduce((s,x)=>s+x.k,0), conf=reg.reduce((s,x)=>s+N(x.c),0);
+  const cats = new Set(reg.map(x=>x.o)).size;
+  const ativo = filtrosAtivos();
+  const pend = N(metric("pendentes_restantes"));
   const el=document.getElementById("fcount");
   el.innerHTML = `<strong>${fmt(n)}</strong> registros | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
+  document.getElementById("kpis").innerHTML =
+    kpi(fmt(n), ativo ? "Registros filtrados" : "Chamados classificados")+
+    kpi(n ? pct(ok/n) : "-", ativo ? "Concordancia filtrada" : "Concordancia acumulada")+
+    kpi(n ? pct(conf/n) : "-", "Confianca media")+
+    kpi(fmt(cats), ativo ? "Categorias filtradas" : "Categorias")+
+    kpi(fmt(pend), "Pendentes globais");
+  document.getElementById("notice").innerHTML = ativo
+    ? `Filtros aplicados: ${fmt(n)} registros exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
+    : (pend > 0
+      ? `Experimento em andamento: ${fmt(n)} chamados classificados e ${fmt(pend)} pendentes nos dados publicados. Os graficos representam resultado parcial.`
+      : `Experimento sem pendentes nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`);
+  renderMetrics(RESUMO, TURNOS, reg);
 }
 function construirFiltros(){
   document.querySelectorAll("#filtros .ms").forEach(div=>{
@@ -348,21 +364,22 @@ function renderCat(){
   document.querySelector("#tabBaixaConc tbody").innerHTML = [...CAT].filter(c=>N(c.qtd_classificados)>=15).sort((a,b)=>N(a.taxa_concordancia)-N(b.taxa_concordancia)).slice(0,10).map(c=>`<tr><td>${esc(c.categoria)}</td><td>${fmt(c.qtd_classificados)}</td><td class="${N(c.taxa_concordancia)<0.7?"status-bad":"status-mid"}">${pct(c.taxa_concordancia)}</td></tr>`).join("");
 }
 
-function renderMetrics(resumo, turnos){
+function renderMetrics(resumo, turnos, reg=null){
   document.querySelector("#tabMet tbody").innerHTML = (MET||[]).map(m=>`<tr><td>${esc(m.metrica)}</td><td>${esc(m.valor)}</td></tr>`).join("");
-  const proc = turnos.reduce((s,t)=>s+N(t.qtd_processados),0);
+  const temRecorte = Array.isArray(reg);
+  const recorte = temRecorte ? reg : REG;
+  const proc = temRecorte ? recorte.length : (recorte.length || turnos.reduce((s,t)=>s+N(t.qtd_processados),0));
   const pend = N(metric("pendentes_restantes"));
-  const total = proc + pend;
-  const cobertura = total ? proc / total : 0;
-  const conc = turnos.length ? N(turnos[turnos.length-1].concordancia_acumulada) : N(metric("concordancia_acumulada_global"));
+  const ok = recorte.reduce((s,x)=>s+x.k,0);
+  const conf = recorte.reduce((s,x)=>s+N(x.c),0);
+  const conc = recorte.length ? ok / recorte.length : (turnos.length ? N(turnos[turnos.length-1].concordancia_acumulada) : N(metric("concordancia_acumulada_global")));
   document.querySelector("#tabResumo tbody").innerHTML = [
     ["run_id", resumo?.run_id || ""],["gerado_em", fmtData(resumo?.gerado_em)],["classificados", fmt(proc)],
-    ["pendentes_restantes", pend ? fmt(pend) : "0"],["cobertura_aproximada", pct(cobertura)],["concordancia_acumulada", pct(conc)],
-    ["modelo", metric("modelo") || ""],["categorias", fmt(CAT.length)]
+    ["pendentes_restantes_global", pend ? fmt(pend) : "0"],["confianca_media_recorte", recorte.length ? pct(conf/recorte.length) : "-"],
+    ["concordancia_recorte", pct(conc)],["modelo", metric("modelo") || ""],["categorias_recorte", fmt(CAT.length)]
   ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
-  const classeCob = cobertura >= 0.95 ? "status-ok" : cobertura >= 0.5 ? "status-mid" : "status-bad";
   document.getElementById("analise").innerHTML = `
-    <p><strong>Cobertura:</strong> <span class="${classeCob}">${pct(cobertura)}</span> dos registros estimados ja aparece como classificado nos dados publicados.</p>
+    <p><strong>Recorte atual:</strong> <span class="status-ok">${fmt(proc)}</span> registros considerados pelos filtros ativos.</p>
     <p><strong>Concordancia IA x historico:</strong> <span class="${conc>=0.8?"status-ok":conc>=0.7?"status-mid":"status-bad"}">${pct(conc)}</span>. Esta metrica nao substitui validacao humana.</p>
     <p><strong>Risco de leitura:</strong> enquanto houver pendentes, os graficos devem ser interpretados como acompanhamento parcial, nao como resultado final do experimento.</p>`;
 }
@@ -433,25 +450,13 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
-  const proc = Array.isArray(turnos) ? turnos.reduce((s,t)=>s+N(t.qtd_processados),0) : 0;
-  const pend = N(metric("pendentes_restantes"));
-  const total = proc + pend;
-  const acumFinal = turnos.length ? N(turnos[turnos.length-1].concordancia_acumulada) : N(metric("concordancia_acumulada_global"));
-  document.getElementById("kpis").innerHTML =
-    kpi(fmt(proc),"Chamados classificados")+
-    kpi(pct(acumFinal),"Concordancia acumulada")+
-    kpi(fmt(pend),"Pendentes restantes")+
-    kpi(turnos.length,"Turnos processados")+
-    kpi(CAT.length,"Categorias");
-  document.getElementById("notice").innerHTML = pend > 0
-    ? `Experimento em andamento: ${fmt(proc)} chamados classificados e ${fmt(pend)} pendentes nos dados publicados. Os graficos representam resultado parcial.`
-    : `Experimento sem pendentes nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`;
+  TURNOS = Array.isArray(turnos) ? turnos : [];
+  RESUMO = resumo || {};
   document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
   REG = Array.isArray(registros) ? registros : [];
-  if(Array.isArray(turnos) && turnos.length) renderClass(turnos);
+  if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
-  else { renderCat(); renderFaixaFiltrada([]); }
-  renderMetrics(resumo, turnos || []);
+  else { renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
   renderCalibracao(cal);
   renderModelos(Array.isArray(mod) ? mod : []);
   renderReclass(Array.isArray(rt) ? rt : []);
