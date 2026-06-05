@@ -14,12 +14,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
+from tempo import agora_bahia  # noqa: E402
 
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -31,11 +31,6 @@ MANIFEST = DADOS / "manifest_exportacao.json"
 COL_INICIO = 7    # G
 COL_FIM = 10      # J
 COL_CONFERENCIA = 13  # M
-FUSO_BAHIA = timezone(timedelta(hours=-3))
-
-
-def agora_bahia() -> str:
-    return datetime.now(FUSO_BAHIA).strftime("%Y-%m-%dT%H:%M:%S-03:00")
 
 
 def carregar_json(caminho: Path) -> Any:

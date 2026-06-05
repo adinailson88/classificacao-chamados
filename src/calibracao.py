@@ -16,16 +16,15 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
+from tempo import agora_bahia  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
 SAIDA = RAIZ / "docs" / "dados" / "calibracao.json"
-FUSO_BAHIA = timezone(timedelta(hours=-3))
 
 # (limite_inferior, limite_superior, rotulo)
 FAIXAS = [
@@ -139,7 +138,7 @@ def calcular(sh, config: dict) -> dict:
 
     faixa95 = _fechar(por_faixa[">=95%"])
     return {
-        "gerado_em": datetime.now(FUSO_BAHIA).strftime("%Y-%m-%dT%H:%M:%S-03:00"),
+        "gerado_em": agora_bahia(),
         "run_id": config.get("run_id", ""),
         "total": n_tot,
         "validados": geral["n_val"],

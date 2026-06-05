@@ -17,7 +17,6 @@ import argparse
 import json
 import sys
 import time
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -27,15 +26,11 @@ from sklearn.metrics import (accuracy_score, balanced_accuracy_score, f1_score,
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
 import modelos_zoo as zoo  # noqa: E402
+from tempo import agora_bahia  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
-FUSO_BAHIA = timezone(timedelta(hours=-3))
 QUEM_CORRETO = ["NAO_AVALIADO", "IA", "ORIGINAL", "NENHUM", "DUVIDOSO"]
-
-
-def agora_bahia() -> str:
-    return datetime.now(FUSO_BAHIA).strftime("%Y-%m-%dT%H:%M:%S-03:00")
 
 
 def cel(linha, idx) -> str:

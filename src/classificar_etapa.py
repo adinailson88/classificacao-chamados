@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -31,6 +30,7 @@ from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.pipeline import Pipeline
 
+from tempo import agora_bahia
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
@@ -42,11 +42,6 @@ LOG_LINHAS = DADOS / "log_linha_a_linha.jsonl"
 METRICAS = DADOS / "metricas_experimento.json"
 
 MODELO = "Baseline_TFIDF_LogReg"
-FUSO_BAHIA = timezone(timedelta(hours=-3))
-
-
-def agora_bahia() -> str:
-    return datetime.now(FUSO_BAHIA).strftime("%Y-%m-%dT%H:%M:%S-03:00")
 
 
 def carregar_json(caminho: Path) -> dict[str, Any]:

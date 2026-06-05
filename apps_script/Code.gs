@@ -358,7 +358,7 @@ function gravarEmBlocos_(sheet, linhas, colunas, tamanhoBloco) {
 }
 
 function formatarDataBahia_(data) {
-  return Utilities.formatDate(data, 'America/Bahia', "yyyy-MM-dd'T'HH:mm:ss") + '-03:00';
+  return Utilities.formatDate(data, 'America/Bahia', 'dd/MM/yyyy HH:mm');
 }
 
 function getSheetOrError_(sheetName) {

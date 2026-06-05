@@ -12,22 +12,17 @@ import argparse
 import json
 import sys
 import unicodedata
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
+from tempo import agora_bahia  # noqa: E402
 
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
 SNAPSHOT_PADRAO = RAIZ / "dados" / "snapshot_etapa_1.json"
-FUSO_BAHIA = timezone(timedelta(hours=-3))
-
-
-def agora_bahia() -> str:
-    return datetime.now(FUSO_BAHIA).strftime("%Y-%m-%dT%H:%M:%S-03:00")
 
 
 def normalizar_cabecalho(valor: Any) -> str:

@@ -137,7 +137,7 @@ Implementado ciclo completo por modelo, ainda como fluxo manual/controlado:
 - Linhas totalmente vazias são ignoradas.
 - Escrita na planilha só com flag explícita (`--aplicar`).
 - Segredos (URL/token do Web App) só em GitHub Secrets — nunca em código/commit/txt.
-- Timestamps sempre `YYYY-MM-DDTHH:mm:ss-03:00` (America/Bahia).
+- Datas/horas sempre no formato `dd/mm/aaaa hh:mm` (America/Bahia).
 - Faltando evidência: responder exatamente `Informação insuficiente para verificar.`
 
 ## Planilha experimental

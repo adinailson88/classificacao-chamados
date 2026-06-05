@@ -8,15 +8,15 @@ import json
 import os
 import subprocess
 import sys
-from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from tempo import agora_bahia  # noqa: E402
 
 CONFIG_PADRAO = Path(__file__).resolve().parents[1] / "config_experimento.json"
-FUSO_BAHIA_OFFSET_HORAS = -3
 
 
 def carregar_config(caminho: Path) -> dict[str, Any]:
@@ -55,13 +55,6 @@ def git_valor(args: list[str]) -> str:
         return ""
 
 
-def agora_bahia_iso() -> str:
-    agora_utc = datetime.now(UTC)
-    agora_bahia = agora_utc.replace(tzinfo=None)
-    agora_bahia = agora_bahia + timedelta(hours=FUSO_BAHIA_OFFSET_HORAS)
-    return agora_bahia.isoformat(timespec="seconds") + "-03:00"
-
-
 def montar_linhas(config: dict[str, Any], validacao: dict[str, Any]) -> list[list[Any]]:
     classificacao = config["classificacao"]
     reclassificacao = config["reclassificacao"]
@@ -71,7 +64,7 @@ def montar_linhas(config: dict[str, Any], validacao: dict[str, Any]) -> list[lis
     linhas = [
         ["chave", "valor", "observacao"],
         ["run_id", config["run_id"], "Identificador unico da execucao experimental"],
-        ["data_registro_bahia", agora_bahia_iso(), "Horario local America/Bahia, UTC-03:00"],
+        ["data_registro_bahia", agora_bahia(), "Horario local America/Bahia, formato dd/mm/aaaa hh:mm"],
         ["spreadsheet_id", config["spreadsheet_id"], "ID da planilha experimental"],
         ["aba_principal", config["aba_principal"], "Aba analisada"],
         ["range_leitura", config["range_leitura"], "Intervalo util da aba principal"],

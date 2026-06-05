@@ -22,7 +22,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -31,16 +30,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
 import classificador_producao as cp  # noqa: E402
 import memoria_validada as mv  # noqa: E402
+from tempo import agora_bahia  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
 DADOS = RAIZ / "dados"
-FUSO_BAHIA = timezone(timedelta(hours=-3))
 COL_G, COL_J = 7, 10
-
-
-def agora_bahia() -> str:
-    return datetime.now(FUSO_BAHIA).strftime("%Y-%m-%dT%H:%M:%S-03:00")
 
 
 def cel(linha, idx) -> str:

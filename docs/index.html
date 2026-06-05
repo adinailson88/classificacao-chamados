@@ -246,6 +246,15 @@ const N = v => { const f = parseFloat(String(v ?? "").replace(",", ".")); return
 const pct = v => (N(v)*100).toFixed(1).replace(".", ",") + "%";
 const fmt = v => N(v).toLocaleString("pt-BR");
 const esc = v => String(v ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+function fmtData(v){
+  const s = String(v ?? "").trim();
+  if(!s) return "";
+  const br = s.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
+  if(br) return `${br[1]}/${br[2]}/${br[3]} ${br[4]||"00"}:${br[5]||"00"}`;
+  const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if(iso) return `${iso[3]}/${iso[2]}/${iso[1]} ${iso[4]}:${iso[5]}`;
+  return s;
+}
 const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
 
@@ -347,7 +356,7 @@ function renderMetrics(resumo, turnos){
   const cobertura = total ? proc / total : 0;
   const conc = turnos.length ? N(turnos[turnos.length-1].concordancia_acumulada) : N(metric("concordancia_acumulada_global"));
   document.querySelector("#tabResumo tbody").innerHTML = [
-    ["run_id", resumo?.run_id || ""],["gerado_em", resumo?.gerado_em || ""],["classificados", fmt(proc)],
+    ["run_id", resumo?.run_id || ""],["gerado_em", fmtData(resumo?.gerado_em)],["classificados", fmt(proc)],
     ["pendentes_restantes", pend ? fmt(pend) : "0"],["cobertura_aproximada", pct(cobertura)],["concordancia_acumulada", pct(conc)],
     ["modelo", metric("modelo") || ""],["categorias", fmt(CAT.length)]
   ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
@@ -437,7 +446,7 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   document.getElementById("notice").innerHTML = pend > 0
     ? `Experimento em andamento: ${fmt(proc)} chamados classificados e ${fmt(pend)} pendentes nos dados publicados. Os graficos representam resultado parcial.`
     : `Experimento sem pendentes nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`;
-  document.getElementById("meta").textContent = "Atualizado em: "+((resumo&&resumo.gerado_em)||"sem data publicada");
+  document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
   REG = Array.isArray(registros) ? registros : [];
   if(Array.isArray(turnos) && turnos.length) renderClass(turnos);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
