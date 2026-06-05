@@ -461,7 +461,9 @@ Observação de execução:
   patamar objetivo de confiança/acurácia para uso automático sem revisão.
 
 ## Continuidade para Claude — 2026-06-05 11:55
-- Arquivo de handoff criado: `CLAUDE_CONTINUACAO_2026-06-05.md`.
+- **Pendências/próximos passos consolidados em `FALTA_FAZER.md`** (substitui o
+  antigo handoff `CLAUDE_CONTINUACAO_2026-06-05.md`, removido). Ordem: P0 painel →
+  P1 materializar multimodelo → P2 workflows → P3 calibração → P4 validação humana.
 - Estado mais recente do dashboard após `git pull --rebase`: `docs/dados/resumo.json`
   com `gerado_em=05/06/2026 11:55`, `registros=8100`,
   `log_turnos_classificacao=540`, `metricas_por_categoria=49`,

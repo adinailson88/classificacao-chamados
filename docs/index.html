@@ -59,6 +59,17 @@
   .ms-panel label{display:flex;gap:7px;align-items:center;padding:4px 2px;font-size:13px;white-space:nowrap;cursor:pointer}
   .ms-panel.hide{display:none}
   .btnlimpar{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px;color:var(--blue)}
+  .btnlimpar.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+  .btnlimpar:disabled{opacity:.5;cursor:default}
+  .ms>button.has{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
+  .fchips{display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:4px}
+  .fchips:empty{margin:0}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#eaf2ee;border:1px solid #bcd6cb;color:#18463e;border-radius:14px;padding:2px 6px 2px 9px;font-size:12px}
+  .chip b{font-weight:700}
+  .chip button{border:none;background:#cfe0d8;color:#18463e;border-radius:50%;width:16px;height:16px;line-height:1;cursor:pointer;font-size:12px;padding:0}
+  .notefiltro{display:inline-block;font-size:11px;color:var(--mut);background:var(--panel-soft);border:1px solid var(--bd);border-radius:10px;padding:1px 8px;margin-left:8px;vertical-align:middle;font-weight:600}
+  .alerta{border:1px solid #e7c9a3;background:#fdf4e7;color:#7a4d12;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:13px}
+  .alerta.bad{border-color:#e2b3ad;background:#fbeae8;color:#7a1d14}
 </style>
 </head>
 <body>
@@ -84,8 +95,9 @@
     <div class="ms" data-campo="e"></div>
     <div class="ms" data-campo="k"></div>
     <div class="ms" data-campo="v"></div>
-    <button class="btnlimpar" id="limparFiltros">Limpar</button>
+    <button class="btnlimpar" id="limparFiltros" disabled>Limpar</button>
     <span class="fcount" id="fcount"></span>
+    <div class="fchips" id="fchips"></div>
   </div>
 
   <nav class="tabs" aria-label="Navegacao do painel">
@@ -93,6 +105,7 @@
     <button data-t="cat">Categorias</button>
     <button data-t="metrics">Metricas</button>
     <button data-t="modelos">Modelos</button>
+    <button data-t="multi">Multimodelo</button>
     <button data-t="reclass">Reclassificacao</button>
     <button data-t="docs">Documentacao</button>
   </nav>
@@ -100,15 +113,15 @@
   <section id="tab-class">
     <div class="grid">
       <div class="card full">
-        <h2>Evolucao da concordancia por turno</h2>
+        <h2>Evolucao da concordancia por turno <span class="notefiltro">serie temporal - nao usa os filtros</span></h2>
         <canvas id="cEvol"></canvas>
       </div>
       <div class="card">
-        <h2>Distribuicao por faixa de confianca</h2>
+        <h2>Distribuicao por faixa de confianca <span class="notefiltro">recalcula com os filtros</span></h2>
         <canvas id="cFaixa"></canvas>
       </div>
       <div class="card">
-        <h2>Confianca media por turno</h2>
+        <h2>Confianca media por turno <span class="notefiltro">serie temporal - nao usa os filtros</span></h2>
         <canvas id="cConf"></canvas>
       </div>
     </div>
@@ -141,6 +154,7 @@
   </section>
 
   <section id="tab-metrics" class="hide">
+    <div class="alerta bad" id="metaAviso">Carregando estado da meta...</div>
     <div class="grid">
       <div class="card">
         <h2>Metricas consolidadas</h2>
@@ -163,20 +177,55 @@
   </section>
 
   <section id="tab-modelos" class="hide">
-    <div class="card full">
-      <h2>Comparacao de modelos (acuracia x F1-macro)</h2>
-      <p class="muted">Mesmo lote de teste para todos; cada modelo treina na base excluindo o lote. Comparacao vs categoria historica (preliminar; a validacao humana qualifica depois).</p>
-      <canvas id="cModelos"></canvas>
+    <p class="muted">Mesmo lote de teste para todos; cada modelo treina na base excluindo o lote. Media de <strong>todos</strong> os recortes ja publicados (nao so o ultimo). Comparacao vs categoria historica (preliminar; a validacao humana qualifica depois).</p>
+    <div class="grid">
+      <div class="card">
+        <h2>Media por modelo (acuracia x F1-macro)</h2>
+        <canvas id="cModelos"></canvas>
+      </div>
+      <div class="card">
+        <h2>Ranking por acuracia media</h2>
+        <div class="tablebox"><table id="tabRankModelos"><thead><tr>
+          <th>#</th><th>Modelo</th><th>Lotes</th><th>Acuracia media</th><th>F1-macro media</th><th>Melhor</th>
+        </tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card full">
+        <h2>Acuracia por lote (evolucao entre recortes)</h2>
+        <canvas id="cModelosLote"></canvas>
+      </div>
     </div>
     <div class="card full">
-      <h2>Execucoes por modelo/lote</h2>
+      <h2>Execucoes por modelo/lote (todos os recortes)</h2>
       <div class="tablebox"><table id="tabModelos"><thead><tr>
         <th>Modelo</th><th>Lote</th><th>N</th><th>Acuracia</th><th>F1-macro</th><th>Bal.acc</th><th>Revisao</th><th>Treino</th>
       </tr></thead><tbody></tbody></table></div>
     </div>
   </section>
 
+  <section id="tab-multi" class="hide">
+    <div class="alerta" id="multiAviso">As 7 IAs ainda nao foram materializadas (abas CLASSIF__&lt;modelo&gt; vazias). Esta aba mostra o ciclo completo por modelo (classificacao out-of-fold, confianca e reclassificacao proprias) assim que <code>multimodelo_classificacao.yml</code> rodar com aplicar=true.</div>
+    <div class="card full">
+      <h2>Progresso por modelo (multimodelo materializado)</h2>
+      <p class="muted">Cada IA classifica TODA a base na sua propria aba, com predicao out-of-fold (a IA nao treina na linha que rotula). Concordancia vs categoria historica.</p>
+      <div class="tablebox"><table id="tabMulti"><thead><tr>
+        <th>Modelo</th><th>Classificados</th><th>Pendentes</th><th>Concordancia acumulada</th><th>Concordancia ultimo lote</th><th>Metodo</th><th>Atualizado</th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="card full">
+      <h2>Evolucao da concordancia acumulada por modelo</h2>
+      <canvas id="cMulti"></canvas>
+    </div>
+    <div class="card full">
+      <h2>Reclassificacao multimodelo (ganho liquido por modelo)</h2>
+      <div class="tablebox"><table id="tabMultiReclass"><thead><tr>
+        <th>Modelo</th><th>Turnos</th><th>Corrigidos</th><th>Prejudicados</th><th>Ganho liquido</th>
+      </tr></thead><tbody></tbody></table></div>
+      <p class="muted" id="multiReclassVazio"></p>
+    </div>
+  </section>
+
   <section id="tab-reclass" class="hide">
+    <div class="alerta" id="reclassAviso">Etapa 2 (reclassificacao) ainda nao executada apos o reset. Nao iniciar a validacao humana ainda; o proximo passo tecnico e um dry-run ou aplicacao controlada da reclassificacao.</div>
     <div class="kpis" id="kpisR"></div>
     <div class="grid">
       <div class="card full"><h2>Ganho liquido por turno</h2><canvas id="cGanho"></canvas></div>
@@ -320,20 +369,41 @@ function construirFiltros(){
     panel.querySelectorAll("input").forEach(inp=>inp.onchange=()=>{
       if(inp.checked)FILT[campo].add(inp.value); else FILT[campo].delete(inp.value);
       btn.textContent=`${ROT_CAMPO[campo]}${FILT[campo].size?" ("+FILT[campo].size+")":""} ▾`;
+      btn.classList.toggle("has",FILT[campo].size>0);
       aplicarFiltros();
     });
   });
-  document.getElementById("limparFiltros").onclick=()=>{
-    Object.values(FILT).forEach(s=>s.clear());
-    document.querySelectorAll("#filtros input").forEach(i=>i.checked=false);
-    document.querySelectorAll("#filtros .ms>button").forEach(b=>{ b.textContent=b.textContent.replace(/\s*\(\d+\)/,""); });
-    aplicarFiltros();
-  };
+  document.getElementById("limparFiltros").onclick=limparTodos;
   document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
+}
+function limparTodos(){
+  Object.values(FILT).forEach(s=>s.clear());
+  document.querySelectorAll("#filtros input").forEach(i=>i.checked=false);
+  document.querySelectorAll("#filtros .ms>button").forEach(b=>{ b.textContent=b.textContent.replace(/\s*\(\d+\)/,""); b.classList.remove("has"); });
+  aplicarFiltros();
+}
+function removeChip(campo,val){
+  FILT[campo].delete(val);
+  const div=document.querySelector(`#filtros .ms[data-campo="${campo}"]`);
+  if(div){ const inp=div.querySelector(`input[value="${CSS.escape(val)}"]`); if(inp)inp.checked=false;
+    const btn=div.querySelector("button"); btn.textContent=`${ROT_CAMPO[campo]}${FILT[campo].size?" ("+FILT[campo].size+")":""} ▾`; btn.classList.toggle("has",FILT[campo].size>0); }
+  aplicarFiltros();
+}
+function renderChips(){
+  const box=document.getElementById("fchips"); const chips=[];
+  Object.keys(FILT).forEach(c=>{ FILT[c].forEach(v=>{
+    chips.push(`<span class="chip"><b>${esc(ROT_CAMPO[c])}:</b> ${esc(rotDe(c,v))} <button type="button" data-c="${esc(c)}" data-v="${esc(v)}" title="Remover">&times;</button></span>`);
+  });});
+  box.innerHTML = chips.join("");
+  box.querySelectorAll("button").forEach(b=>b.onclick=()=>removeChip(b.dataset.c,b.dataset.v));
+  const ativo=filtrosAtivos(), n=chips.length;
+  const lb=document.getElementById("limparFiltros");
+  lb.disabled=!ativo; lb.classList.toggle("on",ativo); lb.textContent=ativo?`Limpar (${n})`:"Limpar";
 }
 function aplicarFiltros(){
   FILTRADO = REG.filter(passa);
   CAT = agrupaCategorias(FILTRADO);
+  renderChips();
   renderCat();
   renderFaixaFiltrada(FILTRADO);
   renderKpisFiltrados(FILTRADO);
@@ -386,7 +456,9 @@ function renderMetrics(resumo, turnos, reg=null){
 
 function renderReclass(rt){
   const box=document.getElementById("kpisR"), vazio=document.getElementById("reclassVazio");
-  if(!rt.length){ box.innerHTML=""; vazio.textContent="Ainda nao ha dados de reclassificacao publicados."; return; }
+  const aviso=document.getElementById("reclassAviso");
+  if(aviso) aviso.classList.toggle("hide", !!rt.length);
+  if(!rt.length){ box.innerHTML=""; vazio.textContent="Ainda nao ha dados de reclassificacao publicados (Etapa 2 nao executada apos o reset)."; return; }
   vazio.textContent="";
   const tot=k=>rt.reduce((s,t)=>s+N(t[k]),0);
   box.innerHTML = kpi(fmt(tot("qtd_reclassificados")),"Reclassificados")+kpi(fmt(tot("qtd_corrigidos")),"Corrigidos")
@@ -399,19 +471,74 @@ function renderReclass(rt){
   charts.cCorr = new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],backgroundColor:["#1f7a4d","#b42318","#2f5f9e","#68737d"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
 
+const PALETA=["#0f766e","#b7791f","#2f5f9e","#b42318","#1f7a4d","#7c3aed","#0891b2","#a16207"];
 function renderModelos(rows){
   const tb = document.querySelector("#tabModelos tbody");
-  if(!Array.isArray(rows) || !rows.length){ if(tb) tb.innerHTML=""; return; }
-  tb.innerHTML = rows.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${esc(r.inicio)}-${esc(r.limite)}</td>
+  const tr = document.querySelector("#tabRankModelos tbody");
+  if(!Array.isArray(rows) || !rows.length){ if(tb)tb.innerHTML=""; if(tr)tr.innerHTML=""; destroy("cModelos"); destroy("cModelosLote"); return; }
+  // tabela completa (todos os recortes), ordenada por modelo e lote
+  const ord=[...rows].sort((a,b)=> String(a.modelo).localeCompare(String(b.modelo)) || N(a.inicio)-N(b.inicio));
+  tb.innerHTML = ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${esc(r.inicio)}-${esc(r.limite)}</td>
     <td>${fmt(r.n_registros)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.f1_macro)}</td>
     <td>${pct(r.balanced_accuracy)}</td><td>${fmt(r.n_revisao)}</td><td>${N(r.tempo_treino_s).toFixed(1)}s</td></tr>`).join("");
-  const ult={}; rows.forEach(r=>{ ult[r.modelo]=r; });  // ultima execucao por modelo
-  const labels=Object.keys(ult);
+  // agregado por modelo (media de TODOS os recortes)
+  const agg={};
+  rows.forEach(r=>{ const m=r.modelo; (agg[m]||(agg[m]={modelo:m,n:0,sa:0,sf:0,best:0}));
+    agg[m].n++; agg[m].sa+=N(r.acuracia); agg[m].sf+=N(r.f1_macro); agg[m].best=Math.max(agg[m].best,N(r.acuracia)); });
+  const meds=Object.values(agg).map(d=>({modelo:d.modelo,lotes:d.n,acc:d.sa/d.n,f1:d.sf/d.n,best:d.best}))
+    .sort((a,b)=>b.acc-a.acc);
+  tr.innerHTML = meds.map((d,i)=>`<tr><td>${i+1}</td><td>${esc(d.modelo)}${i===0?' <span class="status-ok">★</span>':''}</td>
+    <td>${fmt(d.lotes)}</td><td class="${d.acc>=0.8?'status-ok':d.acc>=0.6?'status-mid':'status-bad'}">${pct(d.acc)}</td>
+    <td>${pct(d.f1)}</td><td>${pct(d.best)}</td></tr>`).join("");
   destroy("cModelos");
-  charts.cModelos = new Chart(cModelos,{type:"bar",data:{labels,datasets:[
-    {label:"Acuracia (%)",data:labels.map(k=>N(ult[k].acuracia)*100),backgroundColor:"#0f766e"},
-    {label:"F1-macro (%)",data:labels.map(k=>N(ult[k].f1_macro)*100),backgroundColor:"#b7791f"}
+  charts.cModelos = new Chart(cModelos,{type:"bar",data:{labels:meds.map(d=>d.modelo),datasets:[
+    {label:"Acuracia media (%)",data:meds.map(d=>d.acc*100),backgroundColor:"#0f766e"},
+    {label:"F1-macro media (%)",data:meds.map(d=>d.f1*100),backgroundColor:"#b7791f"}
   ]},options:chartOpts("%")});
+  // evolucao por lote: 1 serie por modelo (acuracia), x = lote
+  const lotes=[...new Set(rows.map(r=>`${r.inicio}-${r.limite}`))]
+    .sort((a,b)=>N(a.split("-")[0])-N(b.split("-")[0]));
+  const porMod={}; rows.forEach(r=>{ (porMod[r.modelo]||(porMod[r.modelo]={}))[`${r.inicio}-${r.limite}`]=N(r.acuracia)*100; });
+  const nomes=meds.map(d=>d.modelo);
+  destroy("cModelosLote");
+  charts.cModelosLote = new Chart(cModelosLote,{type:"line",data:{labels:lotes,datasets:nomes.map((m,i)=>(
+    {label:m,data:lotes.map(l=>porMod[m]&&porMod[m][l]!=null?porMod[m][l]:null),
+     borderColor:PALETA[i%PALETA.length],backgroundColor:PALETA[i%PALETA.length],pointRadius:2,borderWidth:1.5,spanGaps:true}
+  ))},options:chartOpts("%")});
+}
+function renderMulti(mm, rt){
+  const aviso=document.getElementById("multiAviso");
+  const tb=document.querySelector("#tabMulti tbody");
+  const ok=Array.isArray(mm)&&mm.length;
+  aviso.classList.toggle("hide", !!ok);
+  if(!ok){ tb.innerHTML=""; destroy("cMulti"); }
+  else {
+    const ord=[...mm].sort((a,b)=>N(b.concordancia_acumulada)-N(a.concordancia_acumulada));
+    tb.innerHTML = ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${fmt(r.feitos_total)}</td><td>${fmt(r.pendentes_restantes)}</td>
+      <td>${pct(r.concordancia_acumulada)}</td><td>${pct(r.concordancia_ultimo_lote)}</td><td>${esc(r.metodo_ultimo)}</td><td>${fmtData(r.atualizado_em)}</td></tr>`).join("");
+    destroy("cMulti");
+    charts.cMulti = new Chart(cMulti,{type:"bar",data:{labels:ord.map(r=>r.modelo),datasets:[
+      {label:"Concordancia acumulada (%)",data:ord.map(r=>N(r.concordancia_acumulada)*100),backgroundColor:"#0f766e"}
+    ]},options:chartOpts("%")});
+  }
+  // reclassificacao multimodelo (agregado por modelo)
+  const trb=document.querySelector("#tabMultiReclass tbody"), rv=document.getElementById("multiReclassVazio");
+  if(!Array.isArray(rt)||!rt.length){ trb.innerHTML=""; rv.textContent="Reclassificacao multimodelo ainda nao executada."; return; }
+  rv.textContent="";
+  const agg={}; rt.forEach(r=>{ const m=r.modelo; (agg[m]||(agg[m]={t:0,c:0,p:0,g:0}));
+    agg[m].t++; agg[m].c+=N(r.corrigidos); agg[m].p+=N(r.prejudicados); agg[m].g+=N(r.ganho_liquido); });
+  trb.innerHTML = Object.keys(agg).sort().map(m=>`<tr><td>${esc(m)}</td><td>${fmt(agg[m].t)}</td><td>${fmt(agg[m].c)}</td><td>${fmt(agg[m].p)}</td><td class="${agg[m].g>=0?'status-ok':'status-bad'}">${fmt(agg[m].g)}</td></tr>`).join("");
+}
+function renderMetaAviso(cal){
+  const el=document.getElementById("metaAviso"); if(!el) return;
+  const val=N(cal&&cal.validados);
+  const a=(cal&&cal.faixa_alvo_95)||{};
+  const concHist=a.concordancia_historico;
+  el.classList.toggle("bad", val===0);
+  el.innerHTML = val===0
+    ? `<strong>Atencao:</strong> validacao humana ainda nao iniciada (<strong>validados=0</strong>). Todas as metricas abaixo sao <strong>concordancia vs categoria historica</strong>, nao acerto validado. `
+      +`Na faixa &gt;=95%, a concordancia vs historico esta em <strong>${concHist!=null?pct(concHist):"-"}</strong> (${fmt(a.n)} chamados) — status: <strong>aprovado vs historico, NAO validado humanamente, ainda NAO liberado para producao</strong>.`
+    : `Validacao humana em andamento: <strong>${fmt(val)}</strong> casos validados. A faixa &gt;=95% deve manter acerto validado ~&gt;=95%.`;
 }
 
 function renderCalibracao(cal){
@@ -436,17 +563,17 @@ function renderCalibracao(cal){
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
-  ["class","cat","metrics","modelos","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["class","cat","metrics","modelos","multi","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,mod,registros] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiRecl] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json"),
-    getJSON("registros.json")
+    getJSON("registros.json"), getJSON("multimodelo_metricas.json"), getJSON("multimodelo_reclass_turnos.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -456,9 +583,11 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   REG = Array.isArray(registros) ? registros : [];
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
-  else { renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
+  else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
   renderCalibracao(cal);
+  renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : []);
+  renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiRecl) ? multiRecl : []);
   renderReclass(Array.isArray(rt) ? rt : []);
 })();
 </script>

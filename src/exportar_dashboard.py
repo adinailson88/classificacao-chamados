@@ -33,7 +33,23 @@ ABAS = [
     ("log_turnos_reclassificacao", "log_turnos_reclassificacao"),
     ("metricas_experimento", "metricas"),
     ("comparacao_modelos", "comparacao_modelos"),
+    ("comparacao_categoria", "comparacao_categoria"),
 ]
+
+# Abas multimodelo: AGREGADAS, sem texto de chamado (seguras p/ repo publico).
+# Nomes literais (config["multimodelo"]) + a aba derivada de reclassificacao.
+# NAO exportar COMPARACAO_PREVISOES nem CLASSIF__*/RECLASS__* crus: contem titulo
+# do chamado (texto). Se o painel precisar, exportar um agregado SEM texto.
+def _abas_multimodelo(config):
+    mm = config.get("multimodelo", {}) or {}
+    if not mm:
+        return []
+    turnos = mm.get("aba_turnos", "MULTIMODELO_TURNOS")
+    return [
+        ("multimodelo_turnos", turnos),
+        ("multimodelo_metricas", mm.get("aba_metricas", "MULTIMODELO_METRICAS")),
+        ("multimodelo_reclass_turnos", turnos.replace("TURNOS", "RECLASS_TURNOS")),
+    ]
 
 
 def _erro_transitorio(exc: Exception) -> bool:
@@ -91,6 +107,14 @@ def main() -> int:
     for chave_json, chave_cfg in ABAS:
         nome = abas_cfg.get(chave_cfg)
         dados = aba_para_objetos(sh, nome) if nome else []
+        (SAIDA / f"{chave_json}.json").write_text(
+            json.dumps(dados, ensure_ascii=False), encoding="utf-8")
+        resumo["abas"][chave_json] = len(dados)
+        print(f"{chave_json}: {len(dados)} linhas")
+
+    # Abas multimodelo (nome literal). Exporta [] quando ainda nao materializado.
+    for chave_json, nome_aba in _abas_multimodelo(config):
+        dados = aba_para_objetos(sh, nome_aba) if nome_aba else []
         (SAIDA / f"{chave_json}.json").write_text(
             json.dumps(dados, ensure_ascii=False), encoding="utf-8")
         resumo["abas"][chave_json] = len(dados)
