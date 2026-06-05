@@ -72,6 +72,7 @@
     <button data-t="class" class="on">Classificacao</button>
     <button data-t="cat">Categorias</button>
     <button data-t="metrics">Metricas</button>
+    <button data-t="modelos">Modelos</button>
     <button data-t="reclass">Reclassificacao</button>
     <button data-t="docs">Documentacao</button>
   </nav>
@@ -138,6 +139,20 @@
         <p class="muted" id="calibInfo">Carregando calibracao...</p>
         <canvas id="cCalib"></canvas>
       </div>
+    </div>
+  </section>
+
+  <section id="tab-modelos" class="hide">
+    <div class="card full">
+      <h2>Comparacao de modelos (acuracia x F1-macro)</h2>
+      <p class="muted">Mesmo lote de teste para todos; cada modelo treina na base excluindo o lote. Comparacao vs categoria historica (preliminar; a validacao humana qualifica depois).</p>
+      <canvas id="cModelos"></canvas>
+    </div>
+    <div class="card full">
+      <h2>Execucoes por modelo/lote</h2>
+      <div class="tablebox"><table id="tabModelos"><thead><tr>
+        <th>Modelo</th><th>Lote</th><th>N</th><th>Acuracia</th><th>F1-macro</th><th>Bal.acc</th><th>Revisao</th><th>Treino</th>
+      </tr></thead><tbody></tbody></table></div>
     </div>
   </section>
 
@@ -261,6 +276,21 @@ function renderReclass(rt){
   charts.cCorr = new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],backgroundColor:["#1f7a4d","#b42318","#2f5f9e","#68737d"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
 
+function renderModelos(rows){
+  const tb = document.querySelector("#tabModelos tbody");
+  if(!Array.isArray(rows) || !rows.length){ if(tb) tb.innerHTML=""; return; }
+  tb.innerHTML = rows.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${esc(r.inicio)}-${esc(r.limite)}</td>
+    <td>${fmt(r.n_registros)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.f1_macro)}</td>
+    <td>${pct(r.balanced_accuracy)}</td><td>${fmt(r.n_revisao)}</td><td>${N(r.tempo_treino_s).toFixed(1)}s</td></tr>`).join("");
+  const ult={}; rows.forEach(r=>{ ult[r.modelo]=r; });  // ultima execucao por modelo
+  const labels=Object.keys(ult);
+  destroy("cModelos");
+  charts.cModelos = new Chart(cModelos,{type:"bar",data:{labels,datasets:[
+    {label:"Acuracia (%)",data:labels.map(k=>N(ult[k].acuracia)*100),backgroundColor:"#0f766e"},
+    {label:"F1-macro (%)",data:labels.map(k=>N(ult[k].f1_macro)*100),backgroundColor:"#b7791f"}
+  ]},options:chartOpts("%")});
+}
+
 function renderCalibracao(cal){
   const el = document.getElementById("calibInfo");
   if(!cal || !Array.isArray(cal.por_faixa) || !cal.por_faixa.length){ if(el) el.textContent="Sem dados de calibracao publicados ainda."; return; }
@@ -283,16 +313,16 @@ function renderCalibracao(cal){
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
-  ["class","cat","metrics","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["class","cat","metrics","modelos","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,mod] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
-    getJSON("resumo.json"), getJSON("calibracao.json")
+    getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -314,6 +344,7 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   renderCat();
   renderMetrics(resumo, turnos || []);
   renderCalibracao(cal);
+  renderModelos(Array.isArray(mod) ? mod : []);
   renderReclass(Array.isArray(rt) ? rt : []);
 })();
 </script>
