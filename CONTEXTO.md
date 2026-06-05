@@ -351,3 +351,7 @@ Observação de execução:
   a chave documental `perfil_robusto_disponivel` também chegava ao construtor do
   LSTM. Correção aplicada: `resolver_parametros_lstm()` agora filtra apenas chaves
   válidas de arquitetura/treino.
+- Run `26989390183` executou dry-run final com `modelo=producao`,
+  `max_turnos=2`, `lstm_perfil=padrao`. Resultado: LSTM treinou sem fallback por
+  erro de parâmetros; `memoria_validada=0`; `candidatos_reclass=4632`; lote de 30;
+  `corrigidos=7`, `prejudicados=6`, `GANHO_LIQUIDO=1`; modo dry-run, sem gravação.
