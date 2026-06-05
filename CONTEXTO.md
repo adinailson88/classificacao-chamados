@@ -460,6 +460,21 @@ Observação de execução:
   lineares/TF-IDF superaram o LSTM em acurácia; o LSTM ainda não atingiu o
   patamar objetivo de confiança/acurácia para uso automático sem revisão.
 
+## Correção do dashboard (P0) — 2026-06-05 (commit e8df9b2)
+- Filtros: chips dos filtros ativos (removíveis), botões destacados, Limpar com
+  contagem; rótulos explícitos "série temporal não usa filtros" vs "recalcula com filtros".
+- Aba **Modelos**: deixou de usar só a última execução por modelo; agora mostra
+  **média por modelo** (todos os recortes) + **ranking** + **evolução por lote**.
+- Nova aba **Multimodelo**: progresso/concordância por IA + reclassificação (estado
+  vazio quando não materializado). Já populada: 6 leves com ~60 linhas cada (OOF kfold_5).
+- **Metricas**: banner de honestidade (`validados=0`, concordância vs histórico) +
+  status da meta ≥95% ("aprovado vs histórico, NÃO validado, NÃO liberado").
+- **Reclassificação**: aviso "Etapa 2 não executada após o reset".
+- `exportar_dashboard.py`: publica `comparacao_categoria` (819) + `multimodelo_turnos/
+  metricas/reclass_turnos`. NÃO exporta `COMPARACAO_PREVISOES`/`CLASSIF__*` crus
+  (contêm título do chamado = texto; repo público). Dashboard run `27025224132` OK.
+- Pendência: UI de comparação por categoria/modelo (consumir `comparacao_categoria.json`).
+
 ## Continuidade para Claude — 2026-06-05 11:55
 - **Pendências/próximos passos consolidados em `FALTA_FAZER.md`** (substitui o
   antigo handoff `CLAUDE_CONTINUACAO_2026-06-05.md`, removido). Ordem: P0 painel →

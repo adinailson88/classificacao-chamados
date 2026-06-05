@@ -25,6 +25,11 @@
 O painel não está refletindo o que o experimento já produz. Antes de processar mais
 dados, fazer o painel mostrar a verdade.
 
+> ✅ **Status 2026-06-05**: P0.1–P0.7 implementados e publicados (commit `e8df9b2`;
+> dashboard run `27025224132` OK). `comparacao_categoria.json` (819) e
+> `multimodelo_*` já populados. **Resta**: P0.3-extra (UI de comparação por
+> categoria/modelo consumindo `comparacao_categoria.json`, ainda sem tabela no painel).
+
 ### P0.1 Filtros (UX e correção)
 - [ ] Indicar **claramente** quando um filtro está ativo (chips/lista dos ativos + contador).
 - [ ] Botão **Limpar** mais evidente.
@@ -75,7 +80,8 @@ dados, fazer o painel mostrar a verdade.
 ---
 
 ## P1 — Rodar a MATERIALIZAÇÃO multimodelo (as 7 IAs completas)
-As abas `CLASSIF__*` estão vazias; falta executar o ciclo.
+> ⏳ **Iniciado**: os 6 modelos leves já classificaram ~60 linhas cada (out-of-fold
+> `kfold_5`), ~13.765 pendentes. Falta concluir (rodar até zerar pendentes) e o LSTM.
 - [ ] (Decidido) **Pausar o cron `*/15` da Etapa 1** (`etapa1_turnos.yml`) para o
       multimodelo virar a fonte de verdade e evitar escrita concorrente.
 - [ ] Rodar `multimodelo_classificacao.yml` com `aplicar=true`, **6 leves primeiro**
