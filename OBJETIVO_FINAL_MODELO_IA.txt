@@ -40,3 +40,16 @@ Depois da validacao manual:
 Regra de seguranca:
 Nenhum script deve inventar categoria_validada. A memoria so pode usar revisao
 humana explicita.
+
+IMPLEMENTACAO (finalizado em 2026-06-04):
+- src/calibracao.py mede a calibracao (confianca x acerto) por FAIXA e por EXECUTOR,
+  com ECE. Compara vs classificacao historica (ja disponivel) e vs categoria_validada
+  (apos a validacao humana). Gera docs/dados/calibracao.json; o painel mostra o
+  grafico (aba Metricas). Read-only, sem dado sensivel.
+- Resultado preliminar (vs historico): faixa >=95% com acerto ~98%. A calibracao
+  DEFINITIVA (vs validado) depende da validacao humana, ainda nao feita por opcao.
+- src/memoria_validada.py (memoria robusta) e o perfil "robusto" do LSTM
+  (src/modelo_lstm.py PERFIS_LSTM) ja estao ligados em executar_etapa1.py e
+  executar_etapa2.py; o LSTM e treinado com peso maior nos exemplos validados.
+- Ciclo pronto: classificar -> reclassificar -> (validar) -> memoria -> retreinar.
+  Falta apenas a parte MANUAL (validacao humana) para a calibracao virar definitiva.
