@@ -12,7 +12,7 @@
     --blue:#2f5f9e;--amber:#b7791f;--red:#b42318;--ink:#18212a;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.45}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.45;overflow-x:hidden}
   header{background:var(--panel);border-bottom:1px solid var(--bd)}
   .top{max-width:1320px;margin:0 auto;padding:18px 24px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
   .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);font-weight:700;margin-bottom:4px}
@@ -22,20 +22,21 @@
   .wrap{max-width:1320px;margin:0 auto;padding:18px 24px 28px}
   .notice{border:1px solid #c8d9d3;background:#edf7f4;color:#18463e;border-radius:6px;padding:12px 14px;margin-bottom:16px}
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px}
-  .kpi{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:13px 14px}
+  .kpi{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:13px 14px;min-width:0}
   .kpi .v{font-size:24px;font-weight:750;color:var(--ink);overflow-wrap:anywhere}
   .kpi .l{color:var(--mut);font-size:12px;margin-top:3px}
   .tabs{display:flex;gap:6px;margin:4px 0 16px;flex-wrap:wrap}
   .tabs button{background:var(--panel);color:var(--tx);border:1px solid var(--bd);padding:8px 12px;border-radius:6px;cursor:pointer;font-size:13px}
   .tabs button.on{background:var(--teal);border-color:var(--teal);color:#fff}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid>*{min-width:0}
   .grid.three{grid-template-columns:1fr 1fr 1fr}
   @media(max-width:980px){.grid,.grid.three{grid-template-columns:1fr}.meta{text-align:left}}
-  .card{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:14px}
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:14px;min-width:0}
   .card.full{grid-column:1/-1}
   .card h2,.card h3{margin:0 0 10px;color:var(--ink);font-size:15px;line-height:1.25}
   .card p{margin:0 0 10px;color:var(--tx)}
-  canvas{max-height:320px}
+  canvas{max-height:320px;max-width:100%}
   input[type=text]{background:#fff;color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;width:100%;margin-bottom:10px}
   table{width:100%;border-collapse:collapse;font-size:13px}
   th,td{padding:8px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap;vertical-align:top}
@@ -506,7 +507,7 @@ function renderModelos(rows){
      borderColor:PALETA[i%PALETA.length],backgroundColor:PALETA[i%PALETA.length],pointRadius:2,borderWidth:1.5,spanGaps:true}
   ))},options:chartOpts("%")});
 }
-function renderMulti(mm, rt){
+function renderMulti(mm, turnos, rt){
   const aviso=document.getElementById("multiAviso");
   const tb=document.querySelector("#tabMulti tbody");
   const ok=Array.isArray(mm)&&mm.length;
@@ -516,10 +517,19 @@ function renderMulti(mm, rt){
     const ord=[...mm].sort((a,b)=>N(b.concordancia_acumulada)-N(a.concordancia_acumulada));
     tb.innerHTML = ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${fmt(r.feitos_total)}</td><td>${fmt(r.pendentes_restantes)}</td>
       <td>${pct(r.concordancia_acumulada)}</td><td>${pct(r.concordancia_ultimo_lote)}</td><td>${esc(r.metodo_ultimo)}</td><td>${fmtData(r.atualizado_em)}</td></tr>`).join("");
+    // evolucao da concordancia ACUMULADA por turno, 1 serie por modelo
+    const ts=Array.isArray(turnos)?turnos:[];
+    const porMod={}; ts.forEach(t=>{ (porMod[t.modelo]||(porMod[t.modelo]=[])).push(t); });
+    Object.values(porMod).forEach(a=>a.sort((x,y)=>N(x.turno)-N(y.turno)));
+    const maxT=Math.max(1,...ts.map(t=>N(t.turno)));
+    const labels=Array.from({length:maxT},(_,i)=>i+1);
+    const nomes=ord.map(r=>r.modelo).filter(m=>porMod[m]);
     destroy("cMulti");
-    charts.cMulti = new Chart(cMulti,{type:"bar",data:{labels:ord.map(r=>r.modelo),datasets:[
-      {label:"Concordancia acumulada (%)",data:ord.map(r=>N(r.concordancia_acumulada)*100),backgroundColor:"#0f766e"}
-    ]},options:chartOpts("%")});
+    charts.cMulti = new Chart(cMulti,{type:"line",data:{labels,datasets:nomes.map((m,i)=>{
+      const byT={}; porMod[m].forEach(t=>byT[N(t.turno)]=N(t.concordancia_acumulada)*100);
+      return {label:m,data:labels.map(l=>byT[l]!=null?byT[l]:null),borderColor:PALETA[i%PALETA.length],
+        backgroundColor:PALETA[i%PALETA.length],pointRadius:0,borderWidth:1.5,spanGaps:true};
+    })},options:chartOpts("%")});
   }
   // reclassificacao multimodelo (agregado por modelo)
   const trb=document.querySelector("#tabMultiReclass tbody"), rv=document.getElementById("multiReclassVazio");
@@ -569,11 +579,12 @@ document.getElementById("filtroCat").addEventListener("input",renderCat);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiRecl] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiTurnos,multiRecl] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json"),
-    getJSON("registros.json"), getJSON("multimodelo_metricas.json"), getJSON("multimodelo_reclass_turnos.json")
+    getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
+    getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -587,7 +598,7 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
   renderCalibracao(cal);
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : []);
-  renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiRecl) ? multiRecl : []);
+  renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);
   renderReclass(Array.isArray(rt) ? rt : []);
 })();
 </script>
