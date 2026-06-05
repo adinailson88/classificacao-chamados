@@ -32,6 +32,7 @@ ABAS = [
     ("metricas_por_categoria", "metricas_por_categoria"),
     ("log_turnos_reclassificacao", "log_turnos_reclassificacao"),
     ("metricas_experimento", "metricas"),
+    ("comparacao_modelos", "comparacao_modelos"),
 ]
 
 
