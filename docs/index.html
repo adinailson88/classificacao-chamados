@@ -3,175 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Malha IA — Painel da Classificação de Chamados</title>
+<title>Classificacao de Chamados - Painel Experimental</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root{--bg:#0f1419;--card:#1a2129;--bd:#2a333d;--tx:#e6edf3;--mut:#8b98a5;
-        --ok:#2ea043;--mid:#d29922;--bad:#cf3b3b;--ac:#2f81f7;}
+  :root{
+    --bg:#f6f7f4;--panel:#ffffff;--panel-soft:#eef3ef;--bd:#d9ded7;
+    --tx:#24303a;--mut:#68737d;--green:#1f7a4d;--teal:#0f766e;
+    --blue:#2f5f9e;--amber:#b7791f;--red:#b42318;--ink:#18212a;
+  }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",system-ui,Arial,sans-serif}
-  header{padding:18px 24px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-  header h1{font-size:18px;margin:0;font-weight:600}
-  header .meta{color:var(--mut);font-size:12px}
-  .wrap{padding:18px 24px;max-width:1280px;margin:0 auto}
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
-  .kpi{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
-  .kpi .v{font-size:26px;font-weight:700}
-  .kpi .l{color:var(--mut);font-size:12px;margin-top:4px}
-  .tabs{display:flex;gap:6px;margin:6px 0 16px;flex-wrap:wrap}
-  .tabs button{background:var(--card);color:var(--mut);border:1px solid var(--bd);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}
-  .tabs button.on{color:#fff;border-color:var(--ac);background:#11243d}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:900px){.grid{grid-template-columns:1fr}}
-  .card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px}
-  .card h3{margin:0 0 10px;font-size:14px;font-weight:600}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.45}
+  header{background:var(--panel);border-bottom:1px solid var(--bd)}
+  .top{max-width:1320px;margin:0 auto;padding:18px 24px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);font-weight:700;margin-bottom:4px}
+  h1{font-size:22px;line-height:1.2;margin:0;color:var(--ink);font-weight:700}
+  .subtitle{margin:6px 0 0;color:var(--mut);max-width:760px}
+  .meta{color:var(--mut);font-size:12px;text-align:right;min-width:220px}
+  .wrap{max-width:1320px;margin:0 auto;padding:18px 24px 28px}
+  .notice{border:1px solid #c8d9d3;background:#edf7f4;color:#18463e;border-radius:6px;padding:12px 14px;margin-bottom:16px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px}
+  .kpi{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:13px 14px}
+  .kpi .v{font-size:24px;font-weight:750;color:var(--ink);overflow-wrap:anywhere}
+  .kpi .l{color:var(--mut);font-size:12px;margin-top:3px}
+  .tabs{display:flex;gap:6px;margin:4px 0 16px;flex-wrap:wrap}
+  .tabs button{background:var(--panel);color:var(--tx);border:1px solid var(--bd);padding:8px 12px;border-radius:6px;cursor:pointer;font-size:13px}
+  .tabs button.on{background:var(--teal);border-color:var(--teal);color:#fff}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid.three{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:980px){.grid,.grid.three{grid-template-columns:1fr}.meta{text-align:left}}
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:14px}
   .card.full{grid-column:1/-1}
+  .card h2,.card h3{margin:0 0 10px;color:var(--ink);font-size:15px;line-height:1.25}
+  .card p{margin:0 0 10px;color:var(--tx)}
   canvas{max-height:320px}
-  input[type=text]{background:#0d1117;color:var(--tx);border:1px solid var(--bd);border-radius:7px;padding:7px 10px;width:100%;margin-bottom:10px}
+  input[type=text]{background:#fff;color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;width:100%;margin-bottom:10px}
   table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{padding:7px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+  th,td{padding:8px 9px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap;vertical-align:top}
   th:first-child,td:first-child{text-align:left;white-space:normal}
-  th{color:var(--mut);cursor:pointer;user-select:none;position:sticky;top:0;background:var(--card)}
-  .tablebox{max-height:460px;overflow:auto;border:1px solid var(--bd);border-radius:8px}
-  .bar{height:8px;border-radius:4px;background:#0d1117;overflow:hidden;display:inline-block;width:80px;vertical-align:middle;margin-left:6px}
+  th{color:#53606b;cursor:pointer;user-select:none;position:sticky;top:0;background:var(--panel-soft);font-weight:700}
+  .tablebox{max-height:470px;overflow:auto;border:1px solid var(--bd);border-radius:6px}
+  .bar{height:7px;border-radius:4px;background:#e5e9e3;overflow:hidden;display:inline-block;width:76px;vertical-align:middle;margin-left:6px}
   .bar>i{display:block;height:100%}
   .hide{display:none}
   .muted{color:var(--mut)}
-  a{color:var(--ac)}
+  .docgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .definition{border-left:4px solid var(--teal);padding-left:10px;margin-bottom:12px}
+  .status-ok{color:var(--green);font-weight:700}.status-mid{color:var(--amber);font-weight:700}.status-bad{color:var(--red);font-weight:700}
+  a{color:var(--blue)}
 </style>
 </head>
 <body>
 <header>
-  <h1>🔧 Malha IA — Painel da Classificação de Chamados</h1>
-  <div class="meta" id="meta">carregando…</div>
-</header>
-<div class="wrap">
-  <div class="kpis" id="kpis"></div>
-  <div class="tabs">
-    <button data-t="class" class="on">Classificação (Etapa 1)</button>
-    <button data-t="cat">Por categoria</button>
-    <button data-t="reclass">Reclassificação (Etapa 2)</button>
+  <div class="top">
+    <div>
+      <div class="eyebrow">Experimento separado do repositorio operacional Malha IA</div>
+      <h1>Classificacao de Chamados - Painel Experimental</h1>
+      <p class="subtitle">Acompanhamento da classificacao automatica, reclassificacao e preparacao para validacao humana dos chamados da planilha experimental.</p>
+    </div>
+    <div class="meta" id="meta">carregando...</div>
   </div>
+</header>
+
+<main class="wrap">
+  <div class="notice" id="notice">Carregando estado do experimento.</div>
+  <div class="kpis" id="kpis"></div>
+
+  <nav class="tabs" aria-label="Navegacao do painel">
+    <button data-t="class" class="on">Classificacao</button>
+    <button data-t="cat">Categorias</button>
+    <button data-t="metrics">Metricas</button>
+    <button data-t="reclass">Reclassificacao</button>
+    <button data-t="docs">Documentacao</button>
+  </nav>
 
   <section id="tab-class">
     <div class="grid">
-      <div class="card full"><h3>Evolução da concordância por turno</h3><canvas id="cEvol"></canvas></div>
-      <div class="card"><h3>Distribuição por faixa de confiança</h3><canvas id="cFaixa"></canvas></div>
-      <div class="card"><h3>Confiança média por turno</h3><canvas id="cConf"></canvas></div>
+      <div class="card full">
+        <h2>Evolucao da concordancia por turno</h2>
+        <canvas id="cEvol"></canvas>
+      </div>
+      <div class="card">
+        <h2>Distribuicao por faixa de confianca</h2>
+        <canvas id="cFaixa"></canvas>
+      </div>
+      <div class="card">
+        <h2>Confianca media por turno</h2>
+        <canvas id="cConf"></canvas>
+      </div>
     </div>
   </section>
 
   <section id="tab-cat" class="hide">
-    <div class="card full">
-      <h3>Concordância por categoria (IA × histórico)</h3>
-      <input type="text" id="filtroCat" placeholder="filtrar categoria…">
-      <div class="tablebox"><table id="tabCat"><thead><tr>
-        <th data-k="categoria">Categoria</th>
-        <th data-k="qtd_classificados">Qtd</th>
-        <th data-k="taxa_concordancia">Concordância</th>
-        <th data-k="confianca_media">Conf. média</th>
-        <th data-k="qtd_acima_95">≥95%</th>
-        <th data-k="qtd_70_95">70–95%</th>
-        <th data-k="qtd_abaixo_70">&lt;70%</th>
-      </tr></thead><tbody></tbody></table></div>
+    <div class="grid">
+      <div class="card full">
+        <h2>Concordancia por categoria</h2>
+        <input type="text" id="filtroCat" placeholder="Filtrar categoria">
+        <div class="tablebox"><table id="tabCat"><thead><tr>
+          <th data-k="categoria">Categoria</th>
+          <th data-k="qtd_classificados">Qtd</th>
+          <th data-k="taxa_concordancia">Concordancia</th>
+          <th data-k="confianca_media">Conf. media</th>
+          <th data-k="qtd_acima_95">>=95%</th>
+          <th data-k="qtd_70_95">70-95%</th>
+          <th data-k="qtd_abaixo_70">&lt;70%</th>
+        </tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Maiores volumes</h2>
+        <div class="tablebox"><table id="tabTopVolume"><thead><tr><th>Categoria</th><th>Qtd</th><th>Concordancia</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Menor concordancia</h2>
+        <div class="tablebox"><table id="tabBaixaConc"><thead><tr><th>Categoria</th><th>Qtd</th><th>Concordancia</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-metrics" class="hide">
+    <div class="grid">
+      <div class="card">
+        <h2>Metricas consolidadas</h2>
+        <div class="tablebox"><table id="tabMet"><thead><tr><th>Metrica</th><th>Valor</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Leitura analitica</h2>
+        <div id="analise"></div>
+      </div>
+      <div class="card full">
+        <h2>Resumo tecnico</h2>
+        <div class="tablebox"><table id="tabResumo"><thead><tr><th>Item</th><th>Valor</th></tr></thead><tbody></tbody></table></div>
+      </div>
     </div>
   </section>
 
   <section id="tab-reclass" class="hide">
     <div class="kpis" id="kpisR"></div>
     <div class="grid">
-      <div class="card full"><h3>Ganho líquido por turno (corrigidos − prejudicados)</h3><canvas id="cGanho"></canvas></div>
-      <div class="card"><h3>Concordância antes × depois</h3><canvas id="cAntesDepois"></canvas></div>
-      <div class="card"><h3>Corrigidos vs prejudicados (total)</h3><canvas id="cCorr"></canvas></div>
+      <div class="card full"><h2>Ganho liquido por turno</h2><canvas id="cGanho"></canvas></div>
+      <div class="card"><h2>Concordancia antes x depois</h2><canvas id="cAntesDepois"></canvas></div>
+      <div class="card"><h2>Corrigidos vs prejudicados</h2><canvas id="cCorr"></canvas></div>
+      <div class="card full">
+        <h2>Turnos de reclassificacao</h2>
+        <div class="tablebox"><table id="tabReclass"><thead><tr>
+          <th>Turno</th><th>Reclassificados</th><th>Antes</th><th>Depois</th><th>Corrigidos</th><th>Prejudicados</th><th>Ganho liquido</th><th>Executor</th>
+        </tr></thead><tbody></tbody></table></div>
+        <p class="muted" id="reclassVazio"></p>
+      </div>
     </div>
-    <p class="muted" id="reclassVazio"></p>
   </section>
-</div>
+
+  <section id="tab-docs" class="hide">
+    <div class="docgrid">
+      <div class="card">
+        <h2>O que este painel mostra</h2>
+        <p>Este painel acompanha o experimento de classificacao e reclassificacao automatica de chamados. Ele compara a categoria prevista pela IA com a categoria historica registrada na base.</p>
+        <p>O repositorio e experimental. O Malha IA operacional permanece em outro repositorio.</p>
+      </div>
+      <div class="card">
+        <h2>Estado dos dados</h2>
+        <p>Os graficos usam arquivos JSON publicados em <code>docs/dados</code>, atualizados pelo workflow de dashboard.</p>
+        <p>Quando houver pendentes, os indicadores representam uma fotografia parcial do experimento.</p>
+      </div>
+      <div class="card">
+        <h2>Fluxo principal</h2>
+        <p>Etapa 1: classifica pendentes em turnos de 15. Etapa 2: reclassifica casos de baixa confianca. Etapa seguinte: validacao humana e metricas finais.</p>
+      </div>
+    </div>
+    <div class="card full" style="margin-top:12px">
+      <h2>Dicionario dos indicadores</h2>
+      <div class="definition"><strong>Concordancia</strong>: proporcao de previsoes da IA iguais a categoria historica do chamado.</div>
+      <div class="definition"><strong>Confianca media</strong>: media da probabilidade atribuida pelo classificador as categorias previstas.</div>
+      <div class="definition"><strong>Faixas de confianca</strong>: abaixo de 70%, entre 70% e 95%, e acima ou igual a 95%.</div>
+      <div class="definition"><strong>Executor</strong>: modelo ou etapa que gerou a classificacao, como LSTM, RF_Fallback ou Reclass_LSTM.</div>
+      <div class="definition"><strong>Ganho liquido</strong>: quantidade de chamados corrigidos na reclassificacao menos a quantidade de chamados prejudicados.</div>
+      <div class="definition"><strong>Validacao humana</strong>: etapa ainda necessaria para confirmar se a IA ou a classificacao historica esta correta nos casos divergentes ou ambiguos.</div>
+    </div>
+  </section>
+</main>
 
 <script>
-const N = v => { const f = parseFloat(String(v).replace(",", ".")); return isFinite(f) ? f : 0; };
-const pct = v => (N(v)*100).toFixed(1) + "%";
-const cor = t => t>=0.9?"var(--ok)":t>=0.7?"var(--mid)":"var(--bad)";
+const N = v => { const f = parseFloat(String(v ?? "").replace(",", ".")); return isFinite(f) ? f : 0; };
+const pct = v => (N(v)*100).toFixed(1).replace(".", ",") + "%";
+const fmt = v => N(v).toLocaleString("pt-BR");
+const esc = v => String(v ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
 
-let CAT=[], sortK="qtd_classificados", sortDir=-1;
-
-function kpi(v,l){ return `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`; }
+let CAT=[], MET=[], sortK="qtd_classificados", sortDir=-1, charts={};
+function kpi(v,l){ return `<div class="kpi"><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div></div>`; }
+function metric(k){ const m=(MET||[]).find(x=>x.metrica===k); return m ? m.valor : ""; }
+function destroy(id){ if(charts[id]) charts[id].destroy(); }
+function chartOpts(suf){return{responsive:true,plugins:{legend:{labels:{color:"#24303a",boxWidth:12}}},scales:{x:{ticks:{color:"#68737d"},grid:{color:"#edf0ea"}},y:{ticks:{color:"#68737d",callback:v=>v+(suf||"")},grid:{color:"#edf0ea"}}}};}
 
 function renderClass(turnos){
   const labels = turnos.map(t=>t.turno);
-  const taxa = turnos.map(t=>N(t.taxa_concordancia)*100);
-  const acum = turnos.map(t=>N(t.concordancia_acumulada)*100);
-  const conf = turnos.map(t=>N(t.confianca_media)*100);
-  new Chart(cEvol,{type:"line",data:{labels,datasets:[
-    {label:"Concordância do turno (%)",data:taxa,borderColor:"#8b98a5",pointRadius:0,borderWidth:1},
-    {label:"Concordância acumulada (%)",data:acum,borderColor:"#2f81f7",pointRadius:0,borderWidth:2}
-  ]},options:opt("%")});
+  destroy("cEvol"); destroy("cFaixa"); destroy("cConf");
+  charts.cEvol = new Chart(cEvol,{type:"line",data:{labels,datasets:[
+    {label:"Concordancia do turno (%)",data:turnos.map(t=>N(t.taxa_concordancia)*100),borderColor:"#68737d",pointRadius:0,borderWidth:1},
+    {label:"Concordancia acumulada (%)",data:turnos.map(t=>N(t.concordancia_acumulada)*100),borderColor:"#0f766e",pointRadius:0,borderWidth:2}
+  ]},options:chartOpts("%")});
   const lo=turnos.reduce((s,t)=>s+N(t.qtd_abaixo_70),0), mi=turnos.reduce((s,t)=>s+N(t.qtd_70_95),0), hi=turnos.reduce((s,t)=>s+N(t.qtd_acima_95),0);
-  new Chart(cFaixa,{type:"doughnut",data:{labels:["≥95%","70–95%","<70%"],datasets:[{data:[hi,mi,lo],backgroundColor:["#2ea043","#d29922","#cf3b3b"]}]},options:{plugins:{legend:{labels:{color:"#e6edf3"}}}}});
-  new Chart(cConf,{type:"line",data:{labels,datasets:[{label:"Confiança média (%)",data:conf,borderColor:"#a371f7",pointRadius:0,borderWidth:1.5,fill:false}]},options:opt("%")});
+  charts.cFaixa = new Chart(cFaixa,{type:"doughnut",data:{labels:[">=95%","70-95%","<70%"],datasets:[{data:[hi,mi,lo],backgroundColor:["#1f7a4d","#b7791f","#b42318"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
+  charts.cConf = new Chart(cConf,{type:"line",data:{labels,datasets:[{label:"Confianca media (%)",data:turnos.map(t=>N(t.confianca_media)*100),borderColor:"#2f5f9e",pointRadius:0,borderWidth:1.5,fill:false}]},options:chartOpts("%")});
 }
-function opt(suf){return{responsive:true,plugins:{legend:{labels:{color:"#e6edf3",boxWidth:12}}},scales:{x:{ticks:{color:"#8b98a5"},grid:{color:"#222a33"}},y:{ticks:{color:"#8b98a5",callback:v=>v+(suf||"")},grid:{color:"#222a33"}}}};}
 
+function rowCat(c){
+  const t=N(c.taxa_concordancia);
+  return `<tr><td>${esc(c.categoria)}</td><td>${fmt(c.qtd_classificados)}</td>
+    <td style="color:${color(t)}">${pct(c.taxa_concordancia)}<span class="bar"><i style="width:${Math.max(0,Math.min(100,t*100)).toFixed(0)}%;background:${color(t)}"></i></span></td>
+    <td>${pct(c.confianca_media)}</td><td>${fmt(c.qtd_acima_95)}</td><td>${fmt(c.qtd_70_95)}</td><td>${fmt(c.qtd_abaixo_70)}</td></tr>`;
+}
 function renderCat(){
   const f = document.getElementById("filtroCat").value.toLowerCase();
   let rows = CAT.filter(c=>String(c.categoria).toLowerCase().includes(f));
-  rows.sort((a,b)=> (N(a[sortK])-N(b[sortK]))*sortDir || String(a.categoria).localeCompare(b.categoria));
-  if(sortK==="categoria") rows.sort((a,b)=>a.categoria.localeCompare(b.categoria)*(sortDir));
-  const tb = document.querySelector("#tabCat tbody");
-  tb.innerHTML = rows.map(c=>{const t=N(c.taxa_concordancia);return `<tr>
-    <td>${c.categoria}</td><td>${c.qtd_classificados}</td>
-    <td style="color:${cor(t)}">${pct(c.taxa_concordancia)}<span class="bar"><i style="width:${(t*100).toFixed(0)}%;background:${cor(t)}"></i></span></td>
-    <td>${pct(c.confianca_media)}</td><td>${c.qtd_acima_95}</td><td>${c.qtd_70_95}</td><td>${c.qtd_abaixo_70}</td></tr>`;}).join("");
+  rows.sort((a,b)=> sortK==="categoria" ? String(a.categoria).localeCompare(String(b.categoria))*sortDir : (N(a[sortK])-N(b[sortK]))*sortDir || String(a.categoria).localeCompare(String(b.categoria)));
+  document.querySelector("#tabCat tbody").innerHTML = rows.map(rowCat).join("");
+  document.querySelector("#tabTopVolume tbody").innerHTML = [...CAT].sort((a,b)=>N(b.qtd_classificados)-N(a.qtd_classificados)).slice(0,10).map(c=>`<tr><td>${esc(c.categoria)}</td><td>${fmt(c.qtd_classificados)}</td><td>${pct(c.taxa_concordancia)}</td></tr>`).join("");
+  document.querySelector("#tabBaixaConc tbody").innerHTML = [...CAT].filter(c=>N(c.qtd_classificados)>=15).sort((a,b)=>N(a.taxa_concordancia)-N(b.taxa_concordancia)).slice(0,10).map(c=>`<tr><td>${esc(c.categoria)}</td><td>${fmt(c.qtd_classificados)}</td><td class="${N(c.taxa_concordancia)<0.7?"status-bad":"status-mid"}">${pct(c.taxa_concordancia)}</td></tr>`).join("");
+}
+
+function renderMetrics(resumo, turnos){
+  document.querySelector("#tabMet tbody").innerHTML = (MET||[]).map(m=>`<tr><td>${esc(m.metrica)}</td><td>${esc(m.valor)}</td></tr>`).join("");
+  const proc = turnos.reduce((s,t)=>s+N(t.qtd_processados),0);
+  const pend = N(metric("pendentes_restantes"));
+  const total = proc + pend;
+  const cobertura = total ? proc / total : 0;
+  const conc = turnos.length ? N(turnos[turnos.length-1].concordancia_acumulada) : N(metric("concordancia_acumulada_global"));
+  document.querySelector("#tabResumo tbody").innerHTML = [
+    ["run_id", resumo?.run_id || ""],["gerado_em", resumo?.gerado_em || ""],["classificados", fmt(proc)],
+    ["pendentes_restantes", pend ? fmt(pend) : "0"],["cobertura_aproximada", pct(cobertura)],["concordancia_acumulada", pct(conc)],
+    ["modelo", metric("modelo") || ""],["categorias", fmt(CAT.length)]
+  ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
+  const classeCob = cobertura >= 0.95 ? "status-ok" : cobertura >= 0.5 ? "status-mid" : "status-bad";
+  document.getElementById("analise").innerHTML = `
+    <p><strong>Cobertura:</strong> <span class="${classeCob}">${pct(cobertura)}</span> dos registros estimados ja aparece como classificado nos dados publicados.</p>
+    <p><strong>Concordancia IA x historico:</strong> <span class="${conc>=0.8?"status-ok":conc>=0.7?"status-mid":"status-bad"}">${pct(conc)}</span>. Esta metrica nao substitui validacao humana.</p>
+    <p><strong>Risco de leitura:</strong> enquanto houver pendentes, os graficos devem ser interpretados como acompanhamento parcial, nao como resultado final do experimento.</p>`;
 }
 
 function renderReclass(rt){
   const box=document.getElementById("kpisR"), vazio=document.getElementById("reclassVazio");
-  if(!rt.length){ box.innerHTML=""; vazio.textContent="Ainda não há dados de reclassificação (Etapa 2)."; return; }
+  if(!rt.length){ box.innerHTML=""; vazio.textContent="Ainda nao ha dados de reclassificacao publicados."; return; }
   vazio.textContent="";
   const tot=k=>rt.reduce((s,t)=>s+N(t[k]),0);
-  box.innerHTML = kpi(tot("qtd_reclassificados"),"Reclassificados")+kpi(tot("qtd_corrigidos"),"Corrigidos")
-    +kpi(tot("qtd_prejudicados"),"Prejudicados")+kpi(tot("ganho_liquido"),"Ganho líquido");
+  box.innerHTML = kpi(fmt(tot("qtd_reclassificados")),"Reclassificados")+kpi(fmt(tot("qtd_corrigidos")),"Corrigidos")
+    +kpi(fmt(tot("qtd_prejudicados")),"Prejudicados")+kpi(fmt(tot("ganho_liquido")),"Ganho liquido");
+  document.querySelector("#tabReclass tbody").innerHTML = rt.map(t=>`<tr><td>${esc(t.turno)}</td><td>${fmt(t.qtd_reclassificados)}</td><td>${pct(t.taxa_concordancia_antes)}</td><td>${pct(t.taxa_concordancia_depois)}</td><td>${fmt(t.qtd_corrigidos)}</td><td>${fmt(t.qtd_prejudicados)}</td><td>${fmt(t.ganho_liquido)}</td><td>${esc(t.executor)}</td></tr>`).join("");
+  destroy("cGanho"); destroy("cAntesDepois"); destroy("cCorr");
   const labels=rt.map(t=>t.turno);
-  new Chart(cGanho,{type:"bar",data:{labels,datasets:[{label:"Ganho líquido",data:rt.map(t=>N(t.ganho_liquido)),backgroundColor:rt.map(t=>N(t.ganho_liquido)>=0?"#2ea043":"#cf3b3b")}]},options:opt("")});
-  new Chart(cAntesDepois,{type:"line",data:{labels,datasets:[
-    {label:"Antes (%)",data:rt.map(t=>N(t.taxa_concordancia_antes)*100),borderColor:"#8b98a5",pointRadius:0},
-    {label:"Depois (%)",data:rt.map(t=>N(t.taxa_concordancia_depois)*100),borderColor:"#2ea043",pointRadius:0,borderWidth:2}
-  ]},options:opt("%")});
-  new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],
-    datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],
-    backgroundColor:["#2ea043","#cf3b3b","#2f81f7","#6e7681"]}]},options:{plugins:{legend:{labels:{color:"#e6edf3"}}}}});
+  charts.cGanho = new Chart(cGanho,{type:"bar",data:{labels,datasets:[{label:"Ganho liquido",data:rt.map(t=>N(t.ganho_liquido)),backgroundColor:rt.map(t=>N(t.ganho_liquido)>=0?"#1f7a4d":"#b42318")}]},options:chartOpts("")});
+  charts.cAntesDepois = new Chart(cAntesDepois,{type:"line",data:{labels,datasets:[{label:"Antes (%)",data:rt.map(t=>N(t.taxa_concordancia_antes)*100),borderColor:"#68737d",pointRadius:0},{label:"Depois (%)",data:rt.map(t=>N(t.taxa_concordancia_depois)*100),borderColor:"#1f7a4d",pointRadius:0,borderWidth:2}]},options:chartOpts("%")});
+  charts.cCorr = new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],backgroundColor:["#1f7a4d","#b42318","#2f5f9e","#68737d"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
 
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
-  ["class","cat","reclass"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["class","cat","metrics","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
-document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{
-  const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat();
-});
+document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 
 (async function(){
   const [turnos,cat,rt,met,resumo] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"), getJSON("resumo.json")
   ]);
-  CAT = cat;
-  const proc = turnos.reduce((s,t)=>s+N(t.qtd_processados),0);
-  const acumFinal = turnos.length? N(turnos[turnos.length-1].concordancia_acumulada) : 0;
-  const mGet = k => { const m=(met||[]).find(x=>x.metrica===k); return m? m.valor : "—"; };
+  CAT = Array.isArray(cat) ? cat : [];
+  MET = Array.isArray(met) ? met : [];
+  const proc = Array.isArray(turnos) ? turnos.reduce((s,t)=>s+N(t.qtd_processados),0) : 0;
+  const pend = N(metric("pendentes_restantes"));
+  const total = proc + pend;
+  const acumFinal = turnos.length ? N(turnos[turnos.length-1].concordancia_acumulada) : N(metric("concordancia_acumulada_global"));
   document.getElementById("kpis").innerHTML =
-    kpi(proc.toLocaleString("pt-BR"),"Chamados classificados")+
-    kpi(pct(acumFinal),"Concordância acumulada")+
+    kpi(fmt(proc),"Chamados classificados")+
+    kpi(pct(acumFinal),"Concordancia acumulada")+
+    kpi(fmt(pend),"Pendentes restantes")+
     kpi(turnos.length,"Turnos processados")+
-    kpi(CAT.length,"Categorias")+
-    kpi((resumo&&resumo.run_id)||"—","run_id");
-  document.getElementById("meta").textContent = "Atualizado em: "+((resumo&&resumo.gerado_em)||"—");
-  if(turnos.length) renderClass(turnos);
+    kpi(CAT.length,"Categorias");
+  document.getElementById("notice").innerHTML = pend > 0
+    ? `Experimento em andamento: ${fmt(proc)} chamados classificados e ${fmt(pend)} pendentes nos dados publicados. Os graficos representam resultado parcial.`
+    : `Experimento sem pendentes nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`;
+  document.getElementById("meta").textContent = "Atualizado em: "+((resumo&&resumo.gerado_em)||"sem data publicada");
+  if(Array.isArray(turnos) && turnos.length) renderClass(turnos);
   renderCat();
-  renderReclass(rt);
+  renderMetrics(resumo, turnos || []);
+  renderReclass(Array.isArray(rt) ? rt : []);
 })();
 </script>
 </body>

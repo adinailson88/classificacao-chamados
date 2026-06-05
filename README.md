@@ -1,165 +1,144 @@
 # Classificacao de Chamados
 
-Repositorio experimental para avaliacao da evolucao da classificacao e reclassificacao automatica de chamados, separado do repositorio operacional Malha IA.
+Repositorio experimental para avaliacao da classificacao e reclassificacao automatica de chamados, separado do repositorio operacional Malha IA.
 
-## Objetivo
+O objetivo e manter um experimento rastreavel, com processamento por turnos, logs, metricas, painel publico e preparacao para validacao humana.
 
-Implementar scripts novos para executar um experimento rastreavel com:
+## Estado atual
 
-1. leitura da planilha experimental;
-2. validacao estrutural da aba principal;
-3. classificacao inicial por turnos;
-4. reclassificacao de chamados abaixo do limiar definido;
-5. logs por turno;
-6. logs linha a linha;
-7. metricas de concordancia IA x classificacao historica;
-8. preparacao posterior para validacao humana.
-
-## Premissas atuais
-
-1. A planilha experimental e `CHAMADOS_ESQUELETO_REDUZIDO`.
-2. A aba principal vai somente ate a coluna `M`.
-3. O restante da planilha esta vazio.
-4. Linhas vazias nao entram no experimento.
-5. A quantidade de linhas pode aumentar.
-6. O script deve mapear colunas por cabecalho.
-7. Nenhuma rotina deve sobrescrever dados sem flag explicita.
+1. A planilha experimental e lida por conta de servico Google Cloud via `gspread`.
+2. O ID da planilha nao e versionado; use `SPREADSHEET_ID` ou `spreadsheet_id.local`.
+3. A chave da conta de servico nao e versionada; use `credenciais_sa.json` local ou o secret `GCP_SA_KEY` no GitHub Actions.
+4. A aba principal e `CHAMADOS_ESQUELETO_REDUZIDO`, com leitura em `A:M`.
+5. Os dados reais gerados em `dados/*.json` e `dados/*.jsonl` ficam ignorados no Git.
+6. Os dados publicos do dashboard ficam em `docs/dados`.
+7. Nenhum script escreve na planilha sem flag explicita `--aplicar`, exceto workflows ja configurados para a etapa correspondente.
 
 ## Colunas da aba principal
 
 ```text
 A  ID Chamado
-B  TÍTULO
+B  TITULO
 C  CATEGORIA COMPLETA
-D  DESCRIÇÃO GLPI
-E  TÍTULO O.S.M.
-F  DESCRIÇÃO O.S.M.
-G  Classificação IA
-H  Avaliação (%)
+D  DESCRICAO GLPI
+E  TITULO O.S.M.
+F  DESCRICAO O.S.M.
+G  Classificacao IA
+H  Avaliacao (%)
 I  Executor
-J  Criticidade Atribuída por IA
-K  Comparação
-L  Classificado_Confiança_IA
-M  CONFERÊNCIA
+J  Criticidade Atribuida por IA
+K  Comparacao
+L  Classificado_Confianca_IA
+M  CONFERENCIA
 ```
 
-## Abas experimentais previstas
+Saida da IA: `G:J`.
+
+`K` compara a classificacao da IA com a categoria historica: `=SE(G="";"";G=C)`.
+
+`M=TRUE` indica conferencia humana e impede sobrescrita da linha pelos fluxos de exportacao.
+
+## Fluxo principal
+
+1. Etapa 1: classificacao progressiva em turnos de 15.
+2. Etapa 2: reclassificacao de casos de baixa confianca.
+3. Etapa 3: preparacao da validacao humana.
+4. Etapas finais: matriz de confusao, metricas por categoria, confianca calibrada e indicadores consolidados.
+
+## Comandos locais
+
+Validacao de sintaxe:
+
+```bash
+python -m py_compile src/classificar_etapa.py src/exportar_etapa.py src/registrar_snapshot_inicial.py
+```
+
+Testes sem rede:
+
+```bash
+python tests/test_github_first.py
+```
+
+Fluxo GitHub-first com conta de servico:
+
+```bash
+python src/registrar_snapshot_inicial.py
+python src/classificar_etapa.py --modo incremental --modelo producao
+python src/exportar_etapa.py
+python src/exportar_etapa.py --aplicar
+```
+
+Etapa 1 progressiva:
+
+```bash
+python src/executar_etapa1.py --modelo producao --max-turnos 60
+python src/executar_etapa1.py --modelo producao --max-turnos 60 --aplicar
+```
+
+Etapa 2, reclassificacao:
+
+```bash
+python src/executar_etapa2.py --modelo producao --max-turnos 40
+python src/executar_etapa2.py --modelo producao --max-turnos 40 --aplicar
+```
+
+Preparacao da validacao humana:
+
+```bash
+python src/preparar_validacao_humana.py --modo divergentes --limite 0
+python src/preparar_validacao_humana.py --modo divergentes --limite 0 --aplicar
+```
+
+Reset controlado do experimento:
+
+```bash
+python src/resetar_experimento.py
+python src/resetar_experimento.py --aplicar --confirmar RESETAR
+```
+
+## Workflows
+
+1. `etapa1_turnos.yml`: classificacao progressiva, agendada a cada 15 minutos.
+2. `dashboard.yml`: exporta os JSONs publicos do painel para `docs/dados`, agendado a cada 30 minutos.
+3. `etapa2_reclassificacao.yml`: reclassificacao, disparo manual.
+4. `reclassificacao_robusta.yml`: modelo pesado local, disparo manual.
+5. `preparar_validacao.yml`: monta a aba `VALIDACAO_HUMANA`, disparo manual.
+6. `resetar.yml`: reset seguro, disparo manual com confirmacao.
+7. `classificacao_incremental.yml`: fluxo incremental antigo, mantido manual.
+
+## Dashboard publico
+
+O painel esta em:
 
 ```text
-EXPERIMENTO_CONFIG
-LOG_TURNOS_CLASSIFICACAO
-LOG_LINHA_A_LINHA
-SNAPSHOT_ETAPA_1
-LOG_TURNOS_RECLASSIFICACAO
-VALIDACAO_HUMANA
-METRICAS_EXPERIMENTO
+docs/index.html
 ```
 
-## Primeira validacao local
+Ele consome:
 
-```bash
-python -m py_compile src/validar_planilha_experimento.py
-python src/validar_planilha_experimento.py --help
+```text
+docs/dados/log_turnos_classificacao.json
+docs/dados/metricas_por_categoria.json
+docs/dados/log_turnos_reclassificacao.json
+docs/dados/metricas_experimento.json
+docs/dados/resumo.json
 ```
 
-## Validacao com Apps Script Web App
+O site publicado pelo GitHub Pages deve identificar o projeto como `Classificacao de Chamados - Painel Experimental`. A referencia a Malha IA deve aparecer apenas como contexto de origem, nao como nome principal do site.
 
-Use este modo quando a planilha estiver conectada por Apps Script:
+## Documentacao
 
-```bash
-python src/validar_planilha_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
-```
+1. `CONTEXTO.md`: panorama vivo do repositorio, decisoes e proximos passos.
+2. `docs/GUIA_TECNICO.md`: explicacao dos scripts, colunas, executores e fluxos.
+3. `dados/README.md`: schemas dos artefatos JSON internos.
+4. `docs/index.html`: painel publico com graficos, tabelas, metricas e aba de documentacao.
 
-O comando apenas valida estrutura e contabiliza linhas nao vazias. Ele nao altera a planilha.
+## Apps Script
 
-Nao versionar a URL privada nem o token.
+`apps_script/Code.gs` e legado. O fluxo principal atual usa conta de servico com `gspread`.
 
-## Preparacao das abas experimentais
+Manter Apps Script apenas como referencia historica ou alternativa ate decisao de remocao definitiva.
 
-Primeiro rode somente em modo seguro:
+## Privacidade
 
-```bash
-python src/preparar_abas_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
-```
-
-Para aplicar a criacao/atualizacao das abas, o Apps Script precisa conter o arquivo `apps_script/Code.gs` deste repositorio e estar implantado em nova versao.
-
-Depois disso:
-
-```bash
-python src/preparar_abas_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN" --aplicar
-```
-
-O comando cria ou valida as abas experimentais e grava apenas cabecalhos. Ele nao classifica chamados e nao limpa a aba principal.
-
-## Registro da configuracao experimental
-
-Depois de atualizar e implantar o Apps Script com `apps_script/Code.gs`, rode primeiro:
-
-```bash
-python src/registrar_config_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
-```
-
-Para gravar a ficha tecnica na aba `EXPERIMENTO_CONFIG`:
-
-```bash
-python src/registrar_config_experimento.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN" --aplicar
-```
-
-Esse comando grava apenas a aba `EXPERIMENTO_CONFIG`.
-
-Os totais de linhas gravados nessa aba sao valores observados no momento da execucao. Eles nao sao limites fixos; a planilha pode crescer e os scripts devem sempre reler a quantidade atual.
-
-Datas e horas do experimento devem usar horario local de Itabuna/Bahia (`America/Bahia`, UTC-03:00), por exemplo `2026-06-01T23:40:37-03:00`.
-
-## Snapshot inicial
-
-Antes de classificar, gere um snapshot do estado atual das linhas nao vazias:
-
-```bash
-python src/registrar_snapshot_inicial.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
-```
-
-Para gravar em `SNAPSHOT_ETAPA_1`:
-
-```bash
-python src/registrar_snapshot_inicial.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN" --aplicar
-```
-
-Esse comando rele a aba principal no momento da execucao, ignora linhas vazias e nao usa quantidade fixa.
-
-## Classificacao inicial - selecao de lote
-
-A primeira versao do motor apenas seleciona o proximo lote elegivel, sem classificar e sem escrever em `G:J`:
-
-```bash
-python src/classificar_lote_inicial.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
-```
-
-Uma linha e elegivel quando:
-
-1. nao esta vazia;
-2. possui texto classificavel em titulo/descricoes;
-3. `Classificacao IA` ainda esta vazia.
-
-O tamanho padrao do lote vem de `config_experimento.json`.
-
-## Classificacao inicial - baseline dry-run
-
-Para gerar previsoes sem escrever na planilha:
-
-```bash
-python src/classificar_lote_baseline.py --apps-script-url "URL_DO_WEB_APP" --token "TOKEN"
-```
-
-O baseline atual usa TF-IDF + LogisticRegression, treinado com categorias historicas da planilha e excluindo o lote selecionado do treino. O resultado e apenas comparacao preliminar com a classificacao historica, nao acuracia validada.
-
-## Validacao com credencial Google Sheets
-
-Depois de liberar a credencial/token:
-
-```bash
-python src/validar_planilha_experimento.py --credenciais caminho/credenciais.json
-```
-
-O comando acima apenas valida estrutura e contabiliza linhas nao vazias. Ele nao altera a planilha.
+Nao versionar credenciais, IDs privados de planilha, tokens, URLs privadas de Web App ou arquivos JSON que contenham texto real de chamados.
