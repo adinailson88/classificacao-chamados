@@ -1,0 +1,42 @@
+OBJETIVO FINAL DO MODELO DE IA
+
+Meta:
+Construir um modelo de IA totalmente treinado e progressivamente calibrado para
+indicar, pelo menos para a maioria das categorias, se a categoria historica de um
+chamado esta correta ou nao.
+
+Criterio minimo:
+Quando o sistema indicar confianca igual ou superior a 95%, essa confianca deve
+ser calibrada. Ou seja: na pratica validada, os casos marcados como >=95% devem
+acertar aproximadamente >=95%. Nao basta a rede neural produzir softmax alto.
+
+Equacao operacional:
+Decisao_confiavel(caso) =
+  categoria_prevista == categoria_historica
+  E confianca_calibrada(categoria, faixa, executor) >= 0,95
+
+Onde:
+- categoria_prevista vem do classificador local.
+- categoria_historica vem da planilha.
+- confianca_calibrada deve ser medida depois da validacao humana.
+- categoria, faixa de confianca e executor precisam ser avaliados separadamente.
+
+Antes da validacao manual:
+1. Aumentar a capacidade configuravel do LSTM.
+2. Reforcar reclassificacao, priorizando baixa confianca.
+3. Preparar memoria validada para virar base de treino assim que houver revisao.
+4. Manter modelo robusto local, mais lento, para rodar em baixa frequencia nos
+   chamados mais dificeis.
+
+Depois da validacao manual:
+1. Usar VALIDACAO_HUMANA apenas quando categoria_validada estiver preenchida e
+   usar_para_treino=SIM.
+2. Alimentar a memoria validada.
+3. Retreinar o LSTM e os modelos de apoio com peso maior para exemplos validados.
+4. Medir matriz de confusao, metricas por categoria, acerto por faixa de confianca
+   e calibracao da confianca >=95%.
+5. Repetir o ciclo validar -> alimentar memoria -> retreinar -> reclassificar.
+
+Regra de seguranca:
+Nenhum script deve inventar categoria_validada. A memoria so pode usar revisao
+humana explicita.

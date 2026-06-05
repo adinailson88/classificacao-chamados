@@ -290,3 +290,38 @@ Próximo passo agora:
    `data_validacao` e `usar_para_treino`.
 3. Depois da validação humana, calcular matriz de confusão, métricas por categoria,
    indicadores por faixa de confiança e confiabilidade/calibração da confiança.
+
+## Redirecionamento antes da validação manual (2026-06-05)
+Decisão do usuário: **não iniciar a validação humana agora**. A aba
+`VALIDACAO_HUMANA` já está preparada, mas a etapa manual fica pausada até o
+modelo e os scripts serem fortalecidos.
+
+Arquivo criado para registrar a meta em formato `.txt`:
+- `OBJETIVO_FINAL_MODELO_IA.txt`
+
+Implementações aplicadas antes da validação manual:
+1. `src/modelo_lstm.py` passou a aceitar perfis configuráveis de LSTM. O perfil
+   `robusto` aumenta vocabulário, comprimento de sequência, embedding, unidades,
+   camadas, épocas e paciência.
+2. `src/classificador_producao.py` passou a receber `lstm_config` e treinar o
+   LSTM com os parâmetros definidos em `config_experimento.json`.
+3. `src/memoria_validada.py` foi criado para ler a aba `VALIDACAO_HUMANA` e usar
+   apenas linhas com `categoria_validada` preenchida e `usar_para_treino=SIM`.
+   Enquanto não houver validação humana, retorna memória vazia e não altera o
+   treino.
+4. `src/executar_etapa1.py` e `src/executar_etapa2.py` passaram a carregar a
+   memória validada quando ela existir e a reforçar o treino com peso configurável.
+5. `src/executar_etapa2.py` passou a ordenar candidatos por menor confiança antes
+   de reclassificar, priorizando os casos mais incertos.
+6. `src/classificador_robusto.py` passou a respeitar o perfil LSTM configurado
+   quando o transformer local não estiver disponível e precisar cair no fallback.
+7. `config_experimento.json` passou a documentar `objetivo_final`, `modelo_ia` e
+   `memoria_validada`.
+
+Próximo passo recomendado agora:
+1. Validar sintaxe e testes.
+2. Rodar um dry-run local/CI da Etapa 2 com `--modelo robusto` ou `--modelo producao`
+   sem avançar validação humana.
+3. Publicar essas alterações no GitHub.
+4. Só depois decidir se a reclassificação robusta deve rodar manualmente ou em
+   baixa frequência.
