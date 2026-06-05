@@ -325,3 +325,14 @@ Próximo passo recomendado agora:
 3. Publicar essas alterações no GitHub.
 4. Só depois decidir se a reclassificação robusta deve rodar manualmente ou em
    baixa frequência.
+
+## Workflow seguro de dry-run da reclassificação (2026-06-05)
+Criado `.github/workflows/reclassificacao_dry_run.yml` para testar a Etapa 2 sem
+gravar na planilha. O workflow:
+- usa conta de serviço apenas para leitura;
+- aceita `modelo=producao`, `baseline` ou `robusto`;
+- aceita `max_turnos`;
+- executa `src/executar_etapa2.py` **sem `--aplicar`**.
+
+Uso recomendado antes de qualquer nova escrita automática:
+`gh workflow run reclassificacao_dry_run.yml -f modelo=producao -f max_turnos=2`
