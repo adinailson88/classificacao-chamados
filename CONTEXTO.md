@@ -80,6 +80,11 @@ Script `src/executar_etapa1.py` + workflow `etapa1_turnos.yml` (agendado `*/15`)
   (por chamado, SEM texto: linha, grupo, categoria original/IA, confiança, faixa,
   executor, concorda, validação). Gerado por `exportar_dashboard.py`. O filtro de
   Validação humana fica pronto para a comparação após a revisão manual.
+
+> ⚠️ DADOS DINÂMICOS: `registros.json` **NÃO é fixo** (foi ~7.200 num instante, mas
+> **cresce** conforme a Etapa 1 classifica mais turnos) e a **base de chamados também
+> aumenta** com o tempo (sync GLPI). Nada no código deve assumir total fixo: tudo é
+> recontado dinamicamente a cada execução (totais são "observados", não limites).
 - Panorama GERAL do Malha IA (5 eixos, dashboards, motores) fica no repositório
   **`malha-ia`** (`contexto_projeto.txt`). Este repo é só o experimento de
   classificação/reclassificação.

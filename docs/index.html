@@ -218,6 +218,25 @@
       <div class="definition"><strong>Ganho liquido</strong>: quantidade de chamados corrigidos na reclassificacao menos a quantidade de chamados prejudicados.</div>
       <div class="definition"><strong>Validacao humana</strong>: etapa ainda necessaria para confirmar se a IA ou a classificacao historica esta correta nos casos divergentes ou ambiguos.</div>
       <div class="definition"><strong>Filtros (multi-selecao)</strong>: na barra superior da pagina, escolha varias opcoes de Grupo, Faixa de confianca, Executor, Situacao (concorda/diverge) e Validacao humana. Eles recalculam a distribuicao por faixa (Classificacao), as tabelas por categoria (Categorias) e o contador de metricas filtradas no topo (registros, concordancia, confianca media). O filtro de Validacao humana fica pronto para, apos a revisao manual, comparar os resultados pela categoria validada. A evolucao por turno e a aba Reclassificacao sao series temporais (por lote/turno) e nao usam esses filtros.</div>
+      <div class="definition"><strong>Dados dinamicos</strong>: os numeros NAO sao fixos. A base de chamados cresce com o tempo e a classificacao avanca por turnos; cada indicador e recontado a cada atualizacao. Um valor visto hoje (ex.: total de registros) tende a aumentar.</div>
+    </div>
+
+    <div class="card full" style="margin-top:12px">
+      <h2>Modelos de IA: tamanho e como funcionam</h2>
+      <p class="muted">Valores aproximados, para entendimento. "Tokens/termos" e a forma como cada modelo le o texto; "parametros" e o tamanho do modelo. Modelos classicos usam TF-IDF (contagem de termos); o LSTM e uma rede neural; o robusto e um transformer pre-treinado em portugues.</p>
+      <div class="tablebox"><table>
+        <thead><tr><th>Modelo</th><th>Tipo</th><th>Tokens / termos</th><th>Parametros (aprox.)</th><th>Como funciona</th></tr></thead>
+        <tbody>
+          <tr><td>Naive Bayes</td><td>TF-IDF + classico</td><td>ate 30.000 termos (uni+bigramas)</td><td>~30k x nº categorias</td><td>conta frequencia de palavras por categoria (Bayes)</td></tr>
+          <tr><td>Regressao Logistica</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x nº categorias</td><td>combinacao linear das palavras para a probabilidade</td></tr>
+          <tr><td>LinearSVC</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x nº categorias</td><td>separa categorias por margem maxima (SVM linear)</td></tr>
+          <tr><td>SGD</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x nº categorias</td><td>regressao logistica treinada incrementalmente</td></tr>
+          <tr><td>ExtraTrees / Random Forest</td><td>TF-IDF + arvores</td><td>ate 30.000 termos</td><td>200 arvores de decisao</td><td>floresta de arvores aleatorias que votam</td></tr>
+          <tr><td>LSTM padrao</td><td>rede neural (BiLSTM)</td><td>vocab 8.000; sequencia 120 tokens; embedding 128</td><td>~1,1 milhao</td><td>rede recorrente bidirecional sobre embeddings (1 camada)</td></tr>
+          <tr><td>LSTM robusto</td><td>rede neural (2x BiLSTM)</td><td>vocab 20.000; sequencia 220 tokens; embedding 192</td><td>~4,6 milhoes</td><td>versao maior: 2 camadas, mais unidades e epocas</td></tr>
+          <tr><td>Robusto (Transformer)</td><td>transformer local (MiniLM multilingue)</td><td>~128 tokens; embeddings 384 dims</td><td>~118 milhoes</td><td>transformer pre-treinado gera embeddings + classificador; pesado, roda raramente</td></tr>
+        </tbody>
+      </table></div>
     </div>
   </section>
 </main>
