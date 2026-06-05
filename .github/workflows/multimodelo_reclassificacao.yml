@@ -1,0 +1,66 @@
+name: Multimodelo - reclassificacao
+
+# Reclassifica os casos de baixa confianca por modelo, preservando a aba
+# CLASSIF__<modelo> e gravando em RECLASS__<modelo>.
+
+on:
+  workflow_dispatch:
+    inputs:
+      modelos:
+        description: "leves, pesados, todos ou lista separada por virgula"
+        default: "leves"
+      max_turnos:
+        description: "Turnos de 15 por modelo (0 = todos os candidatos)"
+        default: "1"
+      aplicar:
+        description: "Gravar na planilha"
+        type: boolean
+        default: false
+      lstm_perfil:
+        description: "Perfil LSTM"
+        type: choice
+        default: padrao
+        options:
+          - padrao
+          - robusto
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  reclassificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      LSTM_PERFIL: ${{ github.event.inputs.lstm_perfil || 'padrao' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Dependencias leves
+        run: pip install gspread google-auth scikit-learn numpy
+      - name: TensorFlow se LSTM estiver no escopo
+        if: ${{ contains(github.event.inputs.modelos, 'lstm') || github.event.inputs.modelos == 'pesados' || github.event.inputs.modelos == 'todos' }}
+        run: pip install tensorflow==2.17.0
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Reclassificar por modelo
+        run: |
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
+            python src/reclassificacao_multimodelo.py --modelos "${{ github.event.inputs.modelos }}" --max-turnos "${{ github.event.inputs.max_turnos }}" --aplicar
+          else
+            python src/reclassificacao_multimodelo.py --modelos "${{ github.event.inputs.modelos }}" --max-turnos "${{ github.event.inputs.max_turnos }}"
+          fi
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
