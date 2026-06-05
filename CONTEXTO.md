@@ -460,6 +460,18 @@ Observação de execução:
   lineares/TF-IDF superaram o LSTM em acurácia; o LSTM ainda não atingiu o
   patamar objetivo de confiança/acurácia para uso automático sem revisão.
 
+## Materialização multimodelo — 6 leves completos (2026-06-05, run 27026217228)
+- `multimodelo_classificacao.yml` (modelos=leves, max_turnos=0, aplicar=true) rodou
+  out-of-fold em TODA a base: cada IA classificou **13.825** linhas, **0 pendentes**,
+  método `kfold_5`, 922 turnos/modelo.
+- Concordância vs histórico (OOF, honesta): linear_svc **80,3%** > extra_trees 78,5%
+  > sgd 77,5% > random_forest 76,8% > regressao_logistica 76,6% > naive_bayes 70,1%.
+  O linear_svc supera o LSTM da Etapa 1 (77,65%).
+- Dashboard: aba **Multimodelo** mostra tabela de progresso + **curva de evolução da
+  concordância acumulada por turno, uma por IA** (lê `multimodelo_turnos.json`).
+- Corrigido overflow horizontal do painel (min-width:0 em grid/card/kpi; canvas max-width).
+- **Falta**: LSTM (modelos=pesados) e reclassificação multimodelo.
+
 ## Correção do dashboard (P0) — 2026-06-05 (commit e8df9b2)
 - Filtros: chips dos filtros ativos (removíveis), botões destacados, Limpar com
   contagem; rótulos explícitos "série temporal não usa filtros" vs "recalcula com filtros".

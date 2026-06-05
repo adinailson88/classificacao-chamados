@@ -80,8 +80,11 @@ dados, fazer o painel mostrar a verdade.
 ---
 
 ## P1 — Rodar a MATERIALIZAÇÃO multimodelo (as 7 IAs completas)
-> ⏳ **Iniciado**: os 6 modelos leves já classificaram ~60 linhas cada (out-of-fold
-> `kfold_5`), ~13.765 pendentes. Falta concluir (rodar até zerar pendentes) e o LSTM.
+> ✅ **6 leves materializados** (run `27026217228`): 13.825 cada, 0 pendentes,
+> out-of-fold `kfold_5`. Concordância vs histórico: linear_svc 80,3% > extra_trees
+> 78,5% > sgd 77,5% > random_forest 76,8% > regressao_logistica 76,6% > naive_bayes
+> 70,1% (922 turnos/modelo). **Falta: o LSTM** (`modelos=pesados`, workflow separado,
+> baixa frequência) e a **reclassificação multimodelo** (`multimodelo_reclassificacao.yml`).
 - [ ] (Decidido) **Pausar o cron `*/15` da Etapa 1** (`etapa1_turnos.yml`) para o
       multimodelo virar a fonte de verdade e evitar escrita concorrente.
 - [ ] Rodar `multimodelo_classificacao.yml` com `aplicar=true`, **6 leves primeiro**
