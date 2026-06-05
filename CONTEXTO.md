@@ -343,3 +343,7 @@ Observação de execução:
 - Ajuste aplicado: `config_experimento.json` voltou a usar `perfil=padrao`, o
   perfil `robusto` permanece disponível e pode ser acionado por `LSTM_PERFIL` ou
   pelo input `lstm_perfil` do workflow dry-run.
+- Run `26989026037` executou dry-run com sucesso e sem gravação, mas revelou que
+  `LSTM_PERFIL` deixava a chave `perfil` sobrar nos parâmetros do LSTM, causando
+  fallback para RF. Correção aplicada em `src/modelo_lstm.py`: remover `perfil`
+  do dicionário antes de aplicar override por variável de ambiente.

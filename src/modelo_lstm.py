@@ -57,7 +57,8 @@ PERFIS_LSTM = {
 
 def resolver_parametros_lstm(config: dict | None = None) -> dict:
     cfg = dict(config or {})
-    perfil = os.getenv("LSTM_PERFIL") or cfg.pop("perfil", "padrao") or "padrao"
+    perfil_config = cfg.pop("perfil", "padrao")
+    perfil = os.getenv("LSTM_PERFIL") or perfil_config or "padrao"
     perfil = str(perfil).lower()
     params = dict(PERFIS_LSTM.get(perfil, PERFIS_LSTM["padrao"]))
     params.update({k: v for k, v in cfg.items() if v not in (None, "")})
