@@ -233,3 +233,60 @@ Trabalho futuro: embeddings PT pré-treinados + tuning (payoff incerto).
 > Nota sobre modelos: o teste LSTM×baseline (abaixo) mediu o **baseline melhor**,
 > mas o **roteiro (Etapa 15) manda LSTM primário + RF fallback** (paridade com a
 > produção). Por isso o fluxo usa LSTM; o baseline fica como comparação/fallback.
+
+## Registro de correção do painel/documentação (2026-06-05)
+Correções aplicadas no site e na documentação após análise do repositório e do
+GitHub Pages:
+
+1. `docs/index.html` deixou de usar **Malha IA** como nome principal do site.
+   O painel agora identifica o projeto como **Classificacao de Chamados - Painel
+   Experimental**. Malha IA permanece apenas como contexto de origem.
+2. O painel passou a exibir aviso explícito de **experimento em andamento** quando
+   houver pendentes publicados em `docs/dados/metricas_experimento.json`.
+3. O painel ganhou aba **Documentacao**, com explicação de escopo, fluxo, fontes
+   de dados, indicadores, faixas de confiança, executor, ganho líquido e validação
+   humana.
+4. O painel ganhou aba **Metricas**, tabela de métricas consolidadas, resumo
+   técnico e leitura analítica.
+5. A aba de categorias foi ampliada com tabelas de maiores volumes e menor
+   concordância, além da tabela completa filtrável.
+6. A aba de reclassificação passou a mostrar tabela dos turnos, além dos gráficos.
+7. A identidade visual foi ajustada para um padrão mais institucional e técnico:
+   fundo claro, painéis neutros, acentos em verde/teal/azul/âmbar/vermelho, bordas
+   de 6 px e tipografia mais sóbria.
+8. `README.md` foi reescrito para refletir o fluxo atual por **conta de serviço
+   gspread**, deixando `apps_script/Code.gs` apenas como legado.
+
+Validação local desta correção:
+- `python -m py_compile` nos scripts principais: OK.
+- `python tests/test_github_first.py`: não executou no ambiente local por falta de
+  `numpy`; instalar dependências ou rodar no GitHub Actions antes de declarar a
+  suíte aprovada.
+
+Próximo passo oficial depois desta correção:
+1. Executar/preparar a **VALIDACAO_HUMANA** (`src/preparar_validacao_humana.py` ou
+   workflow `preparar_validacao.yml`), priorizando divergentes e baixa confiança.
+2. Após validação humana, calcular matriz de confusão, métricas por categoria,
+   confiança calibrada por faixa e indicadores finais.
+
+## Registro de execução da validação humana (2026-06-05)
+Workflow executado: `preparar_validacao.yml`
+
+Parâmetros:
+- `modo=divergentes`
+- `max=0`
+- `forcar=nao`
+
+Resultado verificado no GitHub Actions:
+- run: `26987937701`
+- status: `success`
+- aba destino: `VALIDACAO_HUMANA`
+- casos selecionados: `1654`
+- gravação: `OK: 1654 casos gravados em VALIDACAO_HUMANA (com dropdowns).`
+
+Próximo passo agora:
+1. Revisar manualmente os 1.654 casos em `VALIDACAO_HUMANA`.
+2. Preencher `categoria_validada`, `decisao`, `justificativa`, `avaliador`,
+   `data_validacao` e `usar_para_treino`.
+3. Depois da validação humana, calcular matriz de confusão, métricas por categoria,
+   indicadores por faixa de confiança e confiabilidade/calibração da confiança.
