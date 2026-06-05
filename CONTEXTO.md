@@ -268,3 +268,25 @@ Próximo passo oficial depois desta correção:
    workflow `preparar_validacao.yml`), priorizando divergentes e baixa confiança.
 2. Após validação humana, calcular matriz de confusão, métricas por categoria,
    confiança calibrada por faixa e indicadores finais.
+
+## Registro de execução da validação humana (2026-06-05)
+Workflow executado: `preparar_validacao.yml`
+
+Parâmetros:
+- `modo=divergentes`
+- `max=0`
+- `forcar=nao`
+
+Resultado verificado no GitHub Actions:
+- run: `26987937701`
+- status: `success`
+- aba destino: `VALIDACAO_HUMANA`
+- casos selecionados: `1654`
+- gravação: `OK: 1654 casos gravados em VALIDACAO_HUMANA (com dropdowns).`
+
+Próximo passo agora:
+1. Revisar manualmente os 1.654 casos em `VALIDACAO_HUMANA`.
+2. Preencher `categoria_validada`, `decisao`, `justificativa`, `avaliador`,
+   `data_validacao` e `usar_para_treino`.
+3. Depois da validação humana, calcular matriz de confusão, métricas por categoria,
+   indicadores por faixa de confiança e confiabilidade/calibração da confiança.
