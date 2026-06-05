@@ -63,8 +63,6 @@
   .btnlimpar.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
   .btnlimpar:disabled{opacity:.5;cursor:default}
   .ms>button.has{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
-  .fonteClass{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--mut);background:var(--panel-soft);border:1px solid var(--bd);border-radius:6px;padding:4px 8px}
-  .fonteClass select{border:0;background:transparent;color:var(--tx);font-size:13px;font-weight:700;outline:none}
   .fchips{display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:4px}
   .fchips:empty{margin:0}
   .chip{display:inline-flex;align-items:center;gap:6px;background:#eaf2ee;border:1px solid #bcd6cb;color:#18463e;border-radius:14px;padding:2px 6px 2px 9px;font-size:12px}
@@ -93,14 +91,7 @@
 
   <div class="filtros" id="filtros">
     <strong>Filtros (multi):</strong>
-    <label class="fonteClass">Fonte
-      <select id="fonteClassificacao">
-        <option value="multi">Multimodelo (7 IAs)</option>
-        <option value="etapa1">Etapa 1 (LSTM)</option>
-      </select>
-    </label>
-    <span class="notefiltro">afetam Classificacao, Categorias e Metricas</span>
-    <div class="ms" data-campo="m"></div>
+    <span class="notefiltro">fonte: Etapa 1/LSTM; afetam Classificacao, Categorias e Metricas</span>
     <div class="ms" data-campo="g"></div>
     <div class="ms" data-campo="f"></div>
     <div class="ms" data-campo="e"></div>
@@ -189,32 +180,30 @@
   </section>
 
   <section id="tab-modelos" class="hide">
-    <p class="muted">Mesmo lote de teste para todos; cada modelo treina na base excluindo o lote. Media de <strong>todos</strong> os recortes ja publicados (nao so o ultimo). Comparacao vs categoria historica (preliminar; a validacao humana qualifica depois).</p>
+    <p class="muted">Comparacao principal: 7 IAs materializadas na base completa, com 13.825 chamados por modelo e predicao out-of-fold. Os recortes piloto de 1.000 registros nao sao usados como resultado principal.</p>
     <div class="grid">
       <div class="card">
-        <h2>Media por modelo (acuracia x F1-macro)</h2>
+        <h2>Base completa por modelo</h2>
         <canvas id="cModelos"></canvas>
       </div>
       <div class="card">
-        <h2>Ranking por acuracia media</h2>
+        <h2>Ranking na base completa</h2>
         <div class="tablebox"><table id="tabRankModelos"><thead><tr>
-          <th>#</th><th>Modelo</th><th>Lotes</th><th>Acuracia media</th><th>F1-macro media</th><th>Melhor</th>
+          <th>#</th><th>Modelo</th><th>Chamados</th><th>Concordancia</th><th>Pendentes</th><th>Metodo</th>
         </tr></thead><tbody></tbody></table></div>
       </div>
       <div class="card full">
-        <h2>Acuracia por lote (evolucao entre recortes)</h2>
+        <h2>Evolucao por turno na base completa</h2>
         <select id="selMetricaModelo" style="margin-bottom:10px;border:1px solid var(--bd);border-radius:6px;padding:7px 9px;background:#fff;color:var(--tx)">
-          <option value="acuracia">Acuracia do lote</option>
-          <option value="acuracia_acumulada">Acuracia acumulada ate o lote</option>
-          <option value="f1_macro">F1-macro do lote</option>
-          <option value="f1_acumulado">F1-macro acumulado ate o lote</option>
-          <option value="balanced_accuracy">Balanced accuracy do lote</option>
+          <option value="concordancia_acumulada">Concordancia acumulada</option>
+          <option value="taxa_concordancia">Concordancia do turno</option>
+          <option value="confianca_media">Confianca media do turno</option>
         </select>
         <canvas id="cModelosLote"></canvas>
       </div>
     </div>
     <div class="card full">
-      <h2>Execucoes por modelo/lote (todos os recortes)</h2>
+      <h2>Recortes piloto de comparacao (amostra, nao resultado principal)</h2>
       <div class="tablebox"><table id="tabModelos"><thead><tr>
         <th>Modelo</th><th>Lote</th><th>N</th><th>Acuracia</th><th>F1-macro</th><th>Bal.acc</th><th>Revisao</th><th>Treino</th>
       </tr></thead><tbody></tbody></table></div>
@@ -315,7 +304,7 @@
       <div class="definition"><strong>Executor</strong>: modelo ou etapa que gerou a classificacao, como LSTM, RF_Fallback ou Reclass_LSTM.</div>
       <div class="definition"><strong>Ganho liquido</strong>: quantidade de chamados corrigidos na reclassificacao menos a quantidade de chamados prejudicados.</div>
       <div class="definition"><strong>Validacao humana</strong>: etapa ainda necessaria para confirmar se a IA ou a classificacao historica esta correta nos casos divergentes ou ambiguos.</div>
-      <div class="definition"><strong>Filtros (multi-selecao)</strong>: na barra superior da pagina, escolha a fonte dos dados (Multimodelo com 7 IAs ou Etapa 1 LSTM) e varias opcoes de Modelo, Grupo, Faixa de confianca, Executor, Situacao (concorda/diverge) e Validacao humana. Eles recalculam a distribuicao por faixa (Classificacao), as tabelas por categoria (Categorias) e o contador de metricas filtradas no topo (registros, concordancia, confianca media). O filtro de Validacao humana fica pronto para, apos a revisao manual, comparar os resultados pela categoria validada. A evolucao por turno e a aba Reclassificacao sao series temporais (por lote/turno) e nao usam esses filtros.</div>
+      <div class="definition"><strong>Filtros (multi-selecao)</strong>: na barra superior da pagina, escolha varias opcoes de Grupo, Faixa de confianca, Executor, Situacao (concorda/diverge) e Validacao humana. Eles recalculam a distribuicao por faixa (Classificacao), as tabelas por categoria (Categorias) e o contador de metricas filtradas no topo (chamados, concordancia, confianca media). A fonte desta barra e a Etapa 1/LSTM; a comparacao das 7 IAs fica nas abas Modelos, Multimodelo e Estatistica. O filtro de Validacao humana fica pronto para, apos a revisao manual, comparar os resultados pela categoria validada. A evolucao por turno e a aba Reclassificacao sao series temporais (por lote/turno) e nao usam esses filtros.</div>
       <div class="definition"><strong>Dados dinamicos</strong>: os numeros NAO sao fixos. A base de chamados cresce com o tempo e a classificacao avanca por turnos; cada indicador e recontado a cada atualizacao. Um valor visto hoje (ex.: total de registros) tende a aumentar.</div>
     </div>
 
@@ -363,26 +352,13 @@ function metric(k){ const m=(MET||[]).find(x=>x.metrica===k); return m ? m.valor
 function destroy(id){ if(charts[id]) charts[id].destroy(); }
 function chartOpts(suf){return{responsive:true,plugins:{legend:{labels:{color:"#24303a",boxWidth:12}}},scales:{x:{ticks:{color:"#68737d"},grid:{color:"#edf0ea"}},y:{ticks:{color:"#68737d",callback:v=>v+(suf||"")},grid:{color:"#edf0ea"}}}};}
 
-let REG=[], REG_ETAPA1=[], REG_MULTI=[], FILTRADO=[];
-const FILT={m:new Set(),g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
-const ROT_CAMPO={m:"Modelo",g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
+let REG=[], FILTRADO=[], MODELOS_TURNOS=[];
+const FILT={g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
+const ROT_CAMPO={g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
 const ROT_FAIXA={acima_95:">=95%",entre_70_95:"70-95%",abaixo_70:"<70%"};
 function valDe(x,c){ if(c==="k")return x.k?"concorda":"diverge"; if(c==="v")return x.v||"(sem validacao)"; return x[c]||""; }
 function rotDe(c,v){ return c==="f" ? (ROT_FAIXA[v]||v) : v; }
 function passa(x){ return Object.keys(FILT).every(c=> !FILT[c].size || FILT[c].has(valDe(x,c))); }
-function normalizarEtapa1(rows){ return (Array.isArray(rows)?rows:[]).map(x=>Object.assign({},x,{m:x.m||"etapa1_lstm"})); }
-function normalizarMulti(rows){ return (Array.isArray(rows)?rows:[]).map(x=>Object.assign({},x,{m:x.m||"modelo_indefinido"})); }
-function fonteAtual(){ return document.getElementById("fonteClassificacao")?.value || "multi"; }
-function rotuloFonte(){
-  return fonteAtual()==="multi" ? "Multimodelo (7 IAs)" : "Etapa 1 (LSTM)";
-}
-function selecionarFonteClassificacao(){
-  const preferida = fonteAtual();
-  REG = preferida==="multi" && REG_MULTI.length ? REG_MULTI : REG_ETAPA1;
-  Object.values(FILT).forEach(s=>s.clear());
-  construirFiltros();
-  aplicarFiltros();
-}
 function agrupaCategorias(reg){
   const m={};
   reg.forEach(x=>{ const d=m[x.o]||(m[x.o]={categoria:x.o,qtd_classificados:0,_t:0,_sc:0,qtd_acima_95:0,qtd_70_95:0,qtd_abaixo_70:0});
@@ -405,21 +381,20 @@ function renderKpisFiltrados(reg){
   const n=reg.length, ok=reg.reduce((s,x)=>s+x.k,0), conf=reg.reduce((s,x)=>s+N(x.c),0);
   const cats = new Set(reg.map(x=>x.o)).size;
   const ativo = filtrosAtivos();
-  const fonte = rotuloFonte();
   const pend = N(metric("pendentes_restantes"));
   const el=document.getElementById("fcount");
-  el.innerHTML = `${esc(fonte)} | <strong>${fmt(n)}</strong> registros | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
+  el.innerHTML = `Etapa 1/LSTM | <strong>${fmt(n)}</strong> chamados | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
   document.getElementById("kpis").innerHTML =
-    kpi(fmt(n), ativo ? "Registros filtrados" : "Chamados classificados")+
+    kpi(fmt(n), ativo ? "Chamados filtrados" : "Chamados classificados")+
     kpi(n ? pct(ok/n) : "-", ativo ? "Concordancia filtrada" : "Concordancia acumulada")+
     kpi(n ? pct(conf/n) : "-", "Confianca media")+
     kpi(fmt(cats), ativo ? "Categorias filtradas" : "Categorias")+
     kpi(fmt(pend), "Pendentes globais");
   document.getElementById("notice").innerHTML = ativo
-    ? `Fonte ${esc(fonte)} com filtros aplicados: ${fmt(n)} registros exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
+    ? `Etapa 1/LSTM com filtros aplicados: ${fmt(n)} chamados exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
     : (pend > 0
-      ? `Fonte ${esc(fonte)}: ${fmt(n)} registros classificados e ${fmt(pend)} pendentes globais nos dados publicados. Os graficos representam resultado parcial.`
-      : `Fonte ${esc(fonte)}: sem pendentes globais nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`);
+      ? `Etapa 1/LSTM: ${fmt(n)} chamados classificados e ${fmt(pend)} pendentes globais nos dados publicados. Os graficos representam resultado parcial.`
+      : `Etapa 1/LSTM: sem pendentes globais nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`);
   renderMetrics(RESUMO, TURNOS, reg);
 }
 function construirFiltros(){
@@ -513,7 +488,7 @@ function renderMetrics(resumo, turnos, reg=null){
     ["concordancia_recorte", pct(conc)],["modelo", metric("modelo") || ""],["categorias_recorte", fmt(CAT.length)]
   ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("");
   document.getElementById("analise").innerHTML = `
-    <p><strong>Recorte atual:</strong> <span class="status-ok">${fmt(proc)}</span> registros considerados pelos filtros ativos.</p>
+    <p><strong>Recorte atual:</strong> <span class="status-ok">${fmt(proc)}</span> chamados considerados pelos filtros ativos.</p>
     <p><strong>Concordancia IA x historico:</strong> <span class="${conc>=0.8?"status-ok":conc>=0.7?"status-mid":"status-bad"}">${pct(conc)}</span>. Esta metrica nao substitui validacao humana.</p>
     <p><strong>Risco de leitura:</strong> enquanto houver pendentes, os graficos devem ser interpretados como acompanhamento parcial, nao como resultado final do experimento.</p>`;
 }
@@ -536,57 +511,45 @@ function renderReclass(rt){
 }
 
 const PALETA=["#0f766e","#b7791f","#2f5f9e","#b42318","#1f7a4d","#7c3aed","#0891b2","#a16207"];
-function renderModelos(rows){
+function renderModelos(piloto, mm=[], turnos=[]){
   const tb = document.querySelector("#tabModelos tbody");
   const tr = document.querySelector("#tabRankModelos tbody");
-  MODELOS_ROWS = Array.isArray(rows) ? rows : [];
-  if(!Array.isArray(rows) || !rows.length){ if(tb)tb.innerHTML=""; if(tr)tr.innerHTML=""; destroy("cModelos"); destroy("cModelosLote"); return; }
-  // tabela completa (todos os recortes), ordenada por modelo e lote
-  const ord=[...rows].sort((a,b)=> String(a.modelo).localeCompare(String(b.modelo)) || N(a.inicio)-N(b.inicio));
-  tb.innerHTML = ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${esc(r.inicio)}-${esc(r.limite)}</td>
+  MODELOS_ROWS = Array.isArray(piloto) ? piloto : [];
+  MODELOS_TURNOS = Array.isArray(turnos) ? turnos : [];
+  const completos = Array.isArray(mm) ? [...mm].sort((a,b)=>N(b.concordancia_acumulada)-N(a.concordancia_acumulada)) : [];
+  const ord=[...MODELOS_ROWS].sort((a,b)=> String(a.modelo).localeCompare(String(b.modelo)) || N(a.inicio)-N(b.inicio));
+  tb.innerHTML = ord.length ? ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${esc(r.inicio)}-${esc(r.limite)}</td>
     <td>${fmt(r.n_registros)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.f1_macro)}</td>
-    <td>${pct(r.balanced_accuracy)}</td><td>${fmt(r.n_revisao)}</td><td>${N(r.tempo_treino_s).toFixed(1)}s</td></tr>`).join("");
-  // agregado por modelo (media de TODOS os recortes)
-  const agg={};
-  rows.forEach(r=>{ const m=r.modelo; (agg[m]||(agg[m]={modelo:m,n:0,sa:0,sf:0,best:0}));
-    agg[m].n++; agg[m].sa+=N(r.acuracia); agg[m].sf+=N(r.f1_macro); agg[m].best=Math.max(agg[m].best,N(r.acuracia)); });
-  const meds=Object.values(agg).map(d=>({modelo:d.modelo,lotes:d.n,acc:d.sa/d.n,f1:d.sf/d.n,best:d.best}))
-    .sort((a,b)=>b.acc-a.acc);
-  tr.innerHTML = meds.map((d,i)=>`<tr><td>${i+1}</td><td>${esc(d.modelo)}${i===0?' <span class="status-ok">★</span>':''}</td>
-    <td>${fmt(d.lotes)}</td><td class="${d.acc>=0.8?'status-ok':d.acc>=0.6?'status-mid':'status-bad'}">${pct(d.acc)}</td>
-    <td>${pct(d.f1)}</td><td>${pct(d.best)}</td></tr>`).join("");
+    <td>${pct(r.balanced_accuracy)}</td><td>${fmt(r.n_revisao)}</td><td>${N(r.tempo_treino_s).toFixed(1)}s</td></tr>`).join("")
+    : `<tr><td colspan="8">Sem recortes piloto publicados.</td></tr>`;
+  if(!completos.length){ if(tr)tr.innerHTML=""; destroy("cModelos"); destroy("cModelosLote"); return; }
+  tr.innerHTML = completos.map((d,i)=>`<tr><td>${i+1}</td><td>${esc(d.modelo)}${i===0?' <span class="status-ok">*</span>':''}</td>
+    <td>${fmt(d.feitos_total)}</td><td class="${N(d.concordancia_acumulada)>=0.8?'status-ok':N(d.concordancia_acumulada)>=0.7?'status-mid':'status-bad'}">${pct(d.concordancia_acumulada)}</td>
+    <td>${fmt(d.pendentes_restantes)}</td><td>${esc(d.metodo_ultimo)}</td></tr>`).join("");
   destroy("cModelos");
-  charts.cModelos = new Chart(cModelos,{type:"bar",data:{labels:meds.map(d=>d.modelo),datasets:[
-    {label:"Acuracia media (%)",data:meds.map(d=>d.acc*100),backgroundColor:"#0f766e"},
-    {label:"F1-macro media (%)",data:meds.map(d=>d.f1*100),backgroundColor:"#b7791f"}
+  charts.cModelos = new Chart(cModelos,{type:"bar",data:{labels:completos.map(d=>d.modelo),datasets:[
+    {label:"Concordancia acumulada (%)",data:completos.map(d=>N(d.concordancia_acumulada)*100),backgroundColor:"#0f766e"},
+    {label:"Concordancia ultimo turno (%)",data:completos.map(d=>N(d.concordancia_ultimo_lote)*100),backgroundColor:"#b7791f"}
   ]},options:chartOpts("%")});
   renderModelosLote();
 }
 function renderModelosLote(){
-  const rows = MODELOS_ROWS || [];
+  const rows = MODELOS_TURNOS || [];
   if(!rows.length){ destroy("cModelosLote"); return; }
   const sel = document.getElementById("selMetricaModelo");
-  const metrica = sel ? sel.value : "acuracia";
-  const base = metrica === "acuracia_acumulada" ? "acuracia" : (metrica === "f1_acumulado" ? "f1_macro" : metrica);
-  const acumulada = metrica === "acuracia_acumulada" || metrica === "f1_acumulado";
-  const lotes=[...new Set(rows.map(r=>`${r.inicio}-${r.limite}`))]
-    .sort((a,b)=>N(a.split("-")[0])-N(b.split("-")[0]));
-  const agg={};
-  rows.forEach(r=>{ const m=r.modelo; (agg[m]||(agg[m]={modelo:m,n:0,sa:0}));
-    agg[m].n++; agg[m].sa+=N(r.acuracia); });
-  const nomes=Object.values(agg).map(d=>({modelo:d.modelo,acc:d.sa/d.n})).sort((a,b)=>b.acc-a.acc).map(d=>d.modelo);
+  const metrica = sel ? sel.value : "concordancia_acumulada";
+  const maxT=Math.max(1,...rows.map(t=>N(t.turno)));
+  const labels=Array.from({length:maxT},(_,i)=>i+1);
   const porMod={};
   rows.forEach(r=>{ (porMod[r.modelo]||(porMod[r.modelo]=[])).push(r); });
-  Object.values(porMod).forEach(a=>a.sort((x,y)=>N(x.inicio)-N(y.inicio)));
+  Object.values(porMod).forEach(a=>a.sort((x,y)=>N(x.turno)-N(y.turno)));
+  const nomes=Object.keys(porMod).sort();
   destroy("cModelosLote");
-  charts.cModelosLote = new Chart(cModelosLote,{type:"line",data:{labels:lotes,datasets:nomes.map((m,i)=>(
-    {label:m,data:(porMod[m]||[]).map((r,idx,arr)=>{
-      if(!acumulada) return N(r[base])*100;
-      const s = arr.slice(0, idx+1).reduce((acc,x)=>acc+N(x[base]),0);
-      return (s/(idx+1))*100;
-    }),
-     borderColor:PALETA[i%PALETA.length],backgroundColor:PALETA[i%PALETA.length],pointRadius:2,borderWidth:1.5,spanGaps:true}
-  ))},options:chartOpts("%")});
+  charts.cModelosLote = new Chart(cModelosLote,{type:"line",data:{labels,datasets:nomes.map((m,i)=>{
+    const byT={}; (porMod[m]||[]).forEach(t=>byT[N(t.turno)]=N(t[metrica])*100);
+    return {label:m,data:labels.map(l=>byT[l]!=null?byT[l]:null),
+      borderColor:PALETA[i%PALETA.length],backgroundColor:PALETA[i%PALETA.length],pointRadius:0,borderWidth:1.5,spanGaps:true};
+  })},options:chartOpts("%")});
 }
 
 function leituraKappa(k){
@@ -605,7 +568,7 @@ function renderEstatistica(est){
   const norm = Array.isArray(est.normalidade_concordancia_turno) ? est.normalidade_concordancia_turno : [];
   const normOk = norm.filter(r=>r.normal_5pct).length;
   const leituraNormalidade = norm.length
-    ? (normOk ? `${normOk}/${norm.length} modelos nao rejeitam normalidade a 5%.` : `Normalidade rejeitada nos ${norm.length} modelos a 5%; usar testes nao parametricos e bootstrap.`)
+    ? (normOk ? `${normOk}/${norm.length} modelos nao rejeitam normalidade a 5%.` : `Normalidade rejeitada nos ${norm.length} modelos a 5%; pressupostos adotados: nao parametricos, com bootstrap para incerteza.`)
     : "Normalidade ainda sem diagnostico publicado.";
   document.getElementById("estatAviso").innerHTML =
     `<strong>Base estatistica:</strong> ${fmt(est.n_linhas_comuns)} linhas comuns em ${fmt(est.modelos.length)} modelos. `+
@@ -634,8 +597,8 @@ function renderEstatistica(est){
   }).join("");
   const cq=est.cochran_q||{}, fr=est.friedman||{};
   document.querySelector("#tabEstResumo tbody").innerHTML = [
-    ["Cochran Q", cq.p!=null?`Q=${cq.Q}; p=${cq.p}; ${cq.conclusao}`:"indisponivel", "Compara se as 7 IAs têm a mesma taxa de acerto nas mesmas linhas."],
-    ["Friedman + Nemenyi", fr.p!=null?`stat=${fr.stat}; p=${fr.p}; CD=${fr.diferenca_critica_nemenyi}`:"indisponivel", "Compara ranks dos modelos entre recortes; diferença de rank maior que CD sugere diferença significativa."],
+    ["Cochran Q", cq.p!=null?`Q=${cq.Q}; p=${cq.p}; ${cq.conclusao}`:"indisponivel", "Teste nao parametrico para comparar se as 7 IAs têm a mesma taxa de acerto nas mesmas linhas."],
+    ["Friedman + Nemenyi", fr.p!=null?`stat=${fr.stat}; p=${fr.p}; CD=${fr.diferenca_critica_nemenyi}`:"indisponivel", "Teste nao parametrico por ranks; diferenca de rank maior que CD sugere diferenca significativa."],
     ["Fleiss Kappa", est.fleiss_kappa_entre_ias!=null?String(est.fleiss_kappa_entre_ias):"indisponivel", "Mede concordancia entre as IAs; quanto maior, mais elas classificam de forma parecida."],
     ["McNemar par a par", est.mcnemar?"matriz calculada no JSON":"indisponivel", "Compara dois modelos linha a linha para saber se erram/acertam de modo significativamente diferente."]
   ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("");
@@ -719,11 +682,11 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
 document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiReg,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json"),
-    getJSON("registros.json"), getJSON("multimodelo_registros.json"), getJSON("multimodelo_metricas.json"),
+    getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
     getJSON("estatistica.json")
   ]);
@@ -732,17 +695,13 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   TURNOS = Array.isArray(turnos) ? turnos : [];
   RESUMO = resumo || {};
   document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
-  REG_ETAPA1 = normalizarEtapa1(registros);
-  REG_MULTI = normalizarMulti(multiReg);
-  if(!REG_MULTI.length) document.getElementById("fonteClassificacao").value = "etapa1";
-  document.getElementById("fonteClassificacao").addEventListener("change",selecionarFonteClassificacao);
-  REG = fonteAtual()==="multi" && REG_MULTI.length ? REG_MULTI : REG_ETAPA1;
+  REG = Array.isArray(registros) ? registros : [];
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
   renderCalibracao(cal);
   renderMetaAviso(cal||{});
-  renderModelos(Array.isArray(mod) ? mod : []);
+  renderModelos(Array.isArray(mod) ? mod : [], Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : []);
   renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);
   renderEstatistica(estat);
   renderReclass(Array.isArray(rt) ? rt : []);

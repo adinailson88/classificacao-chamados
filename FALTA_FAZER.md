@@ -186,10 +186,11 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - Foram criados PDFs em `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
 - Reclassificacao continua sem prioridade, conforme decisao do usuario: so depois de concluir toda Etapa 1/multimodelo, estatistica e documentacao.
 
-## Atualizacao - dashboard Classificacao e normalidade (2026-06-05)
+## Atualizacao - dashboard Classificacao, Modelos e normalidade (2026-06-05)
 
-- [x] Publicar `docs/dados/multimodelo_registros.json` agregado, sem texto de chamado, lendo as abas `CLASSIF__<modelo>`.
-- [x] Incluir seletor de fonte na barra de filtros: `Multimodelo (7 IAs)` ou `Etapa 1 (LSTM)`.
-- [x] Incluir filtro `Modelo` para que a aba `Classificacao` nao fique limitada a `LSTM` e `LSTM_BAIXA_CONF`.
-- [x] Mostrar na aba `Estatistica` quando a normalidade for rejeitada e indicar uso de testes nao parametricos/bootstrap.
+- [x] Remover `docs/dados/multimodelo_registros.json`, porque multiplicava chamados por 7 e gerava leitura incorreta de 96.775 "chamados".
+- [x] Manter `Classificacao` como painel da Etapa 1/LSTM, usando `registros.json`.
+- [x] Usar `multimodelo_metricas` e `multimodelo_turnos` como fonte principal da aba `Modelos`, com 13.825 chamados por IA.
+- [x] Rebaixar `COMPARACAO_MODELOS` de 1.000 registros para tabela piloto/amostral, nao resultado principal.
+- [x] Mostrar na aba `Estatistica` quando a normalidade for rejeitada e orientar pressupostos nao parametricos/bootstrap.
 - [ ] Regenerar e publicar o dashboard pelo workflow `dashboard.yml`, depois conferir o GitHub Pages.

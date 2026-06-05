@@ -111,12 +111,12 @@ incorporar análise estatística formal aos resultados:
 ## Atualizações no PAINEL (feitas)
 - Filtros: chips dos ativos, botões destacados, Limpar com contagem; **aparecem só nas
   abas onde funcionam** (Classificacao/Categorias/Metricas) e somem nas demais.
-- A aba **Classificacao** agora tem seletor de fonte: **Multimodelo (7 IAs)** ou
-  **Etapa 1 (LSTM)**. O dashboard publica `multimodelo_registros.json` agregado,
-  sem texto de chamado, para permitir filtro por **Modelo** na propria Classificacao.
-  Assim, o filtro deixa de ficar restrito a `LSTM`/`LSTM_BAIXA_CONF` quando a fonte
-  multimodelo esta selecionada.
-- Aba **Modelos**: média + ranking + evolução por lote (todos os recortes).
+- A aba **Classificacao** usa somente a Etapa 1/LSTM (`registros.json`). A tentativa
+  de publicar `multimodelo_registros.json` foi removida porque multiplicava chamados
+  por 7 e poderia exibir predicoes como se fossem chamados.
+- Aba **Modelos**: comparacao principal pela base completa das 7 IAs
+  (`multimodelo_metricas` + `multimodelo_turnos`), com 13.825 chamados por modelo.
+  Os recortes de 1.000 registros ficam rotulados como piloto/amostra.
 - Overflow horizontal corrigido.
 
 > **Próximo do roteiro**: concluir o LSTM (Ext. A) → rodar Etapa 2 multimodelo →
@@ -132,4 +132,4 @@ incorporar análise estatística formal aos resultados:
 - O dashboard ganhou aba `Estatistica` e o grafico de modelos ganhou seletor de metrica/acumulado.
 - PDFs gerados: `docs/ESTADO_DO_ROTEIRO.pdf` e `docs/DOCUMENTACAO_MODELOS_E_ESTATISTICA.pdf`.
 - A reclassificacao permanece sem prioridade ate concluir toda Etapa 1/multimodelo, estatistica e documentacao.
-- Diagnostico de normalidade: a normalidade nao deve ser forcada nos modelos. Quando Shapiro rejeitar normalidade a 5%, usar testes nao parametricos, bootstrap e modelos apropriados para proporcoes.
+- Diagnostico de normalidade: Shapiro rejeitou normalidade a 5%; a analise deve assumir pressupostos nao parametricos (Spearman, Friedman/Nemenyi, McNemar/Cochran Q e bootstrap), sem tentar forcar normalidade.
