@@ -35,6 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      # Etapa 1 (primeira passada, alta frequencia) fixa no perfil rapido.
+      # O perfil robusto (config) atua na Etapa 2/reclassificacao e re-treino.
+      LSTM_PERFIL: padrao
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
