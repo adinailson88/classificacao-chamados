@@ -436,3 +436,11 @@ Observação de execução:
   de Etapa 1, Etapa 2, comparação de modelos, multimodelo e reset.
 - Dashboard regenerado com estado zerado (`registros=0`) antes do disparo das novas
   rodadas.
+
+## Correção de quota do dashboard — 2026-06-05
+- Após a primeira rodada, um disparo automático do dashboard falhou por cota 429
+  de leitura do Google Sheets.
+- Correção aplicada: `src/exportar_dashboard.py` ganhou retentativas com espera
+  progressiva para falhas transitórias de API.
+- `dashboard.yml` passou a enfileirar atualizações do dashboard sem cancelar uma
+  execução em curso.

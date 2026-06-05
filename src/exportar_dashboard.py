@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -35,10 +36,30 @@ ABAS = [
 ]
 
 
+def _erro_transitorio(exc: Exception) -> bool:
+    msg = str(exc).lower()
+    return any(t in msg for t in ("429", "quota exceeded", "rate limit", "temporarily unavailable"))
+
+
+def com_retentativa(rotulo, func, tentativas=5, espera_inicial=20):
+    for tentativa in range(1, tentativas + 1):
+        try:
+            return func()
+        except Exception as e:  # noqa: BLE001
+            if tentativa >= tentativas or not _erro_transitorio(e):
+                raise
+            espera = espera_inicial * tentativa
+            print(f"{rotulo}: falha transitoria ({type(e).__name__}); nova tentativa em {espera}s", file=sys.stderr)
+            time.sleep(espera)
+
+
 def aba_para_objetos(sh, nome):
     """Lê a aba (sem formatação) e retorna lista de dicts {cabecalho: valor}."""
     try:
-        vals = sh.worksheet(nome).get_values("A:Z", value_render_option="UNFORMATTED_VALUE")
+        vals = com_retentativa(
+            f"ler aba {nome}",
+            lambda: sh.worksheet(nome).get_values("A:Z", value_render_option="UNFORMATTED_VALUE"),
+        )
     except Exception:  # noqa: BLE001
         return []
     if len(vals) < 2:
@@ -59,7 +80,7 @@ def main() -> int:
     SAIDA.mkdir(parents=True, exist_ok=True)
 
     try:
-        sh = pl.abrir_planilha(pl.id_planilha(config))
+        sh = com_retentativa("abrir planilha", lambda: pl.abrir_planilha(pl.id_planilha(config)))
     except FileNotFoundError as e:
         print(str(e), file=sys.stderr); return 2
     except Exception as e:  # noqa: BLE001
@@ -88,8 +109,11 @@ def main() -> int:
 
     # Registros por chamado (SEM texto de chamado) para os filtros do painel.
     try:
-        snap = sh.worksheet(abas_cfg["snapshot_etapa_1"]).get_values(
-            "A:J", value_render_option="UNFORMATTED_VALUE")
+        snap = com_retentativa(
+            "ler snapshot",
+            lambda: sh.worksheet(abas_cfg["snapshot_etapa_1"]).get_values(
+                "A:J", value_render_option="UNFORMATTED_VALUE"),
+        )
     except Exception:  # noqa: BLE001
         snap = []
     valida = {}
