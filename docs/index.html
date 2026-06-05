@@ -91,6 +91,7 @@
 
   <div class="filtros" id="filtros">
     <strong>Filtros (multi):</strong>
+    <span class="notefiltro">afetam Classificacao, Categorias e Metricas</span>
     <div class="ms" data-campo="g"></div>
     <div class="ms" data-campo="f"></div>
     <div class="ms" data-campo="e"></div>
@@ -570,10 +571,15 @@ function renderCalibracao(cal){
   charts.cCalib = new Chart(cCalib,{type:"bar",data:{labels,datasets:ds},options:chartOpts("%")});
 }
 
+const ABAS_FILTRAVEIS = new Set(["class","cat","metrics"]);
+function ajustarFiltros(aba){
+  document.getElementById("filtros").classList.toggle("hide", !ABAS_FILTRAVEIS.has(aba));
+}
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
   ["class","cat","metrics","modelos","multi","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ajustarFiltros(b.dataset.t);
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
