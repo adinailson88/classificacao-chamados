@@ -77,6 +77,32 @@ Script `src/executar_etapa1.py` + workflow `etapa1_turnos.yml` (agendado `*/15`)
   **`malha-ia`** (`contexto_projeto.txt`). Este repo é só o experimento de
   classificação/reclassificação.
 
+## 🧪 COMPARAÇÃO MULTI-MODELO (2026-06-04) — aditivo, não altera etapa1/etapa2
+Estrutura para comparar VÁRIOS modelos locais sobre o **mesmo lote** de registros
+(mesma ordem), de forma progressiva. NÃO substitui o fluxo atual (LSTM/RF seguem).
+- `src/modelos_zoo.py` — registro modular com interface uniforme (`criar_modelo(nome)`
+  → `.fit` / `.predict_score`). Modelos leves (TF-IDF +): `naive_bayes`,
+  `regressao_logistica`, `linear_svc`, `sgd`, `extra_trees`, `random_forest`; e `lstm`
+  (reusa o de produção, exige TF). FastText/Transformer = extensão futura (é só
+  acrescentar no zoo).
+- `src/comparar_modelos_lote.py` — runner por lote. Protocolo justo: o lote de teste
+  `[inicio, inicio+limite)` é o MESMO para todos; cada modelo treina na base rotulada
+  **excluindo o lote** e prediz o lote. Controle: `--modelo` (ou `todos`), `--inicio`,
+  `--limite`, `--executar-todos`, `--aplicar` (sem isso = dry-run).
+- Métricas por modelo/lote: acurácia, F1-macro, F1-weighted, balanced accuracy,
+  nº revisão (score<0,95), acerto em baixa confiança, tempo treino/inferência;
+  + precision/recall/F1/suporte **por categoria**.
+- Saídas (abas novas; abas atuais intactas): `COMPARACAO_MODELOS` (métricas/lote),
+  `COMPARACAO_CATEGORIA` (por categoria), `COMPARACAO_PREVISOES` (por registro +
+  campos VAZIOS p/ validação humana: `validacao_humana_final`, `quem_estava_correto`
+  [dropdown IA/ORIGINAL/NENHUM/DUVIDOSO], `observacao_avaliador`, `data_validacao`).
+- Workflow `comparar_modelos.yml` (manual; inputs modelo/inicio/limite). TF só se
+  `modelo=lstm`. Concorrência `escrita-planilha` (só escreve nas abas COMPARACAO_*).
+- Cuidado metodológico: a categoria ORIGINAL é referência inicial, **não verdade
+  absoluta**; divergências ficam preservadas p/ auditoria/validação humana.
+- 1º dry-run (lote [0:200], holdout): linear_svc acc 0,65 > logreg/rf 0,61 > sgd 0,605
+  > extra_trees 0,585 > naive_bayes 0,50. (holdout estrito, fatia específica.)
+
 ## Regras de ouro
 - Não presumir totais fixos de linhas: `total_linhas_*` são **observados** na
   execução; a planilha cresce; os scripts releem a fonte.

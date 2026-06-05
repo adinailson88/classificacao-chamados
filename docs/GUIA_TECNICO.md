@@ -140,7 +140,20 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
 - **Segurança:** aborta se já houver decisões preenchidas (use `--forcar`).
 - **Executado:** workflow `preparar_validacao.yml` (manual) — **rodar após a Etapa 1/2**.
 
+### `src/modelos_zoo.py` + `src/comparar_modelos_lote.py` — comparação multi-modelo
+- **O que faz:** compara vários modelos locais leves (naive_bayes, regressao_logistica,
+  linear_svc, sgd, extra_trees, random_forest, + lstm) sobre o **mesmo lote** de
+  registros (mesma ordem) — comparação justa. Cada modelo treina na base **excluindo
+  o lote** e prediz o lote.
+- **Saídas (abas novas):** `COMPARACAO_MODELOS` (métricas/lote: acurácia, F1-macro/
+  weighted, balanced acc, nº revisão, acerto baixa conf, tempos), `COMPARACAO_CATEGORIA`
+  (precision/recall/F1/suporte por categoria), `COMPARACAO_PREVISOES` (por registro +
+  campos de validação humana + dropdown `quem_estava_correto`).
+- **Executado:** `python src/comparar_modelos_lote.py --modelo todos --inicio 0 --limite 200 --aplicar`
+  (sem `--aplicar` = dry-run); ou workflow `comparar_modelos.yml`. Não altera etapa1/etapa2.
+
 ### Workflows (`.github/workflows/`)
+- `comparar_modelos.yml` — comparação multi-modelo por lote (manual; inputs modelo/inicio/limite).
 - `etapa1_turnos.yml` — Etapa 1 progressiva (LSTM), agendado a cada 15 min.
 - `etapa2_reclassificacao.yml` — Etapa 2 (reclassificação), disparo manual.
 - `reclassificacao_robusta.yml` — modelo robusto; **agendamento desativado** (só manual) até a Etapa 1 concluir.
