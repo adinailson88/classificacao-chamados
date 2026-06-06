@@ -1037,3 +1037,23 @@ com `gerado_em=06/06/2026 08:10`, `registros=13825`, 7 modelos com 13.825 regist
 `validados=0`, `ece_historico=0,0379`, `multimodelo_metricas=7` e
 `multimodelo_reclass_turnos=0`. Sem iniciar validacao humana e sem aplicar
 reclassificacao.
+
+## Atualizacao Codex - auditoria final antes de encerrar automacao (2026-06-06 10:15)
+
+Nova sincronizacao: `git pull --ff-only origin main` avancou de `d905f83` para `11cd2ed`,
+commit automatico `dados do dashboard [skip ci]`. Entre os heartbeats anteriores houve
+novas execucoes automaticas, todas com sucesso: dashboard agendado run `27061594884`;
+Etapa 1 agendada run `27062039695`; dashboard por `workflow_run` run `27062055954`;
+Pages run `27062068961`.
+
+Evidencia da ultima Etapa 1: log do run `27062039695` registrou
+`total=18858`, `elegiveis=13825`, `pendentes=0`, `modelo=producao` e
+`Etapa 1 concluida (0 pendentes)`.
+
+Validacao local: `python -m json.tool docs\dados\resumo.json` OK. O `resumo.json` ficou
+com `gerado_em=06/06/2026 09:16`, `registros=13825`, 7 modelos com 13.825 registros cada,
+`validados=0`, `ece_historico=0,0379`, `multimodelo_metricas=7` e
+`multimodelo_reclass_turnos=0`. Nenhuma validacao humana foi iniciada e nenhuma
+reclassificacao foi aplicada. Pendencias restantes dependem de decisao humana:
+validacao manual, calibracao definitiva pos-validacao, possivel refinamento ABNT e
+remocao opcional de Apps Script legado.
