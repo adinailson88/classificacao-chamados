@@ -1204,8 +1204,10 @@ ganho acumulado permanecer nao negativo.
 
 Decisao do usuario: a validacao humana passa a usar DUAS colunas da
 `CHAMADOS_ESQUELETO_REDUZIDO`, reconhecendo que ate a classificacao historica pode estar
-errada. `M` = **CONFERENCIA IA** (a classificacao da IA, coluna G, esta `Correto`/`Errado`);
-`N` = **CONFERENCIA GLPI** (a classificacao historica, coluna C, esta `Correto`/`Errado`).
+errada. `M` = **CONFERENCIA GLPI** (a classificacao historica, coluna C, esta `Correto`/`Errado`);
+`N` = **CONFERENCIA IA** (a classificacao da IA, coluna G, esta `Correto`/`Errado`).
+(Ordem das colunas trocada em 2026-06-06 a pedido do usuario para reduzir confusao;
+o leitor `planilha.ler_conferencias` e independente da ordem.)
 A combinacao forma uma matriz 2x2 IA×GLPI que distingue falsos positivos/negativos e os
 casos em que a IA corrige o historico. Convencao: `Correto` (qualquer caixa) = acerto;
 outro valor nao vazio = `Errado`; vazio = nao validado; leitura read-only. Adaptacao no
@@ -1233,8 +1235,8 @@ a flag tende a evitar reclassificacao espuria sobretudo nos modelos lineares.
 
 ## Coluna O (Classificacao IA - 2): reclassificacao em campo proprio (2026-06-06)
 
-Dilema levantado pelo usuario: a conferencia `M` (CONFERENCIA IA) avalia a classificacao
-ORIGINAL (coluna `G`). Se a reclassificacao corrigisse `G`, o `M="Errado"` ficaria
+Dilema levantado pelo usuario: a conferencia `N` (CONFERENCIA IA) avalia a classificacao
+ORIGINAL (coluna `G`). Se a reclassificacao corrigisse `G`, o `N="Errado"` ficaria
 ambiguo/confuso. Solucao: a reclassificacao passa a ser gravada na coluna **`O`
 ("Classificacao IA - 2")** da aba principal, preservando `G`, `M` e `N`.
 

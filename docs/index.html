@@ -699,7 +699,7 @@ function renderMatrizValidacao(cal){
   if(kbox){
     if(!vh || !N(vh.n_conferencia_ia)){
       kbox.innerHTML=kpi("0","Casos validados");
-      if(knota) knota.textContent="Validacao humana ainda nao iniciada (preencha M=CONFERENCIA IA e N=CONFERENCIA GLPI).";
+      if(knota) knota.textContent="Validacao humana ainda nao iniciada (preencha M=CONFERENCIA GLPI e N=CONFERENCIA IA).";
     } else {
       kbox.innerHTML=
         kpi(fmt(vh.n_conferencia_ia),"Casos com conferencia IA")+
@@ -712,7 +712,7 @@ function renderMatrizValidacao(cal){
   }
   if(!box||!info) return;
   if(!vh||!tot){
-    info.textContent="Validacao humana ainda nao iniciada. Preencha a coluna M (CONFERENCIA IA) e a coluna N (CONFERENCIA GLPI) na planilha; este quadro aparece quando houver casos validados nas duas colunas.";
+    info.textContent="Validacao humana ainda nao iniciada. Preencha a coluna M (CONFERENCIA GLPI) e a coluna N (CONFERENCIA IA) na planilha; este quadro aparece quando houver casos validados nas duas colunas.";
     box.innerHTML=""; return;
   }
   info.innerHTML=`Acerto da IA validado: <strong>${pctn(vh.acerto_ia_validado)}</strong> (n=${fmt(vh.n_conferencia_ia)}) &middot; `+

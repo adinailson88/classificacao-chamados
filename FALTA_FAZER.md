@@ -185,8 +185,8 @@ calibracao definitiva, treinada/avaliada contra validacao humana.
 > **Novo modo de validação (2026-06-06): conferência dupla na aba principal.** O veredito
 > humano deixa de depender da aba `VALIDACAO_HUMANA`/`categoria_validada` e passa a ser
 > registrado em duas colunas da `CHAMADOS_ESQUELETO_REDUZIDO`:
-> `M` = **CONFERÊNCIA IA** (a classificação da IA, coluna `G`, está `Correto`/`Errado`) e
-> `N` = **CONFERÊNCIA GLPI** (a classificação histórica, coluna `C`, está `Correto`/`Errado`).
+> `M` = **CONFERÊNCIA GLPI** (a classificação histórica, coluna `C`, está `Correto`/`Errado`) e
+> `N` = **CONFERÊNCIA IA** (a classificação da IA, coluna `G`, está `Correto`/`Errado`).
 > Isso permite a matriz 2x2 IA×GLPI e a identificação de falsos positivos/negativos
 > (inclusive casos em que a IA corrige o histórico). Leitura: `Correto` = acerto; qualquer
 > outro valor não vazio = `Errado`; vazio = não validado. Código adaptado em

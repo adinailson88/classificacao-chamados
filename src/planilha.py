@@ -173,30 +173,35 @@ def _norm_veredito(valor) -> str | None:
     return "Correto" if s.casefold() == "correto" else "Errado"
 
 
-def ler_conferencias(sh, aba_principal: str, col_ia_1based: int = 13,
-                     col_glpi_1based: int = 14) -> dict:
+def ler_conferencias(sh, aba_principal: str, col_glpi_1based: int = 13,
+                     col_ia_1based: int = 14) -> dict:
     """Le a CONFERENCIA HUMANA DUPLA da aba principal (modo de validacao atual).
 
     Convencao definida pelo usuario, em CHAMADOS_ESQUELETO_REDUZIDO:
-    - coluna M (CONFERENCIA IA):   a classificacao da IA (col G) esta 'Correto'/'Errado';
-    - coluna N (CONFERENCIA GLPI): a classificacao historica (col C) esta 'Correto'/'Errado'.
+    - coluna M (CONFERENCIA GLPI): a classificacao historica (col C) esta 'Correto'/'Errado';
+    - coluna N (CONFERENCIA IA):   a classificacao da IA (col G) esta 'Correto'/'Errado'.
     'Correto' (qualquer caixa) = acerto; outro valor nao vazio = 'Errado'; vazio = nao validado.
 
     Retorna {linha_planilha (str): {'ia': 'Correto'|'Errado'|None,
     'glpi': 'Correto'|'Errado'|None}} apenas para linhas com ao menos uma das colunas
     preenchida. A linha_planilha e a propria posicao na planilha (cabecalho na linha 1).
-    Read-only.
+    Independente da ordem das colunas. Read-only.
     """
-    li, ln = _coluna_letra(col_ia_1based), _coluna_letra(col_glpi_1based)
+    lo = min(col_glpi_1based, col_ia_1based)
+    hi = max(col_glpi_1based, col_ia_1based)
+    a, b = _coluna_letra(lo), _coluna_letra(hi)
     try:
         ws = sh.worksheet(aba_principal)
-        bloco = ws.get_values(f"{li}1:{ln}", value_render_option="UNFORMATTED_VALUE")
+        bloco = ws.get_values(f"{a}1:{b}", value_render_option="UNFORMATTED_VALUE")
     except Exception:  # noqa: BLE001
         return {}
     out = {}
     for pos, linha in enumerate(bloco[1:], start=2):
-        v_ia = _norm_veredito(linha[0]) if len(linha) > 0 else None
-        v_glpi = _norm_veredito(linha[1]) if len(linha) > 1 else None
+        def _cel(c1):
+            idx = c1 - lo
+            return _norm_veredito(linha[idx]) if len(linha) > idx else None
+        v_glpi = _cel(col_glpi_1based)
+        v_ia = _cel(col_ia_1based)
         if v_ia is None and v_glpi is None:
             continue
         out[str(pos)] = {"ia": v_ia, "glpi": v_glpi}

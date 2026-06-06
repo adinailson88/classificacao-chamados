@@ -97,8 +97,8 @@ def calcular(sh, config: dict) -> dict:
     except Exception:  # noqa: BLE001
         vals = []
     # Modo de validacao atual: conferencia humana DUPLA na aba principal.
-    # M (CONFERENCIA IA): a classificacao da IA esta "Correto"/"Errado";
-    # N (CONFERENCIA GLPI): a classificacao historica esta "Correto"/"Errado".
+    # M (CONFERENCIA GLPI): a classificacao historica esta "Correto"/"Errado";
+    # N (CONFERENCIA IA): a classificacao da IA esta "Correto"/"Errado".
     conferencias = pl.ler_conferencias(sh, config["aba_principal"])
 
     por_faixa = {rot: _agrega() for _, _, rot in FAIXAS}
@@ -106,7 +106,7 @@ def calcular(sh, config: dict) -> dict:
     geral = _agrega()
     # Matriz 2x2 IA(M) x GLPI(N) sobre as linhas com AMBAS conferencias preenchidas.
     matriz = {"ia_ok_glpi_ok": 0, "ia_ok_glpi_erro": 0, "ia_erro_glpi_ok": 0, "ia_erro_glpi_erro": 0}
-    glpi = {"n": 0, "ok": 0}  # acerto validado da classificacao historica (coluna N)
+    glpi = {"n": 0, "ok": 0}  # acerto validado da classificacao historica (coluna M)
     # SNAPSHOT cols: 1 linha, 3 cat_original, 4 cat_ia, 5 conf, 6 executor
     for r in vals[1:]:
         if len(r) < 6:
@@ -159,7 +159,7 @@ def calcular(sh, config: dict) -> dict:
         "total": n_tot,
         "validados": geral["n_val"],
         "validacao_humana": {
-            "modo": "conferencia dupla (M=CONFERENCIA IA, N=CONFERENCIA GLPI)",
+            "modo": "conferencia dupla (M=CONFERENCIA GLPI, N=CONFERENCIA IA)",
             "n_conferencia_ia": geral["n_val"],
             "acerto_ia_validado": round(geral["ok_val"] / geral["n_val"], 4) if geral["n_val"] else None,
             "n_conferencia_glpi": glpi["n"],
@@ -181,8 +181,8 @@ def calcular(sh, config: dict) -> dict:
         "plano_calibracao": "PLANO_CALIBRACAO.md",
         "observacao": ("Acerto vs histórico é preliminar (a classificação histórica pode "
                        "ter erros). A confiança é bruta (softmax alto NÃO é confiança calibrada). "
-                       "A validação humana usa conferência dupla: coluna M (CONFERÊNCIA IA) e "
-                       "coluna N (CONFERÊNCIA GLPI), permitindo medir acerto da IA, acerto do "
+                       "A validação humana usa conferência dupla: coluna M (CONFERÊNCIA GLPI) e "
+                       "coluna N (CONFERÊNCIA IA), permitindo medir acerto da IA, acerto do "
                        "histórico e a matriz IA×GLPI (falsos positivos/negativos)."),
     }
 

@@ -57,8 +57,8 @@ I  Executor
 J  Criticidade Atribuida por IA
 K  Comparacao
 L  Classificado_Confianca_IA
-M  CONFERENCIA IA
-N  CONFERENCIA GLPI
+M  CONFERENCIA GLPI
+N  CONFERENCIA IA
 O  Classificacao IA - 2
 ```
 
@@ -72,10 +72,10 @@ A validacao humana e registrada em DUAS colunas independentes, o que permite ava
 nao so o acerto da IA, mas tambem a qualidade da propria classificacao historica e,
 por consequencia, falsos positivos e falsos negativos:
 
-- `M` (**CONFERENCIA IA**): o avaliador marca se a classificacao da IA (coluna `G`) esta
-  `Correto` ou `Errado`. Celula vazia = ainda nao validada.
-- `N` (**CONFERENCIA GLPI**): o avaliador marca se a classificacao historica do GLPI
+- `M` (**CONFERENCIA GLPI**): o avaliador marca se a classificacao historica do GLPI
   (coluna `C`) esta `Correto` ou `Errado`. Celula vazia = ainda nao validada.
+- `N` (**CONFERENCIA IA**): o avaliador marca se a classificacao da IA (coluna `G`) esta
+  `Correto` ou `Errado`. Celula vazia = ainda nao validada.
 
 A combinacao das duas colunas forma uma matriz 2x2 (IA `Correto`/`Errado` x GLPI
 `Correto`/`Errado`), que distingue, por exemplo, os casos em que a IA acerta e o
@@ -85,9 +85,9 @@ e tratado como `Errado`. A leitura dessas colunas e read-only e nao sobrescreve 
 
 ### Coluna O (`Classificacao IA - 2`): resultado da reclassificacao
 
-A `CONFERENCIA IA` (coluna `M`) refere-se a classificacao ORIGINAL da IA (coluna `G`,
+A `CONFERENCIA IA` (coluna `N`) refere-se a classificacao ORIGINAL da IA (coluna `G`,
 Etapa 1). Quando um chamado e reclassificado (Etapa 2), gravar o novo resultado de volta
-em `G` apagaria o registro original e tornaria a conferencia `M` ambigua (o avaliador
+em `G` apagaria o registro original e tornaria a conferencia `N` ambigua (o avaliador
 disse "Errado" sobre `G`, nao sobre a reclassificacao). Por isso a reclassificacao e
 gravada numa coluna propria, `O` (**Classificacao IA - 2**), preservando `G`, `M` e `N`.
 Assim e possivel comparar, lado a lado, a classificacao original, o veredito humano e a
