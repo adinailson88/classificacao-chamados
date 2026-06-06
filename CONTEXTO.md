@@ -943,3 +943,13 @@ baixar TensorFlow apenas quando o caminho pede LSTM/producao:
 `README.md`, `docs/GUIA_TECNICO.md` e `FALTA_FAZER.md` foram alinhados; P2 fica concluido
 quanto a retry/cache e separacao leve/LSTM. `requirements-robusto.txt` permanece separado
 para o transformer local pesado.
+
+Validacao/publicacao: `python -m py_compile src\classificar_etapa.py src\executar_etapa1.py
+src\executar_etapa2.py src\exportar_dashboard.py` OK. `requirements-leves.txt` validado
+localmente sem `tensorflow`. Busca nos workflows confirmou que nao restou
+`pip install -r requirements.txt` direto. Parser YAML local indisponivel (`ModuleNotFoundError:
+No module named 'yaml'`), entao a validacao funcional foi feita em CI: commit `853e925`
+publicado no `main`; workflow `dashboard.yml` run `27059243157` concluiu com sucesso usando
+`python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt`. O workflow
+gerou commit de dados `0df07fb`; Pages build `27059254566` concluiu com sucesso para
+`headSha=0df07fb845a1e3cf3aaf06434ea4034edaf5317d`.
