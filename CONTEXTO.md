@@ -953,3 +953,12 @@ publicado no `main`; workflow `dashboard.yml` run `27059243157` concluiu com suc
 `python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt`. O workflow
 gerou commit de dados `0df07fb`; Pages build `27059254566` concluiu com sucesso para
 `headSha=0df07fb845a1e3cf3aaf06434ea4034edaf5317d`.
+
+## Atualizacao Codex - checklist estatistico Fleiss (2026-06-06 07:04)
+
+Nova verificacao local sem iniciar validacao humana: `docs/dados/estatistica.json` ja contem
+`fleiss_kappa_entre_ias=0,7721`; `src/analise_estatistica.py` implementa o calculo via
+`statsmodels.stats.inter_rater.fleiss_kappa`; `docs/index.html` exibe o indicador na aba
+`Estatistica`. Portanto, `FALTA_FAZER.md` foi ajustado para marcar Kappa de Fleiss entre
+as IAs como concluido e deixar aberto apenas o refinamento das figuras ABNT quando houver
+validacao humana.

@@ -156,7 +156,9 @@ Resultados são **contra o histórico**, não contra validação humana.
 - [x] **Significância entre as 7 IAs**: McNemar par a par; Cochran's Q; Friedman + Nemenyi;
       IC 95% por bootstrap.
 - [x] **Concordância**: Kappa (IA×histórico).
-- [ ] Kappa de Fleiss entre as IAs e refinamento das figuras ABNT (quando houver validação).
+- [x] Kappa de Fleiss entre as IAs (`fleiss_kappa_entre_ias=0,7721` em
+      `docs/dados/estatistica.json`, exibido na aba `Estatistica`).
+- [ ] Refinamento das figuras ABNT quando houver validação humana.
 
 ## P6 — Comparar TODAS as IAs juntas (incl. LSTM) ✅
 - [x] 6 leves materializados.
