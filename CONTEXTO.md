@@ -827,3 +827,6 @@ apenas apos validacao humana. `docs/index.html` tambem teve o estado vazio da ab
 `Multimodelo` corrigido: ele nao diz mais que as 7 IAs nao foram materializadas nem sugere
 `aplicar=true`; agora orienta verificar os JSONs publicados e manter reclassificacao em
 dry-run ate revisao.
+
+Publicacao: commit `75803b6` enviado ao `main`; Pages build `27057244923` concluido com
+sucesso para `headSha=75803b60b8cbd6f9171dbfb5029c489773a5dd52`.
