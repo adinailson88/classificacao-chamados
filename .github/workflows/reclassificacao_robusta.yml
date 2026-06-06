@@ -1,21 +1,20 @@
 name: Reclassificacao robusta (modelo pesado)
 
 # 3o modelo: "quase-LLM" local (embeddings de transformer multilingue, sem APIs
-# externas). PESADO -> roda raramente (a cada 6h) e em POUCOS chamados por vez
-# (os de menor confianca ainda nao reclassificados). Instala sentence-transformers.
-# Se a lib falhar no runner, o classificador faz fallback automatico para LSTM.
+# externas). PESADO -> deve rodar manualmente e, por padrao, em dry-run.
+# O dry-run anterior da reclassificacao teve ganho liquido negativo; por isso
+# nao deve escrever na planilha antes da calibracao por modelo.
 
 on:
-  # Etapa 1 CONCLUIDA em 2026-06-06 (0 pendentes) -> agendamento REATIVADO.
-  # Roda a cada 6h, em POUCOS chamados por vez (os de menor confianca ainda nao
-  # reclassificados), aplicando na planilha. Para pausar, comente o bloco schedule.
-  schedule:
-    - cron: "0 */6 * * *"
   workflow_dispatch:
     inputs:
       max_turnos:
         description: "Turnos de 15 por execucao (poucos!)"
         default: "2"
+      aplicar:
+        description: "Gravar na planilha (false = dry-run)"
+        type: boolean
+        default: false
 
 concurrency:
   group: escrita-planilha
@@ -48,11 +47,13 @@ jobs:
         run: |
           if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
           printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
-      - name: Reclassificar com modelo robusto (poucos chamados)
-        run: >
-          python src/executar_etapa2.py --modelo robusto
-          --max-turnos "${{ github.event.inputs.max_turnos || '2' }}"
-          --aplicar
+      - name: Reclassificar com modelo robusto (manual; dry-run por padrao)
+        run: |
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
+            python src/executar_etapa2.py --modelo robusto --max-turnos "${{ github.event.inputs.max_turnos || '2' }}" --aplicar
+          else
+            python src/executar_etapa2.py --modelo robusto --max-turnos "${{ github.event.inputs.max_turnos || '2' }}"
+          fi
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json

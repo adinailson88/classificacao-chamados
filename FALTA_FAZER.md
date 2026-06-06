@@ -215,3 +215,12 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
   - `linear_svc` segue melhor em concordancia global (`80,26%`), mas a confianca bruta
     esta inutil para decisao direta (`ece=0,7101`, `>=95% n=0`), reforcando a necessidade
     de Platt/CalibratedClassifierCV antes de qualquer reclassificacao baseada em confianca.
+
+## Atualizacao Codex - trava de seguranca da reclassificacao robusta (2026-06-06 01:54)
+
+- [x] Removido o agendamento automatico de `.github/workflows/reclassificacao_robusta.yml`.
+- [x] Workflow robusto agora e manual e roda em dry-run por padrao (`aplicar=false`).
+- [x] Escrita na planilha so ocorre quando `aplicar=true` for escolhido explicitamente.
+- Motivo: o dry-run anterior da reclassificacao multimodelo teve ganho liquido negativo
+  (`corrigidos=5`, `prejudicados=9`, liquido `-4`); portanto nao deve haver escrita
+  automatica antes da calibracao por modelo.

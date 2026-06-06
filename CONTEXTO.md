@@ -697,3 +697,17 @@ no run `27052859362` e concluido com sucesso. O workflow gerou novo commit de da
 `0c1be12`, atualizando `docs/dados/calibracao.json`, `docs/dados/calibracao_modelos.json` e
 `docs/dados/resumo.json`. Pages build `27052867799` iniciou em seguida; pode haver cache de
 borda por alguns minutos no GitHub Pages.
+
+## Atualizacao Codex - trava de seguranca da reclassificacao robusta (2026-06-06 01:54)
+
+Ao revisar os proximos passos, foi encontrada uma inconsistencia: o projeto havia concluido
+que a reclassificacao nao deveria ser aplicada em massa antes da calibracao (dry-run
+`27051252248`: corrigidos=5, prejudicados=9, liquido=-4), mas
+`.github/workflows/reclassificacao_robusta.yml` ainda estava com `schedule` a cada 6h e
+passava `--aplicar`, escrevendo na planilha automaticamente.
+
+Correcao aplicada: removido o `schedule` do workflow robusto; mantido apenas
+`workflow_dispatch`, com input `aplicar` booleano default `false`. A etapa agora roda
+em dry-run por padrao e so grava na planilha se `aplicar=true` for escolhido manualmente.
+Isso preserva a regra atual: sem reclassificacao automatica antes de calibracao por modelo
+e sem validacao humana sem pedido explicito.
