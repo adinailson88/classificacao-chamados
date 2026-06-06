@@ -220,6 +220,23 @@ def main() -> int:
             print(f"registros_{modelo}={len(rm)}")
     resumo["registros_modelos"] = registros_modelos
 
+    # Diagnostico de calibracao por IA, usando somente os registros agregados
+    # exportados acima. Nao ajusta calibrador nem usa texto de chamado.
+    try:
+        import calibracao_modelos
+        cal_models = calibracao_modelos.calcular_de_arquivos(SAIDA, list(registros_modelos.keys()))
+        (SAIDA / "calibracao_modelos.json").write_text(
+            json.dumps(cal_models, ensure_ascii=False, indent=2), encoding="utf-8")
+        resumo["calibracao_modelos"] = {
+            "modelos": len(cal_models.get("modelos", [])),
+            "melhor_ece": cal_models.get("melhor_ece", ""),
+            "melhor_faixa_95": cal_models.get("melhor_faixa_95", ""),
+            "calibrador_ajustado": cal_models.get("calibrador_ajustado", False),
+        }
+        print(f"calibracao_modelos={len(cal_models.get('modelos', []))}")
+    except Exception as e:  # noqa: BLE001
+        print(f"calibracao_modelos falhou: {type(e).__name__}: {e}", file=sys.stderr)
+
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"gerado_em={resumo['gerado_em']}")
     return 0

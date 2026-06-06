@@ -200,3 +200,17 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - [x] Rebaixar `COMPARACAO_MODELOS` de 1.000 registros para tabela piloto/amostral, nao resultado principal.
 - [x] Mostrar na aba `Estatistica` quando a normalidade for rejeitada e orientar pressupostos nao parametricos/bootstrap.
 - [ ] Regenerar e publicar o dashboard pelo workflow `dashboard.yml`, depois conferir o GitHub Pages.
+
+## Atualizacao Codex - diagnostico de calibracao por IA (2026-06-06 01:37)
+
+- [x] Criado `src/calibracao_modelos.py`.
+- [x] Gerado `docs/dados/calibracao_modelos.json` com 7 modelos x 13.825 registros por IA.
+- [x] `src/exportar_dashboard.py` passa a gerar `calibracao_modelos.json` automaticamente apos exportar `registros_<modelo>.json`.
+- [x] `docs/index.html` ganhou tabela "Diagnostico de calibracao por IA" na aba `Metricas`.
+- Resultado local preliminar contra historico:
+  - menor ECE: `lstm` (`ece=0,0102`, mas acerto historico global menor: `67,57%`);
+  - melhor faixa `>=95%` com suporte minimo de 138 casos: `regressao_logistica`
+    (`n=1.467`, acerto historico `99,80%`);
+  - `linear_svc` segue melhor em concordancia global (`80,26%`), mas a confianca bruta
+    esta inutil para decisao direta (`ece=0,7101`, `>=95% n=0`), reforcando a necessidade
+    de Platt/CalibratedClassifierCV antes de qualquer reclassificacao baseada em confianca.

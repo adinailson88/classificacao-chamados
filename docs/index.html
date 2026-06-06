@@ -190,6 +190,13 @@
         <p class="muted" id="calibInfo">Carregando calibracao...</p>
         <canvas id="cCalib"></canvas>
       </div>
+      <div class="card full">
+        <h2>Diagnostico de calibracao por IA</h2>
+        <p class="muted" id="calibModelosInfo">Mede ECE, Brier e faixa &gt;=95% de cada IA contra a categoria historica. Ainda nao e calibrador ajustado.</p>
+        <div class="tablebox"><table id="tabCalibModelos"><thead><tr>
+          <th>Modelo</th><th>Chamados</th><th>Acerto hist.</th><th>Conf. media</th><th>ECE</th><th>Brier</th><th>&gt;=95% n</th><th>&gt;=95% acerto hist.</th>
+        </tr></thead><tbody></tbody></table></div>
+      </div>
     </div>
   </section>
 
@@ -813,6 +820,28 @@ function renderCalibracao(cal){
   charts.cCalib = new Chart(cCalib,{type:"bar",data:{labels,datasets:ds},options:chartOpts("%")});
 }
 
+function renderCalibracaoModelos(cal){
+  const info=document.getElementById("calibModelosInfo");
+  const tb=document.querySelector("#tabCalibModelos tbody");
+  const modelos=(cal && Array.isArray(cal.modelos)) ? [...cal.modelos] : [];
+  if(!modelos.length){
+    if(info) info.textContent="Sem diagnostico por IA publicado ainda.";
+    if(tb) tb.innerHTML="";
+    return;
+  }
+  modelos.sort((a,b)=>N(a.ece)-N(b.ece) || N(b.acerto_historico)-N(a.acerto_historico));
+  if(info) info.innerHTML =
+    `Diagnostico preliminar contra historico: <strong>${fmt(modelos.length)}</strong> IAs avaliadas. `+
+    `Menor ECE: <strong>${esc(cal.melhor_ece||"")}</strong>. Melhor faixa &gt;=95% com suporte minimo (${fmt(cal.suporte_minimo_faixa_95)} casos): <strong>${esc(cal.melhor_faixa_95||"")}</strong>. `+
+    `Calibrador ajustado: <strong>nao</strong>.`;
+  tb.innerHTML = modelos.map(m=>{
+    const f=m.faixa_95||{};
+    return `<tr><td>${esc(m.modelo)}</td><td>${fmt(m.total)}</td><td>${pct(m.acerto_historico)}</td>`+
+      `<td>${pct(m.confianca_media)}</td><td>${pct(m.ece)}</td><td>${N(m.brier).toFixed(4)}</td>`+
+      `<td>${fmt(f.n)}</td><td>${f.n?pct(f.acerto_historico):"-"}</td></tr>`;
+  }).join("");
+}
+
 const ABAS_FILTRAVEIS = new Set(["class","cat","metrics"]);
 function ajustarFiltros(aba){
   document.getElementById("filtros").classList.toggle("hide", !ABAS_FILTRAVEIS.has(aba));
@@ -829,10 +858,10 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
 document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,calModels,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
-    getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("comparacao_modelos.json"),
+    getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("calibracao_modelos.json"), getJSON("comparacao_modelos.json"),
     getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
     getJSON("estatistica.json")
@@ -850,6 +879,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
   renderCalibracao(cal);
+  renderCalibracaoModelos(calModels);
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : [], Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : []);
   renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);

@@ -645,3 +645,49 @@ Pedidos do usuario atendidos nesta rodada:
 Commits: a9b1ede, bd73e45, e10941e, a562cf3, d911611/b5eaed2, ca8dceb. Painel verificado no
 preview (troca de modelo, normalidade, docs sem overflow, cor azul) e no `main` via raw.
 Pendencias inalteradas: validacao humana pausada; calibracao por modelo e o proximo passo.
+
+## Atualizacao Codex - diagnostico de calibracao por IA (2026-06-06 01:37)
+
+Estado verificado apos pull do `main`: ultimos commits do Claude presentes ate `080a311`
+(`dados do dashboard [skip ci]`). Worktree local tinha apenas `.claude/` nao versionado antes
+desta rodada. A execucao automatica de continuidade foi configurada no Codex com heartbeat
+de 20 minutos (`continuar-classificacao-chamados`); a ferramenta permite apenas um heartbeat
+ativo por thread, portanto o disparo separado fixo de 05:15 nao foi criado em paralelo.
+
+Novo passo executado sem iniciar validacao humana e sem aplicar reclassificacao:
+
+- Criado `src/calibracao_modelos.py`, diagnostico read-only de calibracao por IA a partir de
+  `docs/dados/registros_<modelo>.json`.
+- `src/exportar_dashboard.py` agora gera `docs/dados/calibracao_modelos.json` automaticamente
+  depois de exportar os sete arquivos `registros_<modelo>.json`.
+- `docs/index.html` ganhou tabela "Diagnostico de calibracao por IA" na aba `Metricas`, com
+  ECE, Brier, acerto historico, confianca media e faixa >=95% por IA.
+- Ranking da faixa >=95% exige suporte minimo (`suporte_minimo_faixa_95=138`) para evitar
+  destacar modelo com poucos casos (ex.: 3 linhas).
+
+Resultado local preliminar contra historico (`docs/dados/calibracao_modelos.json`, gerado em
+06/06/2026 01:37):
+
+| modelo | acerto_hist | ECE | Brier | >=95% n | >=95% acerto_hist |
+|---|---:|---:|---:|---:|---:|
+| lstm | 0,6757 | 0,0102 | 0,1272 | 4.276 | 0,9827 |
+| naive_bayes | 0,7007 | 0,0363 | 0,1396 | 5.784 | 0,9355 |
+| extra_trees | 0,7847 | 0,0753 | 0,1274 | 4.666 | 0,9940 |
+| random_forest | 0,7680 | 0,1227 | 0,1485 | 3.879 | 0,9979 |
+| regressao_logistica | 0,7659 | 0,2540 | 0,2260 | 1.467 | 0,9980 |
+| sgd | 0,7751 | 0,3172 | 0,2560 | 3 | 1,0000 |
+| linear_svc | 0,8026 | 0,7101 | 0,6479 | 0 | 0,0000 |
+
+Leitura tecnica: `linear_svc` continua melhor em concordancia global, mas sua confianca bruta
+nao serve como criterio direto (`decision_function` normalizada, ECE muito alto e nenhuma linha
+na faixa >=95%). `lstm` tem menor ECE, mas menor acerto global. `regressao_logistica`,
+`random_forest` e `extra_trees` mostram faixas >=95% fortes contra historico, mas isso ainda
+nao e acerto validado. Proximo passo recomendado permanece: ajustar calibrador real por modelo
+(Platt/CalibratedClassifierCV para lineares; isotonica para arvores/NB; temperature scaling para
+LSTM) antes de qualquer reclassificacao em massa.
+
+Validacoes locais desta rodada:
+
+- `python -m py_compile src\calibracao_modelos.py src\exportar_dashboard.py src\calibracao.py src\analise_estatistica.py`
+- JavaScript de `docs/index.html` extraido e validado com `node --check`.
+- `PYTHONPATH=.codex_deps python tests\test_github_first.py` -> 4 testes OK.
