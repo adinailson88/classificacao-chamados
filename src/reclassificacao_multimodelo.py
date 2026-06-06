@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -32,6 +33,27 @@ from tempo import agora_bahia  # noqa: E402
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
 DADOS = RAIZ / "dados"
+
+
+def _append_resiliente(sh, nome, cab, linhas, colunas_percentuais=None, tentativas=5, espera=10):
+    """append_aba com retry para erros transitorios (rede/quota da API do Sheets).
+
+    Evita perder gravacao de estatistica por ConnectionError/RemoteDisconnected/429,
+    que deixava a linha de turno (ou ate as linhas por chamado) sem registrar.
+    """
+    for t in range(1, tentativas + 1):
+        try:
+            return pl.append_aba(sh, nome, cab, linhas, colunas_percentuais=colunas_percentuais)
+        except Exception as e:  # noqa: BLE001
+            msg = str(e).lower()
+            transitorio = any(k in msg for k in (
+                "connection", "remotedisconnected", "aborted", "reset by peer",
+                "429", "quota", "rate limit", "timed out", "timeout", "temporarily"))
+            if t >= tentativas or not transitorio:
+                raise
+            print(f"[append {nome}] falha transitoria ({type(e).__name__}); "
+                  f"retry {t}/{tentativas} em {espera * t}s", file=sys.stderr)
+            time.sleep(espera * t)
 
 
 def parse_conf(v) -> float:
@@ -152,7 +174,7 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     linhas = [[run_id, modelo, r["linha"], r["id"], r["original"], r["cat_1"], r["conf_1"],
                str(r["antes_ok"]), r["cat_2"], r["conf_2"], str(r["depois_ok"]), str(r["mudou"]),
                r["delta"], r["res"], gerado] for r in registros]
-    pl.append_aba(sh, aba_reclass, cab, linhas, colunas_percentuais=[7, 10])
+    _append_resiliente(sh, aba_reclass, cab, linhas, colunas_percentuais=[7, 10])
 
     # Turnos de 15 no log consolidado.
     turnos = []
@@ -166,8 +188,8 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     cab_t = ["modelo", "run_id", "turno", "qtd", "corretos_antes", "corretos_depois",
              "concordancia_antes", "concordancia_depois", "corrigidos", "prejudicados",
              "ganho_liquido", "variacao_media_confianca", "data"]
-    pl.append_aba(sh, mm["aba_turnos"].replace("TURNOS", "RECLASS_TURNOS"), cab_t, turnos,
-                  colunas_percentuais=[7, 8])
+    _append_resiliente(sh, mm["aba_turnos"].replace("TURNOS", "RECLASS_TURNOS"), cab_t, turnos,
+                       colunas_percentuais=[7, 8])
 
     return {"modelo": modelo, "reclassificados": len(registros), "ganho_liquido": ganho,
             "corrigidos": corr, "prejudicados": prej, "metodo": metodo}
