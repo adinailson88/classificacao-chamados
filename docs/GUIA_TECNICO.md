@@ -118,8 +118,10 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
   (`Reclass_LSTM`, `Reclass_Robusto`...); APPEND em `LOG_TURNOS_RECLASSIFICACAO`
   (antes/depois, corrigidos, prejudicados, mantidos, ganho líquido, variação de
   confiança) e `LOG_LINHA_A_LINHA` (etapa 2).
-- **Executado:** `python src/executar_etapa2.py --modelo producao --max-turnos 40 --aplicar`;
-  ou workflow `etapa2_reclassificacao.yml` (manual). Sem `--aplicar` = dry-run.
+- **Executado:** `python src/executar_etapa2.py --modelo producao --max-turnos 40`
+  em dry-run. Acrescente `--aplicar` somente depois de revisar ganho liquido, calibracao
+  e impacto esperado. O workflow `etapa2_reclassificacao.yml` tambem e manual e roda em
+  dry-run por padrao (`aplicar=false`).
 
 ### `src/classificador_robusto.py` — 3º modelo "quase-LLM" local
 - **O que faz:** modelo **mais pesado** baseado em **embeddings de transformer
@@ -127,8 +129,9 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
   na reclassificação dos casos difíceis. Se a lib não estiver instalada, faz
   **fallback automático** para LSTM/RF (o fluxo nunca quebra).
 - **Executado:** via `executar_etapa2.py --modelo robusto`, no workflow
-  `reclassificacao_robusta.yml` (**a cada 6h, poucos chamados por vez** — é pesado).
-  Dependência em `requirements-robusto.txt` (instalada só nesse workflow).
+  `reclassificacao_robusta.yml` (manual e dry-run por padrao). A escrita na planilha so
+  ocorre com `aplicar=true` escolhido explicitamente. Dependencia em
+  `requirements-robusto.txt` (instalada so nesse workflow).
 
 ### `src/preparar_validacao_humana.py` — Etapa de validação (roteiro 24-27)
 - **O que faz:** monta a aba `VALIDACAO_HUMANA` com os casos a revisar (por padrão os
@@ -168,8 +171,8 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
 - `multimodelo_classificacao.yml` — materializa `CLASSIF__<modelo>` por IA (manual; dry-run por padrão).
 - `multimodelo_reclassificacao.yml` — materializa `RECLASS__<modelo>` por IA (manual; dry-run por padrão).
 - `etapa1_turnos.yml` — Etapa 1 progressiva (LSTM), agendado a cada 15 min.
-- `etapa2_reclassificacao.yml` — Etapa 2 (reclassificação), disparo manual.
-- `reclassificacao_robusta.yml` — modelo robusto; **agendamento desativado** (só manual) até a Etapa 1 concluir.
+- `etapa2_reclassificacao.yml` — Etapa 2 (reclassificacao), disparo manual e dry-run por padrao.
+- `reclassificacao_robusta.yml` — modelo robusto; agendamento desativado, so manual e dry-run por padrao.
 - `preparar_validacao.yml` — monta VALIDACAO_HUMANA (manual; após Etapa 1/2).
 - `dashboard.yml` — atualiza os JSON do painel (a cada 30 min).
 - `resetar.yml` — reset ao zero (manual, exige digitar `RESETAR`).

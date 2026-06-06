@@ -793,3 +793,14 @@ calibracao e ganho liquido.
 Correcao aplicada: exemplos de comandos agora rodam sem `aplicar=true`; a gravacao manual fica
 descrita como passo posterior a revisao do dry-run. `README.md` tambem reforca que `--aplicar`
 ou input `aplicar=true` so deve ser usado apos revisar logs e impacto esperado.
+
+## Atualizacao Codex - guia tecnico sem reclassificacao automatica (2026-06-06 03:54)
+
+Revisao documental encontrou `docs/GUIA_TECNICO.md` ainda descrevendo a Etapa 2 como
+`python src/executar_etapa2.py ... --aplicar` e o workflow robusto como execucao a cada 6h.
+Isso estava desatualizado depois das travas de seguranca.
+
+Correcao aplicada: guia agora descreve Etapa 2 e robusto como manuais e dry-run por padrao,
+com `--aplicar`/`aplicar=true` apenas apos revisao de ganho liquido, calibracao e impacto
+esperado. `dados/README.md` tambem removeu a referencia legada a `doPost` e passou a falar
+em escrita `gspread` em lote.

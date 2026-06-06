@@ -240,6 +240,13 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
   em `FALTA_FAZER.md` foram alterados para dry-run.
 - [x] `aplicar=true` ficou documentado apenas como acao manual posterior a revisao do dry-run.
 
+## Atualizacao Codex - guia tecnico sem reclassificacao automatica (2026-06-06 03:54)
+
+- [x] `docs/GUIA_TECNICO.md` deixou de orientar Etapa 2/robusto como gravacao padrao.
+- [x] Guia agora registra `etapa2_reclassificacao.yml` e `reclassificacao_robusta.yml`
+  como manuais e dry-run por padrao.
+- [x] `dados/README.md` trocou referencia legada a `doPost` por escrita `gspread`.
+
 ## Atualizacao Codex - calibracao escalar ajustada (2026-06-06 02:35)
 
 - [x] Criado `src/calibracao_confianca.py`: calibra `P(previsao correta | confianca_bruta)`

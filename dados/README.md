@@ -17,7 +17,7 @@ classificar_etapa.py           -> dados/classificacao_etapa_1.json
                                   dados/log_turnos.jsonl
                                   dados/log_linha_a_linha.jsonl
                                   dados/metricas_experimento.json
-exportar_etapa.py --aplicar    -> grava G:J na planilha (1 doPost em lote)
+exportar_etapa.py --aplicar    -> grava G:J na planilha (1 escrita gspread em lote)
                                   dados/manifest_exportacao.json
 ```
 
