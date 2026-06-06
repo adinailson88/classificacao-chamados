@@ -691,3 +691,9 @@ Validacoes locais desta rodada:
 - `python -m py_compile src\calibracao_modelos.py src\exportar_dashboard.py src\calibracao.py src\analise_estatistica.py`
 - JavaScript de `docs/index.html` extraido e validado com `node --check`.
 - `PYTHONPATH=.codex_deps python tests\test_github_first.py` -> 4 testes OK.
+
+Publicacao: commit `125f5bb` enviado ao `main`; workflow `dashboard.yml` disparado manualmente
+no run `27052859362` e concluido com sucesso. O workflow gerou novo commit de dados
+`0c1be12`, atualizando `docs/dados/calibracao.json`, `docs/dados/calibracao_modelos.json` e
+`docs/dados/resumo.json`. Pages build `27052867799` iniciou em seguida; pode haver cache de
+borda por alguns minutos no GitHub Pages.
