@@ -237,6 +237,22 @@ def main() -> int:
     except Exception as e:  # noqa: BLE001
         print(f"calibracao_modelos falhou: {type(e).__name__}: {e}", file=sys.stderr)
 
+    # Calibracao escalar preliminar: confianca bruta -> probabilidade empirica
+    # de acerto contra historico. Usa somente registros_<modelo>.json, sem texto.
+    try:
+        import calibracao_confianca
+        cal_ajustada = calibracao_confianca.calcular_de_arquivos(SAIDA, list(registros_modelos.keys()))
+        (SAIDA / "calibracao_ajustada_modelos.json").write_text(
+            json.dumps(cal_ajustada, ensure_ascii=False, indent=2), encoding="utf-8")
+        resumo["calibracao_ajustada_modelos"] = {
+            "modelos": len(cal_ajustada.get("modelos", [])),
+            "melhor_ece_ajustado": cal_ajustada.get("melhor_ece_ajustado", ""),
+            "alvo": cal_ajustada.get("alvo", ""),
+        }
+        print(f"calibracao_ajustada_modelos={len(cal_ajustada.get('modelos', []))}")
+    except Exception as e:  # noqa: BLE001
+        print(f"calibracao_ajustada_modelos falhou: {type(e).__name__}: {e}", file=sys.stderr)
+
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"gerado_em={resumo['gerado_em']}")
     return 0

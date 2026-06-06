@@ -723,3 +723,35 @@ Correcao aplicada: adicionado input `aplicar` booleano default `false`; o workfl
 sem `--aplicar` por padrao e so escreve na planilha quando `aplicar=true` for escolhido
 explicitamente. `multimodelo_reclassificacao.yml` e `reclassificacao_robusta.yml` ficam
 alinhados: ambos tambem usam dry-run por padrao.
+
+## Atualizacao Codex - calibracao escalar ajustada (2026-06-06 02:35)
+
+Proximo passo tecnico executado sem acessar validacao humana e sem escrever na planilha:
+criado `src/calibracao_confianca.py`, que calibra a decisao operacional
+`P(previsao correta | confianca_bruta)` para cada IA, usando somente
+`docs/dados/registros_<modelo>.json` (sem texto de chamado). A calibracao e out-of-fold
+e compara dois calibradores escalares: sigmoid e isotonica. O alvo ainda e a categoria
+historica; a versao definitiva deve usar `categoria_validada`.
+
+Integracoes:
+
+- `src/exportar_dashboard.py` gera `docs/dados/calibracao_ajustada_modelos.json`.
+- `docs/index.html` ganhou tabela "Calibracao ajustada preliminar" na aba `Metricas`.
+- `.github/workflows/dashboard.yml` passou a instalar `numpy` e `scikit-learn`.
+
+Resultado local (`docs/dados/calibracao_ajustada_modelos.json`, gerado em 06/06/2026 02:35):
+
+| modelo | metodo | ECE bruto | ECE ajustado | Brier bruto | Brier ajustado | >=95 ajustado n | >=95 acerto hist |
+|---|---|---:|---:|---:|---:|---:|---:|
+| sgd | isotonic | 0,3172 | 0,0016 | 0,2560 | 0,1336 | 2.675 | 0,9989 |
+| linear_svc | isotonic | 0,7101 | 0,0019 | 0,6479 | 0,1181 | 5.125 | 0,9836 |
+| naive_bayes | isotonic | 0,0363 | 0,0019 | 0,1396 | 0,1378 | 4.127 | 0,9557 |
+| random_forest | isotonic | 0,1227 | 0,0020 | 0,1485 | 0,1260 | 5.190 | 0,9917 |
+| regressao_logistica | isotonic | 0,2540 | 0,0045 | 0,2260 | 0,1360 | 4.163 | 0,9877 |
+| extra_trees | isotonic | 0,0753 | 0,0048 | 0,1274 | 0,1183 | 5.790 | 0,9891 |
+| lstm | isotonic | 0,0102 | 0,0096 | 0,1272 | 0,1295 | 3.655 | 0,9860 |
+
+Leitura: a calibracao escalar corrige o problema operacional do `linear_svc` (maior
+concordancia global, mas confianca bruta inutil). Depois da calibracao preliminar, o
+`linear_svc` passa a ter faixa ajustada >=95% com suporte alto e acerto historico >95%.
+Ainda nao liberar producao: esses numeros sao contra historico, nao contra validacao humana.

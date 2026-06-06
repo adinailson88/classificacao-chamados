@@ -231,3 +231,15 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - [x] Adicionado input `aplicar` com default `false`.
 - [x] O workflow executa `src/executar_etapa2.py` sem `--aplicar` por padrao; so grava
   quando `aplicar=true` for escolhido manualmente.
+
+## Atualizacao Codex - calibracao escalar ajustada (2026-06-06 02:35)
+
+- [x] Criado `src/calibracao_confianca.py`: calibra `P(previsao correta | confianca_bruta)`
+  por modelo, out-of-fold, usando sigmoid/isotonica e apenas `registros_<modelo>.json`.
+- [x] Gerado `docs/dados/calibracao_ajustada_modelos.json` sem texto de chamado.
+- [x] `src/exportar_dashboard.py` passa a gerar a calibracao ajustada automaticamente.
+- [x] `docs/index.html` ganhou tabela "Calibracao ajustada preliminar" na aba `Metricas`.
+- [x] `dashboard.yml` passou a instalar `numpy` e `scikit-learn`, necessarios para a nova rotina.
+- Resultado local preliminar contra historico: melhor ECE ajustado `sgd`; `linear_svc`
+  caiu de `ECE=0,7101` para `ECE=0,0019` e passou a ter faixa ajustada `>=95%` com
+  `n=5.125` e acerto historico `98,36%`. Definitivo ainda depende de validacao humana.

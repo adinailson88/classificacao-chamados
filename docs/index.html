@@ -197,6 +197,13 @@
           <th>Modelo</th><th>Chamados</th><th>Acerto hist.</th><th>Conf. media</th><th>ECE</th><th>Brier</th><th>&gt;=95% n</th><th>&gt;=95% acerto hist.</th>
         </tr></thead><tbody></tbody></table></div>
       </div>
+      <div class="card full">
+        <h2>Calibracao ajustada preliminar</h2>
+        <p class="muted" id="calibAjustadaInfo">Calibra a pergunta P(previsao correta | confianca bruta) contra o historico, sem texto de chamado. A versao definitiva depende da validacao humana.</p>
+        <div class="tablebox"><table id="tabCalibAjustada"><thead><tr>
+          <th>Modelo</th><th>Metodo</th><th>ECE antes</th><th>ECE depois</th><th>Brier antes</th><th>Brier depois</th><th>&gt;=95% ajustado n</th><th>&gt;=95% acerto hist.</th>
+        </tr></thead><tbody></tbody></table></div>
+      </div>
     </div>
   </section>
 
@@ -842,6 +849,29 @@ function renderCalibracaoModelos(cal){
   }).join("");
 }
 
+function renderCalibracaoAjustada(cal){
+  const info=document.getElementById("calibAjustadaInfo");
+  const tb=document.querySelector("#tabCalibAjustada tbody");
+  const modelos=(cal && Array.isArray(cal.modelos)) ? [...cal.modelos] : [];
+  if(!modelos.length){
+    if(info) info.textContent="Sem calibracao ajustada publicada ainda.";
+    if(tb) tb.innerHTML="";
+    return;
+  }
+  modelos.sort((a,b)=>N(a.depois?.ece)-N(b.depois?.ece) || N(b.depois?.brier)-N(a.depois?.brier));
+  if(info) info.innerHTML =
+    `Calibracao escalar out-of-fold publicada para <strong>${fmt(modelos.length)}</strong> IAs. `+
+    `Menor ECE ajustado: <strong>${esc(cal.melhor_ece_ajustado||"")}</strong>. `+
+    `Alvo: acerto contra historico; definitivo so apos validacao humana.`;
+  tb.innerHTML = modelos.map(m=>{
+    const f=(m.depois&&m.depois.faixa_95)||{};
+    return `<tr><td>${esc(m.modelo)}</td><td>${esc(m.metodo_escolhido)}</td>`+
+      `<td>${pct(m.antes?.ece)}</td><td>${pct(m.depois?.ece)}</td>`+
+      `<td>${N(m.antes?.brier).toFixed(4)}</td><td>${N(m.depois?.brier).toFixed(4)}</td>`+
+      `<td>${fmt(f.n)}</td><td>${f.n?pct(f.acerto_historico):"-"}</td></tr>`;
+  }).join("");
+}
+
 const ABAS_FILTRAVEIS = new Set(["class","cat","metrics"]);
 function ajustarFiltros(aba){
   document.getElementById("filtros").classList.toggle("hide", !ABAS_FILTRAVEIS.has(aba));
@@ -858,10 +888,10 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
 document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,calModels,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,calModels,calAjustada,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
-    getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("calibracao_modelos.json"), getJSON("comparacao_modelos.json"),
+    getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("calibracao_modelos.json"), getJSON("calibracao_ajustada_modelos.json"), getJSON("comparacao_modelos.json"),
     getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
     getJSON("estatistica.json")
@@ -880,6 +910,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
   renderCalibracao(cal);
   renderCalibracaoModelos(calModels);
+  renderCalibracaoAjustada(calAjustada);
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : [], Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : []);
   renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);
