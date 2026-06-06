@@ -243,3 +243,12 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - Resultado local preliminar contra historico: melhor ECE ajustado `sgd`; `linear_svc`
   caiu de `ECE=0,7101` para `ECE=0,0019` e passou a ter faixa ajustada `>=95%` com
   `n=5.125` e acerto historico `98,36%`. Definitivo ainda depende de validacao humana.
+
+## Atualizacao Codex - documentacao alinhada a calibracao (2026-06-06 02:54)
+
+- [x] `PLANO_CALIBRACAO.md` atualizado para diferenciar diagnostico bruto, calibracao
+  escalar ajustada ja publicada e calibracao definitiva pos-validacao humana.
+- [x] `README.md` passou a listar `calibracao_modelos.json` e
+  `calibracao_ajustada_modelos.json`.
+- [x] `DOCUMENTACAO_MODELOS_E_ESTATISTICA.md` ganhou secao de calibracao preliminar com
+  exemplo operacional e leitura do `linear_svc`.

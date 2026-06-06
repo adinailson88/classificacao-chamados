@@ -87,3 +87,21 @@ tem significado operacional.
 
 > Regra de ouro: enquanto `validados=0`, toda calibração é **preliminar contra histórico**.
 > A confiança calibrada só vira critério de produção após a validação humana.
+
+## Atualizacao executada - calibracao escalar preliminar (2026-06-06)
+
+Depois da primeira versao deste plano, foram publicadas duas camadas adicionais:
+
+- `src/calibracao_modelos.py` / `docs/dados/calibracao_modelos.json`: diagnostico bruto por IA
+  com ECE, MCE, Brier e faixas de confianca, sem texto de chamado.
+- `src/calibracao_confianca.py` / `docs/dados/calibracao_ajustada_modelos.json`: calibracao
+  escalar out-of-fold da pergunta `P(previsao correta | confianca_bruta)`, comparando sigmoid
+  e isotonica contra o historico.
+
+Resultado preliminar relevante: `linear_svc` continua sendo o melhor em concordancia global
+contra historico (`80,26%`). Antes da calibracao, sua confianca bruta era inadequada para
+decisao (`ECE=0,7101`, faixa `>=95%` vazia). Apos calibracao escalar, ficou com
+`ECE=0,0019` e faixa ajustada `>=95%` com `5.125` casos e `98,36%` de acerto contra historico.
+
+Isso **nao** libera producao. O alvo ainda e a categoria historica. A versao definitiva deve
+usar `categoria_validada` depois da validacao humana.

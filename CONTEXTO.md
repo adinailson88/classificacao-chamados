@@ -755,3 +755,19 @@ Leitura: a calibracao escalar corrige o problema operacional do `linear_svc` (ma
 concordancia global, mas confianca bruta inutil). Depois da calibracao preliminar, o
 `linear_svc` passa a ter faixa ajustada >=95% com suporte alto e acerto historico >95%.
 Ainda nao liberar producao: esses numeros sao contra historico, nao contra validacao humana.
+
+## Atualizacao Codex - documentacao alinhada a calibracao (2026-06-06 02:54)
+
+Rodada de manutencao documental apos a publicacao da calibracao ajustada. Foram atualizados:
+
+- `PLANO_CALIBRACAO.md`: agora distingue diagnostico bruto, calibracao escalar preliminar
+  publicada e calibracao definitiva apos validacao humana.
+- `README.md`: lista `calibracao_modelos.json` e `calibracao_ajustada_modelos.json` como
+  artefatos consumidos pelo dashboard e registra que workflows de reclassificacao rodam em
+  dry-run por padrao.
+- `DOCUMENTACAO_MODELOS_E_ESTATISTICA.md`: adiciona explicacao operacional da calibracao
+  preliminar, incluindo o caso do `linear_svc` (ECE bruto 0,7101 -> ECE ajustado 0,0019;
+  faixa ajustada >=95% com 5.125 casos e 98,36% contra historico).
+
+Nenhum script foi executado contra a planilha nesta rodada. Validacoes locais: leitura dos
+documentos, `py_compile` dos scripts de calibracao/exportacao e status git.

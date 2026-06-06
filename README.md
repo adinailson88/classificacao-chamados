@@ -12,7 +12,7 @@ O objetivo e manter um experimento rastreavel, com processamento por turnos, log
 4. A aba principal e `CHAMADOS_ESQUELETO_REDUZIDO`, com leitura em `A:M`.
 5. Os dados reais gerados em `dados/*.json` e `dados/*.jsonl` ficam ignorados no Git.
 6. Os dados publicos do dashboard ficam em `docs/dados`.
-7. Nenhum script escreve na planilha sem flag explicita `--aplicar`, exceto workflows ja configurados para a etapa correspondente.
+7. Nenhum script escreve na planilha sem flag explicita `--aplicar`; workflows de reclassificacao rodam em dry-run por padrao.
 8. A validacao humana ja pode ser preparada, mas a revisao manual fica **pausada** ate o fortalecimento dos scripts/modelos.
 
 ### 7 IAs materializadas (multimodelo)
@@ -79,6 +79,15 @@ Saida da IA: `G:J`.
 Arquivo de referencia: `OBJETIVO_FINAL_MODELO_IA.txt`.
 
 A meta e chegar a um modelo treinado e calibrado que indique, para a maioria das categorias, se a categoria historica do chamado esta correta ou nao. A confianca minima alvo e `>=95%`, mas essa confianca precisa ser validada/calibrada: softmax alto sozinho nao comprova acerto.
+
+Calibracao preliminar publicada:
+
+- `docs/dados/calibracao_modelos.json`: diagnostico bruto por IA (ECE, Brier, faixa >=95%).
+- `docs/dados/calibracao_ajustada_modelos.json`: calibracao escalar out-of-fold de
+  `P(previsao correta | confianca_bruta)`, ainda contra historico.
+- Resultado atual relevante: `linear_svc` continua melhor em concordancia global (`80,26%`)
+  e, apos calibracao escalar, sua faixa ajustada `>=95%` tem `n=5.125` e acerto historico
+  `98,36%`. Isso ainda nao substitui validacao humana.
 
 O reforco automatico antes da revisao manual esta em:
 
@@ -183,6 +192,8 @@ docs/dados/multimodelo_metricas.json      # 7 IAs
 docs/dados/multimodelo_reclass_turnos.json
 docs/dados/estatistica.json               # analise nao parametrica (aba Estatistica)
 docs/dados/calibracao.json
+docs/dados/calibracao_modelos.json        # diagnostico bruto por IA
+docs/dados/calibracao_ajustada_modelos.json # calibracao escalar preliminar por IA
 ```
 
 O site publicado pelo GitHub Pages deve identificar o projeto como `Classificacao de Chamados - Painel Experimental`. A referencia a Malha IA deve aparecer apenas como contexto de origem, nao como nome principal do site.

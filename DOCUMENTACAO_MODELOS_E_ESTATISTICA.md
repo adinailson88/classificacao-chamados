@@ -320,3 +320,31 @@ Leitura pratica:
 4. Tratar `linear_svc` como candidato mais forte atual.
 5. Reclassificacao fica sem prioridade ate concluir a Etapa 1/multimodelo e estatistica.
 6. So depois iniciar validacao humana para confirmar se o historico ou a IA esta correta.
+
+## Atualizacao - calibracao preliminar da confianca (2026-06-06)
+
+A concordancia global responde "qual modelo acerta mais contra o historico?". A calibracao
+responde outra pergunta: "quando o modelo diz alta confianca, essa confianca corresponde ao
+acerto empirico?".
+
+Foram publicados dois JSONs no dashboard:
+
+| Arquivo | Funcao | Limite |
+|---|---|---|
+| `calibracao_modelos.json` | mede ECE/Brier usando a confianca bruta de cada IA | diagnostico, nao ajusta a escala |
+| `calibracao_ajustada_modelos.json` | ajusta `P(previsao correta | confianca_bruta)` por sigmoid/isotonica out-of-fold | ainda usa historico, nao validacao humana |
+
+Exemplo operacional: o `linear_svc` era o melhor modelo por concordancia (`80,26%`), mas sua
+confianca bruta era inutil para decisao direta (`ECE=0,7101`, faixa `>=95%` vazia). Com a
+calibracao escalar preliminar, o ECE ajustado caiu para `0,0019` e a faixa ajustada `>=95%`
+ficou com `5.125` chamados e `98,36%` de acerto contra o historico.
+
+Como planilha, a ideia e:
+
+```text
+confianca_ajustada = FUNCAO_CALIBRADA(confianca_bruta)
+```
+
+Essa funcao e aprendida com exemplos out-of-fold: linhas com confianca bruta parecida sao
+comparadas com o acerto observado (`IA = categoria_historica`). A versao definitiva deve trocar
+esse alvo por `IA = categoria_validada` apos a validacao humana.
