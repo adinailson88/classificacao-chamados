@@ -96,11 +96,17 @@ def calcular(sh, config: dict) -> dict:
             "A:J", value_render_option="UNFORMATTED_VALUE")
     except Exception:  # noqa: BLE001
         vals = []
-    validados = carregar_validados(sh, abas["validacao_humana"])
+    # Modo de validacao atual: conferencia humana DUPLA na aba principal.
+    # M (CONFERENCIA IA): a classificacao da IA esta "Correto"/"Errado";
+    # N (CONFERENCIA GLPI): a classificacao historica esta "Correto"/"Errado".
+    conferencias = pl.ler_conferencias(sh, config["aba_principal"])
 
     por_faixa = {rot: _agrega() for _, _, rot in FAIXAS}
     por_exec = {}
     geral = _agrega()
+    # Matriz 2x2 IA(M) x GLPI(N) sobre as linhas com AMBAS conferencias preenchidas.
+    matriz = {"ia_ok_glpi_ok": 0, "ia_ok_glpi_erro": 0, "ia_erro_glpi_ok": 0, "ia_erro_glpi_erro": 0}
+    glpi = {"n": 0, "ok": 0}  # acerto validado da classificacao historica (coluna N)
     # SNAPSHOT cols: 1 linha, 3 cat_original, 4 cat_ia, 5 conf, 6 executor
     for r in vals[1:]:
         if len(r) < 6:
@@ -113,9 +119,19 @@ def calcular(sh, config: dict) -> dict:
         conf = parse_conf(r[5])
         execu = str(r[6]).strip() if len(r) > 6 else ""
         ok_hist = int(cat_ia == orig)
-        cat_val = validados.get(ln)
-        tem_val = cat_val is not None and cat_val != ""
-        ok_val = int(cat_ia == cat_val) if tem_val else 0
+        # Conferencia humana: M => acerto da IA; N => acerto do historico (GLPI).
+        conf_row = conferencias.get(ln, {})
+        v_ia = conf_row.get("ia")
+        v_glpi = conf_row.get("glpi")
+        tem_val = v_ia is not None
+        ok_val = int(v_ia == "Correto") if tem_val else 0
+        if v_glpi is not None:
+            glpi["n"] += 1
+            glpi["ok"] += int(v_glpi == "Correto")
+        if v_ia is not None and v_glpi is not None:
+            chave = ("ia_ok" if v_ia == "Correto" else "ia_erro") + \
+                    ("_glpi_ok" if v_glpi == "Correto" else "_glpi_erro")
+            matriz[chave] += 1
 
         for alvo in (geral, por_faixa[faixa_de(conf)], por_exec.setdefault(execu or "(sem)", _agrega())):
             alvo["n"] += 1
@@ -142,6 +158,16 @@ def calcular(sh, config: dict) -> dict:
         "run_id": config.get("run_id", ""),
         "total": n_tot,
         "validados": geral["n_val"],
+        "validacao_humana": {
+            "modo": "conferencia dupla (M=CONFERENCIA IA, N=CONFERENCIA GLPI)",
+            "n_conferencia_ia": geral["n_val"],
+            "acerto_ia_validado": round(geral["ok_val"] / geral["n_val"], 4) if geral["n_val"] else None,
+            "n_conferencia_glpi": glpi["n"],
+            "acerto_glpi_validado": round(glpi["ok"] / glpi["n"], 4) if glpi["n"] else None,
+            # Matriz 2x2 (apenas linhas com M e N preenchidas). ia_ok_glpi_erro = IA
+            # corrige o historico; ia_erro_glpi_ok = IA piora o historico.
+            "matriz_ia_x_glpi": matriz,
+        },
         "ece_historico": round(ece, 4),
         "alvo_confianca": float(config.get("objetivo_final", {}).get("confianca_minima_alvo", 0.95)),
         "faixa_alvo_95": faixa95,
@@ -155,8 +181,9 @@ def calcular(sh, config: dict) -> dict:
         "plano_calibracao": "PLANO_CALIBRACAO.md",
         "observacao": ("Acerto vs histórico é preliminar (a classificação histórica pode "
                        "ter erros). A confiança é bruta (softmax alto NÃO é confiança calibrada). "
-                       "A calibração DEFINITIVA ajusta um calibrador por modelo e usa "
-                       "categoria_validada (validação humana, ainda pausada)."),
+                       "A validação humana usa conferência dupla: coluna M (CONFERÊNCIA IA) e "
+                       "coluna N (CONFERÊNCIA GLPI), permitindo medir acerto da IA, acerto do "
+                       "histórico e a matriz IA×GLPI (falsos positivos/negativos)."),
     }
 
 

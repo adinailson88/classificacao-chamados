@@ -172,18 +172,12 @@ def main() -> int:
         )
     except Exception:  # noqa: BLE001
         snap = []
+    # Validacao humana: conferencia dupla na aba principal (M=CONFERENCIA IA,
+    # N=CONFERENCIA GLPI). O campo "v" do registro usa a conferencia da IA (coluna M).
     valida = {}
     try:
-        vv = sh.worksheet(abas_cfg["validacao_humana"]).get_all_values()
-        if len(vv) > 1:
-            cabv = {(" ".join(str(c).split()).casefold()): i for i, c in enumerate(vv[0])}
-            iln, idec = cabv.get("linha_planilha"), cabv.get("decisao")
-            if iln is not None and idec is not None:
-                for rr in vv[1:]:
-                    ln = str(rr[iln]).strip() if iln < len(rr) else ""
-                    dec = str(rr[idec]).strip() if idec < len(rr) else ""
-                    if ln and dec:
-                        valida[ln] = dec
+        conferencias = pl.ler_conferencias(sh, config["aba_principal"])
+        valida = {ln: (d.get("ia") or "") for ln, d in conferencias.items()}
     except Exception:  # noqa: BLE001
         pass
 

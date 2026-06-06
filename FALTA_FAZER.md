@@ -181,12 +181,21 @@ calibracao definitiva, treinada/avaliada contra validacao humana.
 ---
 
 ## P4 — VALIDAÇÃO HUMANA + métricas finais (PAUSADA por decisão do usuário)
-A aba `VALIDACAO_HUMANA` já tem **1.654 casos** preparados (divergentes). Não iniciar
-agora — só após fortalecer modelo/scripts/painel.
-- [ ] Revisar manualmente os 1.654 casos (`categoria_validada`, `decisao`,
-      `justificativa`, `avaliador`, `data_validacao`, `usar_para_treino`).
-- [ ] Após validação: matriz de confusão, métricas por categoria, **confiança calibrada
-      validada** por faixa, indicadores finais, e **re-treino** com a base validada (etapas 41-42).
+
+> **Novo modo de validação (2026-06-06): conferência dupla na aba principal.** O veredito
+> humano deixa de depender da aba `VALIDACAO_HUMANA`/`categoria_validada` e passa a ser
+> registrado em duas colunas da `CHAMADOS_ESQUELETO_REDUZIDO`:
+> `M` = **CONFERÊNCIA IA** (a classificação da IA, coluna `G`, está `Correto`/`Errado`) e
+> `N` = **CONFERÊNCIA GLPI** (a classificação histórica, coluna `C`, está `Correto`/`Errado`).
+> Isso permite a matriz 2x2 IA×GLPI e a identificação de falsos positivos/negativos
+> (inclusive casos em que a IA corrige o histórico). Leitura: `Correto` = acerto; qualquer
+> outro valor não vazio = `Errado`; vazio = não validado. Código adaptado em
+> `planilha.ler_conferencias`, `calibracao.py` e `exportar_dashboard.py`.
+
+A revisão manual permanece **pausada** por decisão do usuário (será feita por ele depois).
+- [ ] Preencher `M`/`N` para os casos a validar (prioridade: divergentes IA×histórico).
+- [ ] Após validação: matriz de confusão IA×GLPI, métricas por categoria, **confiança
+      calibrada validada** por faixa, indicadores finais, e **re-treino** com a base validada.
 
 ---
 

@@ -57,14 +57,30 @@ I  Executor
 J  Criticidade Atribuida por IA
 K  Comparacao
 L  Classificado_Confianca_IA
-M  CONFERENCIA
+M  CONFERENCIA IA
+N  CONFERENCIA GLPI
 ```
 
 Saida da IA: `G:J`.
 
 `K` compara a classificacao da IA com a categoria historica: `=SE(G="";"";G=C)`.
 
-`M=TRUE` indica conferencia humana e impede sobrescrita da linha pelos fluxos de exportacao.
+### Validacao humana (modo de conferencia dupla)
+
+A validacao humana e registrada em DUAS colunas independentes, o que permite avaliar
+nao so o acerto da IA, mas tambem a qualidade da propria classificacao historica e,
+por consequencia, falsos positivos e falsos negativos:
+
+- `M` (**CONFERENCIA IA**): o avaliador marca se a classificacao da IA (coluna `G`) esta
+  `Correto` ou `Errado`. Celula vazia = ainda nao validada.
+- `N` (**CONFERENCIA GLPI**): o avaliador marca se a classificacao historica do GLPI
+  (coluna `C`) esta `Correto` ou `Errado`. Celula vazia = ainda nao validada.
+
+A combinacao das duas colunas forma uma matriz 2x2 (IA `Correto`/`Errado` x GLPI
+`Correto`/`Errado`), que distingue, por exemplo, os casos em que a IA acerta e o
+historico erra (a IA corrige o GLPI) dos casos opostos. Convencao de leitura no codigo:
+o valor `Correto` (sem distincao de caixa) indica acerto; qualquer outro valor nao vazio
+e tratado como `Errado`. A leitura dessas colunas e read-only e nao sobrescreve a planilha.
 
 ## Fluxo principal
 

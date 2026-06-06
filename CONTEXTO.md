@@ -1199,3 +1199,17 @@ ganho acumulado permanecer nao negativo.
   do usuario). **Validacao humana NAO iniciada** (sera feita pelo usuario depois).
   Observacao tecnica persistente: a "baixa confianca" do candidato usa softmax/decisao
   BRUTA; sem calibracao por modelo o filtro perde forca (ver `PLANO_CALIBRACAO.md`).
+
+## Novo modo de validacao humana — conferencia dupla M/N (2026-06-06)
+
+Decisao do usuario: a validacao humana passa a usar DUAS colunas da
+`CHAMADOS_ESQUELETO_REDUZIDO`, reconhecendo que ate a classificacao historica pode estar
+errada. `M` = **CONFERENCIA IA** (a classificacao da IA, coluna G, esta `Correto`/`Errado`);
+`N` = **CONFERENCIA GLPI** (a classificacao historica, coluna C, esta `Correto`/`Errado`).
+A combinacao forma uma matriz 2x2 IA×GLPI que distingue falsos positivos/negativos e os
+casos em que a IA corrige o historico. Convencao: `Correto` (qualquer caixa) = acerto;
+outro valor nao vazio = `Errado`; vazio = nao validado; leitura read-only. Adaptacao no
+codigo: `planilha.ler_conferencias` (le M e N), `calibracao.py` (acerto IA validado via M,
+acerto GLPI validado via N e matriz de confusao) e `exportar_dashboard.py` (campo `v` e
+contagem de `validados` via M). Validacao humana continua pausada: as colunas estao
+preparadas para quando o usuario preencher.

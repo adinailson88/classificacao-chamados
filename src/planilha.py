@@ -164,6 +164,45 @@ def ler_valores(ws, range_a1: str = "A:M") -> list[list[Any]]:
     return ws.get_values(range_a1, value_render_option="UNFORMATTED_VALUE")
 
 
+def _norm_veredito(valor) -> str | None:
+    """Normaliza uma celula de conferencia: 'Correto' (qualquer caixa) -> 'Correto';
+    qualquer outro valor nao vazio -> 'Errado'; vazio -> None (nao validado)."""
+    s = str(valor or "").strip()
+    if not s:
+        return None
+    return "Correto" if s.casefold() == "correto" else "Errado"
+
+
+def ler_conferencias(sh, aba_principal: str, col_ia_1based: int = 13,
+                     col_glpi_1based: int = 14) -> dict:
+    """Le a CONFERENCIA HUMANA DUPLA da aba principal (modo de validacao atual).
+
+    Convencao definida pelo usuario, em CHAMADOS_ESQUELETO_REDUZIDO:
+    - coluna M (CONFERENCIA IA):   a classificacao da IA (col G) esta 'Correto'/'Errado';
+    - coluna N (CONFERENCIA GLPI): a classificacao historica (col C) esta 'Correto'/'Errado'.
+    'Correto' (qualquer caixa) = acerto; outro valor nao vazio = 'Errado'; vazio = nao validado.
+
+    Retorna {linha_planilha (str): {'ia': 'Correto'|'Errado'|None,
+    'glpi': 'Correto'|'Errado'|None}} apenas para linhas com ao menos uma das colunas
+    preenchida. A linha_planilha e a propria posicao na planilha (cabecalho na linha 1).
+    Read-only.
+    """
+    li, ln = _coluna_letra(col_ia_1based), _coluna_letra(col_glpi_1based)
+    try:
+        ws = sh.worksheet(aba_principal)
+        bloco = ws.get_values(f"{li}1:{ln}", value_render_option="UNFORMATTED_VALUE")
+    except Exception:  # noqa: BLE001
+        return {}
+    out = {}
+    for pos, linha in enumerate(bloco[1:], start=2):
+        v_ia = _norm_veredito(linha[0]) if len(linha) > 0 else None
+        v_glpi = _norm_veredito(linha[1]) if len(linha) > 1 else None
+        if v_ia is None and v_glpi is None:
+            continue
+        out[str(pos)] = {"ia": v_ia, "glpi": v_glpi}
+    return out
+
+
 def _coluna_letra(indice_1based: int) -> str:
     """Converte índice de coluna (1=A) para letra(s) A1."""
     letras = ""
