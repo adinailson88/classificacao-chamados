@@ -37,16 +37,16 @@ dados, fazer o painel mostrar a verdade.
 > `comparacao_categoria.json`.
 
 ### P0.1 Filtros (UX e correção)
-- [ ] Indicar **claramente** quando um filtro está ativo (chips/lista dos ativos + contador).
-- [ ] Botão **Limpar** mais evidente.
-- [ ] Corrigir o dropdown que **cobre abas/gráficos**; fechar após seleção (ou melhorar layout).
-- [ ] Conferir que `aplicarFiltros()` é chamado a cada checkbox.
-- [ ] Conferir que `REG` carrega de `docs/dados/registros.json` e que os campos existem:
+- [x] Indicar **claramente** quando um filtro está ativo (chips/lista dos ativos + contador).
+- [x] Botão **Limpar** mais evidente.
+- [x] Corrigir o dropdown que **cobre abas/gráficos**; fechar após seleção (ou melhorar layout).
+- [x] Conferir que `aplicarFiltros()` é chamado a cada checkbox.
+- [x] Conferir que `REG` carrega de `docs/dados/registros.json` e que os campos existem:
       `g` grupo, `f` faixa, `e` executor, `k` concorda/diverge, `v` validação humana.
       Se algum vier vazio, corrigir em `src/exportar_dashboard.py`.
-- [ ] Verificar que os filtros **recalculam**: cards superiores, aviso verde, contador
+- [x] Verificar que os filtros **recalculam**: cards superiores, aviso verde, contador
       à direita, gráfico de faixa de confiança, tabelas de `Categorias`, resumo de `Metricas`.
-- [ ] Deixar **explícito na interface** quais gráficos **NÃO** são filtráveis por decisão
+- [x] Deixar **explícito na interface** quais gráficos **NÃO** são filtráveis por decisão
       (Evolução da concordância por turno, Confiança média por turno, Reclassificação) —
       hoje parece bug. Pôr um rótulo/aviso no topo desses gráficos.
 

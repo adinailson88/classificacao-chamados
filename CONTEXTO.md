@@ -852,3 +852,15 @@ existir ou ser necessaria para auditoria linha a linha.
 Validacao/publicacao: JavaScript de `docs/index.html` extraido e validado com `node --check`.
 Commit `5a6a323` enviado ao `main`; Pages build `27057619862` concluido com sucesso para
 `headSha=5a6a323c6777e436150f8619c06bdd1d25dd4a71`.
+
+## Atualizacao Codex - filtros do dashboard P0.1 (2026-06-06 05:54)
+
+Nova sincronizacao: `git pull --ff-only origin main` retornou `Already up to date`.
+Revisao estatica confirmou que a barra de filtros ja tinha chips ativos, contador, botao
+`Limpar` destacado, recalc de cards/aviso/grafico de faixa/categorias/metricas e rotulos
+indicando series temporais nao filtraveis. O exportador tambem ja populava os campos
+`g`, `f`, `e`, `k` e `v` em `registros.json`/`registros_<modelo>.json`.
+
+Correcao aplicada: no `docs/index.html`, o dropdown multi-selecao agora fecha apos cada
+selecao/desselecao de checkbox, reduzindo a chance de cobrir abas ou graficos. `FALTA_FAZER.md`
+foi alinhado marcando P0.1 como concluido por verificacao estatica e ajuste de UX.
