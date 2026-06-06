@@ -68,7 +68,11 @@ def main() -> int:
         print(f"Falha ao acessar a planilha: {type(e).__name__}: {e}", file=sys.stderr); return 1
 
     cab = valores[0] if valores else []
-    norm = lambda s: " ".join(str(s or "").split()).casefold()  # noqa: E731
+    import unicodedata
+    def norm(s):  # casefold + remove acentos (cabecalhos da planilha tem acento)
+        t = unicodedata.normalize("NFKD", str(s or ""))
+        t = "".join(c for c in t if not unicodedata.combining(c))
+        return " ".join(t.split()).casefold()
     idx = {norm(n): i for i, n in enumerate(cab)}
     i_id, i_tit, i_cat = idx.get(norm("ID Chamado")), idx.get(norm("TITULO")), idx.get(norm("CATEGORIA COMPLETA"))
     i_dg, i_to, i_do = idx.get(norm("DESCRICAO GLPI")), idx.get(norm("TITULO O.S.M.")), idx.get(norm("DESCRICAO O.S.M."))

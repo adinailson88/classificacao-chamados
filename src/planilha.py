@@ -210,8 +210,13 @@ def ler_conferencias(sh, aba_principal: str, col_glpi_1based: int = 13,
 
 def indice_coluna_por_cabecalho(ws, nome: str, default_1based: int) -> int:
     """Indice (1-based) da coluna cujo cabecalho (linha 1) casa com `nome`
-    (normalizado, sem caixa/espacos). Se nao encontrar, retorna default_1based."""
-    norm = lambda s: " ".join(str(s or "").split()).casefold()  # noqa: E731
+    (normalizado: sem caixa, sem espacos extras e SEM acentos). Se nao encontrar,
+    retorna default_1based."""
+    import unicodedata
+    def norm(s):  # noqa: E306
+        t = unicodedata.normalize("NFKD", str(s or ""))
+        t = "".join(c for c in t if not unicodedata.combining(c))
+        return " ".join(t.split()).casefold()
     try:
         cab = ws.row_values(1)
     except Exception:  # noqa: BLE001
