@@ -1020,3 +1020,20 @@ concluiu com sucesso. Validacao local: `python -m json.tool docs\dados\resumo.js
 O `resumo.json` ficou com `gerado_em=06/06/2026 07:58`, `registros=13825`,
 `validados=0`, `multimodelo_metricas=7` e `multimodelo_reclass_turnos=0`, confirmando
 que o dry-run nao materializou reclassificacao no dashboard.
+
+## Atualizacao Codex - Etapa 1 agendada sem pendencias (2026-06-06 08:14)
+
+Nova sincronizacao: `git pull --ff-only origin main` avancou de `8fb89c4` para `5227678`,
+commit automatico `dados do dashboard [skip ci]`.
+
+Execucoes verificadas: workflow `etapa1_turnos.yml` agendado, run `27060670562`, concluiu
+com sucesso; log registrou `total=18858`, `elegiveis=13825`, `pendentes=0`,
+`modelo=producao` e `Etapa 1 concluida (0 pendentes)`. O dashboard automatico acionado em
+seguida, run `27060687295`, tambem concluiu com sucesso; Pages run `27060701030`
+concluiu com sucesso.
+
+Validacao local: `python -m json.tool docs\dados\resumo.json` OK. O `resumo.json` ficou
+com `gerado_em=06/06/2026 08:10`, `registros=13825`, 7 modelos com 13.825 registros cada,
+`validados=0`, `ece_historico=0,0379`, `multimodelo_metricas=7` e
+`multimodelo_reclass_turnos=0`. Sem iniciar validacao humana e sem aplicar
+reclassificacao.
