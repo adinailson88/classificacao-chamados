@@ -996,3 +996,27 @@ ganho -1; `linear_svc` 15, ganho -2; `sgd` 15, ganho 0; `extra_trees` 15, ganho 
 `random_forest` 15, ganho 0. Resultado consolidado: ainda nao ha evidencia para aplicar
 reclassificacao em massa; manter apenas dry-runs/calibracao ate haver ganho liquido
 positivo e/ou validacao humana.
+
+## Atualizacao Codex - dry-run reclassificacao multimodelo LSTM (2026-06-06 07:58)
+
+Nova sincronizacao previa: `git pull --ff-only origin main` retornou `Already up to date`.
+Sem iniciar validacao humana.
+
+Acao executada: workflow `multimodelo_reclassificacao.yml` disparado manualmente em
+dry-run com `modelos=pesados`, `max_turnos=1`, `aplicar=false`, `lstm_perfil=padrao`:
+run `27060370440`, concluido com sucesso em 3m32s. Desta vez o workflow instalou
+TensorFlow, pois o escopo incluiu LSTM. Como `--aplicar` nao foi usado, nao houve escrita
+na planilha.
+
+Resultado do log: `modelos=['lstm']`, `elegiveis=13825`, `memoria_validada=0`,
+`candidatos_baixa=9549`, `lote_agora=15`, `base=13810`, `reclass=15`,
+`corrigidos=2`, `prejudicados=2`, ganho 0, metodo `topup`, dry-run. Em conjunto com o
+dry-run dos 6 modelos leves, todos os 7 modelos ja foram testados em lote minimo de
+reclassificacao sem escrita; nenhum resultado justifica aplicacao em massa neste momento.
+
+O workflow de dashboard foi acionado automaticamente apos o dry-run: run `27060443369`
+concluiu com sucesso, gerando commit de dados `2a2cd39`; Pages run `27060455788` tambem
+concluiu com sucesso. Validacao local: `python -m json.tool docs\dados\resumo.json` OK.
+O `resumo.json` ficou com `gerado_em=06/06/2026 07:58`, `registros=13825`,
+`validados=0`, `multimodelo_metricas=7` e `multimodelo_reclass_turnos=0`, confirmando
+que o dry-run nao materializou reclassificacao no dashboard.

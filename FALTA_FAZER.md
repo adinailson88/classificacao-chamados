@@ -107,6 +107,9 @@ dados, fazer o painel mostrar a verdade.
       `modelos=leves`, `max_turnos=1`, `aplicar=false`: 90 simulações, 0 escrita na
       planilha; ganho líquido fraco (`extra_trees=+1`, `linear_svc=-2`,
       `regressao_logistica=-1`, demais `0`). Não aplicar em massa ainda.
+      Dry-run complementar do LSTM executado no run `27060370440`, `modelos=pesados`,
+      `max_turnos=1`, `aplicar=false`: 15 simulações, ganho `0`
+      (`corrigidos=2`, `prejudicados=2`). A conclusão permanece: não aplicar em massa.
 
 ---
 
