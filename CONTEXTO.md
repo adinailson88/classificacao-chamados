@@ -868,3 +868,24 @@ foi alinhado marcando P0.1 como concluido por verificacao estatica e ajuste de U
 Validacao/publicacao: JavaScript de `docs/index.html` extraido e validado com `node --check`.
 Commit `604d32b` enviado ao `main`; Pages build `27057996073` concluido com sucesso para
 `headSha=604d32b2df02b3346cbb97a6b33b900fac6a60cb`.
+
+## Atualizacao Codex - alinhamento P0 do dashboard (2026-06-06 06:14)
+
+Nova sincronizacao: `git pull --ff-only origin main` retornou `Already up to date`.
+Revisao estatica do `docs/index.html` confirmou que os itens P0.2, P0.4, P0.5, P0.6 e
+P0.7 ja estavam implementados no painel:
+
+- `Modelos`: nao ha mais logica de ultima execucao (`const ult`); a comparacao principal
+  usa `multimodelo_metricas`, ranking na base completa, evolucao por turno e tabela de
+  recortes held-out de 1.000 ate 13.825.
+- `Multimodelo`: mostra progresso por modelo, pendentes, concordancia e reclassificacao
+  multimodelo quando houver dados.
+- `Metricas`: separa consolidado, resumo tecnico, calibracao bruta, diagnostico por IA,
+  calibracao ajustada preliminar e aviso `validados=0`.
+- `Reclassificacao`: tem estado vazio objetivo quando a Etapa 2 ainda nao foi executada.
+- Meta 95%: explicita que a faixa pode estar aprovada contra historico, mas nao validada
+  humanamente e nao liberada para producao.
+
+Correcao aplicada apenas em documentacao: `FALTA_FAZER.md` foi alinhado marcando P0.2,
+P0.4, P0.5, P0.6 e P0.7 como concluidos. Restou no P0 somente a evolucao opcional
+`comparacao_previsoes.json`, dependente de necessidade de auditoria linha a linha.

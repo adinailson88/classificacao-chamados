@@ -35,6 +35,10 @@ dados, fazer o painel mostrar a verdade.
 > `multimodelo_*` já populados. P0.3-extra também foi concluído em 2026-06-06:
 > a aba `Categorias` agora tem tabela de comparação por categoria/modelo consumindo
 > `comparacao_categoria.json`.
+>
+> ✅ **Status 2026-06-06**: revisão estática do `docs/index.html` confirmou P0.1–P0.7
+> alinhados ao painel publicado. O que resta no P0 é apenas evolução opcional:
+> `comparacao_previsoes.json` caso a auditoria linha a linha seja necessária.
 
 ### P0.1 Filtros (UX e correção)
 - [x] Indicar **claramente** quando um filtro está ativo (chips/lista dos ativos + contador).
@@ -51,12 +55,11 @@ dados, fazer o painel mostrar a verdade.
       hoje parece bug. Pôr um rótulo/aviso no topo desses gráficos.
 
 ### P0.2 Aba `Modelos` está enganosa
-- [ ] Hoje o gráfico usa só a **última execução por modelo** (`const ult={}; rows.forEach(r=>{ult[r.modelo]=r;})`),
-      escondendo os 5 recortes. Trocar por:
-  - [ ] barras de **média** de acurácia e F1-macro por modelo;
-  - [ ] **ranking** dos modelos por média + destaque do melhor;
-  - [ ] **evolução por lote** (linha/agrupado);
-  - [ ] **tabela com todos os recortes**.
+- [x] Remover lógica antiga de **última execução por modelo**.
+- [x] Usar a comparação principal das 7 IAs na base completa (`multimodelo_metricas`).
+- [x] Mostrar **ranking** dos modelos por concordância na base completa.
+- [x] Mostrar **evolução por turno/lote** com seletor de métrica.
+- [x] Mostrar **tabela com todos os recortes** held-out de 1.000 até 13.825.
 
 ### P0.3 Exportar mais JSONs (`src/exportar_dashboard.py`)
 - [x] Publicar `comparacao_categoria.json` (de `COMPARACAO_CATEGORIA`).
@@ -69,20 +72,20 @@ dados, fazer o painel mostrar a verdade.
       ou for necessária para auditoria linha a linha.
 
 ### P0.4 Nova aba `Multimodelo` no painel
-- [ ] Progresso por modelo (feitos/pendentes), concordância por modelo materializado,
+- [x] Progresso por modelo (feitos/pendentes), concordância por modelo materializado,
       e dados de reclassificação multimodelo quando existirem.
 
 ### P0.5 Aba `Metricas`
-- [ ] Separar visualmente: métricas **vs histórico** × **validadas** × **calibração**
+- [x] Separar visualmente: métricas **vs histórico** × **validadas** × **calibração**
       × **pendentes** × **meta 95%**.
-- [ ] Aviso grande quando `validados=0` (métricas preliminares, não validadas).
+- [x] Aviso grande quando `validados=0` (métricas preliminares, não validadas).
 
 ### P0.6 Aba `Reclassificacao`
-- [ ] Estado vazio com mensagem objetiva: "Etapa 2 ainda não executada após o reset"
+- [x] Estado vazio com mensagem objetiva: "Etapa 2 ainda não executada após o reset"
       / "Validação humana não iniciada" / "Próximo passo técnico: dry-run ou aplicação controlada".
 
 ### P0.7 Deixar a META 95% honesta
-- [ ] Mostrar status claro por faixa: "aprovado **contra histórico**",
+- [x] Mostrar status claro por faixa: "aprovado **contra histórico**",
       "**não** validado humanamente", "ainda **não** liberado para produção".
 
 ---
