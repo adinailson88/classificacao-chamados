@@ -1144,3 +1144,18 @@ usar a ordem/data das linhas e a contagem total.
 Criterio de seguranca adotado a partir daqui: continuar LSTM turno a turno somente enquanto
 o ganho acumulado publicado permanecer nao negativo; se virar negativo, pausar,
 documentar e aguardar decisao antes de prosseguir para validacao humana ou outro modelo.
+
+## Atualizacao Codex - reclassificacao LSTM aplicada ate 5 turnos (2026-06-06 14:06)
+
+Continuidade da aplicacao controlada solicitada pelo usuario, sem iniciar validacao humana:
+
+- run `27068325982`: 15 reclassificacoes; `corrigidos=3`, `prejudicados=1`, ganho `+2`.
+  Dashboard `27068387165`, Pages `27068403976`, commit de dados `b4d3898`.
+- run `27068433347`: 15 reclassificacoes; `corrigidos=1`, `prejudicados=0`, ganho `+1`.
+  Dashboard `27068510665`, Pages `27068527840`, commit de dados `4210b44`.
+
+Validacao local apos publicacao do 5o turno: `docs/dados/resumo.json` em
+`06/06/2026 14:05`; `docs/dados/multimodelo_reclass_turnos.json` com 5 linhas,
+75 reclassificacoes aplicadas, `corrigidos=11`, `prejudicados=7`, ganho liquido
+acumulado `+4`. O criterio de seguranca segue: continuar turno a turno enquanto o
+ganho acumulado permanecer nao negativo.

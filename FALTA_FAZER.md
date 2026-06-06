@@ -124,7 +124,10 @@ dados, fazer o painel mostrar a verdade.
       **somente do LSTM**, um turno de 15 por execucao, para nao pesar a API:
       runs `27067922061`, `27068022450` e `27068138920`, todos publicados no dashboard.
       Acumulado publicado: 45 reclassificacoes, `corrigidos=7`, `prejudicados=6`,
-      ganho liquido `+1`. Continuar apenas turno a turno enquanto o ganho acumulado
+      ganho liquido `+1`. Rodadas seguintes tambem aplicadas e publicadas:
+      `27068325982` (`+2`) e `27068433347` (`+1`). Acumulado apos 5 turnos:
+      75 reclassificacoes, `corrigidos=11`, `prejudicados=7`, ganho liquido `+4`.
+      Continuar apenas turno a turno enquanto o ganho acumulado
       permanecer nao negativo; nao iniciar validacao humana automaticamente.
 
 ---
