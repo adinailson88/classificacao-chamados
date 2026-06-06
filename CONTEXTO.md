@@ -848,3 +848,7 @@ aparecia no dashboard.
 `multimodelo_reclass_turnos.json` e a UI categoria/modelo como concluidos. Mantida como
 pendencia apenas `comparacao_previsoes.json`, pois depende de a aba `COMPARACAO_PREVISOES`
 existir ou ser necessaria para auditoria linha a linha.
+
+Validacao/publicacao: JavaScript de `docs/index.html` extraido e validado com `node --check`.
+Commit `5a6a323` enviado ao `main`; Pages build `27057619862` concluido com sucesso para
+`headSha=5a6a323c6777e436150f8619c06bdd1d25dd4a71`.
