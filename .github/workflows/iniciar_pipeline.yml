@@ -1,0 +1,52 @@
+name: Iniciar pipeline (orquestrador)
+
+# Dispara, de uma vez, os fluxos automaticos do experimento — util para "ver tudo
+# rodando" agora, sem esperar o proximo tique dos crons. Os agendamentos continuam
+# valendo por conta propria:
+#   - etapa1_turnos.yml          (cron */15)  classificacao Etapa 1 (no-op se 0 pendentes)
+#   - reclassificar_validados.yml(cron */15)  reclassifica validados (M e N) -> coluna O
+#   - dashboard.yml              (cron */30)  republica os JSON do painel
+#
+# A reclassificacao dos validados ESPERA a conferencia humana: so atua em chamados com
+# M e N preenchidas e coluna O vazia, e para apos gravar O (aguardando a conferencia P).
+
+on:
+  workflow_dispatch:
+    inputs:
+      classificar:
+        description: "Disparar Etapa 1 (classificacao progressiva)"
+        type: boolean
+        default: true
+      reclassificar_validados:
+        description: "Disparar reclassificacao dos validados (-> coluna O)"
+        type: boolean
+        default: true
+      atualizar_dashboard:
+        description: "Disparar atualizacao do dashboard"
+        type: boolean
+        default: true
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  iniciar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Disparar fluxos automaticos
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ "${{ github.event.inputs.classificar }}" != "false" ]; then
+            echo "-> Etapa 1 (classificacao)"; gh workflow run etapa1_turnos.yml --repo "$REPO" || echo "falha ao disparar etapa1"
+          fi
+          if [ "${{ github.event.inputs.reclassificar_validados }}" != "false" ]; then
+            echo "-> Reclassificar validados (coluna O)"; gh workflow run reclassificar_validados.yml --repo "$REPO" -f aplicar=true -f max_turnos=1 || echo "falha ao disparar reclassificar_validados"
+          fi
+          if [ "${{ github.event.inputs.atualizar_dashboard }}" != "false" ]; then
+            echo "-> Atualizar dashboard"; gh workflow run dashboard.yml --repo "$REPO" || echo "falha ao disparar dashboard"
+          fi
+          echo "Disparos concluidos. Acompanhe em Actions."

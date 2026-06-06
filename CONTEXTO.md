@@ -1263,3 +1263,22 @@ desconhecida. Novo workflow `reclassificar_validados.yml` (cron `*/15`, `--max-t
 `--aplicar` por padrao no cron; dry-run opcional no dispatch). O script checa candidatos
 ANTES de treinar: sem validados pendentes, e no-op barato (nao treina). Gatilho adicionado
 ao `dashboard.yml` (workflow_run). Validado: py_compile + import OK.
+
+Run real confirmado (`27071737095`): `OK: 15 reclassificados na coluna O |
+acertos_robusto=8/10 | restam 56 validados pendentes` — modelo transformer
+(`Reclass_Robusto`, sem fallback), 80% de acerto nos casos com verdade derivavel.
+
+## Coluna P (CONFERENCIA IA - 2) + orquestrador (2026-06-06)
+
+`P` = **CONFERENCIA IA - 2**: conferencia humana da RECLASSIFICACAO (coluna `O`),
+`Correto`/`Errado`, igual a M e N. `planilha.ler_conferencias` agora le M (GLPI, 13),
+N (IA, 14) e P (reclass, 16) e retorna `{ia, glpi, reclass}`. `calibracao.py` publica
+`acerto_reclass_validado` (e `n_conferencia_reclass`) no bloco `validacao_humana`, e o
+painel exibe o KPI "Acerto da reclassif. (IA-2) validado". Ciclo: a IA reclassifica (`O`)
+e ENTAO aguarda a conferencia humana (`P`) — nada automatico consome `O` antes de `P`.
+
+Novo workflow `iniciar_pipeline.yml` (workflow_dispatch, `actions: write`): dispara de
+uma vez `etapa1_turnos`, `reclassificar_validados` (aplicar) e `dashboard` via
+`gh workflow run`, para "ver tudo rodando" sem esperar os crons (que seguem ativos).
+Colunas da aba principal agora: ... M=CONFERENCIA GLPI, N=CONFERENCIA IA,
+O=Classificacao IA - 2, P=CONFERENCIA IA - 2.

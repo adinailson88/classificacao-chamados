@@ -705,6 +705,7 @@ function renderMatrizValidacao(cal){
         kpi(fmt(vh.n_conferencia_ia),"Casos com conferencia IA")+
         kpi(pctn(vh.acerto_ia_validado),"Acerto da IA validado")+
         kpi(pctn(vh.acerto_glpi_validado),"Acerto do GLPI validado")+
+        kpi(N(vh.n_conferencia_reclass)?pctn(vh.acerto_reclass_validado):"-","Acerto da reclassif. (IA-2) validado")+
         kpi(m?fmt(m.ia_ok_glpi_erro):"-","IA corrige o historico")+
         kpi(m?fmt(m.ia_erro_glpi_ok):"-","IA piora o historico");
       if(knota) knota.textContent="Amostra de casos conferidos (provavelmente nao aleatoria); ainda nao e a acuracia validada da base completa.";

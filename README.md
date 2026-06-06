@@ -60,6 +60,7 @@ L  Classificado_Confianca_IA
 M  CONFERENCIA GLPI
 N  CONFERENCIA IA
 O  Classificacao IA - 2
+P  CONFERENCIA IA - 2
 ```
 
 Saida da IA: `G:J`.
@@ -94,6 +95,13 @@ Assim e possivel comparar, lado a lado, a classificacao original, o veredito hum
 reclassificacao. A escrita em `O` e opcional (flag `--gravar-coluna-2` /
 input `gravar_coluna_2`), usada com um unico modelo no escopo, e nao toca em nenhuma
 outra coluna.
+
+A reclassificacao (coluna `O`) tem sua propria conferencia humana na coluna `P`
+(**CONFERENCIA IA - 2**), que funciona como `M` e `N`: o avaliador marca se a
+reclassificacao esta `Correto`/`Errado`. Com isso, o painel mede tambem o acerto validado
+da reclassificacao (`acerto_reclass_validado` em `calibracao.json`). O ciclo fica:
+a IA reclassifica (`O`) e ENTAO aguarda a conferencia humana (`P`) — nenhum passo
+automatico consome `O` antes de `P` ser preenchida.
 
 ## Fluxo principal
 

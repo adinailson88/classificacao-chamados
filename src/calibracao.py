@@ -106,7 +106,8 @@ def calcular(sh, config: dict) -> dict:
     geral = _agrega()
     # Matriz 2x2 IA(M) x GLPI(N) sobre as linhas com AMBAS conferencias preenchidas.
     matriz = {"ia_ok_glpi_ok": 0, "ia_ok_glpi_erro": 0, "ia_erro_glpi_ok": 0, "ia_erro_glpi_erro": 0}
-    glpi = {"n": 0, "ok": 0}  # acerto validado da classificacao historica (coluna M)
+    glpi = {"n": 0, "ok": 0}      # acerto validado da classificacao historica (coluna M)
+    reclass = {"n": 0, "ok": 0}   # acerto validado da reclassificacao IA-2 (coluna P)
     # SNAPSHOT cols: 1 linha, 3 cat_original, 4 cat_ia, 5 conf, 6 executor
     for r in vals[1:]:
         if len(r) < 6:
@@ -123,11 +124,15 @@ def calcular(sh, config: dict) -> dict:
         conf_row = conferencias.get(ln, {})
         v_ia = conf_row.get("ia")
         v_glpi = conf_row.get("glpi")
+        v_reclass = conf_row.get("reclass")
         tem_val = v_ia is not None
         ok_val = int(v_ia == "Correto") if tem_val else 0
         if v_glpi is not None:
             glpi["n"] += 1
             glpi["ok"] += int(v_glpi == "Correto")
+        if v_reclass is not None:
+            reclass["n"] += 1
+            reclass["ok"] += int(v_reclass == "Correto")
         if v_ia is not None and v_glpi is not None:
             chave = ("ia_ok" if v_ia == "Correto" else "ia_erro") + \
                     ("_glpi_ok" if v_glpi == "Correto" else "_glpi_erro")
@@ -164,6 +169,8 @@ def calcular(sh, config: dict) -> dict:
             "acerto_ia_validado": round(geral["ok_val"] / geral["n_val"], 4) if geral["n_val"] else None,
             "n_conferencia_glpi": glpi["n"],
             "acerto_glpi_validado": round(glpi["ok"] / glpi["n"], 4) if glpi["n"] else None,
+            "n_conferencia_reclass": reclass["n"],
+            "acerto_reclass_validado": round(reclass["ok"] / reclass["n"], 4) if reclass["n"] else None,
             # Matriz 2x2 (apenas linhas com M e N preenchidas). ia_ok_glpi_erro = IA
             # corrige o historico; ia_erro_glpi_ok = IA piora o historico.
             "matriz_ia_x_glpi": matriz,
