@@ -191,6 +191,7 @@ docs/dados/log_turnos_reclassificacao.json
 docs/dados/metricas_experimento.json
 docs/dados/comparacao_modelos.json
 docs/dados/comparacao_categoria.json
+docs/dados/comparacao_previsoes.json    # versao sanitizada, sem ID/titulo/observacao
 docs/dados/multimodelo_turnos.json        # 7 IAs (abas Modelos / Multimodelo)
 docs/dados/multimodelo_metricas.json      # 7 IAs
 docs/dados/multimodelo_reclass_turnos.json

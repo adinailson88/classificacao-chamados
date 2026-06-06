@@ -889,3 +889,18 @@ P0.7 ja estavam implementados no painel:
 Correcao aplicada apenas em documentacao: `FALTA_FAZER.md` foi alinhado marcando P0.2,
 P0.4, P0.5, P0.6 e P0.7 como concluidos. Restou no P0 somente a evolucao opcional
 `comparacao_previsoes.json`, dependente de necessidade de auditoria linha a linha.
+
+## Atualizacao Codex - comparacao_previsoes sanitizada (2026-06-06 06:34)
+
+Nova sincronizacao: `git pull --ff-only origin main` retornou `Already up to date`.
+Sem iniciar validacao humana e sem escrever na planilha.
+
+Correcao aplicada: `src/exportar_dashboard.py` agora exporta
+`docs/dados/comparacao_previsoes.json` quando a aba `COMPARACAO_PREVISOES` existir, mas
+somente em versao sanitizada. Campos removidos do JSON publico: `id_chamado`, `titulo` e
+`observacao_avaliador`. Campos mantidos: modelo, linha da planilha, categorias original/
+prevista, score, divergencia, enviado_revisao, datas/statuses de validacao e
+`quem_estava_correto`. Se a aba nao existir ou estiver vazia, o JSON publicado fica `[]`.
+
+Tambem foi criado `docs/dados/comparacao_previsoes.json` inicial com `[]`, e `README.md`/
+`FALTA_FAZER.md` foram atualizados para fechar o P0 sem publicar texto de chamado.

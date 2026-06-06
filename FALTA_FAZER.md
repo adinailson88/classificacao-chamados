@@ -37,8 +37,8 @@ dados, fazer o painel mostrar a verdade.
 > `comparacao_categoria.json`.
 >
 > ✅ **Status 2026-06-06**: revisão estática do `docs/index.html` confirmou P0.1–P0.7
-> alinhados ao painel publicado. O que resta no P0 é apenas evolução opcional:
-> `comparacao_previsoes.json` caso a auditoria linha a linha seja necessária.
+> alinhados ao painel publicado. `comparacao_previsoes.json` agora tambem e publicado
+> em versao sanitizada, sem ID, titulo ou observacao livre.
 
 ### P0.1 Filtros (UX e correção)
 - [x] Indicar **claramente** quando um filtro está ativo (chips/lista dos ativos + contador).
@@ -68,8 +68,8 @@ dados, fazer o painel mostrar a verdade.
 - [x] Publicar `multimodelo_reclass_turnos.json` (de `MULTIMODELO_RECLASS_TURNOS`).
 - [x] Mostrar no painel a comparação por categoria/modelo consumindo
       `comparacao_categoria.json`.
-- [ ] Publicar `comparacao_previsoes.json` se a aba `COMPARACAO_PREVISOES` passar a existir
-      ou for necessária para auditoria linha a linha.
+- [x] Publicar `comparacao_previsoes.json` em versao sanitizada, removendo `id_chamado`,
+      `titulo` e `observacao_avaliador` antes de ir para o GitHub Pages.
 
 ### P0.4 Nova aba `Multimodelo` no painel
 - [x] Progresso por modelo (feitos/pendentes), concordância por modelo materializado,

@@ -39,7 +39,7 @@ ABAS = [
 # Abas multimodelo: AGREGADAS, sem texto de chamado (seguras p/ repo publico).
 # Nomes literais (config["multimodelo"]) + a aba derivada de reclassificacao.
 # NAO exportar COMPARACAO_PREVISOES nem CLASSIF__*/RECLASS__* crus: contem titulo
-# do chamado (texto). Se o painel precisar, exportar um agregado SEM texto.
+# do chamado (texto). COMPARACAO_PREVISOES sai apenas em versao sanitizada.
 def _abas_multimodelo(config):
     mm = config.get("multimodelo", {}) or {}
     if not mm:
@@ -89,6 +89,28 @@ def aba_para_objetos(sh, nome):
     return out
 
 
+def sanitizar_comparacao_previsoes(rows):
+    """Remove ID, titulo e observacao livre antes de publicar no GitHub Pages."""
+    seguros = []
+    for r in rows:
+        if not r:
+            continue
+        seguros.append({
+            "modelo": r.get("modelo", ""),
+            "linha_planilha": r.get("linha_planilha", ""),
+            "categoria_original": r.get("categoria_original", ""),
+            "categoria_prevista": r.get("categoria_prevista", ""),
+            "score": r.get("score", ""),
+            "divergencia": r.get("divergencia", ""),
+            "enviado_revisao": r.get("enviado_revisao", ""),
+            "executado_em": r.get("executado_em", ""),
+            "validacao_humana_final": r.get("validacao_humana_final", ""),
+            "quem_estava_correto": r.get("quem_estava_correto", ""),
+            "data_validacao": r.get("data_validacao", ""),
+        })
+    return seguros
+
+
 def main() -> int:
     with CONFIG_PADRAO.open(encoding="utf-8") as f:
         config = json.load(f)
@@ -111,6 +133,16 @@ def main() -> int:
             json.dumps(dados, ensure_ascii=False), encoding="utf-8")
         resumo["abas"][chave_json] = len(dados)
         print(f"{chave_json}: {len(dados)} linhas")
+
+    # COMPARACAO_PREVISOES contem id_chamado, titulo e observacao livre na planilha.
+    # O JSON publico remove esses campos e preserva apenas categorias/statuses.
+    dados_prev = sanitizar_comparacao_previsoes(
+        aba_para_objetos(sh, abas_cfg.get("comparacao_previsoes")) if abas_cfg.get("comparacao_previsoes") else []
+    )
+    (SAIDA / "comparacao_previsoes.json").write_text(
+        json.dumps(dados_prev, ensure_ascii=False), encoding="utf-8")
+    resumo["abas"]["comparacao_previsoes"] = len(dados_prev)
+    print(f"comparacao_previsoes: {len(dados_prev)} linhas (sanitizado)")
 
     # Abas multimodelo (nome literal). Exporta [] quando ainda nao materializado.
     for chave_json, nome_aba in _abas_multimodelo(config):
