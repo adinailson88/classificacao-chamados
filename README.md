@@ -142,6 +142,8 @@ python src/classificacao_multimodelo.py --modelos leves --max-turnos 1
 python src/reclassificacao_multimodelo.py --modelos leves --max-turnos 1
 ```
 
+Para gravar resultados na planilha, acrescente `--aplicar` somente depois de revisar o dry-run.
+
 Preparacao da validacao humana:
 
 ```bash
@@ -167,6 +169,8 @@ python src/resetar_experimento.py --aplicar --confirmar RESETAR
 7. `classificacao_incremental.yml`: fluxo incremental antigo, mantido manual.
 8. `multimodelo_classificacao.yml`: classificacao por modelo em `CLASSIF__<modelo>`, manual, dry-run por padrao.
 9. `multimodelo_reclassificacao.yml`: reclassificacao por modelo em `RECLASS__<modelo>`, manual, dry-run por padrao.
+
+Nos workflows manuais com input `aplicar`, mantenha `false` ate revisar logs, ganho liquido e impacto esperado.
 
 ## Dashboard publico
 

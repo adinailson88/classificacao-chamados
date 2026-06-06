@@ -782,3 +782,14 @@ Correcao aplicada: o passo `Commit estatistica` agora faz `git diff --cached --q
 sem mudancas, commita quando necessario e tenta `git pull --rebase --autostash origin main &&
 git push` ate 5 vezes. Nao altera planilha nem dashboard; apenas reduz falhas de publicacao de
 dados estatisticos.
+
+## Atualizacao Codex - comandos seguros por padrao (2026-06-06 03:34)
+
+Revisao dos documentos encontrou exemplos antigos em `FALTA_FAZER.md` usando
+`-f aplicar=true` para `multimodelo_classificacao.yml` e `multimodelo_reclassificacao.yml`.
+Isso conflita com a decisao atual de manter reclassificacao/aplicacao em dry-run ate revisar
+calibracao e ganho liquido.
+
+Correcao aplicada: exemplos de comandos agora rodam sem `aplicar=true`; a gravacao manual fica
+descrita como passo posterior a revisao do dry-run. `README.md` tambem reforca que `--aplicar`
+ou input `aplicar=true` so deve ser usado apos revisar logs e impacto esperado.

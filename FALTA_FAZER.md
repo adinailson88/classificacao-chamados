@@ -167,9 +167,11 @@ python -m py_compile src/exportar_dashboard.py src/classificacao_multimodelo.py 
 # painel local
 python -m http.server 8000 -d docs        # abre docs/index.html
 
-# multimodelo (após pausar o cron da Etapa 1)
-gh workflow run multimodelo_classificacao.yml   --repo adinailson88/classificacao-chamados -f modelos=leves -f aplicar=true
-gh workflow run multimodelo_reclassificacao.yml --repo adinailson88/classificacao-chamados -f modelos=leves -f aplicar=true
+# multimodelo em dry-run (padrao seguro; nao grava)
+gh workflow run multimodelo_classificacao.yml   --repo adinailson88/classificacao-chamados -f modelos=leves
+gh workflow run multimodelo_reclassificacao.yml --repo adinailson88/classificacao-chamados -f modelos=leves
+
+# gravacao manual: usar -f aplicar=true so depois de revisar o dry-run
 
 # dashboard
 gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
@@ -231,6 +233,12 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - [x] Adicionado input `aplicar` com default `false`.
 - [x] O workflow executa `src/executar_etapa2.py` sem `--aplicar` por padrao; so grava
   quando `aplicar=true` for escolhido manualmente.
+
+## Atualizacao Codex - comandos seguros por padrao (2026-06-06 03:34)
+
+- [x] Exemplos de `multimodelo_classificacao.yml` e `multimodelo_reclassificacao.yml`
+  em `FALTA_FAZER.md` foram alterados para dry-run.
+- [x] `aplicar=true` ficou documentado apenas como acao manual posterior a revisao do dry-run.
 
 ## Atualizacao Codex - calibracao escalar ajustada (2026-06-06 02:35)
 
