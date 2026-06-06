@@ -9,7 +9,8 @@
 ## Estado atual (resumo)
 - **Etapa 1 (LSTM single-model)** na aba `Classificacao`: base elegível de **13.825**
   chamados, classificação progressiva em turnos de 15 concluída (0 pendentes),
-  54 categorias, `validados=0`, `ece_historico≈0.0399`. Fonte do painel: `registros.json`.
+  54 categorias, `validados=0`, `ece_historico=0.0379` no `resumo.json` gerado em
+  06/06/2026 07:06. Fonte do painel: `registros.json`.
 - **Multimodelo materializado** — as **7 IAs completas**, 13.825 chamados por modelo,
   0 pendentes, predição **out-of-fold** (`kfold_5`). Concordância vs categoria histórica:
   `linear_svc` 80,26% > `extra_trees` 78,47% > `sgd` 77,51% > `random_forest` 76,80% >

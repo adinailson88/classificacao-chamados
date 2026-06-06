@@ -962,3 +962,19 @@ Nova verificacao local sem iniciar validacao humana: `docs/dados/estatistica.jso
 `Estatistica`. Portanto, `FALTA_FAZER.md` foi ajustado para marcar Kappa de Fleiss entre
 as IAs como concluido e deixar aberto apenas o refinamento das figuras ABNT quando houver
 validacao humana.
+
+## Atualizacao Codex - sincronizacao do dashboard agendado (2026-06-06 07:14)
+
+Nova sincronizacao: `git pull --ff-only origin main` avancou de `c673fbb` para `9d26a00`,
+commit automatico `dados do dashboard [skip ci]` gerado pelo workflow agendado
+`dashboard.yml` run `27059398325` (sucesso). O Pages correspondente, run `27059410945`,
+tambem concluiu com sucesso.
+
+Validacao local dos JSONs publicados: `python -m json.tool` OK para
+`docs/dados/resumo.json`, `docs/dados/calibracao_modelos.json` e
+`docs/dados/calibracao_ajustada_modelos.json`. `resumo.json` registra
+`gerado_em=06/06/2026 07:06`, `registros=13825`, `validados=0`,
+`ece_historico=0,0379`, 7 modelos com 13.825 registros cada e
+`comparacao_previsoes=7000`. `FALTA_FAZER.md` foi alinhado para trocar o ECE antigo
+aproximado (`0,0399`) pelo valor atual do JSON (`0,0379`). Sem iniciar validacao humana e
+sem escrever na planilha.
