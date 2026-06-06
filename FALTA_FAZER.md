@@ -31,9 +31,10 @@ O painel não está refletindo o que o experimento já produz. Antes de processa
 dados, fazer o painel mostrar a verdade.
 
 > ✅ **Status 2026-06-05**: P0.1–P0.7 implementados e publicados (commit `e8df9b2`;
-> dashboard run `27025224132` OK). `comparacao_categoria.json` (819) e
-> `multimodelo_*` já populados. **Resta**: P0.3-extra (UI de comparação por
-> categoria/modelo consumindo `comparacao_categoria.json`, ainda sem tabela no painel).
+> dashboard run `27025224132` OK). `comparacao_categoria.json` (3.114 no resumo atual) e
+> `multimodelo_*` já populados. P0.3-extra também foi concluído em 2026-06-06:
+> a aba `Categorias` agora tem tabela de comparação por categoria/modelo consumindo
+> `comparacao_categoria.json`.
 
 ### P0.1 Filtros (UX e correção)
 - [ ] Indicar **claramente** quando um filtro está ativo (chips/lista dos ativos + contador).
@@ -58,12 +59,14 @@ dados, fazer o painel mostrar a verdade.
   - [ ] **tabela com todos os recortes**.
 
 ### P0.3 Exportar mais JSONs (`src/exportar_dashboard.py`)
-- [ ] Publicar (exportar `[]` se a aba não existir/estiver vazia):
-  - [ ] `comparacao_categoria.json`  (de `COMPARACAO_CATEGORIA`)
-  - [ ] `comparacao_previsoes.json`  (de `COMPARACAO_PREVISOES`)
-  - [ ] `multimodelo_turnos.json`    (de `MULTIMODELO_TURNOS`)
-  - [ ] `multimodelo_metricas.json`  (de `MULTIMODELO_METRICAS`)
-  - [ ] `multimodelo_reclass_turnos.json` (de `MULTIMODELO_RECLASS_TURNOS`)
+- [x] Publicar `comparacao_categoria.json` (de `COMPARACAO_CATEGORIA`).
+- [x] Publicar `multimodelo_turnos.json` (de `MULTIMODELO_TURNOS`).
+- [x] Publicar `multimodelo_metricas.json` (de `MULTIMODELO_METRICAS`).
+- [x] Publicar `multimodelo_reclass_turnos.json` (de `MULTIMODELO_RECLASS_TURNOS`).
+- [x] Mostrar no painel a comparação por categoria/modelo consumindo
+      `comparacao_categoria.json`.
+- [ ] Publicar `comparacao_previsoes.json` se a aba `COMPARACAO_PREVISOES` passar a existir
+      ou for necessária para auditoria linha a linha.
 
 ### P0.4 Nova aba `Multimodelo` no painel
 - [ ] Progresso por modelo (feitos/pendentes), concordância por modelo materializado,

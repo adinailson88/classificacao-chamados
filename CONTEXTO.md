@@ -830,3 +830,21 @@ dry-run ate revisao.
 
 Publicacao: commit `75803b6` enviado ao `main`; Pages build `27057244923` concluido com
 sucesso para `headSha=75803b60b8cbd6f9171dbfb5029c489773a5dd52`.
+
+## Atualizacao Codex - comparacao categoria/modelo no painel (2026-06-06 05:34)
+
+Nova sincronizacao: `git pull --ff-only origin main` retornou `Already up to date`.
+Sem iniciar validacao humana e sem executar reclassificacao aplicada.
+
+Correcao aplicada: a aba `Categorias` do `docs/index.html` agora consome
+`docs/dados/comparacao_categoria.json` e mostra uma tabela "Comparacao por categoria e
+modelo". Como o JSON vem em janelas held-out, o painel agrega `precision`, `recall` e `f1`
+por `modelo + categoria` ponderando pelo `suporte`, com filtro textual por categoria ou
+modelo. Isso fecha a pendencia P0.3-extra, que antes dizia que o JSON existia mas ainda nao
+aparecia no dashboard.
+
+`FALTA_FAZER.md` foi atualizado para marcar `comparacao_categoria.json`,
+`multimodelo_turnos.json`, `multimodelo_metricas.json`,
+`multimodelo_reclass_turnos.json` e a UI categoria/modelo como concluidos. Mantida como
+pendencia apenas `comparacao_previsoes.json`, pois depende de a aba `COMPARACAO_PREVISOES`
+existir ou ser necessaria para auditoria linha a linha.

@@ -167,6 +167,14 @@
         <h2>Menor concordancia</h2>
         <div class="tablebox"><table id="tabBaixaConc"><thead><tr><th>Categoria</th><th>Qtd</th><th>Concordancia</th></tr></thead><tbody></tbody></table></div>
       </div>
+      <div class="card full">
+        <h2>Comparacao por categoria e modelo</h2>
+        <p class="muted">Agrega as janelas held-out de <code>comparacao_categoria.json</code> por suporte. Mostra desempenho contra a categoria historica, nao validacao humana.</p>
+        <input type="text" id="filtroCompCat" placeholder="Filtrar categoria ou modelo">
+        <div class="tablebox"><table id="tabCompCat"><thead><tr>
+          <th>Categoria</th><th>Modelo</th><th>Suporte</th><th>Precision</th><th>Recall</th><th>F1</th><th>Janelas</th>
+        </tr></thead><tbody></tbody></table></div>
+      </div>
     </div>
   </section>
 
@@ -458,7 +466,7 @@ function fmtData(v){
 const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
 
-let CAT=[], MET=[], TURNOS=[], RESUMO={}, sortK="qtd_classificados", sortDir=-1, charts={};
+let CAT=[], MET=[], TURNOS=[], RESUMO={}, COMP_CAT=[], sortK="qtd_classificados", sortDir=-1, charts={};
 let MODELOS_ROWS=[];
 function kpi(v,l){ return `<div class="kpi"><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div></div>`; }
 function metric(k){ const m=(MET||[]).find(x=>x.metrica===k); return m ? m.valor : ""; }
@@ -621,6 +629,30 @@ function renderCat(){
   document.querySelector("#tabCat tbody").innerHTML = rows.map(rowCat).join("");
   document.querySelector("#tabTopVolume tbody").innerHTML = [...CAT].sort((a,b)=>N(b.qtd_classificados)-N(a.qtd_classificados)).slice(0,10).map(c=>`<tr><td>${esc(c.categoria)}</td><td>${fmt(c.qtd_classificados)}</td><td>${pct(c.taxa_concordancia)}</td></tr>`).join("");
   document.querySelector("#tabBaixaConc tbody").innerHTML = [...CAT].filter(c=>N(c.qtd_classificados)>=15).sort((a,b)=>N(a.taxa_concordancia)-N(b.taxa_concordancia)).slice(0,10).map(c=>`<tr><td>${esc(c.categoria)}</td><td>${fmt(c.qtd_classificados)}</td><td class="${N(c.taxa_concordancia)<0.7?"status-bad":"status-mid"}">${pct(c.taxa_concordancia)}</td></tr>`).join("");
+}
+function agruparCompCategoria(rows){
+  const m={};
+  (Array.isArray(rows)?rows:[]).forEach(r=>{
+    const modelo=String(r.modelo||"").trim(), categoria=String(r.categoria||"").trim();
+    if(!modelo || !categoria) return;
+    const suporte=N(r.suporte);
+    const peso=suporte>0 ? suporte : 1;
+    const k=modelo+"\u0001"+categoria;
+    const d=m[k]||(m[k]={modelo,categoria,suporte:0,_p:0,_r:0,_f1:0,janelas:0});
+    d.suporte+=suporte; d._p+=N(r.precision)*peso; d._r+=N(r.recall)*peso; d._f1+=N(r.f1)*peso; d.janelas++;
+  });
+  return Object.values(m).map(d=>{
+    const peso=d.suporte>0 ? d.suporte : d.janelas;
+    return {modelo:d.modelo,categoria:d.categoria,suporte:d.suporte,precision:peso?d._p/peso:0,recall:peso?d._r/peso:0,f1:peso?d._f1/peso:0,janelas:d.janelas};
+  }).sort((a,b)=>N(b.suporte)-N(a.suporte) || N(b.f1)-N(a.f1) || String(a.categoria).localeCompare(String(b.categoria)));
+}
+function renderCompCategoria(){
+  const tb=document.querySelector("#tabCompCat tbody");
+  if(!tb) return;
+  const f=String(document.getElementById("filtroCompCat")?.value||"").toLowerCase();
+  const rows=COMP_CAT.filter(r=>(r.categoria+" "+r.modelo).toLowerCase().includes(f)).slice(0,250);
+  tb.innerHTML = rows.length ? rows.map(r=>`<tr><td>${esc(r.categoria)}</td><td>${esc(r.modelo)}</td><td>${fmt(r.suporte)}</td><td>${pct(r.precision)}</td><td>${pct(r.recall)}</td><td class="${N(r.f1)>=0.8?'status-ok':N(r.f1)>=0.6?'status-mid':'status-bad'}">${pct(r.f1)}</td><td>${fmt(r.janelas)}</td></tr>`).join("")
+    : `<tr><td colspan="7">Sem comparacao por categoria/modelo publicada.</td></tr>`;
 }
 
 function renderMetrics(resumo, turnos, reg=null){
@@ -883,22 +915,24 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   ajustarFiltros(b.dataset.t);
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
+document.getElementById("filtroCompCat").addEventListener("input",renderCompCategoria);
 document.getElementById("selMetricaModelo").addEventListener("change",renderModelosLote);
 document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = (sortK===k)? -sortDir : -1; sortK=k; renderCat(); });
 document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,calModels,calAjustada,mod,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,calModels,calAjustada,mod,compCat,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("calibracao_modelos.json"), getJSON("calibracao_ajustada_modelos.json"), getJSON("comparacao_modelos.json"),
-    getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
+    getJSON("comparacao_categoria.json"), getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
     getJSON("estatistica.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
   TURNOS = Array.isArray(turnos) ? turnos : [];
+  COMP_CAT = agruparCompCategoria(compCat);
   RESUMO = resumo || {};
   document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
   REG = Array.isArray(registros) ? registros : [];
@@ -908,6 +942,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
+  renderCompCategoria();
   renderCalibracao(cal);
   renderCalibracaoModelos(calModels);
   renderCalibracaoAjustada(calAjustada);
