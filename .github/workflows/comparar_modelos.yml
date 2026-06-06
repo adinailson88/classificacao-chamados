@@ -26,6 +26,9 @@ on:
       limite:
         description: "Tamanho do lote (0 = todos)"
         default: "200"
+      passo:
+        description: "Se >0, ladrilha TODA a base nesse passo e substitui a tabela (cobertura completa)"
+        default: "0"
 
 concurrency:
   group: escrita-planilha
@@ -64,6 +67,7 @@ jobs:
           --modelo "${{ github.event.inputs.modelo || 'todos' }}"
           --inicio "${{ github.event.inputs.inicio || '0' }}"
           --limite "${{ github.event.inputs.limite || '200' }}"
+          --passo "${{ github.event.inputs.passo || '0' }}"
           --aplicar
       - name: Remover credenciais
         if: always()

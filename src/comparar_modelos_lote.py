@@ -109,6 +109,9 @@ def parse_args():
                    help="um do zoo, ou 'todos'.")
     p.add_argument("--inicio", type=int, default=0)
     p.add_argument("--limite", type=int, default=200)
+    p.add_argument("--passo", type=int, default=0,
+                   help="Se >0, ladrilha TODA a base em janelas desse tamanho e SUBSTITUI "
+                        "COMPARACAO_MODELOS/_CATEGORIA (cobertura completa, nao so 0-1000).")
     p.add_argument("--executar-todos", action="store_true")
     p.add_argument("--aplicar", action="store_true")
     return p.parse_args()
@@ -135,6 +138,50 @@ def main() -> int:
         print(str(e), file=sys.stderr); return 2
     except Exception as e:  # noqa: BLE001
         print(f"Falha ao acessar a planilha: {type(e).__name__}: {e}", file=sys.stderr); return 1
+
+    # --- Modo TILING: cobre TODA a base em janelas de tamanho --passo e SUBSTITUI
+    # a tabela de recortes (em vez de parar em 0-1000). Held-out por janela: cada
+    # modelo treina em tudo menos a janela avaliada. Nao grava COMPARACAO_PREVISOES
+    # (seriam ~13.825 x N modelos linhas) — so as metricas por (modelo, lote).
+    if args.passo and args.passo > 0:
+        passo = args.passo
+        n_elig = len(elig)
+        janelas = [(i, min(i + passo, n_elig)) for i in range(0, n_elig, passo)]
+        print(f"TILING: elegiveis={n_elig} | passo={passo} | janelas={len(janelas)} | modelos={modelos}")
+        linhas_m, linhas_c = [], []
+        for ini, fim in janelas:
+            teste = elig[ini:fim]
+            linhas_teste = {e["linha"] for e in teste}
+            treino = [e for e in elig if e["linha"] not in linhas_teste]
+            if len(teste) < 2 or len(treino) < 2:
+                continue
+            for nome in modelos:
+                try:
+                    met, por_cat, _ = avaliar_modelo(nome, treino, teste, limiar)
+                except Exception as e:  # noqa: BLE001
+                    print(f"[{nome} {ini}-{fim}] falhou: {type(e).__name__}: {e}", file=sys.stderr)
+                    continue
+                linhas_m.append([met["modelo"], ini, fim, met["n"], met["acuracia"],
+                                 met["f1_macro"], met["f1_weighted"], met["balanced_accuracy"],
+                                 met["n_revisao"],
+                                 met["acerto_baixa_conf"] if met["acerto_baixa_conf"] is not None else "",
+                                 met["tempo_treino_s"], met["tempo_inferencia_s"], gerado])
+                for c in por_cat:
+                    linhas_c.append([met["modelo"], ini, fim, c["categoria"], c["precision"],
+                                     c["recall"], c["f1"], c["suporte"], gerado])
+            print(f"  janela {ini}-{fim}: {len(teste)} testados | acumulado={len(linhas_m)} linhas")
+        if not args.aplicar:
+            print(f"modo=dry-run (nada gravado). recortes={len(linhas_m)} | categorias={len(linhas_c)}")
+            return 0
+        cab_m = ["modelo", "inicio", "limite", "n_registros", "acuracia", "f1_macro",
+                 "f1_weighted", "balanced_accuracy", "n_revisao", "acerto_baixa_conf",
+                 "tempo_treino_s", "tempo_inferencia_s", "executado_em"]
+        pl.escrever_aba(sh, abas["comparacao_modelos"], cab_m, linhas_m, colunas_percentuais=[5, 6, 7, 8, 10])
+        cab_c = ["modelo", "inicio", "limite", "categoria", "precision", "recall", "f1", "suporte", "executado_em"]
+        pl.escrever_aba(sh, abas["comparacao_categoria"], cab_c, linhas_c, colunas_percentuais=[5, 6, 7])
+        print(f"OK (tiling): COMPARACAO_MODELOS={len(linhas_m)} | COMPARACAO_CATEGORIA={len(linhas_c)} "
+              f"| janelas={len(janelas)} cobrindo 0-{n_elig}")
+        return 0
 
     fim = args.inicio + args.limite if args.limite > 0 else len(elig)
     teste = elig[args.inicio:fim]
