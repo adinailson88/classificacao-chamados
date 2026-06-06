@@ -1,5 +1,5 @@
 {
-  "gerado_em": "05/06/2026 14:06",
+  "gerado_em": "06/06/2026 00:22",
   "n_linhas_comuns": 13825,
   "modelos": [
     "naive_bayes",
@@ -11,7 +11,7 @@
     "lstm"
   ],
   "alpha": 0.05,
-  "observacao": "Acerto = IA x categoria historica (preliminar; a validacao humana qualifica). Sem texto de chamado.",
+  "observacao": "Acerto = IA x categoria historica (preliminar; a validacao humana qualifica). Sem texto de chamado. Normalidade rejeitada (Shapiro) nos modelos avaliados: a analise assume pressupostos NAO parametricos (Spearman, Friedman/Nemenyi, Cochran Q, McNemar, bootstrap). Resultados sao contra o historico, nao contra validacao humana.",
   "correlacao_conf_acerto": [
     {
       "modelo": "naive_bayes",
@@ -186,6 +186,23 @@
       "tendencia": "sobe"
     }
   ],
+  "pressupostos": {
+    "normalidade_testada": "Shapiro-Wilk sobre a concordancia por turno",
+    "modelos_avaliados": 7,
+    "modelos_normais_5pct": 0,
+    "modelos_normalidade_rejeitada": 7,
+    "normalidade_rejeitada": true,
+    "assume": "nao_parametrico",
+    "metodos_nao_parametricos": [
+      "Spearman",
+      "Friedman/Nemenyi",
+      "Cochran Q",
+      "McNemar",
+      "bootstrap"
+    ],
+    "base_de_comparacao": "categoria historica (nao validacao humana)",
+    "nota": "Normalidade rejeitada nos modelos avaliados; a analise NAO usa pressuposto parametrico como criterio principal. Resultados sao contra o historico."
+  },
   "acuracia_bootstrap": [
     {
       "modelo": "linear_svc",
