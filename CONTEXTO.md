@@ -610,3 +610,38 @@ saida BRUTA (decision_function/softmax). Isso reforca o `PLANO_CALIBRACAO.md`: s
 **calibrada**, o filtro de baixa confianca da reclassificacao perde sentido. Proximo passo
 tecnico recomendado: calibrar por modelo (comecar por linear_svc) antes de qualquer Etapa 2
 em massa; validacao humana segue pausada.
+
+## Feedback do usuario — UI, seletor de modelo, tiling e robusto (2026-06-06 ~03:40-04:15)
+
+Pedidos do usuario atendidos nesta rodada:
+
+- **Seletor de Modelo na aba Classificacao**: novo `<select>` troca a aba para as predicoes
+  de UMA IA por vez (out-of-fold), 13.825 linhas, nunca os 7 somados. `exportar_dashboard.py`
+  passou a exportar `registros_<modelo>.json` (sem texto/ID) das abas `CLASSIF__<modelo>`;
+  `resumo.registros_modelos` lista os 7. Dados reais conferidos (linear_svc 80,26%, lstm
+  67,57% etc.). **Por que so havia LSTM antes**: a aba Classificacao e a Etapa 1/LSTM oficial
+  (RF_Fallback so dispara se o LSTM falhar, o que nunca ocorreu).
+- **Grafico "Evolucao da concordancia por turno" acompanha o modelo** escolhido (usa
+  `multimodelo_turnos` filtrado por modelo; Etapa 1 usa `log_turnos_classificacao`).
+- **Recortes 0-1000 -> base completa**: `comparar_modelos_lote.py` ganhou modo `--passo`
+  (tiling held-out que SUBSTITUI `COMPARACAO_MODELOS`/`_CATEGORIA` via `escrever_aba`).
+  Rodado com passo=1000 (run `27051714113`): `COMPARACAO_MODELOS=84` (14 janelas x 6 leves,
+  0-13825). LSTM fica de fora do tiling por custo (segue na visao out-of-fold). Nao grava
+  `COMPARACAO_PREVISOES` no tiling. A gravacao so ocorre no fim (falha no meio = tabela
+  antiga intacta).
+- **Modelo robusto RELIGADO**: `reclassificacao_robusta.yml` voltou ao schedule (cron
+  `0 */6`), agora que a Etapa 1 concluiu. Aplica reclassificacao (poucos chamados por vez).
+- **UI**: cor secundaria verde -> AZUL (`--teal #1d4ed8`, `--green #2563eb`); removida a nota
+  "fonte: Etapa 1/LSTM"; removidas as referencias a Malha IA (eyebrow e docs); tabela de
+  modelos compacta sem scroll horizontal.
+- **Estatistica**: parou de dizer "normal? sim/nao"; afirma uso SO de testes nao-parametricos
+  + **histograma de normalidade** (concordancia por turno) na aba Estatistica.
+- **Documentacao rica**: aba Documentacao com TF-IDF + 1 card por modelo (equacao, analogia
+  em celulas de Excel, referencias bibliograficas).
+- **Workflows**: actions bumpadas para `checkout@v6`/`setup-python@v6` (fim do Node 20);
+  `dashboard.yml` com push resiliente (`pull --rebase --autostash` + retry) — antes falhava
+  por corrida de push (run `27052207833`).
+
+Commits: a9b1ede, bd73e45, e10941e, a562cf3, d911611/b5eaed2, ca8dceb. Painel verificado no
+preview (troca de modelo, normalidade, docs sem overflow, cor azul) e no `main` via raw.
+Pendencias inalteradas: validacao humana pausada; calibracao por modelo e o proximo passo.
