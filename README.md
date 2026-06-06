@@ -198,6 +198,7 @@ python src/resetar_experimento.py --aplicar --confirmar RESETAR
 7. `classificacao_incremental.yml`: fluxo incremental antigo, mantido manual.
 8. `multimodelo_classificacao.yml`: classificacao por modelo em `CLASSIF__<modelo>`, manual, dry-run por padrao.
 9. `multimodelo_reclassificacao.yml`: reclassificacao por modelo em `RECLASS__<modelo>`, manual, dry-run por padrao.
+10. `reclassificar_validados.yml`: reclassifica AUTOMATICAMENTE os chamados ja validados (colunas `M` e `N` preenchidas) com o modelo robusto, gravando o resultado na coluna `O` (Classificacao IA - 2). Cron a cada 15 min, no maximo 15 chamados por execucao; so treina quando ha validados pendentes.
 
 Nos workflows manuais com input `aplicar`, mantenha `false` ate revisar logs, ganho liquido e impacto esperado.
 

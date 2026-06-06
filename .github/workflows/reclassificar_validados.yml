@@ -1,0 +1,66 @@
+name: Reclassificar validados (M e N) -> coluna O
+
+# Reclassifica AUTOMATICAMENTE os chamados ja validados pela conferencia dupla
+# (coluna M = CONFERENCIA GLPI e coluna N = CONFERENCIA IA preenchidas) e ainda sem
+# reclassificacao (coluna O vazia). Usa o modelo MAIS ROBUSTO (transformer + memoria
+# validada; fallback LSTM/RF) e grava o resultado na coluna O, sem tocar em G/M/N.
+#
+# Cadencia: a cada 15 min, no MAXIMO 15 chamados por execucao (1 turno). O script so
+# treina o modelo quando ha chamados validados pendentes; sem candidatos, e no-op barato.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      max_turnos:
+        description: "Turnos de 15 por execucao"
+        default: "1"
+      aplicar:
+        description: "Gravar na coluna O (false = dry-run)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  reclassificar-validados:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: |
+            requirements-leves.txt
+            requirements-robusto.txt
+      - name: Instalar dependencias leves
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Instalar modelo robusto (transformer)
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-robusto.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Reclassificar validados (robusto -> coluna O)
+        run: |
+          MT="${{ github.event.inputs.max_turnos }}"; MT="${MT:-1}"
+          if [ "${{ github.event.inputs.aplicar }}" = "false" ]; then
+            python src/reclassificar_validados.py --modelo robusto --max-turnos "$MT"
+          else
+            python src/reclassificar_validados.py --modelo robusto --max-turnos "$MT" --aplicar
+          fi
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json

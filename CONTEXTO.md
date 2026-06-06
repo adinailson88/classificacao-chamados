@@ -1246,3 +1246,20 @@ colunas) + `planilha.indice_coluna_por_cabecalho` (acha `O` pelo cabecalho, fall
 `--aplicar` e UM unico modelo no escopo, ex.: `pesados=lstm`) e o input `gravar_coluna_2` no
 workflow. A escrita em `O` tem retry para erro transitorio. O usuario criara a coluna `O`
 com o cabecalho "Classificacao IA - 2".
+
+## Reclassificacao AUTOMATICA dos validados (M e N) -> coluna O (2026-06-06)
+
+A pedido do usuario: todo chamado ja validado (conferencia dupla `M`=GLPI e `N`=IA
+preenchidas) e ainda sem reclassificacao (coluna `O` vazia) deve ser reclassificado
+automaticamente, com o modelo MAIS ROBUSTO, gravando em `O`, no maximo 15 por vez a
+cada 15 min.
+
+Implementacao: novo script `src/reclassificar_validados.py` (modelo robusto = transformer
++ memoria validada, fallback LSTM/RF; treina na base historica MENOS o lote; grava `O` via
+`escrever_coluna_por_linha`, sem tocar em G/M/N; auditoria por chamado na aba
+`RECLASS_VALIDADOS`). Mede o acerto da reclassificacao quando a verdade e derivavel:
+`N=Correto` -> verdade=G; senao `M=Correto` -> verdade=C; ambas `Errado` -> verdade
+desconhecida. Novo workflow `reclassificar_validados.yml` (cron `*/15`, `--max-turnos 1`,
+`--aplicar` por padrao no cron; dry-run opcional no dispatch). O script checa candidatos
+ANTES de treinar: sem validados pendentes, e no-op barato (nao treina). Gatilho adicionado
+ao `dashboard.yml` (workflow_run). Validado: py_compile + import OK.
