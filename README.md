@@ -59,6 +59,7 @@ K  Comparacao
 L  Classificado_Confianca_IA
 M  CONFERENCIA IA
 N  CONFERENCIA GLPI
+O  Classificacao IA - 2
 ```
 
 Saida da IA: `G:J`.
@@ -81,6 +82,18 @@ A combinacao das duas colunas forma uma matriz 2x2 (IA `Correto`/`Errado` x GLPI
 historico erra (a IA corrige o GLPI) dos casos opostos. Convencao de leitura no codigo:
 o valor `Correto` (sem distincao de caixa) indica acerto; qualquer outro valor nao vazio
 e tratado como `Errado`. A leitura dessas colunas e read-only e nao sobrescreve a planilha.
+
+### Coluna O (`Classificacao IA - 2`): resultado da reclassificacao
+
+A `CONFERENCIA IA` (coluna `M`) refere-se a classificacao ORIGINAL da IA (coluna `G`,
+Etapa 1). Quando um chamado e reclassificado (Etapa 2), gravar o novo resultado de volta
+em `G` apagaria o registro original e tornaria a conferencia `M` ambigua (o avaliador
+disse "Errado" sobre `G`, nao sobre a reclassificacao). Por isso a reclassificacao e
+gravada numa coluna propria, `O` (**Classificacao IA - 2**), preservando `G`, `M` e `N`.
+Assim e possivel comparar, lado a lado, a classificacao original, o veredito humano e a
+reclassificacao. A escrita em `O` e opcional (flag `--gravar-coluna-2` /
+input `gravar_coluna_2`), usada com um unico modelo no escopo, e nao toca em nenhuma
+outra coluna.
 
 ## Fluxo principal
 

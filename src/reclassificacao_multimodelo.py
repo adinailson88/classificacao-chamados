@@ -233,6 +233,28 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     _append_resiliente(sh, mm["aba_turnos"].replace("TURNOS", "RECLASS_TURNOS"), cab_t, turnos,
                        colunas_percentuais=[7, 8])
 
+    # Grava a reclassificacao na coluna "Classificacao IA - 2" (O) da aba principal,
+    # SEM tocar em G (classificacao original), M/N (conferencias). Assim a conferencia
+    # da IA continua valida para G, e a reclassificacao fica num campo proprio.
+    if getattr(args, "col2_ativa", False):
+        try:
+            ws_main = sh.worksheet(config["aba_principal"])
+            col_o = pl.indice_coluna_por_cabecalho(ws_main, "Classificacao IA - 2", 15)
+            mapa = {int(r["linha"]): r["cat_2"] for r in registros}
+            for tentativa in range(1, 4):
+                try:
+                    pl.escrever_coluna_por_linha(ws_main, col_o, mapa)
+                    break
+                except Exception as e:  # noqa: BLE001
+                    if tentativa >= 3:
+                        raise
+                    print(f"[{modelo}] coluna 2: falha transitoria ({type(e).__name__}); retry {tentativa}/3 em {10*tentativa}s",
+                          file=sys.stderr)
+                    time.sleep(10 * tentativa)
+            print(f"[{modelo}] gravou {len(mapa)} reclassificacoes na coluna {col_o} (Classificacao IA - 2).")
+        except Exception as e:  # noqa: BLE001
+            print(f"[{modelo}] FALHA ao gravar coluna 2: {type(e).__name__}: {e}", file=sys.stderr)
+
     return {"modelo": modelo, "reclassificados": len(registros), "ganho_liquido": ganho,
             "corrigidos": corr, "prejudicados": prej, "metodo": metodo}
 
@@ -248,6 +270,10 @@ def parse_args():
     p.add_argument("--usar-calibrado", action="store_true",
                    help="Seleciona candidatos pela confianca CALIBRADA (calibracao_ajustada_modelos.json) "
                         "em vez da bruta. Reduz candidatos espurios em modelos mal calibrados.")
+    p.add_argument("--gravar-coluna-2", action="store_true",
+                   help="Grava a reclassificacao na coluna 'Classificacao IA - 2' (O) da aba principal, "
+                        "sem tocar em G/M/N. Use com UM unico modelo no escopo (ex.: pesados=lstm). "
+                        "So tem efeito junto com --aplicar.")
     return p.parse_args()
 
 
@@ -261,6 +287,13 @@ def main() -> int:
     cap = 0 if args.max_turnos <= 0 else args.max_turnos * tam
     modelos = clf.resolver_modelos(config, args.modelos)
     gerado = agora_bahia()
+
+    # Gravacao na coluna "Classificacao IA - 2" (O) so faz sentido com 1 modelo no
+    # escopo (a coluna e unica). Com varios, desativa para nao misturar modelos.
+    args.col2_ativa = bool(args.gravar_coluna_2 and args.aplicar and len(modelos) == 1)
+    if args.gravar_coluna_2 and not args.col2_ativa:
+        print("[aviso] --gravar-coluna-2 ignorado: requer --aplicar e exatamente 1 modelo no escopo.",
+              file=sys.stderr)
 
     try:
         sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)

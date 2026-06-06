@@ -1230,3 +1230,17 @@ Impacto medido nos mapas: `linear_svc` mapeia bruta 0,30 -> calibrada ~0,99 (sua
 bruta era enganosa; calibrado, quase nada vira "baixa confianca"); `lstm` fica perto da
 diagonal (0,90->0,86), o que explica o ganho marginal da reclassificacao lstm. Ou seja:
 a flag tende a evitar reclassificacao espuria sobretudo nos modelos lineares.
+
+## Coluna O (Classificacao IA - 2): reclassificacao em campo proprio (2026-06-06)
+
+Dilema levantado pelo usuario: a conferencia `M` (CONFERENCIA IA) avalia a classificacao
+ORIGINAL (coluna `G`). Se a reclassificacao corrigisse `G`, o `M="Errado"` ficaria
+ambiguo/confuso. Solucao: a reclassificacao passa a ser gravada na coluna **`O`
+("Classificacao IA - 2")** da aba principal, preservando `G`, `M` e `N`.
+
+Implementacao: `planilha.escrever_coluna_por_linha` (batch, 1 chamada, nao toca outras
+colunas) + `planilha.indice_coluna_por_cabecalho` (acha `O` pelo cabecalho, fallback col 15).
+`reclassificacao_multimodelo.py` ganhou a flag **`--gravar-coluna-2`** (default OFF; so com
+`--aplicar` e UM unico modelo no escopo, ex.: `pesados=lstm`) e o input `gravar_coluna_2` no
+workflow. A escrita em `O` tem retry para erro transitorio. O usuario criara a coluna `O`
+com o cabecalho "Classificacao IA - 2".

@@ -203,6 +203,36 @@ def ler_conferencias(sh, aba_principal: str, col_ia_1based: int = 13,
     return out
 
 
+def indice_coluna_por_cabecalho(ws, nome: str, default_1based: int) -> int:
+    """Indice (1-based) da coluna cujo cabecalho (linha 1) casa com `nome`
+    (normalizado, sem caixa/espacos). Se nao encontrar, retorna default_1based."""
+    norm = lambda s: " ".join(str(s or "").split()).casefold()  # noqa: E731
+    try:
+        cab = ws.row_values(1)
+    except Exception:  # noqa: BLE001
+        return default_1based
+    alvo = norm(nome)
+    for i, c in enumerate(cab, start=1):
+        if norm(c) == alvo:
+            return i
+    return default_1based
+
+
+def escrever_coluna_por_linha(ws, col_1based: int, mapa: dict,
+                              value_input_option: str = "RAW") -> int:
+    """Escreve valores em celulas especificas de UMA coluna, em 1 chamada (batch_update).
+
+    mapa: {linha_1based: valor}. Nao toca em nenhuma outra celula/coluna — preserva
+    G (classificacao original), M/N (conferencias) e demais campos.
+    """
+    if not mapa:
+        return 0
+    letra = _coluna_letra(col_1based)
+    data = [{"range": f"{letra}{int(ln)}", "values": [[mapa[ln]]]} for ln in sorted(mapa)]
+    ws.batch_update(data, value_input_option=value_input_option)
+    return len(data)
+
+
 def _coluna_letra(indice_1based: int) -> str:
     """Converte índice de coluna (1=A) para letra(s) A1."""
     letras = ""

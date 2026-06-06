@@ -20,6 +20,10 @@ on:
         description: "Selecionar candidatos pela confianca CALIBRADA (em vez da bruta)"
         type: boolean
         default: false
+      gravar_coluna_2:
+        description: "Gravar a reclassificacao na coluna O (Classificacao IA - 2) da aba principal (1 modelo)"
+        type: boolean
+        default: false
       lstm_perfil:
         description: "Perfil LSTM"
         type: choice
@@ -67,6 +71,7 @@ jobs:
           FLAGS="--modelos ${{ github.event.inputs.modelos }} --max-turnos ${{ github.event.inputs.max_turnos }}"
           if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then FLAGS="$FLAGS --aplicar"; fi
           if [ "${{ github.event.inputs.usar_calibrado }}" = "true" ]; then FLAGS="$FLAGS --usar-calibrado"; fi
+          if [ "${{ github.event.inputs.gravar_coluna_2 }}" = "true" ]; then FLAGS="$FLAGS --gravar-coluna-2"; fi
           echo "flags: $FLAGS"
           python src/reclassificacao_multimodelo.py $FLAGS
       - name: Remover credenciais
