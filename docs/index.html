@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Auto-atualizacao: recarrega a pagina a cada 30 min para refletir os dados
+     republicados pelo workflow dashboard.yml (cron */30 + apos cada execucao). -->
+<meta http-equiv="refresh" content="1800">
 <title>Classificacao de Chamados - Painel Experimental</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -317,6 +320,11 @@
       <div class="card">
         <h2>Tendencia da concordancia por turno (residuos)</h2>
         <div class="tablebox"><table id="tabEstDiag"><thead><tr><th>Modelo</th><th>Shapiro p</th><th>Distribuicao</th><th>Tendencia</th><th>R2</th><th>Durbin-Watson</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card full">
+        <h2>Validacao humana: IA x GLPI (conferencia dupla)</h2>
+        <p class="muted" id="matrizInfo">Carregando validacao...</p>
+        <div id="matrizBox"></div>
       </div>
     </div>
   </section>
@@ -676,6 +684,28 @@ function renderMetrics(resumo, turnos, reg=null){
     <p><strong>Risco de leitura:</strong> enquanto houver pendentes, os graficos devem ser interpretados como acompanhamento parcial, nao como resultado final do experimento.</p>`;
 }
 
+function renderMatrizValidacao(cal){
+  const box=document.getElementById("matrizBox"), info=document.getElementById("matrizInfo");
+  if(!box||!info) return;
+  const vh=cal&&cal.validacao_humana, m=vh&&vh.matriz_ia_x_glpi;
+  const tot=m?(N(m.ia_ok_glpi_ok)+N(m.ia_ok_glpi_erro)+N(m.ia_erro_glpi_ok)+N(m.ia_erro_glpi_erro)):0;
+  if(!vh||!tot){
+    info.textContent="Validacao humana ainda nao iniciada. Preencha a coluna M (CONFERENCIA IA) e a coluna N (CONFERENCIA GLPI) na planilha; este quadro aparece quando houver casos validados nas duas colunas.";
+    box.innerHTML=""; return;
+  }
+  const pctn=v=>v==null?"-":pct(v);
+  info.innerHTML=`Acerto da IA validado: <strong>${pctn(vh.acerto_ia_validado)}</strong> (n=${fmt(vh.n_conferencia_ia)}) &middot; `+
+    `Acerto do GLPI validado: <strong>${pctn(vh.acerto_glpi_validado)}</strong> (n=${fmt(vh.n_conferencia_glpi)}). `+
+    `Matriz sobre ${fmt(tot)} casos com M e N preenchidos.`;
+  box.innerHTML=`<div class="tablebox"><table>
+    <thead><tr><th></th><th>GLPI Correto</th><th>GLPI Errado</th></tr></thead>
+    <tbody>
+      <tr><td>IA Correto</td><td>${fmt(m.ia_ok_glpi_ok)}</td>
+        <td class="status-ok">${fmt(m.ia_ok_glpi_erro)}<br><span class="muted">IA corrige o historico</span></td></tr>
+      <tr><td>IA Errado</td><td class="status-bad">${fmt(m.ia_erro_glpi_ok)}<br><span class="muted">IA piora o historico</span></td>
+        <td>${fmt(m.ia_erro_glpi_erro)}</td></tr>
+    </tbody></table></div>`;
+}
 function renderReclass(rt){
   const box=document.getElementById("kpisR"), vazio=document.getElementById("reclassVazio");
   const aviso=document.getElementById("reclassAviso");
@@ -947,6 +977,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   renderCalibracao(cal);
   renderCalibracaoModelos(calModels);
   renderCalibracaoAjustada(calAjustada);
+  renderMatrizValidacao(cal||{});
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : [], Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : []);
   renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);
