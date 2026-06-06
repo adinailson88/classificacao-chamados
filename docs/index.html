@@ -90,8 +90,12 @@
   <div class="kpis" id="kpis"></div>
 
   <div class="filtros" id="filtros">
+    <strong>Modelo:</strong>
+    <select id="modeloSel" title="Troca a aba Classificacao para as predicoes de UMA IA por vez (out-of-fold). Nunca soma os 7 modelos.">
+      <option value="">Etapa 1 (LSTM oficial)</option>
+    </select>
+    <span class="notefiltro" id="fonteNota">fonte: Etapa 1/LSTM; afetam Classificacao, Categorias e Metricas</span>
     <strong>Filtros (multi):</strong>
-    <span class="notefiltro">fonte: Etapa 1/LSTM; afetam Classificacao, Categorias e Metricas</span>
     <div class="ms" data-campo="g"></div>
     <div class="ms" data-campo="f"></div>
     <div class="ms" data-campo="e"></div>
@@ -353,6 +357,7 @@ function destroy(id){ if(charts[id]) charts[id].destroy(); }
 function chartOpts(suf){return{responsive:true,plugins:{legend:{labels:{color:"#24303a",boxWidth:12}}},scales:{x:{ticks:{color:"#68737d"},grid:{color:"#edf0ea"}},y:{ticks:{color:"#68737d",callback:v=>v+(suf||"")},grid:{color:"#edf0ea"}}}};}
 
 let REG=[], FILTRADO=[], MODELOS_TURNOS=[];
+let REG_ETAPA1=[], FONTE="Etapa 1/LSTM", CACHE_REG={};
 const FILT={g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
 const ROT_CAMPO={g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
 const ROT_FAIXA={acima_95:">=95%",entre_70_95:"70-95%",abaixo_70:"<70%"};
@@ -383,18 +388,21 @@ function renderKpisFiltrados(reg){
   const ativo = filtrosAtivos();
   const pend = N(metric("pendentes_restantes"));
   const el=document.getElementById("fcount");
-  el.innerHTML = `Etapa 1/LSTM | <strong>${fmt(n)}</strong> chamados | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
+  el.innerHTML = `${esc(FONTE)} | <strong>${fmt(n)}</strong> chamados | concordancia <strong>${n?pct(ok/n):"-"}</strong> | conf. media ${n?pct(conf/n):"-"}`;
   document.getElementById("kpis").innerHTML =
     kpi(fmt(n), ativo ? "Chamados filtrados" : "Chamados classificados")+
     kpi(n ? pct(ok/n) : "-", ativo ? "Concordancia filtrada" : "Concordancia acumulada")+
     kpi(n ? pct(conf/n) : "-", "Confianca media")+
     kpi(fmt(cats), ativo ? "Categorias filtradas" : "Categorias")+
     kpi(fmt(pend), "Pendentes globais");
+  const ehEtapa1 = FONTE === "Etapa 1/LSTM";
   document.getElementById("notice").innerHTML = ativo
-    ? `Etapa 1/LSTM com filtros aplicados: ${fmt(n)} chamados exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
-    : (pend > 0
+    ? `${esc(FONTE)} com filtros aplicados: ${fmt(n)} chamados exibidos. Graficos de faixa, categorias, cards e resumo tecnico foram recalculados pelo recorte filtrado.`
+    : (ehEtapa1 && pend > 0
       ? `Etapa 1/LSTM: ${fmt(n)} chamados classificados e ${fmt(pend)} pendentes globais nos dados publicados. Os graficos representam resultado parcial.`
-      : `Etapa 1/LSTM: sem pendentes globais nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`);
+      : (ehEtapa1
+        ? `Etapa 1/LSTM: sem pendentes globais nos dados publicados. Confirmar validacao humana antes de tratar os resultados como finais.`
+        : `${esc(FONTE)}: predicoes out-of-fold sobre as ${fmt(n)} linhas (comparacao por modelo, NAO a classificacao oficial da Etapa 1). Concordancia vs historico, nao validacao humana.`));
   renderMetrics(RESUMO, TURNOS, reg);
 }
 function construirFiltros(){
@@ -446,6 +454,34 @@ function aplicarFiltros(){
   renderCat();
   renderFaixaFiltrada(FILTRADO);
   renderKpisFiltrados(FILTRADO);
+}
+function popularSeletorModelos(){
+  const rm = (RESUMO && RESUMO.registros_modelos) || {};
+  const sel = document.getElementById("modeloSel");
+  Object.keys(rm).forEach(m=>{
+    const o=document.createElement("option");
+    o.value=m; o.textContent=`${m} (out-of-fold)`;
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change", ()=>trocarModelo(sel.value));
+}
+async function trocarModelo(modelo){
+  // Carrega as predicoes de UM modelo por vez (13.825), nunca os 7 somados.
+  let dados;
+  if(!modelo){ dados=REG_ETAPA1; FONTE="Etapa 1/LSTM"; }
+  else {
+    FONTE=`Modelo ${modelo}`;
+    if(CACHE_REG[modelo]) dados=CACHE_REG[modelo];
+    else { dados = await getJSON(`registros_${modelo}.json`); dados = Array.isArray(dados)?dados:[]; CACHE_REG[modelo]=dados; }
+  }
+  REG = dados;
+  const nota=document.getElementById("fonteNota");
+  if(nota) nota.textContent = modelo
+    ? `fonte: ${modelo} (out-of-fold, 1 IA por vez) — comparacao vs historico, NAO a Etapa 1 oficial`
+    : "fonte: Etapa 1/LSTM; afetam Classificacao, Categorias e Metricas";
+  Object.values(FILT).forEach(s=>s.clear());   // executores/grupos mudam por modelo
+  if(REG.length){ construirFiltros(); aplicarFiltros(); }
+  else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
 }
 
 function renderClass(turnos){
@@ -696,6 +732,8 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   RESUMO = resumo || {};
   document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
   REG = Array.isArray(registros) ? registros : [];
+  REG_ETAPA1 = REG;
+  popularSeletorModelos();
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }

@@ -181,6 +181,45 @@ def main() -> int:
     resumo["registros"] = len(regs)
     print(f"registros={len(regs)}")
 
+    # Registros POR MODELO (multimodelo) — 1 IA por vez, MESMO schema de registros.json,
+    # SEM texto/ID de chamado. Permite ao painel trocar a aba Classificacao por modelo
+    # (out-of-fold). NÃO concatena modelos (evita o antigo 13.825 x 7 = 96.775).
+    # CLASSIF__<modelo>: 1 linha_planilha, 3 cat_original, 4 cat_ia, 5 confianca, 7 executor.
+    mm = config.get("multimodelo", {}) or {}
+    modelos_mm = list(mm.get("modelos_leves", [])) + list(mm.get("modelos_pesados", []))
+    padrao = mm.get("aba_classificacao", "CLASSIF__{modelo}")
+    registros_modelos = {}
+    for modelo in modelos_mm:
+        nome_aba = padrao.replace("{modelo}", modelo)
+        try:
+            vals = com_retentativa(
+                f"ler {nome_aba}",
+                lambda na=nome_aba: sh.worksheet(na).get_values(
+                    "A:K", value_render_option="UNFORMATTED_VALUE"))
+        except Exception:  # noqa: BLE001
+            vals = []
+        rm = []
+        for rr in vals[1:]:
+            if len(rr) < 6:
+                continue
+            ln = str(rr[1]).strip()
+            orig = str(rr[3]).strip()
+            cia = str(rr[4]).strip()
+            if not cia:
+                continue
+            c = _conf(rr[5])
+            ex = str(rr[7]).strip() if len(rr) > 7 else modelo
+            fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
+            rm.append({"l": ln, "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
+                       "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex or modelo,
+                       "k": 1 if cia == orig else 0, "v": valida.get(ln, "")})
+        if rm:
+            (SAIDA / f"registros_{modelo}.json").write_text(
+                json.dumps(rm, ensure_ascii=False), encoding="utf-8")
+            registros_modelos[modelo] = len(rm)
+            print(f"registros_{modelo}={len(rm)}")
+    resumo["registros_modelos"] = registros_modelos
+
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"gerado_em={resumo['gerado_em']}")
     return 0

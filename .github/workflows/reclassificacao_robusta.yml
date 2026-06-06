@@ -6,10 +6,11 @@ name: Reclassificacao robusta (modelo pesado)
 # Se a lib falhar no runner, o classificador faz fallback automatico para LSTM.
 
 on:
-  # Agendamento DESATIVADO ate a Etapa 1 concluir (evita reclassificar cedo demais).
-  # Para reativar, descomente o bloco schedule abaixo.
-  # schedule:
-  #   - cron: "0 */6 * * *"
+  # Etapa 1 CONCLUIDA em 2026-06-06 (0 pendentes) -> agendamento REATIVADO.
+  # Roda a cada 6h, em POUCOS chamados por vez (os de menor confianca ainda nao
+  # reclassificados), aplicando na planilha. Para pausar, comente o bloco schedule.
+  schedule:
+    - cron: "0 */6 * * *"
   workflow_dispatch:
     inputs:
       max_turnos:
@@ -30,8 +31,8 @@ jobs:
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
