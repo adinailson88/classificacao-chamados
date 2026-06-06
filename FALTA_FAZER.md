@@ -127,6 +127,12 @@ dados, fazer o painel mostrar a verdade.
       ganho liquido `+1`. Rodadas seguintes tambem aplicadas e publicadas:
       `27068325982` (`+2`) e `27068433347` (`+1`). Acumulado apos 5 turnos:
       75 reclassificacoes, `corrigidos=11`, `prejudicados=7`, ganho liquido `+4`.
+      **6o turno**: run `27068597005`, `GANHO=0` &rarr; acumulado 90 reclassificacoes,
+      ganho liquido `+4`. **7o turno**: run `27068688359`,
+      `corrigidos=4 | prejudicados=2 | GANHO=+2` (metodo topup) &rarr; acumulado
+      **105 reclassificacoes, ganho liquido +6** (validado em
+      `docs/dados/multimodelo_reclass_turnos.json`: ganhos por turno
+      `0,+2,-1,+2,+1,0,+2`). Cadeia dashboard/Pages OK (`27068777378`/`27068789902`).
       Continuar apenas turno a turno enquanto o ganho acumulado
       permanecer nao negativo; nao iniciar validacao humana automaticamente.
 
