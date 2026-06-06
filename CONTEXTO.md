@@ -904,3 +904,14 @@ prevista, score, divergencia, enviado_revisao, datas/statuses de validacao e
 
 Tambem foi criado `docs/dados/comparacao_previsoes.json` inicial com `[]`, e `README.md`/
 `FALTA_FAZER.md` foram atualizados para fechar o P0 sem publicar texto de chamado.
+
+Validacao/publicacao: `python -m py_compile src\exportar_dashboard.py` OK; JSON inicial
+validado com `python -m json.tool`. Commit publicado apos rebase como `5ca0cfd`. Workflow
+manual `dashboard.yml` run `27058838065` concluiu com sucesso e gerou commit de dados
+`e3d1689`. `resumo.json` passou a registrar `comparacao_previsoes=7000`; leitura local do
+JSON confirmou 7.000 registros com campos permitidos:
+`categoria_original`, `categoria_prevista`, `data_validacao`, `divergencia`,
+`enviado_revisao`, `executado_em`, `linha_planilha`, `modelo`, `quem_estava_correto`,
+`score`, `validacao_humana_final`. Busca textual por `id_chamado`, `"titulo"` e
+`observacao_avaliador` nao retornou ocorrencias. Pages build `27058852407` concluiu com
+sucesso para `headSha=e3d16898ab78c7adee601f68103e5d235192d255`.
