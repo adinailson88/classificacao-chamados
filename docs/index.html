@@ -183,6 +183,11 @@
 
   <section id="tab-metrics" class="hide">
     <div class="alerta bad" id="metaAviso">Carregando estado da meta...</div>
+    <div class="card full" style="margin-bottom:12px">
+      <h2>Validacao humana (conferencia dupla M x N)</h2>
+      <div class="kpis" id="kpisValidacao"></div>
+      <p class="muted" id="kpisValidacaoNota"></p>
+    </div>
     <div class="grid">
       <div class="card">
         <h2>Metricas consolidadas</h2>
@@ -686,14 +691,30 @@ function renderMetrics(resumo, turnos, reg=null){
 
 function renderMatrizValidacao(cal){
   const box=document.getElementById("matrizBox"), info=document.getElementById("matrizInfo");
-  if(!box||!info) return;
+  const kbox=document.getElementById("kpisValidacao"), knota=document.getElementById("kpisValidacaoNota");
   const vh=cal&&cal.validacao_humana, m=vh&&vh.matriz_ia_x_glpi;
   const tot=m?(N(m.ia_ok_glpi_ok)+N(m.ia_ok_glpi_erro)+N(m.ia_erro_glpi_ok)+N(m.ia_erro_glpi_erro)):0;
+  const pctn=v=>v==null?"-":pct(v);
+  // KPIs na aba Metricas (aparecem mesmo sem matriz completa, se houver conferencia IA)
+  if(kbox){
+    if(!vh || !N(vh.n_conferencia_ia)){
+      kbox.innerHTML=kpi("0","Casos validados");
+      if(knota) knota.textContent="Validacao humana ainda nao iniciada (preencha M=CONFERENCIA IA e N=CONFERENCIA GLPI).";
+    } else {
+      kbox.innerHTML=
+        kpi(fmt(vh.n_conferencia_ia),"Casos com conferencia IA")+
+        kpi(pctn(vh.acerto_ia_validado),"Acerto da IA validado")+
+        kpi(pctn(vh.acerto_glpi_validado),"Acerto do GLPI validado")+
+        kpi(m?fmt(m.ia_ok_glpi_erro):"-","IA corrige o historico")+
+        kpi(m?fmt(m.ia_erro_glpi_ok):"-","IA piora o historico");
+      if(knota) knota.textContent="Amostra de casos conferidos (provavelmente nao aleatoria); ainda nao e a acuracia validada da base completa.";
+    }
+  }
+  if(!box||!info) return;
   if(!vh||!tot){
     info.textContent="Validacao humana ainda nao iniciada. Preencha a coluna M (CONFERENCIA IA) e a coluna N (CONFERENCIA GLPI) na planilha; este quadro aparece quando houver casos validados nas duas colunas.";
     box.innerHTML=""; return;
   }
-  const pctn=v=>v==null?"-":pct(v);
   info.innerHTML=`Acerto da IA validado: <strong>${pctn(vh.acerto_ia_validado)}</strong> (n=${fmt(vh.n_conferencia_ia)}) &middot; `+
     `Acerto do GLPI validado: <strong>${pctn(vh.acerto_glpi_validado)}</strong> (n=${fmt(vh.n_conferencia_glpi)}). `+
     `Matriz sobre ${fmt(tot)} casos com M e N preenchidos.`;
