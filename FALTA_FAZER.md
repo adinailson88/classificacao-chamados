@@ -10,7 +10,7 @@
 - **Etapa 1 (LSTM single-model)** na aba `Classificacao`: base elegível de **13.825**
   chamados, classificação progressiva em turnos de 15 concluída (0 pendentes),
   54 categorias, `validados=0`, `ece_historico=0.0379` no `resumo.json` gerado em
-  06/06/2026 13:12. Fonte do painel: `registros.json`.
+  06/06/2026 13:34. Fonte do painel: `registros.json`.
 - **Multimodelo materializado** — as **7 IAs completas**, 13.825 chamados por modelo,
   0 pendentes, predição **out-of-fold** (`kfold_5`). Concordância vs categoria histórica:
   `linear_svc` 80,26% > `extra_trees` 78,47% > `sgd` 77,51% > `random_forest` 76,80% >
@@ -115,7 +115,12 @@ dados, fazer o painel mostrar a verdade.
       líquido total `+16` (`random_forest=+9`, `linear_svc=+6`, `naive_bayes=+2`,
       `regressao_logistica=+1`, `extra_trees=0`, `sgd=-2`); run `27067201945`
       (`modelos=pesados`, `max_turnos=10`) simulou 150 casos LSTM e teve ganho `+19`.
-      Próximo passo seguro: novos dry-runs estratificados/maiores, sem `aplicar=true`.
+      Dry-runs maiores com `max_turnos=30`: run `27067681539` (`modelos=leves`) simulou
+      2.700 casos e teve ganho consolidado `-1` (`random_forest=+23`,
+      `extra_trees=+2`, `naive_bayes=0`, `regressao_logistica=-5`,
+      `linear_svc=-10`, `sgd=-11`); run `27067734826` (`modelos=pesados`) simulou
+      450 casos LSTM e teve ganho `+33`. Próximo passo seguro: dry-run estratificado
+      focando LSTM e Random Forest antes de qualquer `aplicar=true`.
 
 ---
 

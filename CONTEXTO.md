@@ -1087,3 +1087,29 @@ registros cada, `validados=0`, `ece_historico=0,0379`, `multimodelo_metricas=7` 
 positivo em recorte de baixa confianca, especialmente LSTM/random_forest/linear_svc, mas
 ainda contra historico e sem validacao humana; nao aplicar em massa antes de dry-run maior
 estratificado e decisao explicita.
+
+## Atualizacao Codex - dry-runs de 30 turnos de reclassificacao (2026-06-06 13:34)
+
+Nova sincronizacao previa: `git pull --ff-only origin main` retornou `Already up to date`.
+Sem iniciar validacao humana e sem usar `aplicar=true`.
+
+Acao 1: workflow `multimodelo_reclassificacao.yml` em dry-run com `modelos=leves`,
+`max_turnos=30`, `aplicar=false`: run `27067681539`, sucesso em 1m32s. Resultado do log:
+2.700 simulacoes totais, 450 por modelo, `memoria_validada=0`, metodo `topup`. Ganhos:
+`naive_bayes=0` (11 corrigidos, 11 prejudicados), `regressao_logistica=-5` (33/38),
+`linear_svc=-10` (46/56), `sgd=-11` (29/40), `extra_trees=+2` (48/46),
+`random_forest=+23` (64/41). Ganho consolidado dos leves: `-1` em 2.700 simulacoes.
+
+Acao 2: workflow `multimodelo_reclassificacao.yml` em dry-run com `modelos=pesados`,
+`max_turnos=30`, `aplicar=false`, `lstm_perfil=padrao`: run `27067734826`, sucesso em
+2m53s. Resultado do log: `lstm`, `candidatos_baixa=9549`, `lote_agora=450`,
+`base=13375`, `corrigidos=72`, `prejudicados=39`, ganho `+33`, metodo `topup`.
+
+Dashboard automatico apos os dry-runs: run `27067803905`, sucesso, gerando commit de
+dados `892b7cc`; Pages intermediario `27067736167` tambem concluiu com sucesso.
+Validacao local: `python -m json.tool docs\dados\resumo.json` OK. `resumo.json`:
+`gerado_em=06/06/2026 13:34`, `registros=13825`, `validados=0`,
+`multimodelo_metricas=7`, `multimodelo_reclass_turnos=0`. Interpretacao: ao ampliar para
+450 casos por modelo, o ganho dos modelos leves praticamente desaparece no consolidado,
+com excecao de `random_forest`; o LSTM segue positivo. Proximo passo tecnico seguro:
+dry-run estratificado/focado em `lstm` e `random_forest`, ainda sem gravacao.
