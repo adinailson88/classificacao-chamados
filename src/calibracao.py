@@ -147,8 +147,16 @@ def calcular(sh, config: dict) -> dict:
         "faixa_alvo_95": faixa95,
         "por_faixa": [{"faixa": rot, **_fechar(por_faixa[rot])} for _, _, rot in FAIXAS],
         "por_executor": [{"executor": k, **_fechar(v)} for k, v in sorted(por_exec.items())],
+        # A confiança aqui é a saída BRUTA do modelo (softmax/decision_function), NÃO um
+        # calibrador ajustado. Ver PLANO_CALIBRACAO.md (CalibratedClassifierCV p/ lineares
+        # TF-IDF; temperature scaling p/ o LSTM). Este JSON é diagnóstico, não calibração.
+        "tipo_confianca": "bruta (softmax/decision_function) — NAO calibrada",
+        "calibrador_ajustado": False,
+        "plano_calibracao": "PLANO_CALIBRACAO.md",
         "observacao": ("Acerto vs histórico é preliminar (a classificação histórica pode "
-                       "ter erros). A calibração DEFINITIVA usa categoria_validada (validação humana)."),
+                       "ter erros). A confiança é bruta (softmax alto NÃO é confiança calibrada). "
+                       "A calibração DEFINITIVA ajusta um calibrador por modelo e usa "
+                       "categoria_validada (validação humana, ainda pausada)."),
     }
 
 

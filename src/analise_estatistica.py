@@ -161,7 +161,10 @@ def main() -> int:
 
     out = {"gerado_em": agora_bahia(), "n_linhas_comuns": n, "modelos": modelos,
            "alpha": 0.05, "observacao": "Acerto = IA x categoria historica (preliminar; "
-           "a validacao humana qualifica). Sem texto de chamado."}
+           "a validacao humana qualifica). Sem texto de chamado. Normalidade rejeitada "
+           "(Shapiro) nos modelos avaliados: a analise assume pressupostos NAO "
+           "parametricos (Spearman, Friedman/Nemenyi, Cochran Q, McNemar, bootstrap). "
+           "Resultados sao contra o historico, nao contra validacao humana."}
 
     # 1) Correlação confiança × acerto (ponto-bisserial e Spearman)
     out["correlacao_conf_acerto"] = []
@@ -202,6 +205,24 @@ def main() -> int:
                     "tendencia": ("estavel" if pr > 0.05 else ("sobe" if sl > 0 else "cai"))})
             except Exception as e:  # noqa: BLE001
                 print(f"resid {m}: {e}", file=sys.stderr)
+
+    # 3b) Veredito de pressupostos: agrega a normalidade e fixa a postura não paramétrica.
+    norm = out["normalidade_concordancia_turno"]
+    n_aval = len(norm)
+    n_rejeita = sum(1 for d in norm if not d["normal_5pct"])
+    out["pressupostos"] = {
+        "normalidade_testada": "Shapiro-Wilk sobre a concordancia por turno",
+        "modelos_avaliados": n_aval,
+        "modelos_normais_5pct": n_aval - n_rejeita,
+        "modelos_normalidade_rejeitada": n_rejeita,
+        "normalidade_rejeitada": (n_aval > 0 and n_rejeita == n_aval),
+        "assume": "nao_parametrico" if (n_aval == 0 or n_rejeita > 0) else "parametrico",
+        "metodos_nao_parametricos": ["Spearman", "Friedman/Nemenyi", "Cochran Q",
+                                     "McNemar", "bootstrap"],
+        "base_de_comparacao": "categoria historica (nao validacao humana)",
+        "nota": "Normalidade rejeitada nos modelos avaliados; a analise NAO usa pressuposto "
+                "parametrico como criterio principal. Resultados sao contra o historico.",
+    }
 
     # 4) Acurácia + IC 95% (bootstrap)
     out["acuracia_bootstrap"] = []

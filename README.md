@@ -13,7 +13,34 @@ O objetivo e manter um experimento rastreavel, com processamento por turnos, log
 5. Os dados reais gerados em `dados/*.json` e `dados/*.jsonl` ficam ignorados no Git.
 6. Os dados publicos do dashboard ficam em `docs/dados`.
 7. Nenhum script escreve na planilha sem flag explicita `--aplicar`, exceto workflows ja configurados para a etapa correspondente.
-8. A validacao humana ja pode ser preparada, mas a revisao manual fica pausada ate o fortalecimento dos scripts/modelos.
+8. A validacao humana ja pode ser preparada, mas a revisao manual fica **pausada** ate o fortalecimento dos scripts/modelos.
+
+### 7 IAs materializadas (multimodelo)
+
+As **7 IAs estao completas**, com 13.825 chamados por modelo, 0 pendentes e predicao
+**out-of-fold** (`kfold_5`, sem vazamento). Concordancia contra a categoria historica:
+
+| Modelo | Concordancia vs historico |
+|---|---|
+| `linear_svc` | 80,26% |
+| `extra_trees` | 78,47% |
+| `sgd` | 77,51% |
+| `random_forest` | 76,80% |
+| `regressao_logistica` | 76,59% |
+| `naive_bayes` | 70,07% |
+| `lstm` | 67,57% |
+
+Onde cada coisa aparece no painel:
+
+- **`Classificacao`** usa apenas a **Etapa 1 / LSTM single-model** (fonte `registros.json`).
+- **`Modelos`**, **`Multimodelo`** e **`Estatistica`** trazem a **comparacao das 7 IAs**.
+- `multimodelo_registros.json` foi **removido** porque multiplicava chamados por 7 (exibia
+  ~96.775 predicoes como se fossem chamados). **Nao recriar.**
+
+A analise estatistica assume **pressupostos nao parametricos**: Shapiro rejeitou
+normalidade nos 7 modelos. Por isso o foco e Spearman, Friedman/Nemenyi, Cochran Q,
+McNemar e bootstrap. Todos os numeros sao **contra o historico**, nao contra validacao
+humana (`validados=0`).
 
 ## Colunas da aba principal
 
@@ -143,11 +170,19 @@ docs/index.html
 Ele consome:
 
 ```text
+docs/dados/resumo.json
+docs/dados/registros.json                 # Etapa 1 / LSTM (aba Classificacao)
 docs/dados/log_turnos_classificacao.json
 docs/dados/metricas_por_categoria.json
 docs/dados/log_turnos_reclassificacao.json
 docs/dados/metricas_experimento.json
-docs/dados/resumo.json
+docs/dados/comparacao_modelos.json
+docs/dados/comparacao_categoria.json
+docs/dados/multimodelo_turnos.json        # 7 IAs (abas Modelos / Multimodelo)
+docs/dados/multimodelo_metricas.json      # 7 IAs
+docs/dados/multimodelo_reclass_turnos.json
+docs/dados/estatistica.json               # analise nao parametrica (aba Estatistica)
+docs/dados/calibracao.json
 ```
 
 O site publicado pelo GitHub Pages deve identificar o projeto como `Classificacao de Chamados - Painel Experimental`. A referencia a Malha IA deve aparecer apenas como contexto de origem, nao como nome principal do site.

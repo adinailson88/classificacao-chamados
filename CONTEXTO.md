@@ -5,7 +5,9 @@
 > (removidos; histórico preservado no git). **Atualizar este arquivo** a cada
 > etapa importante, em vez de criar arquivos novos.
 >
-> Última consolidação: 2026-06-04 (America/Bahia, UTC-03:00) — roteiro + Etapa 1 progressiva.
+> Última consolidação: 2026-06-06 (America/Bahia, UTC-03:00) — Etapa 1 CONCLUÍDA (0 pendentes),
+> dashboard atualizado, robustez de workflows, estatística não paramétrica explícita e plano
+> de calibração. Ver a última seção deste arquivo para o estado final.
 
 ## Objetivo
 Experimento controlado de **classificação e reclassificação automática de
@@ -535,3 +537,49 @@ Observação de execução:
 - A aba `Modelos` passou a usar a materializacao completa das 7 IAs (`multimodelo_metricas` e `multimodelo_turnos`) como comparacao principal: 13.825 chamados por modelo, out-of-fold.
 - Os 5 recortes de 200 registros (`COMPARACAO_MODELOS`, total 1.000 por modelo) ficam apenas como recorte piloto/amostral, nao como resultado principal.
 - Normalidade: como Shapiro rejeitou normalidade a 5%, a analise deve assumir pressupostos nao parametricos: Spearman, Friedman/Nemenyi, McNemar/Cochran Q e bootstrap. Nao usar inferencia parametrica como criterio principal.
+
+## Etapa 1 CONCLUIDA + robustez de workflows + calibracao (2026-06-06 03:1x, America/Bahia)
+
+Estado final apos a Etapa 1 zerar:
+
+- **Etapa 1 / LSTM CONCLUIDA**: run manual `27051019863` (workflow `etapa1_turnos.yml`)
+  classificou os ultimos **325** chamados -> **0 pendentes**. Base elegivel = **13.825**,
+  todos classificados. `log_turnos_classificacao=922`.
+- **Dashboard atualizado**: `dashboard.yml` rodou via `workflow_run` (`27051075802`) e
+  manual (`27051109204`). `docs/dados/resumo.json` agora: `registros=13825`,
+  `calibracao.total=13825`, `ece_historico=0.0379`, `validados=0`,
+  `log_turnos_reclassificacao=0`. Pendentes = 0.
+- **7 IAs materializadas** (estado mantido, out-of-fold `kfold_5`, 13.825 cada):
+  linear_svc 80,26% > extra_trees 78,47% > sgd 77,51% > random_forest 76,80% >
+  regressao_logistica 76,59% > naive_bayes 70,07% > lstm 67,57%.
+- `Classificacao` = Etapa 1/LSTM (`registros.json`). `Modelos`/`Multimodelo`/`Estatistica`
+  = comparacao das 7 IAs. `multimodelo_registros.json` permanece removido (nao recriar).
+
+Documentacao:
+
+- `FALTA_FAZER.md`: corrigido o "Estado atual" (estava em ~8.100/5.725 pendentes e dizia
+  que o multimodelo nao tinha rodado); P1/P6 marcados como concluidos (7 IAs, incl. LSTM);
+  P5 (estatistica) e P2 (etapa1 ja robusto) atualizados.
+- `README.md`: secao das 7 IAs (tabela de concordancia), distincao das abas, lista
+  completa dos JSONs consumidos pelo painel, nota de pressupostos nao parametricos.
+
+Robustez de workflows (P2): alem do `etapa1_turnos.yml` (ja robusto), aplicado
+`cache: pip` + `pip install --retries 5 --timeout 120` em `multimodelo_reclassificacao.yml`
+(alvo principal), `etapa2_reclassificacao.yml`, `reclassificacao_robusta.yml`,
+`classificacao_incremental.yml`, `dashboard.yml`, `preparar_validacao.yml`, `resetar.yml`.
+
+Estatistica (nao parametrica, explicita): `src/analise_estatistica.py` ganhou bloco
+`pressupostos` no JSON (normalidade rejeitada nos 7 modelos -> assume nao parametrico;
+base de comparacao = historico, nao validacao humana) e `observacao` reforcada. Os metodos
+ja eram nao parametricos (Spearman, Friedman/Nemenyi, Cochran Q, McNemar, bootstrap, Kappa).
+
+Calibracao (plano inicial): criado `PLANO_CALIBRACAO.md` (CalibratedClassifierCV/Platt p/
+linear_svc e demais lineares TF-IDF; isotonica p/ arvores/NB; temperature scaling separado
+p/ o LSTM; out-of-fold; linear_svc como candidato principal; nada de producao sem validacao
+humana). `src/calibracao.py` passou a marcar no JSON que a confianca e **bruta, nao
+calibrada** (`tipo_confianca`, `calibrador_ajustado=false`, `plano_calibracao`).
+
+Reclassificacao multimodelo: continua **nao executada** (so dry-run apos tudo acima). A
+validacao humana permanece **pausada** por decisao do usuario.
+
+Validacoes locais OK: `py_compile` dos modulos-chave + `tests/test_github_first.py` (4 ok).

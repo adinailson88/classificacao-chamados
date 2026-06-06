@@ -4,17 +4,22 @@
 > `CLAUDE_CONTINUACAO_2026-06-05.md` (removido). O panorama histórico continua em
 > `CONTEXTO.md`; aqui fica só o **que ainda falta**, priorizado.
 >
-> Atualizado: 2026-06-05 (America/Bahia, UTC-03:00).
+> Atualizado: 2026-06-06 (America/Bahia, UTC-03:00).
 
 ## Estado atual (resumo)
-- Dashboard publicado mostra **Etapa 1 (LSTM single-model)**: ~8.100 classificados,
-  ~5.725 pendentes, 49 categorias, `validados=0`, `ece_historico≈0.0537`.
-- **Multimodelo**: scripts e abas já existem (`classificacao_multimodelo.py`,
-  `reclassificacao_multimodelo.py`, `preparar_abas_multimodelo.py`, workflows
-  `multimodelo_*.yml`, abas `CLASSIF__*`/`RECLASS__*`/`MULTIMODELO_*`), mas a
-  **classificação multimodelo ainda não foi executada** (as abas estão vazias).
-- Comparação multi-modelo: 35 linhas publicadas (5 recortes de 200 × 7 modelos).
-  Lineares TF-IDF > LSTM até aqui (concordância vs histórico).
+- **Etapa 1 (LSTM single-model)** na aba `Classificacao`: base elegível de **13.825**
+  chamados, classificação progressiva em turnos de 15 concluída (0 pendentes),
+  54 categorias, `validados=0`, `ece_historico≈0.0399`. Fonte do painel: `registros.json`.
+- **Multimodelo materializado** — as **7 IAs completas**, 13.825 chamados por modelo,
+  0 pendentes, predição **out-of-fold** (`kfold_5`). Concordância vs categoria histórica:
+  `linear_svc` 80,26% > `extra_trees` 78,47% > `sgd` 77,51% > `random_forest` 76,80% >
+  `regressao_logistica` 76,59% > `naive_bayes` 70,07% > `lstm` 67,57%. A comparação das
+  7 IAs vive nas abas `Modelos`, `Multimodelo` e `Estatistica` (não em `Classificacao`).
+- `multimodelo_registros.json` foi **removido** de propósito: multiplicava chamados por 7
+  e exibia ~96.775 predições como se fossem chamados. **Não recriar.**
+- Análise estatística assume **pressupostos não paramétricos** (Shapiro rejeitou
+  normalidade nos 7 modelos): Spearman, Friedman/Nemenyi, Cochran Q, McNemar e bootstrap.
+  Resultados são **contra o histórico**, não contra validação humana.
 
 > ⚠️ Todas as métricas atuais são **concordância contra a categoria histórica (C)**,
 > **não** acerto validado por humano. `validados=0`.
@@ -79,28 +84,28 @@ dados, fazer o painel mostrar a verdade.
 
 ---
 
-## P1 — Rodar a MATERIALIZAÇÃO multimodelo (as 7 IAs completas)
-> ✅ **6 leves materializados** (run `27026217228`): 13.825 cada, 0 pendentes,
-> out-of-fold `kfold_5`. Concordância vs histórico: linear_svc 80,3% > extra_trees
-> 78,5% > sgd 77,5% > random_forest 76,8% > regressao_logistica 76,6% > naive_bayes
-> 70,1% (922 turnos/modelo). **Falta: o LSTM** (`modelos=pesados`, workflow separado,
-> baixa frequência) e a **reclassificação multimodelo** (`multimodelo_reclassificacao.yml`).
-- [ ] (Decidido) **Pausar o cron `*/15` da Etapa 1** (`etapa1_turnos.yml`) para o
-      multimodelo virar a fonte de verdade e evitar escrita concorrente.
-- [ ] Rodar `multimodelo_classificacao.yml` com `aplicar=true`, **6 leves primeiro**
-      (`modelos=leves`), progressivo/lote dinâmico, até zerar pendentes.
-- [ ] Conferir `CLASSIF__<modelo>` preenchendo + `MULTIMODELO_TURNOS`/`_METRICAS`.
-- [ ] Depois, LSTM (`modelos=pesados`) em execução de baixa frequência.
-- [ ] Em seguida `multimodelo_reclassificacao.yml` (Etapa 2 por modelo).
-- [ ] Validar que a predição é **out-of-fold** (sem vazamento) — a IA não treina na linha que rotula.
+## P1 — MATERIALIZAÇÃO multimodelo (as 7 IAs completas) ✅ CONCLUÍDA
+> ✅ **7 IAs materializadas** (6 leves run `27026217228` + LSTM run `27026916670`):
+> 13.825 cada, 0 pendentes, out-of-fold `kfold_5`. Concordância vs histórico:
+> linear_svc 80,26% > extra_trees 78,47% > sgd 77,51% > random_forest 76,80% >
+> regressao_logistica 76,59% > naive_bayes 70,07% > lstm 67,57%.
+- [x] Materializar os 6 modelos leves (`modelos=leves`) até zerar pendentes.
+- [x] Materializar o LSTM (`modelos=pesados`) — 7ª IA concluída.
+- [x] `CLASSIF__<modelo>` preenchidos + `MULTIMODELO_TURNOS`/`_METRICAS` publicados.
+- [x] Predição confirmada **out-of-fold** (`kfold_5`, sem vazamento).
+- [ ] **Reclassificação multimodelo** (`multimodelo_reclassificacao.yml`): só após
+      Etapa 1 finalizada e dashboard/estatística atualizados — começar por **dry-run**
+      (`-f aplicar=false`), sem aplicar em massa antes de medir ganho líquido.
 
 ---
 
 ## P2 — Robustez dos WORKFLOWS (falha de instalação)
 Run manual `27001950857` da Etapa 1 falhou no `pip` baixando `tensorflow==2.17.0`
 (`IncompleteRead`, exit 2) — não foi erro de lógica.
-- [ ] `actions/setup-python` com `cache: pip` + `cache-dependency-path: requirements.txt`.
-- [ ] Instalar com retry/timeout: `python -m pip install --retries 5 --timeout 120 -r requirements.txt`.
+- [x] `etapa1_turnos.yml` já usa `cache: pip` + `cache-dependency-path: requirements.txt`
+      e `pip install --retries 5 --timeout 120`.
+- [ ] Aplicar o mesmo padrão (cache + retry/timeout) nos demais workflows que ainda usam
+      `pip install -r requirements.txt` simples — em especial `multimodelo_reclassificacao.yml`.
 - [ ] Separar **workflow leve** (baseline/lineares, sem TF) do **workflow LSTM** (com TF),
       para que o download grande não derrube execuções leves.
 
@@ -126,22 +131,23 @@ agora — só após fortalecer modelo/scripts/painel.
 
 ---
 
-## P5 — ANÁLISES ESTATÍSTICAS (novo, solicitado 2026-06-05)
-Além das métricas já existentes (concordância, F1, calibração/ECE, ganho líquido),
-adicionar análise estatística formal (detalhe em `ESTADO_DO_ROTEIRO.md`, Extensão B):
-- [ ] **Correlação** (Pearson/Spearman): confiança×acerto, volume×concordância, texto×acerto.
-- [ ] **Normalidade**: Shapiro–Wilk / D'Agostino / KS + QQ-plots (decide paramétrico vs não).
-- [ ] **Análise de resíduos**: resíduos de concordância por turno/categoria; homocedasticidade,
-      autocorrelação (Durbin–Watson), tendência.
-- [ ] **Significância entre as 7 IAs**: McNemar par a par; Cochran's Q / Friedman + Nemenyi;
-      IC 95% por bootstrap de acurácia/F1.
-- [ ] **Concordância**: Kappa de Cohen (IA×histórico; IA×validação) e Fleiss entre as IAs.
-- [ ] Saída: tabelas/figuras ABNT + JSON agregado (sem texto) para o painel.
+## P5 — ANÁLISES ESTATÍSTICAS (solicitado 2026-06-05) ✅ implementado
+`src/analise_estatistica.py` roda sobre as 7 IAs (13.825 linhas comuns) e gera
+`docs/dados/estatistica.json`, consumido pela aba `Estatistica`. **Normalidade foi
+rejeitada** (Shapiro nos 7 modelos) → a análise assume **pressupostos não paramétricos**.
+Resultados são **contra o histórico**, não contra validação humana.
+- [x] **Correlação** Spearman (confiança×acerto) por modelo.
+- [x] **Normalidade**: Shapiro–Wilk (rejeitou nos 7 → não paramétrico).
+- [x] **Análise de resíduos** de concordância por turno.
+- [x] **Significância entre as 7 IAs**: McNemar par a par; Cochran's Q; Friedman + Nemenyi;
+      IC 95% por bootstrap.
+- [x] **Concordância**: Kappa (IA×histórico).
+- [ ] Kappa de Fleiss entre as IAs e refinamento das figuras ABNT (quando houver validação).
 
-## P6 — Comparar TODAS as IAs juntas (incl. LSTM)
+## P6 — Comparar TODAS as IAs juntas (incl. LSTM) ✅
 - [x] 6 leves materializados.
-- [ ] ⏳ **LSTM** (7ª IA) em materialização — quando concluir, a aba Multimodelo terá as 7.
-- [ ] Conferir as 7 lado a lado (Multimodelo + Modelos) e rodar P5 sobre elas.
+- [x] **LSTM** (7ª IA) materializado — a aba `Multimodelo` já mostra as 7.
+- [x] As 7 IAs lado a lado (`Multimodelo` + `Modelos`) e P5 (estatística) rodado sobre elas.
 
 > 📄 **Mapa completo do estado das 50 etapas do roteiro**: ver `ESTADO_DO_ROTEIRO.md`.
 
