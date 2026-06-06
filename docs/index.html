@@ -8,7 +8,7 @@
 <style>
   :root{
     --bg:#f6f7f4;--panel:#ffffff;--panel-soft:#eef3ef;--bd:#d9ded7;
-    --tx:#24303a;--mut:#68737d;--green:#1f7a4d;--teal:#0f766e;
+    --tx:#24303a;--mut:#68737d;--green:#2563eb;--teal:#1d4ed8;
     --blue:#2f5f9e;--amber:#b7791f;--red:#b42318;--ink:#18212a;
   }
   *{box-sizing:border-box}
@@ -20,7 +20,7 @@
   .subtitle{margin:6px 0 0;color:var(--mut);max-width:760px}
   .meta{color:var(--mut);font-size:12px;text-align:right;min-width:220px}
   .wrap{max-width:1320px;margin:0 auto;padding:18px 24px 28px}
-  .notice{border:1px solid #c8d9d3;background:#edf7f4;color:#18463e;border-radius:6px;padding:12px 14px;margin-bottom:16px}
+  .notice{border:1px solid #c3d4f2;background:#eef3fd;color:#16386e;border-radius:6px;padding:12px 14px;margin-bottom:16px}
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px}
   .kpi{background:var(--panel);border:1px solid var(--bd);border-radius:6px;padding:13px 14px;min-width:0}
   .kpi .v{font-size:24px;font-weight:750;color:var(--ink);overflow-wrap:anywhere}
@@ -65,10 +65,21 @@
   .ms>button.has{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
   .fchips{display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:4px}
   .fchips:empty{margin:0}
-  .chip{display:inline-flex;align-items:center;gap:6px;background:#eaf2ee;border:1px solid #bcd6cb;color:#18463e;border-radius:14px;padding:2px 6px 2px 9px;font-size:12px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#e9f0fd;border:1px solid #c0d2f0;color:#16386e;border-radius:14px;padding:2px 6px 2px 9px;font-size:12px}
   .chip b{font-weight:700}
-  .chip button{border:none;background:#cfe0d8;color:#18463e;border-radius:50%;width:16px;height:16px;line-height:1;cursor:pointer;font-size:12px;padding:0}
+  .chip button{border:none;background:#ccdcf5;color:#16386e;border-radius:50%;width:16px;height:16px;line-height:1;cursor:pointer;font-size:12px;padding:0}
   .notefiltro{display:inline-block;font-size:11px;color:var(--mut);background:var(--panel-soft);border:1px solid var(--bd);border-radius:10px;padding:1px 8px;margin-left:8px;vertical-align:middle;font-weight:600}
+  table.compacta{table-layout:fixed}
+  table.compacta th,table.compacta td{white-space:normal;word-break:break-word;text-align:left;font-size:12.5px}
+  .modelos-doc{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px;margin-top:6px}
+  .mod{border:1px solid var(--bd);border-radius:8px;padding:12px 13px;background:var(--panel-soft)}
+  .mod h3{margin:0 0 6px;font-size:14px;color:var(--ink)}
+  .mod .tipo{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);font-weight:700;margin-bottom:8px}
+  .mod p{margin:0 0 8px;font-size:13px}
+  .eqbox{font-family:"Cambria Math","Times New Roman",Georgia,serif;font-size:14px;background:#fff;border:1px solid var(--bd);border-left:3px solid var(--teal);border-radius:5px;padding:7px 10px;margin:0 0 8px;overflow-wrap:anywhere}
+  .xls{font-size:12.5px;background:#eef3fd;border:1px solid #c3d4f2;border-radius:5px;padding:7px 10px;margin:0 0 8px}
+  .xls code,.eqbox code{font-family:Consolas,"Courier New",monospace;background:#f3f5fb;padding:0 3px;border-radius:3px}
+  .ref{font-size:11.5px;color:var(--mut);border-top:1px dashed var(--bd);padding-top:6px;margin-top:4px}
   .alerta{border:1px solid #e7c9a3;background:#fdf4e7;color:#7a4d12;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:13px}
   .alerta.bad{border-color:#e2b3ad;background:#fbeae8;color:#7a1d14}
 </style>
@@ -77,7 +88,7 @@
 <header>
   <div class="top">
     <div>
-      <div class="eyebrow">Experimento separado do repositorio operacional Malha IA</div>
+      <div class="eyebrow">Painel experimental de classificacao automatica de chamados</div>
       <h1>Classificacao de Chamados - Painel Experimental</h1>
       <p class="subtitle">Acompanhamento da classificacao automatica, reclassificacao e preparacao para validacao humana dos chamados da planilha experimental.</p>
     </div>
@@ -94,7 +105,6 @@
     <select id="modeloSel" title="Troca a aba Classificacao para as predicoes de UMA IA por vez (out-of-fold). Nunca soma os 7 modelos.">
       <option value="">Etapa 1 (LSTM oficial)</option>
     </select>
-    <span class="notefiltro" id="fonteNota">fonte: Etapa 1/LSTM; afetam Classificacao, Categorias e Metricas</span>
     <strong>Filtros (multi):</strong>
     <div class="ms" data-campo="g"></div>
     <div class="ms" data-campo="f"></div>
@@ -184,7 +194,7 @@
   </section>
 
   <section id="tab-modelos" class="hide">
-    <p class="muted">Comparacao principal: 7 IAs materializadas na base completa, com 13.825 chamados por modelo e predicao out-of-fold. Os recortes piloto de 1.000 registros nao sao usados como resultado principal.</p>
+    <p class="muted">Comparacao principal: 7 IAs materializadas na base completa, com 13.825 chamados por modelo e predicao out-of-fold. A tabela de recortes (no fim) cobre TODA a base em janelas held-out de 1.000, nao para mais em 1.000 registros.</p>
     <div class="grid">
       <div class="card">
         <h2>Base completa por modelo</h2>
@@ -207,7 +217,8 @@
       </div>
     </div>
     <div class="card full">
-      <h2>Recortes piloto de comparacao (amostra, nao resultado principal)</h2>
+      <h2>Comparacao held-out por janela (cobre toda a base, janelas de 1.000)</h2>
+      <p class="muted">Cada linha: um modelo avaliado numa janela [inicio-fim) tendo treinado em todo o resto (held-out). As janelas percorrem 0 a 13.825 &mdash; nao param em 1.000.</p>
       <div class="tablebox"><table id="tabModelos"><thead><tr>
         <th>Modelo</th><th>Lote</th><th>N</th><th>Acuracia</th><th>F1-macro</th><th>Bal.acc</th><th>Revisao</th><th>Treino</th>
       </tr></thead><tbody></tbody></table></div>
@@ -276,9 +287,14 @@
         <h2>Kappa IA x historico</h2>
         <div class="tablebox"><table id="tabEstKappa"><thead><tr><th>Modelo</th><th>Kappa</th><th>Leitura</th></tr></thead><tbody></tbody></table></div>
       </div>
-      <div class="card full">
-        <h2>Normalidade e residuos por turno</h2>
-        <div class="tablebox"><table id="tabEstDiag"><thead><tr><th>Modelo</th><th>Normal?</th><th>Shapiro p</th><th>Tendencia</th><th>R2</th><th>Durbin-Watson</th></tr></thead><tbody></tbody></table></div>
+      <div class="card">
+        <h2>Distribuicao da concordancia por turno</h2>
+        <p class="muted" id="normInfo">Histograma da concordancia por turno. Se nao tem formato de sino, a distribuicao nao e normal &mdash; por isso a analise usa so testes nao-parametricos.</p>
+        <canvas id="cNorm"></canvas>
+      </div>
+      <div class="card">
+        <h2>Tendencia da concordancia por turno (residuos)</h2>
+        <div class="tablebox"><table id="tabEstDiag"><thead><tr><th>Modelo</th><th>Shapiro p</th><th>Distribuicao</th><th>Tendencia</th><th>R2</th><th>Durbin-Watson</th></tr></thead><tbody></tbody></table></div>
       </div>
     </div>
   </section>
@@ -288,7 +304,7 @@
       <div class="card">
         <h2>O que este painel mostra</h2>
         <p>Este painel acompanha o experimento de classificacao e reclassificacao automatica de chamados. Ele compara a categoria prevista pela IA com a categoria historica registrada na base.</p>
-        <p>O repositorio e experimental. O Malha IA operacional permanece em outro repositorio.</p>
+        <p>O repositorio e experimental e isolado do ambiente operacional, para garantir rastreabilidade sem interferir na producao.</p>
       </div>
       <div class="card">
         <h2>Estado dos dados</h2>
@@ -313,21 +329,100 @@
     </div>
 
     <div class="card full" style="margin-top:12px">
-      <h2>Modelos de IA: tamanho e como funcionam</h2>
-      <p class="muted">Valores aproximados, para entendimento. "Tokens/termos" e a forma como cada modelo le o texto; "parametros" e o tamanho do modelo. Modelos classicos usam TF-IDF (contagem de termos); o LSTM e uma rede neural; o robusto e um transformer pre-treinado em portugues.</p>
-      <div class="tablebox"><table>
-        <thead><tr><th>Modelo</th><th>Tipo</th><th>Tokens / termos</th><th>Parametros (aprox.)</th><th>Como funciona</th></tr></thead>
+      <h2>Como o texto vira numero: TF-IDF</h2>
+      <p>Os modelos classicos nao leem palavras, leem numeros. O <strong>TF-IDF</strong> transforma cada chamado num vetor: uma coluna por termo (ate ~30.000 termos, uni+bigramas), e o valor mede o quanto aquele termo e <em>frequente no chamado</em> e <em>raro no conjunto</em> (termos comuns como "de", "o" pesam pouco).</p>
+      <div class="eqbox">tfidf(t, d) = tf(t, d) &times; log( N / df(t) )</div>
+      <div class="xls"><strong>Analogia Excel:</strong> imagine uma planilha com um chamado por linha e uma coluna por palavra. Em cada celula: <code>=(vezes que a palavra aparece no chamado) * LOG(total_de_chamados / chamados_que_contem_a_palavra)</code>. Palavra rara e que aparece muito num chamado &rarr; celula alta.</div>
+      <p class="ref">Refs.: SPARCK JONES (1972); SALTON &amp; BUCKLEY (1988); MANNING, RAGHAVAN &amp; SCHUTZE (2008), <em>Introduction to Information Retrieval</em>, cap. 6.</p>
+    </div>
+
+    <div class="card full" style="margin-top:12px">
+      <h2>Modelos de IA: tamanho (resumo)</h2>
+      <p class="muted">Valores aproximados. "Entrada" e como o modelo le o texto; "tamanho" e a ordem de grandeza dos parametros. Detalhe de cada um nos cartoes abaixo.</p>
+      <div class="tablebox"><table class="compacta">
+        <thead><tr><th style="width:24%">Modelo</th><th style="width:30%">Tipo</th><th style="width:28%">Entrada</th><th style="width:18%">Tamanho</th></tr></thead>
         <tbody>
-          <tr><td>Naive Bayes</td><td>TF-IDF + classico</td><td>ate 30.000 termos (uni+bigramas)</td><td>~30k x nº categorias</td><td>conta frequencia de palavras por categoria (Bayes)</td></tr>
-          <tr><td>Regressao Logistica</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x nº categorias</td><td>combinacao linear das palavras para a probabilidade</td></tr>
-          <tr><td>LinearSVC</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x nº categorias</td><td>separa categorias por margem maxima (SVM linear)</td></tr>
-          <tr><td>SGD</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x nº categorias</td><td>regressao logistica treinada incrementalmente</td></tr>
-          <tr><td>ExtraTrees / Random Forest</td><td>TF-IDF + arvores</td><td>ate 30.000 termos</td><td>200 arvores de decisao</td><td>floresta de arvores aleatorias que votam</td></tr>
-          <tr><td>LSTM padrao</td><td>rede neural (BiLSTM)</td><td>vocab 8.000; sequencia 120 tokens; embedding 128</td><td>~1,1 milhao</td><td>rede recorrente bidirecional sobre embeddings (1 camada)</td></tr>
-          <tr><td>LSTM robusto</td><td>rede neural (2x BiLSTM)</td><td>vocab 20.000; sequencia 220 tokens; embedding 192</td><td>~4,6 milhoes</td><td>versao maior: 2 camadas, mais unidades e epocas</td></tr>
-          <tr><td>Robusto (Transformer)</td><td>transformer local (MiniLM multilingue)</td><td>~128 tokens; embeddings 384 dims</td><td>~118 milhoes</td><td>transformer pre-treinado gera embeddings + classificador; pesado, roda raramente</td></tr>
+          <tr><td>Naive Bayes</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
+          <tr><td>Regressao Logistica</td><td>TF-IDF + linear</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
+          <tr><td>LinearSVC</td><td>TF-IDF + SVM linear</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
+          <tr><td>SGD</td><td>TF-IDF + linear online</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
+          <tr><td>ExtraTrees / Random Forest</td><td>TF-IDF + arvores</td><td>ate 30.000 termos</td><td>200 arvores</td></tr>
+          <tr><td>LSTM padrao</td><td>rede neural BiLSTM</td><td>vocab 8.000; 120 tokens; emb. 128</td><td>~1,1 milhao</td></tr>
+          <tr><td>LSTM robusto</td><td>rede neural 2x BiLSTM</td><td>vocab 20.000; 220 tokens; emb. 192</td><td>~4,6 milhoes</td></tr>
+          <tr><td>Robusto (Transformer)</td><td>MiniLM multilingue</td><td>~128 tokens; emb. 384 dims</td><td>~118 milhoes</td></tr>
         </tbody>
       </table></div>
+    </div>
+
+    <div class="card full" style="margin-top:12px">
+      <h2>Como cada modelo decide (equacao + analogia Excel + referencia)</h2>
+      <div class="modelos-doc">
+
+        <div class="mod">
+          <h3>Naive Bayes</h3>
+          <div class="tipo">TF-IDF &middot; probabilistico</div>
+          <p>Estima a probabilidade de cada categoria multiplicando a "cara" de cada palavra naquela categoria, assumindo (ingenuamente) que as palavras sao independentes.</p>
+          <div class="eqbox">P(cat | texto) &prop; P(cat) &times; &prod;<sub>i</sub> P(palavra<sub>i</sub> | cat)</div>
+          <div class="xls"><strong>Excel:</strong> uma aba por categoria com a probabilidade de cada palavra; para um chamado, <code>=P(categoria)*PRODUTO(probabilidades das palavras presentes)</code> e escolhe a categoria com o maior resultado.</div>
+          <p class="ref">MANNING, RAGHAVAN &amp; SCHUTZE (2008), cap. 13; McCALLUM &amp; NIGAM (1998).</p>
+        </div>
+
+        <div class="mod">
+          <h3>Regressao Logistica</h3>
+          <div class="tipo">TF-IDF &middot; linear probabilistico</div>
+          <p>Da um peso a cada termo; soma os pesos das palavras do chamado e converte essa soma em probabilidade pela funcao sigmoide (softmax para varias categorias).</p>
+          <div class="eqbox">z = &sum;<sub>i</sub> w<sub>i</sub>x<sub>i</sub> + b &nbsp;&rarr;&nbsp; P(y|x) = 1 / (1 + e<sup>&minus;z</sup>)</div>
+          <div class="xls"><strong>Excel:</strong> <code>z = SOMARPRODUTO(pesos; tfidf) + b</code> e depois <code>=1/(1+EXP(-z))</code>. Cada palavra "puxa" para uma categoria conforme o peso.</div>
+          <p class="ref">HOSMER, LEMESHOW &amp; STURDIVANT (2013), <em>Applied Logistic Regression</em>.</p>
+        </div>
+
+        <div class="mod">
+          <h3>LinearSVC (SVM linear)</h3>
+          <div class="tipo">TF-IDF &middot; margem maxima</div>
+          <p>Tambem soma pesos das palavras, mas escolhe os pesos para deixar a maior "folga" (margem) entre as categorias. A saida e uma <em>distancia</em>, nao uma probabilidade &mdash; por isso precisa de calibracao.</p>
+          <div class="eqbox">decisao = sinal( w&middot;x + b ) &nbsp;|&nbsp; treino: min &frac12;&#8741;w&#8741;<sup>2</sup></div>
+          <div class="xls"><strong>Excel:</strong> mesma <code>=SOMARPRODUTO(pesos; tfidf)+b</code>, mas os pesos sao calibrados para maximizar a separacao. O numero alto NAO significa "95% de certeza".</div>
+          <p class="ref">CORTES &amp; VAPNIK (1995), <em>Support-Vector Networks</em>.</p>
+        </div>
+
+        <div class="mod">
+          <h3>SGD</h3>
+          <div class="tipo">TF-IDF &middot; linear incremental</div>
+          <p>Mesmo tipo de modelo linear (logistico/SVM), mas treinado por <em>descida de gradiente estocastica</em>: os pesos sao ajustados aos poucos, um lote de cada vez.</p>
+          <div class="eqbox">w &larr; w &minus; &eta; &nabla;L(w; x, y)</div>
+          <div class="xls"><strong>Excel:</strong> como arrastar a formula linha a linha corrigindo um pouquinho os pesos a cada chamado: <code>peso_novo = peso_velho - taxa * erro * tfidf</code>.</div>
+          <p class="ref">BOTTOU (2010), <em>Large-Scale Machine Learning with SGD</em>.</p>
+        </div>
+
+        <div class="mod">
+          <h3>ExtraTrees / Random Forest</h3>
+          <div class="tipo">TF-IDF &middot; arvores que votam</div>
+          <p>Muitas arvores de decisao, cada uma fazendo perguntas do tipo "o termo X aparece mais que um limiar?". A categoria final e o voto da maioria das arvores.</p>
+          <div class="eqbox">y&#770; = moda{ arvore<sub>1</sub>(x), &hellip;, arvore<sub>B</sub>(x) }</div>
+          <div class="xls"><strong>Excel:</strong> varias colunas com <code>=SE(tfidf_palavra&gt;limiar; ramo_A; ramo_B)</code> encadeadas (cada arvore) e, no fim, <code>=MODO(votos_das_arvores)</code>.</div>
+          <p class="ref">BREIMAN (2001), <em>Random Forests</em>; GEURTS, ERNST &amp; WEHENKEL (2006), <em>Extremely Randomized Trees</em>.</p>
+        </div>
+
+        <div class="mod">
+          <h3>LSTM (rede neural)</h3>
+          <div class="tipo">sequencia &middot; rede recorrente bidirecional</div>
+          <p>Le o chamado palavra por palavra mantendo uma "memoria" que se atualiza a cada token, com portas que decidem o que guardar ou esquecer. Le nos dois sentidos (BiLSTM) e no fim aplica softmax.</p>
+          <div class="eqbox">h<sub>t</sub> = LSTM(h<sub>t&minus;1</sub>, x<sub>t</sub>) &nbsp;|&nbsp; c<sub>t</sub> = f<sub>t</sub>&middot;c<sub>t&minus;1</sub> + i<sub>t</sub>&middot;c&#771;<sub>t</sub></div>
+          <div class="xls"><strong>Excel:</strong> uma coluna "memoria" em que cada celula usa a celula da linha anterior: <code>=memoria_anterior*porta_esquecer + nova_info*porta_entrar</code>, varrendo o texto do inicio ao fim e do fim ao inicio.</div>
+          <p class="ref">HOCHREITER &amp; SCHMIDHUBER (1997), <em>Long Short-Term Memory</em>; SCHUSTER &amp; PALIWAL (1997), <em>BiRNN</em>.</p>
+        </div>
+
+        <div class="mod">
+          <h3>Robusto (Transformer / MiniLM)</h3>
+          <div class="tipo">transformer pre-treinado em portugues</div>
+          <p>Em vez de ler em ordem, cada palavra "olha" todas as outras com pesos de <em>atencao</em>. Vem pre-treinado em milhoes de frases; aqui gera um vetor do chamado e um classificador decide a categoria. Pesado: roda raramente.</p>
+          <div class="eqbox">Atencao(Q,K,V) = softmax( Q&middot;K<sup>T</sup> / &radic;d ) &middot; V</div>
+          <div class="xls"><strong>Excel:</strong> imagine uma matriz "palavra x palavra" de pesos de relevancia (atencao) preenchida por <code>=SOFTMAX(produto entre vetores)</code>; nao cabe numa celula simples &mdash; e o ganho (e o custo) do modelo.</div>
+          <p class="ref">VASWANI et al. (2017), <em>Attention Is All You Need</em>; WANG et al. (2020), <em>MiniLM</em>; REIMERS &amp; GUREVYCH (2019), <em>Sentence-BERT</em>.</p>
+        </div>
+
+      </div>
+      <p class="muted" style="margin-top:10px">Nota: nos modelos lineares e no LSTM, a "confianca" e a saida bruta (distancia ou softmax). Softmax/decisao alta NAO e o mesmo que probabilidade calibrada de acerto &mdash; ver o plano de calibracao do projeto.</p>
     </div>
   </section>
 </main>
@@ -357,7 +452,14 @@ function destroy(id){ if(charts[id]) charts[id].destroy(); }
 function chartOpts(suf){return{responsive:true,plugins:{legend:{labels:{color:"#24303a",boxWidth:12}}},scales:{x:{ticks:{color:"#68737d"},grid:{color:"#edf0ea"}},y:{ticks:{color:"#68737d",callback:v=>v+(suf||"")},grid:{color:"#edf0ea"}}}};}
 
 let REG=[], FILTRADO=[], MODELOS_TURNOS=[];
-let REG_ETAPA1=[], FONTE="Etapa 1/LSTM", CACHE_REG={};
+let REG_ETAPA1=[], FONTE="Etapa 1/LSTM", CACHE_REG={}, MODELO_ATUAL="", MULTI_TURNOS=[];
+function TURNOS_POR_FONTE(){
+  if(!MODELO_ATUAL) return TURNOS;   // Etapa 1/LSTM oficial
+  return MULTI_TURNOS.filter(t=>String(t.modelo)===MODELO_ATUAL)
+    .map(t=>({turno:t.turno, taxa_concordancia:t.taxa_concordancia,
+              concordancia_acumulada:t.concordancia_acumulada, confianca_media:t.confianca_media}))
+    .sort((a,b)=>N(a.turno)-N(b.turno));
+}
 const FILT={g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
 const ROT_CAMPO={g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
 const ROT_FAIXA={acima_95:">=95%",entre_70_95:"70-95%",abaixo_70:"<70%"};
@@ -378,7 +480,7 @@ function renderFaixaFiltrada(reg){
   const c={acima_95:0,entre_70_95:0,abaixo_70:0}; reg.forEach(x=>{ if(c[x.f]!==undefined)c[x.f]++; });
   destroy("cFaixa");
   charts.cFaixa=new Chart(cFaixa,{type:"doughnut",data:{labels:[">=95%","70-95%","<70%"],
-    datasets:[{data:[c.acima_95,c.entre_70_95,c.abaixo_70],backgroundColor:["#1f7a4d","#b7791f","#b42318"]}]},
+    datasets:[{data:[c.acima_95,c.entre_70_95,c.abaixo_70],backgroundColor:["#2563eb","#b7791f","#b42318"]}]},
     options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
 function filtrosAtivos(){ return Object.values(FILT).some(s=>s.size); }
@@ -468,6 +570,7 @@ function popularSeletorModelos(){
 async function trocarModelo(modelo){
   // Carrega as predicoes de UM modelo por vez (13.825), nunca os 7 somados.
   let dados;
+  MODELO_ATUAL = modelo || "";
   if(!modelo){ dados=REG_ETAPA1; FONTE="Etapa 1/LSTM"; }
   else {
     FONTE=`Modelo ${modelo}`;
@@ -475,10 +578,7 @@ async function trocarModelo(modelo){
     else { dados = await getJSON(`registros_${modelo}.json`); dados = Array.isArray(dados)?dados:[]; CACHE_REG[modelo]=dados; }
   }
   REG = dados;
-  const nota=document.getElementById("fonteNota");
-  if(nota) nota.textContent = modelo
-    ? `fonte: ${modelo} (out-of-fold, 1 IA por vez) — comparacao vs historico, NAO a Etapa 1 oficial`
-    : "fonte: Etapa 1/LSTM; afetam Classificacao, Categorias e Metricas";
+  if(TURNOS_POR_FONTE().length) renderClass(TURNOS_POR_FONTE());  // grafico de turno acompanha o modelo
   Object.values(FILT).forEach(s=>s.clear());   // executores/grupos mudam por modelo
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
   else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
@@ -489,7 +589,7 @@ function renderClass(turnos){
   destroy("cEvol"); destroy("cConf");
   charts.cEvol = new Chart(cEvol,{type:"line",data:{labels,datasets:[
     {label:"Concordancia do turno (%)",data:turnos.map(t=>N(t.taxa_concordancia)*100),borderColor:"#68737d",pointRadius:0,borderWidth:1},
-    {label:"Concordancia acumulada (%)",data:turnos.map(t=>N(t.concordancia_acumulada)*100),borderColor:"#0f766e",pointRadius:0,borderWidth:2}
+    {label:"Concordancia acumulada (%)",data:turnos.map(t=>N(t.concordancia_acumulada)*100),borderColor:"#1d4ed8",pointRadius:0,borderWidth:2}
   ]},options:chartOpts("%")});
   charts.cConf = new Chart(cConf,{type:"line",data:{labels,datasets:[{label:"Confianca media (%)",data:turnos.map(t=>N(t.confianca_media)*100),borderColor:"#2f5f9e",pointRadius:0,borderWidth:1.5,fill:false}]},options:chartOpts("%")});
 }
@@ -541,12 +641,12 @@ function renderReclass(rt){
   document.querySelector("#tabReclass tbody").innerHTML = rt.map(t=>`<tr><td>${esc(t.turno)}</td><td>${fmt(t.qtd_reclassificados)}</td><td>${pct(t.taxa_concordancia_antes)}</td><td>${pct(t.taxa_concordancia_depois)}</td><td>${fmt(t.qtd_corrigidos)}</td><td>${fmt(t.qtd_prejudicados)}</td><td>${fmt(t.ganho_liquido)}</td><td>${esc(t.executor)}</td></tr>`).join("");
   destroy("cGanho"); destroy("cAntesDepois"); destroy("cCorr");
   const labels=rt.map(t=>t.turno);
-  charts.cGanho = new Chart(cGanho,{type:"bar",data:{labels,datasets:[{label:"Ganho liquido",data:rt.map(t=>N(t.ganho_liquido)),backgroundColor:rt.map(t=>N(t.ganho_liquido)>=0?"#1f7a4d":"#b42318")}]},options:chartOpts("")});
-  charts.cAntesDepois = new Chart(cAntesDepois,{type:"line",data:{labels,datasets:[{label:"Antes (%)",data:rt.map(t=>N(t.taxa_concordancia_antes)*100),borderColor:"#68737d",pointRadius:0},{label:"Depois (%)",data:rt.map(t=>N(t.taxa_concordancia_depois)*100),borderColor:"#1f7a4d",pointRadius:0,borderWidth:2}]},options:chartOpts("%")});
-  charts.cCorr = new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],backgroundColor:["#1f7a4d","#b42318","#2f5f9e","#68737d"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
+  charts.cGanho = new Chart(cGanho,{type:"bar",data:{labels,datasets:[{label:"Ganho liquido",data:rt.map(t=>N(t.ganho_liquido)),backgroundColor:rt.map(t=>N(t.ganho_liquido)>=0?"#2563eb":"#b42318")}]},options:chartOpts("")});
+  charts.cAntesDepois = new Chart(cAntesDepois,{type:"line",data:{labels,datasets:[{label:"Antes (%)",data:rt.map(t=>N(t.taxa_concordancia_antes)*100),borderColor:"#68737d",pointRadius:0},{label:"Depois (%)",data:rt.map(t=>N(t.taxa_concordancia_depois)*100),borderColor:"#2563eb",pointRadius:0,borderWidth:2}]},options:chartOpts("%")});
+  charts.cCorr = new Chart(cCorr,{type:"doughnut",data:{labels:["Corrigidos","Prejudicados","Mantidos OK","Mantidos erro"],datasets:[{data:[tot("qtd_corrigidos"),tot("qtd_prejudicados"),tot("qtd_mantidos_corretos"),tot("qtd_mantidos_errados")],backgroundColor:["#2563eb","#b42318","#2f5f9e","#68737d"]}]},options:{plugins:{legend:{labels:{color:"#24303a"}}}}});
 }
 
-const PALETA=["#0f766e","#b7791f","#2f5f9e","#b42318","#1f7a4d","#7c3aed","#0891b2","#a16207"];
+const PALETA=["#1d4ed8","#b7791f","#2f5f9e","#b42318","#2563eb","#7c3aed","#0891b2","#a16207"];
 function renderModelos(piloto, mm=[], turnos=[]){
   const tb = document.querySelector("#tabModelos tbody");
   const tr = document.querySelector("#tabRankModelos tbody");
@@ -557,14 +657,14 @@ function renderModelos(piloto, mm=[], turnos=[]){
   tb.innerHTML = ord.length ? ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${esc(r.inicio)}-${esc(r.limite)}</td>
     <td>${fmt(r.n_registros)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.f1_macro)}</td>
     <td>${pct(r.balanced_accuracy)}</td><td>${fmt(r.n_revisao)}</td><td>${N(r.tempo_treino_s).toFixed(1)}s</td></tr>`).join("")
-    : `<tr><td colspan="8">Sem recortes piloto publicados.</td></tr>`;
+    : `<tr><td colspan="8">Sem recortes publicados (rode comparar_modelos com --passo).</td></tr>`;
   if(!completos.length){ if(tr)tr.innerHTML=""; destroy("cModelos"); destroy("cModelosLote"); return; }
   tr.innerHTML = completos.map((d,i)=>`<tr><td>${i+1}</td><td>${esc(d.modelo)}${i===0?' <span class="status-ok">*</span>':''}</td>
     <td>${fmt(d.feitos_total)}</td><td class="${N(d.concordancia_acumulada)>=0.8?'status-ok':N(d.concordancia_acumulada)>=0.7?'status-mid':'status-bad'}">${pct(d.concordancia_acumulada)}</td>
     <td>${fmt(d.pendentes_restantes)}</td><td>${esc(d.metodo_ultimo)}</td></tr>`).join("");
   destroy("cModelos");
   charts.cModelos = new Chart(cModelos,{type:"bar",data:{labels:completos.map(d=>d.modelo),datasets:[
-    {label:"Concordancia acumulada (%)",data:completos.map(d=>N(d.concordancia_acumulada)*100),backgroundColor:"#0f766e"},
+    {label:"Concordancia acumulada (%)",data:completos.map(d=>N(d.concordancia_acumulada)*100),backgroundColor:"#1d4ed8"},
     {label:"Concordancia ultimo turno (%)",data:completos.map(d=>N(d.concordancia_ultimo_lote)*100),backgroundColor:"#b7791f"}
   ]},options:chartOpts("%")});
   renderModelosLote();
@@ -602,18 +702,29 @@ function renderEstatistica(est){
     return;
   }
   const norm = Array.isArray(est.normalidade_concordancia_turno) ? est.normalidade_concordancia_turno : [];
-  const normOk = norm.filter(r=>r.normal_5pct).length;
-  const leituraNormalidade = norm.length
-    ? (normOk ? `${normOk}/${norm.length} modelos nao rejeitam normalidade a 5%.` : `Normalidade rejeitada nos ${norm.length} modelos a 5%; pressupostos adotados: nao parametricos, com bootstrap para incerteza.`)
-    : "Normalidade ainda sem diagnostico publicado.";
+  const naoNormais = norm.filter(r=>!r.normal_5pct).length;
   document.getElementById("estatAviso").innerHTML =
-    `<strong>Base estatistica:</strong> ${fmt(est.n_linhas_comuns)} linhas comuns em ${fmt(est.modelos.length)} modelos. `+
-    `Alpha=${esc(est.alpha)}. ${esc(leituraNormalidade)} ${esc(est.observacao || "")}`;
+    `<strong>Base estatistica:</strong> ${fmt(est.n_linhas_comuns)} linhas comuns em ${fmt(est.modelos.length)} modelos (alpha=${esc(est.alpha)}). `+
+    `As distribuicoes da concordancia por turno <strong>nao sao normais</strong>`+
+    (norm.length?` (Shapiro-Wilk rejeitou normalidade em ${naoNormais}/${norm.length} modelos)`:``)+
+    `. Por isso a analise usa <strong>somente testes nao-parametricos</strong> (Spearman, Friedman/Nemenyi, Cochran Q, McNemar e bootstrap). `+
+    `Os resultados sao comparados contra a categoria <strong>historica</strong>, nao contra validacao humana (validados=0).`;
+  // Grafico de normalidade: histograma da concordancia por turno (todos os modelos juntos).
+  const taxas = MULTI_TURNOS.map(t=>N(t.taxa_concordancia)).filter(v=>v>0 && v<=1);
+  destroy("cNorm");
+  if(taxas.length){
+    const nb=12, lo=Math.min(...taxas), hi=Math.max(...taxas), w=(hi-lo)/nb||1;
+    const bins=new Array(nb).fill(0), labels=[];
+    taxas.forEach(v=>{ let i=Math.min(nb-1,Math.floor((v-lo)/w)); bins[i]++; });
+    for(let i=0;i<nb;i++) labels.push((Math.round((lo+i*w)*100))+"%");
+    charts.cNorm = new Chart(cNorm,{type:"bar",data:{labels,datasets:[{label:"Turnos (frequencia)",data:bins,backgroundColor:"#1d4ed8"}]},
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:"#68737d"},grid:{display:false}},y:{ticks:{color:"#68737d"},grid:{color:"#edf0ea"}}}}});
+  }
   const acc = Array.isArray(est.acuracia_bootstrap) ? est.acuracia_bootstrap : [];
   document.querySelector("#tabEstAcc tbody").innerHTML = acc.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${pct(r.acuracia)}</td><td>${pct(r.ic95_min)} a ${pct(r.ic95_max)}</td></tr>`).join("");
   destroy("cEstAcc");
   charts.cEstAcc = new Chart(cEstAcc,{type:"bar",data:{labels:acc.map(r=>r.modelo),datasets:[
-    {label:"Acuracia (%)",data:acc.map(r=>N(r.acuracia)*100),backgroundColor:"#0f766e"},
+    {label:"Acuracia (%)",data:acc.map(r=>N(r.acuracia)*100),backgroundColor:"#1d4ed8"},
     {label:"IC95 min (%)",data:acc.map(r=>N(r.ic95_min)*100),backgroundColor:"#d9ded7"},
     {label:"IC95 max (%)",data:acc.map(r=>N(r.ic95_max)*100),backgroundColor:"#bcd6cb"}
   ]},options:chartOpts("%")});
@@ -629,7 +740,7 @@ function renderEstatistica(est){
   const byRes={}; res.forEach(r=>byRes[r.modelo]=r);
   document.querySelector("#tabEstDiag tbody").innerHTML = norm.map(r=>{
     const d=byRes[r.modelo]||{};
-    return `<tr><td>${esc(r.modelo)}</td><td>${r.normal_5pct?"sim":"nao"}</td><td>${esc(r.p)}</td><td>${esc(d.tendencia||"")}</td><td>${esc(d.r2??"")}</td><td>${esc(d.durbin_watson??"")}</td></tr>`;
+    return `<tr><td>${esc(r.modelo)}</td><td>${esc(r.p)}</td><td>${r.normal_5pct?"normal":"<strong>nao-normal</strong>"}</td><td>${esc(d.tendencia||"")}</td><td>${esc(d.r2??"")}</td><td>${esc(d.durbin_watson??"")}</td></tr>`;
   }).join("");
   const cq=est.cochran_q||{}, fr=est.friedman||{};
   document.querySelector("#tabEstResumo tbody").innerHTML = [
@@ -694,10 +805,10 @@ function renderCalibracao(cal){
     + `(o acerto VALIDADO so aparece apos a validacao humana). Acerto vs historico e preliminar.`;
   const labels = cal.por_faixa.map(f=>f.faixa);
   const ds = [
-    {type:"bar",label:"Acerto vs historico (%)",data:cal.por_faixa.map(f=>N(f.concordancia_historico)*100),backgroundColor:"#0f766e"},
+    {type:"bar",label:"Acerto vs historico (%)",data:cal.por_faixa.map(f=>N(f.concordancia_historico)*100),backgroundColor:"#1d4ed8"},
     {type:"line",label:"Confianca media (%)",data:cal.por_faixa.map(f=>N(f.confianca_media)*100),borderColor:"#b7791f",pointRadius:3,borderWidth:2}
   ];
-  if(N(cal.validados)>0){ ds.push({type:"line",label:"Acerto validado (%)",data:cal.por_faixa.map(f=>f.acerto_validado==null?null:N(f.acerto_validado)*100),borderColor:"#1f7a4d",pointRadius:3,borderWidth:2,spanGaps:true}); }
+  if(N(cal.validados)>0){ ds.push({type:"line",label:"Acerto validado (%)",data:cal.por_faixa.map(f=>f.acerto_validado==null?null:N(f.acerto_validado)*100),borderColor:"#2563eb",pointRadius:3,borderWidth:2,spanGaps:true}); }
   destroy("cCalib");
   charts.cCalib = new Chart(cCalib,{type:"bar",data:{labels,datasets:ds},options:chartOpts("%")});
 }
@@ -733,6 +844,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   document.getElementById("meta").textContent = "Atualizado em: "+(fmtData(resumo&&resumo.gerado_em)||"sem data publicada");
   REG = Array.isArray(registros) ? registros : [];
   REG_ETAPA1 = REG;
+  MULTI_TURNOS = Array.isArray(multiTurnos) ? multiTurnos : [];
   popularSeletorModelos();
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
