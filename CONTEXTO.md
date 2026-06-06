@@ -711,3 +711,15 @@ Correcao aplicada: removido o `schedule` do workflow robusto; mantido apenas
 em dry-run por padrao e so grava na planilha se `aplicar=true` for escolhido manualmente.
 Isso preserva a regra atual: sem reclassificacao automatica antes de calibracao por modelo
 e sem validacao humana sem pedido explicito.
+
+## Atualizacao Codex - Etapa 2 manual em dry-run por padrao (2026-06-06 02:13)
+
+Nova revisao de workflows confirmou que `.github/workflows/etapa2_reclassificacao.yml` ainda
+chamava `src/executar_etapa2.py` com `--aplicar` sempre que o workflow manual fosse disparado.
+Como a reclassificacao esta sem prioridade e o dry-run anterior teve ganho liquido negativo,
+isso foi alterado para evitar gravacao acidental.
+
+Correcao aplicada: adicionado input `aplicar` booleano default `false`; o workflow agora roda
+sem `--aplicar` por padrao e so escreve na planilha quando `aplicar=true` for escolhido
+explicitamente. `multimodelo_reclassificacao.yml` e `reclassificacao_robusta.yml` ficam
+alinhados: ambos tambem usam dry-run por padrao.

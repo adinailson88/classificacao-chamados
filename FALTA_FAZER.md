@@ -224,3 +224,10 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 - Motivo: o dry-run anterior da reclassificacao multimodelo teve ganho liquido negativo
   (`corrigidos=5`, `prejudicados=9`, liquido `-4`); portanto nao deve haver escrita
   automatica antes da calibracao por modelo.
+
+## Atualizacao Codex - Etapa 2 manual em dry-run por padrao (2026-06-06 02:13)
+
+- [x] `.github/workflows/etapa2_reclassificacao.yml` deixou de gravar sempre.
+- [x] Adicionado input `aplicar` com default `false`.
+- [x] O workflow executa `src/executar_etapa2.py` sem `--aplicar` por padrao; so grava
+  quando `aplicar=true` for escolhido manualmente.

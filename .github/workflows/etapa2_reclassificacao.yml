@@ -1,8 +1,8 @@
 name: Etapa 2 - reclassificacao
 
 # Roteiro, Etapa 2 (17-23): reavalia os chamados de baixa confianca (<95%) da
-# Etapa 1, em turnos, medindo ganho liquido (corrigidos - prejudicados). Disparo
-# manual (so faz sentido depois que a Etapa 1 estiver concluida ou avancada).
+# Etapa 1, em turnos, medindo ganho liquido (corrigidos - prejudicados).
+# Disparo manual e dry-run por padrao; gravacao so com aplicar=true.
 
 on:
   workflow_dispatch:
@@ -17,6 +17,10 @@ on:
       max_turnos:
         description: "Turnos de 15 por execucao"
         default: "40"
+      aplicar:
+        description: "Gravar na planilha (false = dry-run)"
+        type: boolean
+        default: false
 
 concurrency:
   group: escrita-planilha
@@ -44,12 +48,13 @@ jobs:
         run: |
           if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
           printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
-      - name: Reclassificar
-        run: >
-          python src/executar_etapa2.py
-          --modelo "${{ github.event.inputs.modelo || 'producao' }}"
-          --max-turnos "${{ github.event.inputs.max_turnos || '40' }}"
-          --aplicar
+      - name: Reclassificar (manual; dry-run por padrao)
+        run: |
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
+            python src/executar_etapa2.py --modelo "${{ github.event.inputs.modelo || 'producao' }}" --max-turnos "${{ github.event.inputs.max_turnos || '40' }}" --aplicar
+          else
+            python src/executar_etapa2.py --modelo "${{ github.event.inputs.modelo || 'producao' }}" --max-turnos "${{ github.event.inputs.max_turnos || '40' }}"
+          fi
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json
