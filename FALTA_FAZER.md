@@ -252,3 +252,10 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
   `calibracao_ajustada_modelos.json`.
 - [x] `DOCUMENTACAO_MODELOS_E_ESTATISTICA.md` ganhou secao de calibracao preliminar com
   exemplo operacional e leitura do `linear_svc`.
+
+## Atualizacao Codex - robustez do workflow estatistico (2026-06-06 03:14)
+
+- [x] `.github/workflows/estatistica.yml` passou a usar `git pull --rebase --autostash`
+  com 5 tentativas antes do `git push`, igual ao dashboard.
+- Motivo: evitar falha por corrida de push quando `dashboard.yml`, Pages ou outro workflow
+  commitar dados enquanto a estatistica esta terminando.

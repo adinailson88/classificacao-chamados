@@ -771,3 +771,14 @@ Rodada de manutencao documental apos a publicacao da calibracao ajustada. Foram 
 
 Nenhum script foi executado contra a planilha nesta rodada. Validacoes locais: leitura dos
 documentos, `py_compile` dos scripts de calibracao/exportacao e status git.
+
+## Atualizacao Codex - robustez do workflow estatistico (2026-06-06 03:14)
+
+Revisao de CI encontrou que `.github/workflows/estatistica.yml` ainda fazia `git push` direto
+apos commitar `docs/dados/estatistica.json`. Isso podia falhar por corrida de push, problema ja
+observado e corrigido antes em `dashboard.yml`.
+
+Correcao aplicada: o passo `Commit estatistica` agora faz `git diff --cached --quiet` para sair
+sem mudancas, commita quando necessario e tenta `git pull --rebase --autostash origin main &&
+git push` ate 5 vezes. Nao altera planilha nem dashboard; apenas reduz falhas de publicacao de
+dados estatisticos.
