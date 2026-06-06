@@ -16,6 +16,10 @@ on:
         description: "Gravar na planilha"
         type: boolean
         default: false
+      usar_calibrado:
+        description: "Selecionar candidatos pela confianca CALIBRADA (em vez da bruta)"
+        type: boolean
+        default: false
       lstm_perfil:
         description: "Perfil LSTM"
         type: choice
@@ -60,11 +64,11 @@ jobs:
           printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
       - name: Reclassificar por modelo
         run: |
-          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
-            python src/reclassificacao_multimodelo.py --modelos "${{ github.event.inputs.modelos }}" --max-turnos "${{ github.event.inputs.max_turnos }}" --aplicar
-          else
-            python src/reclassificacao_multimodelo.py --modelos "${{ github.event.inputs.modelos }}" --max-turnos "${{ github.event.inputs.max_turnos }}"
-          fi
+          FLAGS="--modelos ${{ github.event.inputs.modelos }} --max-turnos ${{ github.event.inputs.max_turnos }}"
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then FLAGS="$FLAGS --aplicar"; fi
+          if [ "${{ github.event.inputs.usar_calibrado }}" = "true" ]; then FLAGS="$FLAGS --usar-calibrado"; fi
+          echo "flags: $FLAGS"
+          python src/reclassificacao_multimodelo.py $FLAGS
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json

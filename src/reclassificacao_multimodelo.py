@@ -64,8 +64,46 @@ def parse_conf(v) -> float:
         return 0.0
 
 
-def carregar_classif_baixa(sh, aba: str, limiar: float) -> dict[int, dict]:
-    """linha -> {cat_1, conf_1} dos casos com confianca < limiar."""
+def _carregar_calibrador(modelo: str) -> dict:
+    """Mapa do calibrador do modelo (y_grid em [0,1]) de calibracao_ajustada_modelos.json.
+    Retorna {} se ausente — nesse caso a confianca calibrada cai para a bruta."""
+    arq = RAIZ / "docs" / "dados" / "calibracao_ajustada_modelos.json"
+    try:
+        d = json.loads(arq.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    for m in d.get("modelos", []):
+        if m.get("modelo") == modelo:
+            return m.get("calibrador", {}) or {}
+    return {}
+
+
+def aplicar_calibrado(calibrador: dict, conf) -> float:
+    """Aplica o mapa do calibrador (grade y_grid) a uma confianca bruta por interpolacao
+    linear. Sem mapa, retorna a confianca original. (Espelha calibracao_confianca.)"""
+    g = (calibrador or {}).get("y_grid")
+    try:
+        c = max(0.0, min(1.0, float(conf)))
+    except (TypeError, ValueError):
+        return 0.0
+    if not g:
+        return c
+    pos = c * (len(g) - 1)
+    i = int(pos)
+    if i >= len(g) - 1:
+        return float(g[-1])
+    frac = pos - i
+    return float(g[i] * (1 - frac) + g[i + 1] * frac)
+
+
+def carregar_classif_baixa(sh, aba: str, limiar: float, calibrador: dict | None = None) -> dict[int, dict]:
+    """linha -> {cat_1, conf_1, conf_sel} dos casos com confianca < limiar.
+
+    conf_1 e sempre a confianca BRUTA (auditoria). Quando `calibrador` e fornecido,
+    a SELECAO usa a confianca CALIBRADA (conf_sel = P(acerto|conf_bruta)); senao
+    conf_sel = conf_1. Assim, modelos cuja saida bruta e enganosa (ex.: linear_svc)
+    deixam de marcar como "baixa confianca" casos que, calibrados, sao confiaveis.
+    """
     try:
         vals = sh.worksheet(aba).get_values("A:K", value_render_option="UNFORMATTED_VALUE")
     except Exception:  # noqa: BLE001
@@ -80,8 +118,9 @@ def carregar_classif_baixa(sh, aba: str, limiar: float) -> dict[int, dict]:
         except (ValueError, TypeError):
             continue
         conf = parse_conf(r[5])
-        if conf < limiar:
-            baixa[ln] = {"cat_1": str(r[4]).strip(), "conf_1": conf}
+        conf_sel = aplicar_calibrado(calibrador, conf) if calibrador else conf
+        if conf_sel < limiar:
+            baixa[ln] = {"cat_1": str(r[4]).strip(), "conf_1": conf, "conf_sel": conf_sel}
     return baixa
 
 
@@ -108,10 +147,13 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     aba_classif = clf.nome_aba(mm["aba_classificacao"], modelo)
     aba_reclass = clf.nome_aba(mm["aba_reclassificacao"], modelo)
 
-    baixa = carregar_classif_baixa(sh, aba_classif, lim_alta)
+    calibrador = _carregar_calibrador(modelo) if getattr(args, "usar_calibrado", False) else None
+    baixa = carregar_classif_baixa(sh, aba_classif, lim_alta, calibrador)
     feitas = linhas_ja_reclass(sh, aba_reclass)
     cand_linhas = [ln for ln in baixa if ln not in feitas and ln in por_linha]
-    cand_linhas.sort(key=lambda ln: (baixa[ln]["conf_1"], ln))
+    cand_linhas.sort(key=lambda ln: (baixa[ln].get("conf_sel", baixa[ln]["conf_1"]), ln))
+    if calibrador:
+        print(f"[{modelo}] selecao por confianca CALIBRADA ({calibrador.get('metodo','?')}).")
     if not cand_linhas:
         print(f"[{modelo}] 0 candidatos a reclassificar.")
         return {"modelo": modelo, "reclassificados": 0, "ganho_liquido": 0}
@@ -203,6 +245,9 @@ def parse_args():
                    help="'leves' (6), 'todos' (7), 'pesados' (lstm) ou lista.")
     p.add_argument("--max-turnos", type=int, default=0, help="Cap de turnos de 15 por execucao (0=todos).")
     p.add_argument("--aplicar", action="store_true")
+    p.add_argument("--usar-calibrado", action="store_true",
+                   help="Seleciona candidatos pela confianca CALIBRADA (calibracao_ajustada_modelos.json) "
+                        "em vez da bruta. Reduz candidatos espurios em modelos mal calibrados.")
     return p.parse_args()
 
 

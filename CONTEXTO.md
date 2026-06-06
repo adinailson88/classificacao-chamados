@@ -1213,3 +1213,20 @@ codigo: `planilha.ler_conferencias` (le M e N), `calibracao.py` (acerto IA valid
 acerto GLPI validado via N e matriz de confusao) e `exportar_dashboard.py` (campo `v` e
 contagem de `validados` via M). Validacao humana continua pausada: as colunas estao
 preparadas para quando o usuario preencher.
+
+## Confianca calibrada na selecao de candidatos da reclassificacao (2026-06-06)
+
+`calibracao_confianca.py` passou a persistir, por modelo, um **calibrador reaplicavel**
+(`calibrador.y_grid`, isotonica/sigmoide ajustada em todos os dados, 101 pontos) em
+`docs/dados/calibracao_ajustada_modelos.json`, alem das metricas. Funcoes novas:
+`_mapa_calibrador` e `aplicar_calibrado`.
+
+`reclassificacao_multimodelo.py` ganhou a flag **`--usar-calibrado`** (default OFF): quando
+ligada, a selecao de "baixa confianca" usa a confianca **calibrada** (P(acerto|conf_bruta))
+em vez da bruta; `conf_1` continua sendo a bruta para auditoria. Input `usar_calibrado`
+adicionado a `multimodelo_reclassificacao.yml`. Comportamento padrao inalterado.
+
+Impacto medido nos mapas: `linear_svc` mapeia bruta 0,30 -> calibrada ~0,99 (sua saida
+bruta era enganosa; calibrado, quase nada vira "baixa confianca"); `lstm` fica perto da
+diagonal (0,90->0,86), o que explica o ganho marginal da reclassificacao lstm. Ou seja:
+a flag tende a evitar reclassificacao espuria sobretudo nos modelos lineares.

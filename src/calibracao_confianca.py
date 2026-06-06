@@ -124,6 +124,46 @@ def _isotonic_oof(x: np.ndarray, y: np.ndarray, folds: int) -> np.ndarray:
     return out
 
 
+def _mapa_calibrador(x: np.ndarray, y: np.ndarray, metodo: str, npts: int = 101) -> dict:
+    """Ajusta o calibrador escolhido em TODOS os dados (nao out-of-fold) e amostra
+    P(acerto | confianca_bruta) numa grade de npts pontos em [0,1]. Esse mapa e
+    reaplicavel a novas confiancas (ver aplicar_calibrado), p.ex. na reclassificacao.
+    """
+    grade = np.linspace(0.0, 1.0, npts)
+    if len(set(y.tolist())) < 2:
+        yg = np.full(npts, float(np.mean(y)) if len(y) else 0.0)
+    elif metodo == "sigmoid":
+        clf = LogisticRegression(solver="lbfgs")
+        clf.fit(x.reshape(-1, 1), y)
+        yg = clf.predict_proba(grade.reshape(-1, 1))[:, 1]
+    else:
+        iso = IsotonicRegression(out_of_bounds="clip", y_min=0.0, y_max=1.0)
+        iso.fit(x, y)
+        yg = iso.predict(grade)
+    return {"metodo": metodo, "npts": npts, "y_grid": [round(float(v), 4) for v in yg]}
+
+
+def aplicar_calibrado(calibrador: dict, conf) -> float:
+    """Aplica o mapa do calibrador (grade y_grid em [0,1]) a uma confianca bruta,
+    por interpolacao linear. Sem mapa, retorna a confianca original."""
+    g = (calibrador or {}).get("y_grid")
+    if not g:
+        try:
+            return float(conf)
+        except (TypeError, ValueError):
+            return 0.0
+    try:
+        c = max(0.0, min(1.0, float(conf)))
+    except (TypeError, ValueError):
+        return 0.0
+    pos = c * (len(g) - 1)
+    i = int(pos)
+    if i >= len(g) - 1:
+        return float(g[-1])
+    frac = pos - i
+    return float(g[i] * (1 - frac) + g[i + 1] * frac)
+
+
 def calibrar_modelo(modelo: str, registros: list[dict], folds: int) -> dict:
     x = np.array([_n(r.get("c")) for r in registros], dtype=float)
     y = np.array([1 if _n(r.get("k")) >= 1 else 0 for r in registros], dtype=int)
@@ -147,6 +187,9 @@ def calibrar_modelo(modelo: str, registros: list[dict], folds: int) -> dict:
         "comparacao_metodos": medidos,
         "delta_ece": round(melhor["ece"] - bruto["ece"], 4),
         "delta_brier": round(melhor["brier"] - bruto["brier"], 4),
+        # Mapa reaplicavel (ajustado em todos os dados) para inferencia, ex.: selecao
+        # de candidatos da reclassificacao por confianca CALIBRADA.
+        "calibrador": _mapa_calibrador(x, y, melhor_metodo),
     }
 
 
