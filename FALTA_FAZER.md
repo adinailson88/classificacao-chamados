@@ -103,6 +103,10 @@ dados, fazer o painel mostrar a verdade.
 - [ ] **Reclassificação multimodelo** (`multimodelo_reclassificacao.yml`): só após
       Etapa 1 finalizada e dashboard/estatística atualizados — começar por **dry-run**
       (`-f aplicar=false`), sem aplicar em massa antes de medir ganho líquido.
+      Primeiro dry-run controlado executado em 06/06/2026, run `27059977070`,
+      `modelos=leves`, `max_turnos=1`, `aplicar=false`: 90 simulações, 0 escrita na
+      planilha; ganho líquido fraco (`extra_trees=+1`, `linear_svc=-2`,
+      `regressao_logistica=-1`, demais `0`). Não aplicar em massa ainda.
 
 ---
 

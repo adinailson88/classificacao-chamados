@@ -978,3 +978,21 @@ Validacao local dos JSONs publicados: `python -m json.tool` OK para
 `comparacao_previsoes=7000`. `FALTA_FAZER.md` foi alinhado para trocar o ECE antigo
 aproximado (`0,0399`) pelo valor atual do JSON (`0,0379`). Sem iniciar validacao humana e
 sem escrever na planilha.
+
+## Atualizacao Codex - dry-run reclassificacao multimodelo leve (2026-06-06 07:36)
+
+Nova sincronizacao previa: `git pull --ff-only origin main` retornou `Already up to date`.
+Sem iniciar validacao humana.
+
+Acao executada: workflow `multimodelo_reclassificacao.yml` disparado manualmente em
+dry-run com `modelos=leves`, `max_turnos=1`, `aplicar=false`: run `27059977070`, concluido
+com sucesso em 1m37s. O proprio workflow pulou TensorFlow porque o escopo foi apenas dos
+6 modelos leves. Como `--aplicar` nao foi usado, `src/reclassificacao_multimodelo.py`
+retornou antes de qualquer `append_aba`; nao houve escrita na planilha nem commit de dados.
+
+Resultado do log: `elegiveis=13825`, `memoria_validada=0`, 90 simulacoes no total.
+Por modelo: `naive_bayes` 15 reclassificados, ganho 0; `regressao_logistica` 15,
+ganho -1; `linear_svc` 15, ganho -2; `sgd` 15, ganho 0; `extra_trees` 15, ganho +1;
+`random_forest` 15, ganho 0. Resultado consolidado: ainda nao ha evidencia para aplicar
+reclassificacao em massa; manter apenas dry-runs/calibracao ate haver ganho liquido
+positivo e/ou validacao humana.
