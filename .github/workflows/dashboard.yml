@@ -37,7 +37,8 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-      - run: python -m pip install --retries 5 --timeout 120 gspread google-auth numpy scikit-learn
+          cache-dependency-path: "requirements-leves.txt"
+      - run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
       - name: Recriar chave da conta de servico
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

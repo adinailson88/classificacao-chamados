@@ -172,6 +172,12 @@ python src/resetar_experimento.py --aplicar --confirmar RESETAR
 
 Nos workflows manuais com input `aplicar`, mantenha `false` ate revisar logs, ganho liquido e impacto esperado.
 
+Dependencias em CI:
+
+- `requirements-leves.txt`: base comum sem TensorFlow (`gspread`, `google-auth`, `numpy`, `scikit-learn`).
+- `requirements.txt`: ambiente completo com TensorFlow, usado quando o fluxo realmente precisa de LSTM/producao.
+- `requirements-robusto.txt`: transformer local pesado, usado apenas nos fluxos de reclassificacao robusta.
+
 ## Dashboard publico
 
 O painel esta em:

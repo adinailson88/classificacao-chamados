@@ -108,14 +108,14 @@ dados, fazer o painel mostrar a verdade.
 ## P2 — Robustez dos WORKFLOWS (falha de instalação)
 Run manual `27001950857` da Etapa 1 falhou no `pip` baixando `tensorflow==2.17.0`
 (`IncompleteRead`, exit 2) — não foi erro de lógica.
-- [x] `etapa1_turnos.yml` já usa `cache: pip` + `cache-dependency-path: requirements.txt`
-      e `pip install --retries 5 --timeout 120`.
+- [x] `etapa1_turnos.yml` já usa `cache: pip`, `requirements-leves.txt` +
+      `requirements.txt` no cache e `pip install --retries 5 --timeout 120`.
 - [x] `multimodelo_classificacao.yml` e `multimodelo_reclassificacao.yml` ja usam cache,
       retry/timeout e separam dependencias leves de TensorFlow.
 - [x] `dashboard.yml`, `estatistica.yml`, `etapa2_reclassificacao.yml`,
       `reclassificacao_robusta.yml`, `reclassificacao_dry_run.yml`,
       `preparar_validacao.yml`, `resetar.yml` e `comparar_modelos.yml` usam retry/timeout.
-- [ ] Separar **workflow leve** (baseline/lineares, sem TF) do **workflow LSTM** (com TF)
+- [x] Separar **workflow leve** (baseline/lineares, sem TF) do **workflow LSTM** (com TF)
       tambem nos fluxos legados que ainda instalam `requirements.txt` completo,
       para que o download grande não derrube execuções leves.
 

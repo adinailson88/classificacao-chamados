@@ -915,3 +915,31 @@ JSON confirmou 7.000 registros com campos permitidos:
 `score`, `validacao_humana_final`. Busca textual por `id_chamado`, `"titulo"` e
 `observacao_avaliador` nao retornou ocorrencias. Pages build `27058852407` concluiu com
 sucesso para `headSha=e3d16898ab78c7adee601f68103e5d235192d255`.
+
+## Atualizacao Codex - separacao de dependencias leves/TensorFlow (2026-06-06 06:54)
+
+Nova sincronizacao: `git pull --ff-only origin main` retornou `Already up to date`.
+Sem iniciar validacao humana e sem escrever na planilha.
+
+Correcao aplicada em P2: criado `requirements-leves.txt` com `gspread`, `google-auth`,
+`numpy` e `scikit-learn`, deixando `requirements.txt` como ambiente completo com
+`tensorflow==2.17.0`. Workflows ajustados para instalar dependencias leves como base e
+baixar TensorFlow apenas quando o caminho pede LSTM/producao:
+
+- `classificacao_incremental.yml`: TensorFlow somente quando `modelo=producao`; baseline
+  usa apenas `requirements-leves.txt`.
+- `etapa1_turnos.yml`: schedule/producao instala TensorFlow; workflow manual `baseline`
+  usa apenas leves.
+- `etapa2_reclassificacao.yml`: TensorFlow somente quando `modelo=producao`; baseline usa
+  apenas leves.
+- `reclassificacao_dry_run.yml`: leves sempre; TensorFlow apenas para `producao`; robusto
+  instala `requirements-robusto.txt`.
+- `reclassificacao_robusta.yml`: leves + `requirements-robusto.txt`, sem TensorFlow.
+- `comparar_modelos.yml`, `multimodelo_classificacao.yml` e
+  `multimodelo_reclassificacao.yml`: cache passou a considerar `requirements-leves.txt`;
+  TensorFlow continua condicional ao escopo LSTM.
+- `dashboard.yml`: usa `requirements-leves.txt` como cache/install base.
+
+`README.md`, `docs/GUIA_TECNICO.md` e `FALTA_FAZER.md` foram alinhados; P2 fica concluido
+quanto a retry/cache e separacao leve/LSTM. `requirements-robusto.txt` permanece separado
+para o transformer local pesado.

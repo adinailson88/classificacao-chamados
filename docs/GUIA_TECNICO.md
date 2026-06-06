@@ -189,7 +189,8 @@ Avaliação %, Executor, Criticidade) e de **cada executor**.
 - `config_experimento.json` — `run_id`, `spreadsheet_id`, `aba_principal`,
   `range_leitura`, limiares (`limiar_confianca_baixa` 0.7, `limiar_alta_confianca`
   0.95), `tamanho_lote`, nomes das abas do experimento.
-- `requirements.txt` — `gspread`, `google-auth`, `scikit-learn`, `tensorflow`.
+- `requirements-leves.txt` — `gspread`, `google-auth`, `numpy`, `scikit-learn`; base dos workflows leves.
+- `requirements.txt` — ambiente completo com `tensorflow`, usado quando o fluxo precisa de LSTM/producao.
 - `credenciais_sa.json` — chave da conta de serviço (**gitignored**, nunca versionar).
 - `dados/` — artefatos JSON do processamento (**gitignored**, exceto `README.md`).
 - `tests/test_github_first.py` — testes locais (sem rede).
