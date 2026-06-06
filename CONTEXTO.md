@@ -1057,3 +1057,33 @@ com `gerado_em=06/06/2026 09:16`, `registros=13825`, 7 modelos com 13.825 regist
 reclassificacao foi aplicada. Pendencias restantes dependem de decisao humana:
 validacao manual, calibracao definitiva pos-validacao, possivel refinamento ABNT e
 remocao opcional de Apps Script legado.
+
+## Atualizacao Codex - dry-runs ampliados de reclassificacao (2026-06-06 13:12)
+
+Nova sincronizacao: `git pull --ff-only origin main` avancou de `3de2e27` para `13feda9`
+e depois, apos os dry-runs, para `dc2611f`, commits automaticos de dados do dashboard.
+Sem iniciar validacao humana e sem usar `aplicar=true`.
+
+Acao 1: workflow `multimodelo_reclassificacao.yml` disparado em dry-run com
+`modelos=leves`, `max_turnos=10`, `aplicar=false`: run `27067150023`, sucesso em 1m37s.
+O TensorFlow foi pulado. Resultado do log: 900 simulacoes totais, 150 por modelo,
+`memoria_validada=0`, metodo `topup`. Ganhos: `naive_bayes=+2` (5 corrigidos, 3
+prejudicados), `regressao_logistica=+1` (14/13), `linear_svc=+6` (18/12), `sgd=-2`
+(12/14), `extra_trees=0` (15/15), `random_forest=+9` (25/16). Ganho liquido consolidado
+dos leves: `+16` em 900 simulacoes.
+
+Acao 2: workflow `multimodelo_reclassificacao.yml` disparado em dry-run com
+`modelos=pesados`, `max_turnos=10`, `aplicar=false`, `lstm_perfil=padrao`: run
+`27067201945`, sucesso em 2m58s. O TensorFlow foi instalado. Resultado do log:
+`lstm` com `candidatos_baixa=9549`, `lote_agora=150`, `base=13675`, `corrigidos=31`,
+`prejudicados=12`, ganho `+19`, metodo `topup`.
+
+Dashboard automatico apos o dry-run LSTM: run `27067276183`, sucesso, gerando commit de
+dados `dc2611f`; Pages anterior do dry-run leve `27067203618` tambem concluiu com
+sucesso. Validacao local: `python -m json.tool docs\dados\resumo.json` OK.
+`resumo.json`: `gerado_em=06/06/2026 13:12`, `registros=13825`, 7 modelos com 13.825
+registros cada, `validados=0`, `ece_historico=0,0379`, `multimodelo_metricas=7` e
+`multimodelo_reclass_turnos=0`. Interpretacao: os dry-runs ampliados sugerem ganho
+positivo em recorte de baixa confianca, especialmente LSTM/random_forest/linear_svc, mas
+ainda contra historico e sem validacao humana; nao aplicar em massa antes de dry-run maior
+estratificado e decisao explicita.
