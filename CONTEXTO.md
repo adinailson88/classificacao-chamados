@@ -583,3 +583,30 @@ Reclassificacao multimodelo: continua **nao executada** (so dry-run apos tudo ac
 validacao humana permanece **pausada** por decisao do usuario.
 
 Validacoes locais OK: `py_compile` dos modulos-chave + `tests/test_github_first.py` (4 ok).
+
+Run IDs (2026-06-06): Etapa 1 final `27051019863`; dashboard `27051075802`/`27051109204`;
+estatistica (regenerou `estatistica.json` com bloco `pressupostos`) `27051205684`;
+dry-run reclassificacao `27051252248`. Pages publicado e conferido ao vivo:
+`registros=13825`, `validados=0`, `estatistica.gerado_em=06/06 00:22`, `assume=nao_parametrico`.
+
+### Dry-run da reclassificacao multimodelo (leves, max_turnos=1, aplicar=false) — `27051252248`
+
+Resultado (1 turno de 15 por modelo, **nada aplicado**): ganho liquido **nulo ou negativo**.
+
+| Modelo | corrigidos | prejudicados | GANHO |
+|---|---|---|---|
+| naive_bayes | 0 | 0 | 0 |
+| regressao_logistica | 0 | 1 | -1 |
+| linear_svc | 0 | 2 | -2 |
+| sgd | 1 | 1 | 0 |
+| extra_trees | 1 | 2 | -1 |
+| random_forest | 3 | 3 | 0 |
+
+Total: 90 reclassificacoes simuladas, **corrigidos=5 / prejudicados=9 (liquido -4)**.
+**Conclusao: NAO aplicar reclassificacao em massa agora** — nao ha ganho liquido contra
+o historico. Observacao relevante: `candidatos_baixa` cobre quase toda a base nos modelos
+lineares (linear_svc=13825, regressao_logistica=12358), porque a "baixa confianca" usa a
+saida BRUTA (decision_function/softmax). Isso reforca o `PLANO_CALIBRACAO.md`: sem confianca
+**calibrada**, o filtro de baixa confianca da reclassificacao perde sentido. Proximo passo
+tecnico recomendado: calibrar por modelo (comecar por linear_svc) antes de qualquer Etapa 2
+em massa; validacao humana segue pausada.
