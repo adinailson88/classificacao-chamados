@@ -119,8 +119,13 @@ dados, fazer o painel mostrar a verdade.
       2.700 casos e teve ganho consolidado `-1` (`random_forest=+23`,
       `extra_trees=+2`, `naive_bayes=0`, `regressao_logistica=-5`,
       `linear_svc=-10`, `sgd=-11`); run `27067734826` (`modelos=pesados`) simulou
-      450 casos LSTM e teve ganho `+33`. Próximo passo seguro: dry-run estratificado
-      focando LSTM e Random Forest antes de qualquer `aplicar=true`.
+      450 casos LSTM e teve ganho `+33`.
+      Por decisao explicita do usuario em 06/06/2026, iniciou-se aplicacao real controlada
+      **somente do LSTM**, um turno de 15 por execucao, para nao pesar a API:
+      runs `27067922061`, `27068022450` e `27068138920`, todos publicados no dashboard.
+      Acumulado publicado: 45 reclassificacoes, `corrigidos=7`, `prejudicados=6`,
+      ganho liquido `+1`. Continuar apenas turno a turno enquanto o ganho acumulado
+      permanecer nao negativo; nao iniciar validacao humana automaticamente.
 
 ---
 

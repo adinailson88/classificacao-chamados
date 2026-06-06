@@ -1113,3 +1113,34 @@ Validacao local: `python -m json.tool docs\dados\resumo.json` OK. `resumo.json`:
 450 casos por modelo, o ganho dos modelos leves praticamente desaparece no consolidado,
 com excecao de `random_forest`; o LSTM segue positivo. Proximo passo tecnico seguro:
 dry-run estratificado/focado em `lstm` e `random_forest`, ainda sem gravacao.
+
+## Atualizacao Codex - reclassificacao aplicada por turno LSTM (2026-06-06 13:56)
+
+Por pedido explicito do usuario, a reclassificacao deixou de ser apenas dry-run e passou a
+ser aplicada de forma controlada, **um turno por vez**, para nao pesar a API. A validacao
+humana ainda nao foi iniciada.
+
+Escopo operacional escolhido para reduzir risco: workflow `multimodelo_reclassificacao.yml`
+com `modelos=pesados`, `max_turnos=1`, `aplicar=true`, `lstm_perfil=padrao`. Cada execucao
+aplica 15 reclassificacoes LSTM em baixa confianca, publica o dashboard e depois os dados
+sao conferidos antes de qualquer novo turno.
+
+Turnos aplicados e publicados ate este marco:
+
+- run `27067922061`: 15 reclassificacoes; `corrigidos=2`, `prejudicados=2`, ganho `0`.
+  Dashboard `27067990058`, Pages `27068003282`, commit de dados `b58f743`.
+- run `27068022450`: 15 reclassificacoes; `corrigidos=3`, `prejudicados=1`, ganho `+2`.
+  Dashboard `27068104375`, Pages `27068118704`, commit de dados `dd0b8ae`.
+- run `27068138920`: 15 reclassificacoes; `corrigidos=2`, `prejudicados=3`, ganho `-1`.
+  Dashboard `27068211909`, Pages `27068227300`, commit de dados `35848c0`.
+
+Validacao local apos `git pull --rebase --autostash`: `docs/dados/resumo.json` em
+`06/06/2026 13:52`, `registros=13825`; `docs/dados/multimodelo_reclass_turnos.json`
+com 3 linhas, 45 reclassificacoes aplicadas, `corrigidos=7`, `prejudicados=6`, ganho
+liquido acumulado `+1`. Observacao tecnica: o campo `turno` dentro das linhas aparece
+como `1` em cada execucao porque cada workflow roda com `max_turnos=1`; para cronologia,
+usar a ordem/data das linhas e a contagem total.
+
+Criterio de seguranca adotado a partir daqui: continuar LSTM turno a turno somente enquanto
+o ganho acumulado publicado permanecer nao negativo; se virar negativo, pausar,
+documentar e aguardar decisao antes de prosseguir para validacao humana ou outro modelo.
