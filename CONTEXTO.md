@@ -1173,9 +1173,19 @@ ganho acumulado permanecer nao negativo.
   com 8 linhas (modelo lstm), ganhos por turno `0, +2, -1, +2, +1, 0, +2, 0` =
   **+6**; total **120 reclassificacoes** aplicadas. Validado apos
   `git pull --rebase --autostash`.
-- **Atencao (rendimento decrescente)**: os ultimos turnos renderam `0, +2, 0` &mdash; o
-  ganho acumulado esta estagnado em **+6**. Sem calibracao por modelo, novos turnos lstm
-  tendem a render ~0. Decidir com o usuario se vale seguir antes de gastar mais escrita.
+- **9o turno**: run `27069502066`, `corrigidos=3 | prejudicados=0 | GANHO=+3` &rarr;
+  acumulado **135 reclassificacoes, ganho liquido +9** (json: `0,+2,-1,+2,+1,0,+2,0,+3`).
+- **10o turno**: run `27069599870` calculou `GANHO=+2` mas **FALHOU na gravacao** com
+  `ConnectionError (RemoteDisconnected)` durante o `append` (run aparece "success" porque
+  `main()` retorna 0 e captura a excecao do modelo, logando `[lstm] FALHOU`). Resultado:
+  **o 10o turno NAO foi registrado** (json permanece com 9 turnos / +9). Pode ter deixado
+  ate 15 linhas por-chamado orfas em `RECLASS__lstm` (sem linha de turno) — discrepancia
+  de auditoria menor; a reclassificacao NAO muta CLASSIF (sem corromper a classificacao).
+- **Correcao aplicada** (commit `05bb196`): `reclassificacao_multimodelo._append_resiliente`
+  com retry (5x, backoff) para erros transitorios (rede/quota) nas DUAS gravacoes
+  (por chamado e por turno). Proximos turnos nao devem mais perder estatistica assim.
+- **Rendimento**: ganhos por turno ate aqui `0,+2,-1,+2,+1,0,+2,0,+3` (acumulado +9). A
+  estagnacao anterior (+6) foi quebrada pelo 9o turno (+3). Validacao humana segue pausada.
 - Criterio de seguranca mantido: ganho acumulado **+6 (nao negativo)** &rarr; e
   permitido seguir, mas **novos turnos nao foram disparados automaticamente** (decisao
   do usuario). **Validacao humana NAO iniciada** (sera feita pelo usuario depois).

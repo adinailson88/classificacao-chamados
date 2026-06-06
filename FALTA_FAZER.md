@@ -136,10 +136,14 @@ dados, fazer o painel mostrar a verdade.
       `docs/dados/multimodelo_reclass_turnos.json`: ganhos por turno
       `0,+2,-1,+2,+1,0,+2,0`). Cadeia dashboard/Pages OK
       (`27069206479`/`27069219526`).
-      ⚠️ **Rendimento decrescente**: ultimos turnos `0,+2,0` (acumulado parado em +6).
+      **9o turno**: run `27069502066`, `GANHO=+3` &rarr; acumulado
+      **135 reclassificacoes, ganho liquido +9** (json `0,+2,-1,+2,+1,0,+2,0,+3`).
+      **10o turno**: run `27069599870` calculou `GANHO=+2` mas **FALHOU na gravacao**
+      (`ConnectionError`/RemoteDisconnected no append) &rarr; NAO registrado (json segue
+      com 9 turnos). Corrigido em `05bb196` (`_append_resiliente` com retry nas duas
+      gravacoes). Possivel residuo: ate 15 linhas por-chamado orfas em `RECLASS__lstm`.
       Continuar apenas turno a turno enquanto o ganho acumulado permanecer nao
-      negativo; **avaliar calibracao por modelo antes de mais turnos**; nao iniciar
-      validacao humana automaticamente.
+      negativo; **avaliar calibracao por modelo**; nao iniciar validacao humana.
 
 ---
 
