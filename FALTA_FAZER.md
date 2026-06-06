@@ -142,6 +142,9 @@ dados, fazer o painel mostrar a verdade.
       (`ConnectionError`/RemoteDisconnected no append) &rarr; NAO registrado (json segue
       com 9 turnos). Corrigido em `05bb196` (`_append_resiliente` com retry nas duas
       gravacoes). Possivel residuo: ate 15 linhas por-chamado orfas em `RECLASS__lstm`.
+      Lote seguinte (codigo resiliente) runs `27069889301`/`27069951087`/`27070030886`:
+      ganhos `+0,+4,+1`, todos gravados. **Acumulado publicado: 12 turnos = +14, 180
+      reclassificacoes** (`0,+2,-1,+2,+1,0,+2,0,+3,0,+4,+1`; dashboard `27070103104`).
       Continuar apenas turno a turno enquanto o ganho acumulado permanecer nao
       negativo; **avaliar calibracao por modelo**; nao iniciar validacao humana.
 

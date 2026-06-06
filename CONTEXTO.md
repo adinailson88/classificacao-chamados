@@ -1186,6 +1186,14 @@ ganho acumulado permanecer nao negativo.
   (por chamado e por turno). Proximos turnos nao devem mais perder estatistica assim.
 - **Rendimento**: ganhos por turno ate aqui `0,+2,-1,+2,+1,0,+2,0,+3` (acumulado +9). A
   estagnacao anterior (+6) foi quebrada pelo 9o turno (+3). Validacao humana segue pausada.
+- **Lote de 3 turnos com o codigo ja resiliente** (runs `27069889301`, `27069951087`,
+  `27070030886`): ganhos `+0, +4, +1`, todos gravados sem falha (`OK: reclassificados=15
+  | modelos=1`). Acumulado publicado: **12 turnos, ganhos
+  `0,+2,-1,+2,+1,0,+2,0,+3,0,+4,+1` = +14, 180 reclassificacoes** (dashboard
+  `27070103104`, validado apos `git pull --rebase --autostash`). O turno perdido por
+  ConnectionError (GANHO=+2 nao gravado) NAO foi contabilizado — correto; aqueles
+  candidatos retornam ao pool. Ganho acumulado +14 (nao negativo); validacao humana
+  permanece pausada; calibracao por modelo segue como proximo passo recomendado.
 - Criterio de seguranca mantido: ganho acumulado **+6 (nao negativo)** &rarr; e
   permitido seguir, mas **novos turnos nao foram disparados automaticamente** (decisao
   do usuario). **Validacao humana NAO iniciada** (sera feita pelo usuario depois).
