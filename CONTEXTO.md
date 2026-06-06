@@ -1167,10 +1167,15 @@ ganho acumulado permanecer nao negativo.
 - **7o turno**: run `27068688359`. `reclass=15 | corrigidos=4 | prejudicados=2 |
   GANHO=+2 | metodo=topup`. Cadeia automatica OK: dashboard `27068777378` +
   Pages `27068789902`.
-- **Acumulado publicado (apos 7 turnos)**: `docs/dados/multimodelo_reclass_turnos.json`
-  com 7 linhas (modelo lstm), ganhos por turno `0, +2, -1, +2, +1, 0, +2` =
-  **+6**; total **105 reclassificacoes** aplicadas. Validado apos
+- **8o turno**: run `27069146071`. `reclass=15 | corrigidos=2 | prejudicados=2 |
+  GANHO=0`. Cadeia automatica OK: dashboard `27069206479` + Pages `27069219526`.
+- **Acumulado publicado (apos 8 turnos)**: `docs/dados/multimodelo_reclass_turnos.json`
+  com 8 linhas (modelo lstm), ganhos por turno `0, +2, -1, +2, +1, 0, +2, 0` =
+  **+6**; total **120 reclassificacoes** aplicadas. Validado apos
   `git pull --rebase --autostash`.
+- **Atencao (rendimento decrescente)**: os ultimos turnos renderam `0, +2, 0` &mdash; o
+  ganho acumulado esta estagnado em **+6**. Sem calibracao por modelo, novos turnos lstm
+  tendem a render ~0. Decidir com o usuario se vale seguir antes de gastar mais escrita.
 - Criterio de seguranca mantido: ganho acumulado **+6 (nao negativo)** &rarr; e
   permitido seguir, mas **novos turnos nao foram disparados automaticamente** (decisao
   do usuario). **Validacao humana NAO iniciada** (sera feita pelo usuario depois).
