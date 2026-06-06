@@ -864,3 +864,7 @@ indicando series temporais nao filtraveis. O exportador tambem ja populava os ca
 Correcao aplicada: no `docs/index.html`, o dropdown multi-selecao agora fecha apos cada
 selecao/desselecao de checkbox, reduzindo a chance de cobrir abas ou graficos. `FALTA_FAZER.md`
 foi alinhado marcando P0.1 como concluido por verificacao estatica e ajuste de UX.
+
+Validacao/publicacao: JavaScript de `docs/index.html` extraido e validado com `node --check`.
+Commit `604d32b` enviado ao `main`; Pages build `27057996073` concluido com sucesso para
+`headSha=604d32b2df02b3346cbb97a6b33b900fac6a60cb`.
