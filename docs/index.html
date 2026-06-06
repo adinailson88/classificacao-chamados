@@ -240,7 +240,7 @@
   </section>
 
   <section id="tab-multi" class="hide">
-    <div class="alerta" id="multiAviso">As 7 IAs ainda nao foram materializadas (abas CLASSIF__&lt;modelo&gt; vazias). Esta aba mostra o ciclo completo por modelo (classificacao out-of-fold, confianca e reclassificacao proprias) assim que <code>multimodelo_classificacao.yml</code> rodar com aplicar=true.</div>
+    <div class="alerta" id="multiAviso">Dados multimodelo indisponiveis no JSON publicado. As 7 IAs ja foram materializadas em abas separadas; se esta mensagem aparecer, confira a ultima exportacao do dashboard e os arquivos <code>multimodelo_metricas.json</code>, <code>multimodelo_turnos.json</code> e <code>registros_&lt;modelo&gt;.json</code>. Nao use <code>aplicar=true</code> para reclassificacao sem revisar o dry-run.</div>
     <div class="card full">
       <h2>Progresso por modelo (multimodelo materializado)</h2>
       <p class="muted">Cada IA classifica TODA a base na sua propria aba, com predicao out-of-fold (a IA nao treina na linha que rotula). Concordancia vs categoria historica.</p>

@@ -804,3 +804,26 @@ Correcao aplicada: guia agora descreve Etapa 2 e robusto como manuais e dry-run 
 com `--aplicar`/`aplicar=true` apenas apos revisao de ganho liquido, calibracao e impacto
 esperado. `dados/README.md` tambem removeu a referencia legada a `doPost` e passou a falar
 em escrita `gspread` em lote.
+
+## Atualizacao Codex - heartbeat 08:14Z / alinhamento de pendencias (2026-06-06 05:14)
+
+Sincronizacao do `main`: `git pull --ff-only origin main` trouxe apenas dados regenerados
+pelo dashboard no commit remoto `982d494` (`docs/dados/calibracao*.json` e `resumo.json`).
+`gh run list --limit 12` confirmou runs recentes bem-sucedidos: dashboard agendado
+`27056590550` e Pages `27056604445`.
+
+Revisao de pendencias encontrou itens documentais desatualizados:
+
+- `multimodelo_classificacao.yml` e `multimodelo_reclassificacao.yml` ja usam cache pip,
+  retry/timeout e instalacao separada de dependencias leves/TensorFlow.
+- `dashboard.yml`, `estatistica.yml`, `etapa2_reclassificacao.yml`,
+  `reclassificacao_robusta.yml`, `reclassificacao_dry_run.yml`, `preparar_validacao.yml`,
+  `resetar.yml` e `comparar_modelos.yml` tambem usam retry/timeout.
+- `resumo.json` ja registra 7 arquivos `registros_<modelo>.json`, todos com 13.825 linhas.
+
+Correcao aplicada: `FALTA_FAZER.md` foi alinhado em P2/P3 para indicar que robustez de
+instalacao e calibracao escalar preliminar ja foram executadas, restando calibracao definitiva
+apenas apos validacao humana. `docs/index.html` tambem teve o estado vazio da aba
+`Multimodelo` corrigido: ele nao diz mais que as 7 IAs nao foram materializadas nem sugere
+`aplicar=true`; agora orienta verificar os JSONs publicados e manter reclassificacao em
+dry-run ate revisao.

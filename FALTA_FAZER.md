@@ -104,19 +104,27 @@ Run manual `27001950857` da Etapa 1 falhou no `pip` baixando `tensorflow==2.17.0
 (`IncompleteRead`, exit 2) — não foi erro de lógica.
 - [x] `etapa1_turnos.yml` já usa `cache: pip` + `cache-dependency-path: requirements.txt`
       e `pip install --retries 5 --timeout 120`.
-- [ ] Aplicar o mesmo padrão (cache + retry/timeout) nos demais workflows que ainda usam
-      `pip install -r requirements.txt` simples — em especial `multimodelo_reclassificacao.yml`.
-- [ ] Separar **workflow leve** (baseline/lineares, sem TF) do **workflow LSTM** (com TF),
+- [x] `multimodelo_classificacao.yml` e `multimodelo_reclassificacao.yml` ja usam cache,
+      retry/timeout e separam dependencias leves de TensorFlow.
+- [x] `dashboard.yml`, `estatistica.yml`, `etapa2_reclassificacao.yml`,
+      `reclassificacao_robusta.yml`, `reclassificacao_dry_run.yml`,
+      `preparar_validacao.yml`, `resetar.yml` e `comparar_modelos.yml` usam retry/timeout.
+- [ ] Separar **workflow leve** (baseline/lineares, sem TF) do **workflow LSTM** (com TF)
+      tambem nos fluxos legados que ainda instalam `requirements.txt` completo,
       para que o download grande não derrube execuções leves.
 
 ---
 
 ## P3 — CALIBRAÇÃO rumo ao objetivo dos ≥95%
-Hoje só se **mede** o ECE vs histórico; falta **calibrar** de fato.
-- [ ] Avaliar ajuste de calibrador (Platt/isotônico, ex.: `CalibratedClassifierCV`)
-      por modelo, gerando confiança calibrada (não só softmax).
-- [ ] Calibração **por modelo** (JSON por IA) + rótulo de decisão por faixa.
-- [ ] Confirmar que a faixa ≥95% mantém acerto ~≥95% (primeiro vs histórico; definitivo
+Diagnostico bruto e calibracao escalar preliminar ja foram publicados. Ainda falta a
+calibracao definitiva, treinada/avaliada contra validacao humana.
+- [x] Diagnostico bruto por IA: `docs/dados/calibracao_modelos.json`.
+- [x] Calibracao escalar preliminar out-of-fold por IA:
+      `docs/dados/calibracao_ajustada_modelos.json`.
+- [ ] Implementar calibradores definitivos por modelo quando houver rotulos humanos
+      (`CalibratedClassifierCV`/Platt para lineares, isotonico para arvores/NB,
+      temperature scaling ou equivalente para LSTM).
+- [ ] Confirmar que a faixa ≥95% mantém acerto ~≥95% (preliminar vs histórico; definitivo
       só após validação humana).
 
 ---
