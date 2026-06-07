@@ -9,8 +9,11 @@ name: Reclassificar validados (M e N) -> coluna O
 # treina o modelo quando ha chamados validados pendentes; sem candidatos, e no-op barato.
 
 on:
-  schedule:
-    - cron: "*/15 * * * *"
+  # Cron */15 (robusto MiniLM) PAUSADO em 2026-06-06: a coluna O passou a ser de
+  # responsabilidade do transformer_ft (BERTimbau fine-tuning, ver transformer_ft.yml),
+  # para nao competir na escrita de O. Mantido como disparo manual de contingencia.
+  # schedule:
+  #   - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       max_turnos:

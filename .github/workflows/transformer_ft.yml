@@ -11,6 +11,10 @@ name: Transformer fine-tuning (BERTimbau)
 #     ficando lado a lado com os 7 modelos nas abas Modelos/Estatistica.
 
 on:
+  # A cada 6h: refaz a coluna O dos validados com o BERTimbau fine-tuned (1 treino por run,
+  # processa todos os pendentes). Pesado -> baixa frequencia. Tambem disparavel manualmente.
+  schedule:
+    - cron: "0 */6 * * *"
   workflow_dispatch:
     inputs:
       acao:
