@@ -4,10 +4,17 @@ name: Estatistica multimodelo
 # docs/dados/estatistica.json. Nao exporta texto de chamado.
 
 on:
+  # Agendamento periodico (a cada 6h) para manter a estatistica fresca, alem dos
+  # gatilhos por workflow_run apos os fluxos que alteram dados.
+  schedule:
+    - cron: "30 */6 * * *"
   workflow_dispatch:
   workflow_run:
     workflows:
       - "Multimodelo - classificacao completa"
+      - "Comparar modelos (lote)"
+      - "Reclassificar validados (M e N) -> coluna O"
+      - "Transformer fine-tuning (BERTimbau)"
     types:
       - completed
 

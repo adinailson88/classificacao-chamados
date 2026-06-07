@@ -1307,3 +1307,19 @@ sem fine-tuning). Implementacao:
 ATENCAO (conflito de propriedade da coluna O): o cron `reclassificar_validados.yml` (*/15,
 modelo robusto MiniLM) tambem preenche `O`. Se a coluna `O` deve vir do transformer_ft,
 e preciso pausar/!= o cron robusto para nao competir. Decisao pendente do usuario.
+
+## Parte estatistica deixada pronta/setada (2026-06-06)
+
+`analise_estatistica.py` ganhou: McNemar com **Holm-Bonferroni** (`mcnemar_holm`),
+**macro-F1 e recall macro com IC95 bootstrap** (`f1_macro_bootstrap`), **top confusoes**
+por modelo (`top_confusoes`) e **acerto contra a verdade validada** derivada de M/N
+(`validacao_humana_modelos`: N=Correto->G; senao M=Correto->C). Tudo em
+`docs/dados/estatistica.json`, alem dos blocos ja existentes (Spearman, normalidade/
+residuos, acuracia+IC, Kappa Cohen/Fleiss, Cochran Q, McNemar, Friedman/Nemenyi).
+
+Dashboard (aba Estatistica): novos cards para macro-F1 (IC95), pares significativos
+McNemar+Holm e acerto contra a verdade validada (placeholders graciosos ate haver dados;
+testado no preview sem erro). `estatistica.yml`: agendamento `30 */6` + gatilhos
+workflow_run apos Multimodelo/Comparar/Reclassificar validados/Transformer. Nenhuma aba
+nova na planilha foi necessaria (le CLASSIF__*, MULTIMODELO_TURNOS, registros.json e a aba
+principal para M/N). `CONTEXTO_ESTATISTICA_CLASSIFICACAO.md` completado com a metodologia.

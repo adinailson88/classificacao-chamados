@@ -305,6 +305,103 @@ def main() -> int:
     except Exception as e:  # noqa: BLE001
         print(f"friedman: {e}", file=sys.stderr)
 
+    # 8) Holm-Bonferroni sobre os p-valores do McNemar (controla erro tipo I nos pares)
+    try:
+        pares = []
+        for a, b in combinations(range(len(modelos)), 2):
+            p = out["mcnemar"]["p"][a][b]
+            if p is not None:
+                pares.append((modelos[a], modelos[b], float(p)))
+        pares.sort(key=lambda x: x[2])
+        mtests = len(pares)
+        holm, ainda_sig = [], True
+        for i, (ma, mb, p) in enumerate(pares):
+            limiar = 0.05 / (mtests - i) if (mtests - i) > 0 else 0.05
+            sig = bool(ainda_sig and p <= limiar)
+            if not sig:
+                ainda_sig = False  # step-down: para na 1a nao-rejeicao
+            holm.append({"par": [ma, mb], "p": float(f"{p:.2e}"),
+                         "limiar_holm": float(f"{limiar:.2e}"), "significativo": sig})
+        out["mcnemar_holm"] = {
+            "n_testes": mtests, "alpha": 0.05, "metodo": "Holm-Bonferroni (step-down)",
+            "pares": holm, "pares_significativos": [h["par"] for h in holm if h["significativo"]],
+            "nota": "Corrige multiplicidade dos pares McNemar; controla o erro familiar (FWER)."}
+    except Exception as e:  # noqa: BLE001
+        print(f"holm: {e}", file=sys.stderr)
+
+    # 9) macro-F1 e macro-recall com IC95 bootstrap, por modelo (vs historico)
+    try:
+        from sklearn.metrics import f1_score, recall_score
+        rng = np.random.default_rng(42)
+        ytrue = np.array(orig)
+        out["f1_macro_bootstrap"] = []
+        for m in modelos:
+            yp = np.array(pred[m])
+            f1 = f1_score(ytrue, yp, average="macro", zero_division=0)
+            rc = recall_score(ytrue, yp, average="macro", zero_division=0)
+            bf, br = [], []
+            for _ in range(500):
+                s = rng.integers(0, n, n)
+                bf.append(f1_score(ytrue[s], yp[s], average="macro", zero_division=0))
+                br.append(recall_score(ytrue[s], yp[s], average="macro", zero_division=0))
+            out["f1_macro_bootstrap"].append({
+                "modelo": m, "f1_macro": round(float(f1), 4),
+                "f1_ic95": [round(float(np.percentile(bf, 2.5)), 4), round(float(np.percentile(bf, 97.5)), 4)],
+                "recall_macro": round(float(rc), 4),
+                "recall_ic95": [round(float(np.percentile(br, 2.5)), 4), round(float(np.percentile(br, 97.5)), 4)]})
+        out["f1_macro_bootstrap"].sort(key=lambda d: -d["f1_macro"])
+    except Exception as e:  # noqa: BLE001
+        print(f"f1_macro: {e}", file=sys.stderr)
+
+    # 10) Top confusoes (categoria_historica -> previsto) por modelo, compacto
+    try:
+        from collections import Counter
+        out["top_confusoes"] = []
+        for m in modelos:
+            c = Counter((orig[i], pred[m][i]) for i in range(n) if pred[m][i] != orig[i])
+            out["top_confusoes"].append({"modelo": m, "pares": [
+                {"de": de, "para": para, "n": qt} for (de, para), qt in c.most_common(10)]})
+    except Exception as e:  # noqa: BLE001
+        print(f"confusoes: {e}", file=sys.stderr)
+
+    # 11) Estatistica contra a VERDADE VALIDADA (conferencia dupla M/N), quando houver.
+    #     Verdade derivada: N (CONFERENCIA IA)=Correto -> categoria = G (Etapa 1);
+    #     senao M (CONFERENCIA GLPI)=Correto -> categoria = C (historico). Pronto para
+    #     popular automaticamente a medida que a validacao humana cresce.
+    try:
+        conferencias = pl.ler_conferencias(sh, config["aba_principal"])
+        regs = json.loads((RAIZ / "docs" / "dados" / "registros.json").read_text(encoding="utf-8"))
+        gc = {str(r.get("l")): {"G": r.get("p"), "C": r.get("o")} for r in regs}
+        verdade = {}
+        for ln, c in conferencias.items():
+            base = gc.get(ln, {})
+            if c.get("ia") == "Correto":
+                verdade[ln] = base.get("G")
+            elif c.get("glpi") == "Correto":
+                verdade[ln] = base.get("C")
+        verdade = {k: v for k, v in verdade.items() if v}
+        val = {"n_verdade_derivada": len(verdade),
+               "base": "conferencia dupla M/N (N=Correto->G; senao M=Correto->C)",
+               "nota": "Preliminar enquanto a amostra validada e pequena/nao aleatoria.",
+               "por_modelo": []}
+        for m in modelos:
+            nv = okv = 0
+            for ln, tru in verdade.items():
+                try:
+                    li = int(ln)
+                except (TypeError, ValueError):
+                    continue
+                if li in dados[m]:
+                    nv += 1
+                    okv += int(dados[m][li]["ia"] == tru)
+            val["por_modelo"].append({"modelo": m, "n": nv,
+                                      "acerto_validado": round(okv / nv, 4) if nv else None})
+        val["por_modelo"].sort(key=lambda d: -(d["acerto_validado"] or 0))
+        out["validacao_humana_modelos"] = val
+        print(f"validacao: verdade_derivada={len(verdade)}")
+    except Exception as e:  # noqa: BLE001
+        print(f"validado: {e}", file=sys.stderr)
+
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
     SAIDA.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"OK -> {SAIDA} | n={n} | modelos={len(modelos)}")

@@ -331,6 +331,20 @@
         <p class="muted" id="matrizInfo">Carregando validacao...</p>
         <div id="matrizBox"></div>
       </div>
+      <div class="card">
+        <h2>Macro-F1 e Recall macro (IC95 bootstrap)</h2>
+        <div class="tablebox"><table id="tabEstF1"><thead><tr><th>Modelo</th><th>Macro-F1</th><th>IC95</th><th>Recall macro</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Pares significativos (McNemar + Holm-Bonferroni)</h2>
+        <p class="muted" id="holmInfo">Carregando...</p>
+        <div class="tablebox"><table id="tabEstHolm"><thead><tr><th>Par de modelos</th><th>p</th><th>Significativo</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card full">
+        <h2>Acerto por modelo contra a VERDADE VALIDADA (M/N)</h2>
+        <p class="muted" id="valModInfo">Aparece quando houver conferencia humana (M e N). Verdade derivada: N=Correto &rarr; categoria da IA (G); senao M=Correto &rarr; historico (C).</p>
+        <div class="tablebox"><table id="tabEstValMod"><thead><tr><th>Modelo</th><th>n validados</th><th>Acerto validado</th></tr></thead><tbody></tbody></table></div>
+      </div>
     </div>
   </section>
 
@@ -848,6 +862,23 @@ function renderEstatistica(est){
     ["Fleiss Kappa", est.fleiss_kappa_entre_ias!=null?String(est.fleiss_kappa_entre_ias):"indisponivel", "Mede concordancia entre as IAs; quanto maior, mais elas classificam de forma parecida."],
     ["McNemar par a par", est.mcnemar?"matriz calculada no JSON":"indisponivel", "Compara dois modelos linha a linha para saber se erram/acertam de modo significativamente diferente."]
   ].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("");
+  // Macro-F1 / recall macro com IC95
+  const f1b = Array.isArray(est.f1_macro_bootstrap) ? est.f1_macro_bootstrap : [];
+  const tF1=document.querySelector("#tabEstF1 tbody");
+  if(tF1) tF1.innerHTML = f1b.length ? f1b.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${pct(r.f1_macro)}</td><td>${pct(r.f1_ic95?.[0])} a ${pct(r.f1_ic95?.[1])}</td><td>${pct(r.recall_macro)}</td></tr>`).join("") : `<tr><td colspan="4">Indisponivel.</td></tr>`;
+  // McNemar + Holm-Bonferroni
+  const holm = est.mcnemar_holm||{};
+  const tH=document.querySelector("#tabEstHolm tbody"), hi=document.getElementById("holmInfo");
+  const hpares = Array.isArray(holm.pares)?holm.pares:[];
+  if(hi) hi.textContent = holm.n_testes!=null ? `${(holm.pares_significativos||[]).length} de ${holm.n_testes} pares significativos (${holm.metodo||"Holm"}, alpha 0,05).` : "Indisponivel.";
+  if(tH) tH.innerHTML = hpares.length ? hpares.map(h=>`<tr><td>${esc((h.par||[]).join(" x "))}</td><td>${esc(h.p)}</td><td class="${h.significativo?'status-ok':'muted'}">${h.significativo?"sim":"nao"}</td></tr>`).join("") : `<tr><td colspan="3">Indisponivel.</td></tr>`;
+  // Acerto contra a verdade validada (M/N)
+  const vm = est.validacao_humana_modelos||{};
+  const vpm = Array.isArray(vm.por_modelo)?vm.por_modelo:[];
+  const tVM=document.querySelector("#tabEstValMod tbody"), vmi=document.getElementById("valModInfo");
+  const algum = vpm.some(r=>N(r.n)>0);
+  if(vmi && N(vm.n_verdade_derivada)>0) vmi.textContent = `Verdade derivada em ${fmt(vm.n_verdade_derivada)} chamados validados (amostra possivelmente nao aleatoria; preliminar).`;
+  if(tVM) tVM.innerHTML = algum ? vpm.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${fmt(r.n)}</td><td>${r.acerto_validado==null?"-":pct(r.acerto_validado)}</td></tr>`).join("") : `<tr><td colspan="3">Sem conferencia humana suficiente ainda (preencha M e N).</td></tr>`;
 }
 function renderMulti(mm, turnos, rt){
   const aviso=document.getElementById("multiAviso");
