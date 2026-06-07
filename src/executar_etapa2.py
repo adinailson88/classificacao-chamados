@@ -52,6 +52,11 @@ def parse_conf(v) -> float:
 
 def treinar_reclass(modelo, textos, cats, config=None):
     """Retorna (predict_fn, tag). predict_fn(textos) -> (preds, confs)."""
+    if modelo in ("transformer_ft", "bertimbau"):
+        import modelos_zoo as zoo
+        m = zoo.criar_modelo("transformer_ft")
+        m.fit(textos, cats)
+        return (lambda x: m.predict_score(list(x))), "TransformerFT"
     if modelo == "robusto":
         import classificador_robusto as cr
         lstm_config = (config or {}).get("modelo_ia", {}).get("lstm", {})

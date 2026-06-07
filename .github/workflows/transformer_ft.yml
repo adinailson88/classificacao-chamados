@@ -1,0 +1,72 @@
+name: Transformer fine-tuning (BERTimbau)
+
+# Modelo CONTEXTUAL com fine-tuning (BERTimbau, self-attention) — o 8o modelo,
+# comparavel aos 7. PESADO: instala torch + transformers e faz fine-tuning em CPU,
+# por isso roda em workflow proprio, MANUAL e com timeout alto (nao entra no cron */15).
+#
+# Acoes:
+#   - reclassificar_validados: refaz a coluna O para TODOS os chamados validados
+#     (M e N preenchidas) usando o transformer com fine-tuning (1 treino, varios chamados).
+#   - comparar: avalia o transformer numa janela held-out e grava em COMPARACAO_MODELOS,
+#     ficando lado a lado com os 7 modelos nas abas Modelos/Estatistica.
+
+on:
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "O que fazer"
+        type: choice
+        default: reclassificar_validados
+        options:
+          - reclassificar_validados
+          - comparar
+      limite:
+        description: "Para 'comparar': tamanho da janela held-out de teste"
+        default: "500"
+      epochs:
+        description: "Epocas de fine-tuning (CPU; cuidado com o tempo)"
+        default: "3"
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  transformer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      TRANSFORMER_EPOCHS: ${{ github.event.inputs.epochs || '3' }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: |
+            requirements-leves.txt
+            requirements-transformer.txt
+      - name: Instalar dependencias leves
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Instalar transformer (torch + transformers)
+        run: python -m pip install --retries 5 --timeout 600 -r requirements-transformer.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Executar transformer (fine-tuning)
+        run: |
+          if [ "${{ github.event.inputs.acao }}" = "comparar" ]; then
+            python src/comparar_modelos_lote.py --modelo transformer_ft --inicio 0 --limite "${{ github.event.inputs.limite || '500' }}" --aplicar
+          else
+            python src/reclassificar_validados.py --modelo transformer_ft --max-turnos 0 --aplicar
+          fi
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json

@@ -41,8 +41,10 @@ def parse_args():
     p = argparse.ArgumentParser(description="Reclassifica chamados validados (M e N) na coluna O.")
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
-    p.add_argument("--modelo", choices=["robusto", "producao", "baseline"], default="robusto",
-                   help="Modelo de reclassificacao (padrao: robusto = transformer + fallback).")
+    p.add_argument("--modelo", choices=["transformer_ft", "robusto", "producao", "baseline"],
+                   default="transformer_ft",
+                   help="Modelo de reclassificacao. Padrao: transformer_ft = BERTimbau com "
+                        "fine-tuning (contextual). 'robusto' = embeddings MiniLM + LogReg.")
     p.add_argument("--tamanho-turno", type=int, default=15)
     p.add_argument("--max-turnos", type=int, default=1, help="Turnos de 15 por execucao (0=todos).")
     p.add_argument("--aplicar", action="store_true")

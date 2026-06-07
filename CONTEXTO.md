@@ -1282,3 +1282,28 @@ uma vez `etapa1_turnos`, `reclassificar_validados` (aplicar) e `dashboard` via
 `gh workflow run`, para "ver tudo rodando" sem esperar os crons (que seguem ativos).
 Colunas da aba principal agora: ... M=CONFERENCIA GLPI, N=CONFERENCIA IA,
 O=Classificacao IA - 2, P=CONFERENCIA IA - 2.
+
+## 8o modelo: transformer com fine-tuning (BERTimbau) (2026-06-06)
+
+A pedido do usuario, foi adicionado um modelo CONTEXTUAL com fine-tuning supervisionado
+(self-attention), distinto do `classificador_robusto` (que e embeddings MiniLM + LogReg,
+sem fine-tuning). Implementacao:
+- `modelos_zoo._ModeloTransformerFT`: BERTimbau (`neuralmind/bert-base-portuguese-cased`)
+  com cabeca de classificacao, fine-tuning por loop torch (AdamW + scheduler), interface
+  `fit`/`predict_score` igual aos outros; **fallback para LSTM/RF** se transformers/torch
+  faltarem. Hiperparametros por env (TRANSFORMER_EPOCHS/MAXLEN/BATCH/LR).
+  Adicionado a `criar_modelo`, a `MODELOS_PESADOS` e a `MODELOS_TODOS` (8o).
+- `config_experimento.json`: `multimodelo.modelos_pesados = [lstm, transformer_ft]`.
+- `requirements-transformer.txt` (torch + transformers).
+- `executar_etapa2.treinar_reclass` e `reclassificar_validados.py` aceitam
+  `--modelo transformer_ft` (passa a ser o padrao do reclassificar_validados.py).
+- Workflow `transformer_ft.yml` (manual, timeout 360 min): acao `reclassificar_validados`
+  (refaz a coluna O de todos os validados com o transformer) ou `comparar` (janela
+  held-out -> COMPARACAO_MODELOS, comparavel aos 7).
+- **Custo**: fine-tuning de BERT em CPU e lento; por isso roda em workflow proprio,
+  manual/baixa frequencia, NAO no cron */15. Validado: py_compile + criacao do modelo OK
+  (treino real nao executado localmente por exigir torch/transformers + tempo).
+
+ATENCAO (conflito de propriedade da coluna O): o cron `reclassificar_validados.yml` (*/15,
+modelo robusto MiniLM) tambem preenche `O`. Se a coluna `O` deve vir do transformer_ft,
+e preciso pausar/!= o cron robusto para nao competir. Decisao pendente do usuario.

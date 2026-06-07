@@ -207,6 +207,8 @@ python src/resetar_experimento.py --aplicar --confirmar RESETAR
 8. `multimodelo_classificacao.yml`: classificacao por modelo em `CLASSIF__<modelo>`, manual, dry-run por padrao.
 9. `multimodelo_reclassificacao.yml`: reclassificacao por modelo em `RECLASS__<modelo>`, manual, dry-run por padrao.
 10. `reclassificar_validados.yml`: reclassifica AUTOMATICAMENTE os chamados ja validados (colunas `M` e `N` preenchidas) com o modelo robusto, gravando o resultado na coluna `O` (Classificacao IA - 2). Cron a cada 15 min, no maximo 15 chamados por execucao; so treina quando ha validados pendentes.
+11. `transformer_ft.yml`: 8o modelo, **BERTimbau com fine-tuning** (contextual, self-attention). PESADO (torch + transformers, fine-tuning em CPU) — manual, timeout alto. Acoes: `reclassificar_validados` (refaz a coluna `O` de todos os validados com o transformer, 1 treino) ou `comparar` (avalia numa janela held-out e grava em `COMPARACAO_MODELOS`, lado a lado com os 7).
+12. `iniciar_pipeline.yml`: orquestrador manual que dispara Etapa 1 + reclassificar_validados + dashboard de uma vez.
 
 Nos workflows manuais com input `aplicar`, mantenha `false` ate revisar logs, ganho liquido e impacto esperado.
 

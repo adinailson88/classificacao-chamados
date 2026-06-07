@@ -1,0 +1,5 @@
+# Transformer com FINE-TUNING (BERTimbau, classificacao de sequencia contextual).
+# Pesado: torch + transformers. Use SO no workflow dedicado (materializar_transformer.yml).
+# Em CPU o fine-tuning e lento; rodar com timeout alto e baixa frequencia.
+transformers>=4.40,<5
+torch>=2.2,<3

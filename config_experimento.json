@@ -86,8 +86,18 @@
   "multimodelo": {
     "_nota": "Materializa o ciclo completo (classificacao + confianca + calibracao + reclassificacao) por IA, uma aba por modelo, com predicao OUT-OF-FOLD (a IA que rotula a linha nunca treinou nela). Lote dinamico: processa o que estiver pendente, mesmo que reste apenas 1 chamado.",
     "habilitado": true,
-    "modelos_leves": ["naive_bayes", "regressao_logistica", "linear_svc", "sgd", "extra_trees", "random_forest"],
-    "modelos_pesados": ["lstm"],
+    "modelos_leves": [
+      "naive_bayes",
+      "regressao_logistica",
+      "linear_svc",
+      "sgd",
+      "extra_trees",
+      "random_forest"
+    ],
+    "modelos_pesados": [
+      "lstm",
+      "transformer_ft"
+    ],
     "k_folds": 5,
     "min_base_treino": 200,
     "fracao_topup": 0.25,
