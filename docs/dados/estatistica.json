@@ -1,5 +1,5 @@
 {
-  "gerado_em": "06/06/2026 00:22",
+  "gerado_em": "06/06/2026 23:03",
   "n_linhas_comuns": 13825,
   "modelos": [
     "naive_bayes",
@@ -361,14 +361,23 @@
     ]
   },
   "friedman": {
-    "stat": 20.522,
-    "p": 0.00224,
+    "stat": 46.309,
+    "p": 7.86e-09,
     "blocos": [
-      "0-200",
-      "200-400",
-      "400-600",
-      "600-800",
-      "800-1000"
+      "0-1000",
+      "1000-2000",
+      "2000-3000",
+      "3000-4000",
+      "4000-5000",
+      "5000-6000",
+      "6000-7000",
+      "7000-8000",
+      "8000-9000",
+      "9000-10000",
+      "10000-11000",
+      "11000-12000",
+      "12000-13000",
+      "13000-13825"
     ],
     "modelos": [
       "naive_bayes",
@@ -376,40 +385,836 @@
       "linear_svc",
       "sgd",
       "extra_trees",
-      "random_forest",
-      "lstm"
+      "random_forest"
     ],
     "rank_medio": [
       {
         "modelo": "linear_svc",
-        "rank_medio": 1.4
-      },
-      {
-        "modelo": "regressao_logistica",
-        "rank_medio": 3.0
-      },
-      {
-        "modelo": "sgd",
-        "rank_medio": 3.2
+        "rank_medio": 1.607
       },
       {
         "modelo": "extra_trees",
-        "rank_medio": 4.0
+        "rank_medio": 2.393
+      },
+      {
+        "modelo": "sgd",
+        "rank_medio": 3.0
+      },
+      {
+        "modelo": "regressao_logistica",
+        "rank_medio": 3.929
       },
       {
         "modelo": "random_forest",
-        "rank_medio": 4.2
+        "rank_medio": 4.143
       },
       {
         "modelo": "naive_bayes",
-        "rank_medio": 5.2
+        "rank_medio": 5.929
+      }
+    ],
+    "diferenca_critica_nemenyi": 2.015,
+    "nota": "Diferenca de rank_medio > CD => diferenca significativa (Nemenyi, alpha=0,05)."
+  },
+  "mcnemar_holm": {
+    "n_testes": 21,
+    "alpha": 0.05,
+    "metodo": "Holm-Bonferroni (step-down)",
+    "pares": [
+      {
+        "par": [
+          "linear_svc",
+          "lstm"
+        ],
+        "p": 4.42e-276,
+        "limiar_holm": 0.00238,
+        "significativo": true
+      },
+      {
+        "par": [
+          "extra_trees",
+          "lstm"
+        ],
+        "p": 1.16e-197,
+        "limiar_holm": 0.0025,
+        "significativo": true
+      },
+      {
+        "par": [
+          "sgd",
+          "lstm"
+        ],
+        "p": 2.05e-183,
+        "limiar_holm": 0.00263,
+        "significativo": true
+      },
+      {
+        "par": [
+          "naive_bayes",
+          "linear_svc"
+        ],
+        "p": 6.8e-165,
+        "limiar_holm": 0.00278,
+        "significativo": true
+      },
+      {
+        "par": [
+          "regressao_logistica",
+          "lstm"
+        ],
+        "p": 1.76e-151,
+        "limiar_holm": 0.00294,
+        "significativo": true
+      },
+      {
+        "par": [
+          "random_forest",
+          "lstm"
+        ],
+        "p": 7.8e-149,
+        "limiar_holm": 0.00313,
+        "significativo": true
+      },
+      {
+        "par": [
+          "naive_bayes",
+          "extra_trees"
+        ],
+        "p": 2.42e-141,
+        "limiar_holm": 0.00333,
+        "significativo": true
+      },
+      {
+        "par": [
+          "naive_bayes",
+          "sgd"
+        ],
+        "p": 7.72e-86,
+        "limiar_holm": 0.00357,
+        "significativo": true
+      },
+      {
+        "par": [
+          "naive_bayes",
+          "random_forest"
+        ],
+        "p": 8.69e-69,
+        "limiar_holm": 0.00385,
+        "significativo": true
+      },
+      {
+        "par": [
+          "naive_bayes",
+          "regressao_logistica"
+        ],
+        "p": 1.22e-61,
+        "limiar_holm": 0.00417,
+        "significativo": true
+      },
+      {
+        "par": [
+          "regressao_logistica",
+          "linear_svc"
+        ],
+        "p": 4.49e-51,
+        "limiar_holm": 0.00455,
+        "significativo": true
+      },
+      {
+        "par": [
+          "linear_svc",
+          "random_forest"
+        ],
+        "p": 2.92e-39,
+        "limiar_holm": 0.005,
+        "significativo": true
+      },
+      {
+        "par": [
+          "linear_svc",
+          "sgd"
+        ],
+        "p": 1.52e-33,
+        "limiar_holm": 0.00556,
+        "significativo": true
+      },
+      {
+        "par": [
+          "extra_trees",
+          "random_forest"
+        ],
+        "p": 9.43e-12,
+        "limiar_holm": 0.00625,
+        "significativo": true
+      },
+      {
+        "par": [
+          "regressao_logistica",
+          "sgd"
+        ],
+        "p": 1.34e-11,
+        "limiar_holm": 0.00714,
+        "significativo": true
+      },
+      {
+        "par": [
+          "linear_svc",
+          "extra_trees"
+        ],
+        "p": 4.09e-11,
+        "limiar_holm": 0.00833,
+        "significativo": true
+      },
+      {
+        "par": [
+          "naive_bayes",
+          "lstm"
+        ],
+        "p": 5.45e-10,
+        "limiar_holm": 0.01,
+        "significativo": true
+      },
+      {
+        "par": [
+          "regressao_logistica",
+          "extra_trees"
+        ],
+        "p": 5.58e-10,
+        "limiar_holm": 0.0125,
+        "significativo": true
+      },
+      {
+        "par": [
+          "sgd",
+          "extra_trees"
+        ],
+        "p": 0.000848,
+        "limiar_holm": 0.0167,
+        "significativo": true
+      },
+      {
+        "par": [
+          "sgd",
+          "random_forest"
+        ],
+        "p": 0.00271,
+        "limiar_holm": 0.025,
+        "significativo": true
+      },
+      {
+        "par": [
+          "regressao_logistica",
+          "random_forest"
+        ],
+        "p": 0.404,
+        "limiar_holm": 0.05,
+        "significativo": false
+      }
+    ],
+    "pares_significativos": [
+      [
+        "linear_svc",
+        "lstm"
+      ],
+      [
+        "extra_trees",
+        "lstm"
+      ],
+      [
+        "sgd",
+        "lstm"
+      ],
+      [
+        "naive_bayes",
+        "linear_svc"
+      ],
+      [
+        "regressao_logistica",
+        "lstm"
+      ],
+      [
+        "random_forest",
+        "lstm"
+      ],
+      [
+        "naive_bayes",
+        "extra_trees"
+      ],
+      [
+        "naive_bayes",
+        "sgd"
+      ],
+      [
+        "naive_bayes",
+        "random_forest"
+      ],
+      [
+        "naive_bayes",
+        "regressao_logistica"
+      ],
+      [
+        "regressao_logistica",
+        "linear_svc"
+      ],
+      [
+        "linear_svc",
+        "random_forest"
+      ],
+      [
+        "linear_svc",
+        "sgd"
+      ],
+      [
+        "extra_trees",
+        "random_forest"
+      ],
+      [
+        "regressao_logistica",
+        "sgd"
+      ],
+      [
+        "linear_svc",
+        "extra_trees"
+      ],
+      [
+        "naive_bayes",
+        "lstm"
+      ],
+      [
+        "regressao_logistica",
+        "extra_trees"
+      ],
+      [
+        "sgd",
+        "extra_trees"
+      ],
+      [
+        "sgd",
+        "random_forest"
+      ]
+    ],
+    "nota": "Corrige multiplicidade dos pares McNemar; controla o erro familiar (FWER)."
+  },
+  "f1_macro_bootstrap": [
+    {
+      "modelo": "linear_svc",
+      "f1_macro": 0.5717,
+      "f1_ic95": [
+        0.5487,
+        0.6012
+      ],
+      "recall_macro": 0.5869,
+      "recall_ic95": [
+        0.568,
+        0.6195
+      ]
+    },
+    {
+      "modelo": "regressao_logistica",
+      "f1_macro": 0.5515,
+      "f1_ic95": [
+        0.5325,
+        0.573
+      ],
+      "recall_macro": 0.5839,
+      "recall_ic95": [
+        0.5669,
+        0.6126
+      ]
+    },
+    {
+      "modelo": "sgd",
+      "f1_macro": 0.5462,
+      "f1_ic95": [
+        0.5285,
+        0.5708
+      ],
+      "recall_macro": 0.5859,
+      "recall_ic95": [
+        0.5693,
+        0.6164
+      ]
+    },
+    {
+      "modelo": "random_forest",
+      "f1_macro": 0.524,
+      "f1_ic95": [
+        0.5085,
+        0.5516
+      ],
+      "recall_macro": 0.541,
+      "recall_ic95": [
+        0.5276,
+        0.5697
+      ]
+    },
+    {
+      "modelo": "extra_trees",
+      "f1_macro": 0.5073,
+      "f1_ic95": [
+        0.4884,
+        0.5358
+      ],
+      "recall_macro": 0.4835,
+      "recall_ic95": [
+        0.4699,
+        0.5133
+      ]
+    },
+    {
+      "modelo": "lstm",
+      "f1_macro": 0.4044,
+      "f1_ic95": [
+        0.3928,
+        0.4176
+      ],
+      "recall_macro": 0.4728,
+      "recall_ic95": [
+        0.4539,
+        0.494
+      ]
+    },
+    {
+      "modelo": "naive_bayes",
+      "f1_macro": 0.2491,
+      "f1_ic95": [
+        0.2469,
+        0.2626
+      ],
+      "recall_macro": 0.2529,
+      "recall_ic95": [
+        0.25,
+        0.2665
+      ]
+    }
+  ],
+  "top_confusoes": [
+    {
+      "modelo": "naive_bayes",
+      "pares": [
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 190
+        },
+        {
+          "de": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 184
+        },
+        {
+          "de": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 166
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 161
+        },
+        {
+          "de": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 159
+        },
+        {
+          "de": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "para": "Elétrica > Instalações elétricas",
+          "n": 134
+        },
+        {
+          "de": "Outros > Erro de chamado",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 126
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Climatização > Ar condicionado",
+          "n": 119
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Climatização > Ar condicionado",
+          "n": 111
+        },
+        {
+          "de": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 109
+        }
+      ]
+    },
+    {
+      "modelo": "regressao_logistica",
+      "pares": [
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "n": 269
+        },
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 185
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "n": 114
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Outros > Erro de chamado",
+          "n": 109
+        },
+        {
+          "de": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "para": "Outros > Erro de chamado",
+          "n": 85
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Hidrossanitária > Hidráulica",
+          "n": 75
+        },
+        {
+          "de": "Hidrossanitária > Hidráulica",
+          "para": "Manutenção Preventiva > Reservatório",
+          "n": 72
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 60
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 60
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "n": 50
+        }
+      ]
+    },
+    {
+      "modelo": "linear_svc",
+      "pares": [
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 182
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "n": 138
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "n": 120
+        },
+        {
+          "de": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 85
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Hidrossanitária > Hidráulica",
+          "n": 78
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 57
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Elétrica > Instalações elétricas",
+          "n": 57
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 53
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Outros > Erro de chamado",
+          "n": 48
+        },
+        {
+          "de": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 48
+        }
+      ]
+    },
+    {
+      "modelo": "sgd",
+      "pares": [
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 187
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "n": 185
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "n": 118
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Hidrossanitária > Hidráulica",
+          "n": 90
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Outros > Erro de chamado",
+          "n": 85
+        },
+        {
+          "de": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "para": "Outros > Erro de chamado",
+          "n": 79
+        },
+        {
+          "de": "Hidrossanitária > Hidráulica",
+          "para": "Manutenção Preventiva > Reservatório",
+          "n": 73
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 58
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Elétrica > Iluminação",
+          "n": 52
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 52
+        }
+      ]
+    },
+    {
+      "modelo": "extra_trees",
+      "pares": [
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 182
+        },
+        {
+          "de": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 181
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 178
+        },
+        {
+          "de": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 172
+        },
+        {
+          "de": "Outros > Erro de chamado",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 132
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Hidrossanitária > Hidráulica",
+          "n": 100
+        },
+        {
+          "de": "Hidrossanitária > Hidráulica",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 98
+        },
+        {
+          "de": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 92
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "n": 84
+        },
+        {
+          "de": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 58
+        }
+      ]
+    },
+    {
+      "modelo": "random_forest",
+      "pares": [
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "n": 198
+        },
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 186
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "n": 110
+        },
+        {
+          "de": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 106
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Hidrossanitária > Hidráulica",
+          "n": 104
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 91
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Outros > Erro de chamado",
+          "n": 77
+        },
+        {
+          "de": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 76
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 76
+        },
+        {
+          "de": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "para": "Outros > Erro de chamado",
+          "n": 72
+        }
+      ]
+    },
+    {
+      "modelo": "lstm",
+      "pares": [
+        {
+          "de": "Climatização > Ar condicionado",
+          "para": "Manutenção Preventiva > Ar condicionado split",
+          "n": 188
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 123
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+          "n": 117
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 108
+        },
+        {
+          "de": "Outros > Erro de chamado",
+          "para": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+          "n": 77
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Instalação de Acessórios e Mobiliário > Mobiliário",
+          "n": 76
+        },
+        {
+          "de": "Elétrica > Instalações elétricas",
+          "para": "Elétrica > Iluminação",
+          "n": 74
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Projetos e Reformas > Reforma",
+          "n": 74
+        },
+        {
+          "de": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
+          "para": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "n": 69
+        },
+        {
+          "de": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+          "para": "Outros > Erro de chamado",
+          "n": 69
+        }
+      ]
+    }
+  ],
+  "validacao_humana_modelos": {
+    "n_verdade_derivada": 291,
+    "base": "conferencia dupla M/N (N=Correto->G; senao M=Correto->C)",
+    "nota": "Preliminar enquanto a amostra validada e pequena/nao aleatoria.",
+    "por_modelo": [
+      {
+        "modelo": "linear_svc",
+        "n": 291,
+        "acerto_validado": 0.6735
+      },
+      {
+        "modelo": "regressao_logistica",
+        "n": 291,
+        "acerto_validado": 0.6667
+      },
+      {
+        "modelo": "sgd",
+        "n": 291,
+        "acerto_validado": 0.6632
+      },
+      {
+        "modelo": "random_forest",
+        "n": 291,
+        "acerto_validado": 0.5945
+      },
+      {
+        "modelo": "extra_trees",
+        "n": 291,
+        "acerto_validado": 0.5773
       },
       {
         "modelo": "lstm",
-        "rank_medio": 7.0
+        "n": 291,
+        "acerto_validado": 0.5601
+      },
+      {
+        "modelo": "naive_bayes",
+        "n": 291,
+        "acerto_validado": 0.5326
       }
-    ],
-    "diferenca_critica_nemenyi": 4.029,
-    "nota": "Diferenca de rank_medio > CD => diferenca significativa (Nemenyi, alpha=0,05)."
+    ]
   }
 }
