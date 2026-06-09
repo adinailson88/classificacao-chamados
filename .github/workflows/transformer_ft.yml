@@ -41,7 +41,7 @@ permissions:
 jobs:
   transformer:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 720
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
       TRANSFORMER_EPOCHS: ${{ github.event.inputs.epochs || '3' }}
