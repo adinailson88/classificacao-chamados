@@ -1,0 +1,65 @@
+name: Classificacao IA 2 - aplicar coluna O
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmacao:
+        description: "Digite APLICAR_O para gravar a coluna O"
+        required: true
+      limite:
+        description: "Quantidade maxima de candidatos"
+        default: "200"
+      usar_minilm:
+        description: "Usar MiniLM robusto como voto adicional"
+        type: boolean
+        default: true
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  aplicar-classificacao-ia-2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Conferir confirmacao
+        run: |
+          if [ "${{ github.event.inputs.confirmacao }}" != "APLICAR_O" ]; then
+            echo "Confirmacao invalida. Nada sera aplicado." >&2
+            exit 1
+          fi
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: |
+            requirements-leves.txt
+            requirements-robusto.txt
+      - name: Instalar dependencias leves
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Instalar MiniLM robusto
+        if: ${{ github.event.inputs.usar_minilm == 'true' }}
+        run: python -m pip install --retries 5 --timeout 180 -r requirements-robusto.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Aplicar Classificacao IA - 2
+        run: |
+          CMD="python src/classificacao_ia_2_comite.py --limite '${{ github.event.inputs.limite || '200' }}' --aplicar --gravar-coluna-o"
+          if [ "${{ github.event.inputs.usar_minilm }}" = "true" ]; then
+            CMD="$CMD --usar-minilm"
+          fi
+          eval "$CMD"
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
