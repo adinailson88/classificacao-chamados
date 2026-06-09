@@ -1,0 +1,51 @@
+name: Validacao nao supervisionada
+
+on:
+  workflow_dispatch:
+    inputs:
+      aplicar:
+        description: "Gravar VALIDACAO_NAO_SUPERVISIONADA na planilha"
+        type: boolean
+        default: false
+      n_componentes:
+        description: "Componentes SVD"
+        default: "100"
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  validar-nao-supervisionado:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements-leves.txt
+      - name: Instalar dependencias leves
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Rodar validacao nao supervisionada
+        run: |
+          CMD="python src/validacao_nao_supervisionada.py --n-componentes '${{ github.event.inputs.n_componentes || '100' }}'"
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
+            CMD="$CMD --aplicar"
+          fi
+          eval "$CMD"
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
