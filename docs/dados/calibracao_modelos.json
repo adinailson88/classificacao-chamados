@@ -1,5 +1,5 @@
 {
-  "gerado_em": "09/06/2026 00:41",
+  "gerado_em": "09/06/2026 04:52",
   "fonte": "docs/dados/registros_<modelo>.json",
   "alvo": "categoria historica; validacao humana ainda nao iniciada",
   "calibrador_ajustado": false,
@@ -208,75 +208,6 @@
           "confianca_media": 0.0,
           "gap": 0.0,
           "brier": 0.0
-        }
-      ],
-      "calibrador_ajustado": false,
-      "tipo_confianca": "bruta; diagnostico contra historico"
-    },
-    {
-      "modelo": "sgd",
-      "total": 13825,
-      "acerto_historico": 0.7751,
-      "confianca_media": 0.4579,
-      "brier": 0.256,
-      "ece": 0.3172,
-      "mce": 0.4276,
-      "faixa_95": {
-        "faixa": ">=95%",
-        "n": 3,
-        "acerto_historico": 1.0,
-        "confianca_media": 0.9608,
-        "gap": -0.0392,
-        "brier": 0.0016
-      },
-      "por_faixa": [
-        {
-          "faixa": "<50%",
-          "n": 7817,
-          "acerto_historico": 0.6462,
-          "confianca_media": 0.2185,
-          "gap": -0.4276,
-          "brier": 0.3838
-        },
-        {
-          "faixa": "50-70%",
-          "n": 1621,
-          "acerto_historico": 0.9062,
-          "confianca_media": 0.5945,
-          "gap": -0.3117,
-          "brier": 0.1816
-        },
-        {
-          "faixa": "70-80%",
-          "n": 1678,
-          "acerto_historico": 0.8927,
-          "confianca_media": 0.7512,
-          "gap": -0.1416,
-          "brier": 0.1195
-        },
-        {
-          "faixa": "80-90%",
-          "n": 2071,
-          "acerto_historico": 0.9947,
-          "confianca_media": 0.8772,
-          "gap": -0.1175,
-          "brier": 0.0188
-        },
-        {
-          "faixa": "90-95%",
-          "n": 635,
-          "acerto_historico": 1.0,
-          "confianca_media": 0.9116,
-          "gap": -0.0884,
-          "brier": 0.0079
-        },
-        {
-          "faixa": ">=95%",
-          "n": 3,
-          "acerto_historico": 1.0,
-          "confianca_media": 0.9608,
-          "gap": -0.0392,
-          "brier": 0.0016
         }
       ],
       "calibrador_ajustado": false,
