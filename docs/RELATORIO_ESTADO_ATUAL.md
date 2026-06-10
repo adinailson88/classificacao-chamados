@@ -3,21 +3,21 @@
 > Revisão técnica e metodológica do repositório no contexto do doutorado
 > (manutenção predial pública orientada por dados). Diagnóstico honesto:
 > distingue o que foi **verificado** do que **não pôde** ser verificado.
-> Data: 2026-06-10. Branch `main`, último commit observado `4d93f9a`.
+> Data: 2026-06-10 (atualizado na sessão da tarde). Branch `main`.
 
 ## 0. Limitação de ambiente (declarada)
 
-Esta revisão rodou **sem credenciais da conta de serviço** (`credenciais_sa.json`/
-`SPREADSHEET_ID` ausentes) e **sem executar GitHub Actions**. Portanto:
+A primeira revisão (manhã de 2026-06-10) rodou **sem credenciais da conta de serviço**
+e **sem executar GitHub Actions**. Na sessão seguinte (tarde de 2026-06-10), com `gh`
+autenticado e os secrets (`GCP_SA_KEY`, `SPREADSHEET_ID`) confirmados no repositório,
+os workflows **foram executados de verdade** — ver §8. Permanece não verificado:
 
-- O **estado real das abas** da planilha (`CHAMADOS_ESQUELETO_REDUZIDO`, `CLASSIF__*`,
-  `VALIDACAO_HUMANA`, etc.) **não pôde ser verificado** diretamente.
-- Os números de concordância (ex.: `linear_svc` 80,26%) vêm dos JSON/docs do repositório,
-  **não** foram recalculados aqui.
-- Nenhum workflow foi disparado; os comandos `gh workflow run ...` ficam documentados,
-  não executados.
+- O **estado real das abas privadas** da planilha (`CHAMADOS_ESQUELETO_REDUZIDO`,
+  `CLASSIF__*`, etc.) — o acesso continua mediado pelos workflows, sem leitura direta.
+- Recalcular localmente os números de concordância (ex.: `linear_svc` 80,26%); eles
+  vêm dos JSON publicados pelos workflows.
 
-O que **foi** verificado neste ambiente está marcado como ✅ abaixo.
+O que **foi** verificado está marcado como ✅ abaixo.
 
 ## 1. O que existe (verificado ✅)
 
@@ -73,9 +73,13 @@ O que **foi** verificado neste ambiente está marcado como ✅ abaixo.
 
 ## 5. O que não pôde ser verificado
 
-- Conteúdo real das abas e dos JSON privados em `dados/` (gitignored).
-- Execução dos workflows e dos `gh workflow run ...`.
-- Se os números publicados batem com a planilha hoje (recálculo exigiria credenciais).
+- Conteúdo real das abas e dos JSON privados em `dados/` (gitignored) — o acesso
+  segue mediado pelos workflows.
+- Recálculo independente dos números publicados (exigiria ler a planilha diretamente).
+
+> Atualização 2026-06-10 (tarde): a execução dos workflows **deixou** de ser uma
+> limitação — `relevancia_termos.yml` e `validacao_nao_supervisionada.yml` foram
+> disparados e acompanhados nesta sessão (ver §8).
 
 ## 6. O que foi adicionado nesta revisão
 
@@ -97,17 +101,70 @@ Detalhe e justificativa metodológica em [`RELEVANCIA_TERMOS.md`](RELEVANCIA_TER
 
 ## 7. Próximos passos pendentes (exigem o usuário / credenciais)
 
-1. Rodar `relevancia_termos.yml` (dry-run) **com credenciais** para gerar os JSON reais e
-   conferir os termos/mapa contra a planilha viva.
-2. Cruzar o mapa de correlação com a **matriz de confusão IA×histórico** para priorizar a
-   revisão da taxonomia (etapa 46).
+1. ~~Rodar `relevancia_termos.yml` (dry-run) com credenciais~~ ✅ feito em 10/06/2026
+   (run `27298524010`) — ver §8.
+2. ~~Cruzar o mapa de correlação com a matriz de confusão IA×histórico~~ ✅ os JSON reais
+   do cruzamento estão publicados; a **decisão** de fusão/desambiguação de categorias
+   segue pendente de revisão humana (etapa 46).
 3. Quando liberado pelo usuário: preencher M/N nos divergentes → métricas **validadas**,
    matriz de confusão validada, calibração definitiva, re-treino com base validada.
-4. Housekeeping: remover Apps Script legado; manter `CONTEXTO.md` atualizado.
+4. Recalibrar os limiares de prioridade da validação não supervisionada (ver §8.2):
+   com os critérios atuais, 62% da base cai em prioridade "Alta", o que esvazia a
+   função de triagem.
+5. Housekeeping: remover Apps Script legado; manter `CONTEXTO.md` atualizado.
+
+## 8. Execução com credenciais reais (sessão de 2026-06-10, tarde)
+
+### 8.1 Relevância de termos + correlação + cruzamento ✅
+
+`relevancia_termos.yml` executado em dry-run (run `27298524010`, sucesso em 36s;
+parâmetros `top_n=25`, `min_df=5`, `min_chamados_categoria=10`). Commit de dados
+`6065597` publicou os 4 JSON em `docs/dados/` e o Pages atualizou
+(run `27298562277`). Conferência de conteúdo:
+
+- **44 categorias** com termos (das 54 do histórico; as demais ficaram abaixo de
+  `min_chamados_categoria=10`), vocabulário TF-IDF de 8.933 termos.
+- **Termos coerentes** com as categorias (ex.: `Climatização > Ar condicionado`,
+  1.621 chamados → "ar condicionado", "gelando", "split", "gás", "parou funcionar").
+  Saída sanitizada: apenas termos agregados com frequência ≥ 5, sem texto de chamado.
+- **Pares mais próximos** plausíveis e dominados por duplicações estruturais da
+  taxonomia: `Manutenção Preventiva > Hidráulica` × `... > Reservatório` (0,817);
+  `Climatização > Ar condicionado` × `Manutenção Preventiva > Ar condicionado split`
+  (0,647); `Telhados, calhas, rufos` duplicado em dois grupos; `Extintor` ×
+  `Sistemas de combate a incêndio`.
+- **Candidatos a revisão de taxonomia** (cruzamento confusão×vocabulário): topo =
+  `Climatização > Ar condicionado` → `Manutenção Preventiva > Ar condicionado split`
+  (confusão 22,7%, correlação 0,647, score 0,383). Leitura exploratória; a decisão
+  é humana.
+- **Aba Taxonomia do painel verificada** em servidor local com os dados reais:
+  heatmap 44×44, 15 pares, 30 candidatos, termos clicáveis; sem erro de console.
+
+### 8.2 Validação não supervisionada — primeira execução real ✅ (dry-run)
+
+Os 5 disparos anteriores de `validacao_nao_supervisionada.yml` (09/06) **nunca
+executaram**: ficaram presos na fila do grupo de concorrência `escrita-planilha`
+(ocupado por runs longos) e foram cancelados — inclusive o de "1h34m", que era só
+fila. Nesta sessão o run `27298888472` executou em ~35s (dry-run, sem escrita):
+
+- `n_chamados=13.825`, `n_categorias=53`, representação `tfidf_svd_100`.
+- **Qualidade de agrupamento fraca, como esperado** para 53 categorias textuais
+  sobrepostas: silhouette **0,0972**, Davies-Bouldin 3,99, Calinski-Harabasz 128,2.
+  Coerente com a sobreposição vocabular vista em §8.1.
+- Prioridades de revisão: **Alta=8.589 (62%)**, Média=1.719, Baixa=3.517.
+  ⚠️ O critério atual de "Alta" (consenso ≥6 modelos contra o histórico OU ≥2
+  motivos) é largo demais — 62% da base em prioridade máxima não tria nada.
+  Recomenda-se recalibrar (ex.: exigir consenso forte E margem semântica, ou
+  ranquear por score contínuo em vez de 3 faixas) **antes** de usar como fila de
+  validação humana. Nada foi gravado na planilha (`aplicar=false`).
+
+> Nota metodológica: ambos os resultados são **exploratórios** e medidos contra a
+> categoria histórica, que não é verdade absoluta. `validados=0` permanece.
 
 > **Conclusão honesta**: o repositório já estava metodologicamente sólido e alinhado às
 > premissas do doutorado. Esta revisão **confirmou** a consistência (compilação, testes,
-> workflows, separação de métricas, privacidade) e **acrescentou** a análise de vocabulário
-> por categoria + mapa de correlação pedida, sem alterar dado bruto nem inflar resultados.
-> O que falta é, sobretudo, **validação humana** — pendência deliberada do usuário — e a
-> execução com credenciais reais, que este ambiente não permitiu.
+> workflows, separação de métricas, privacidade), **acrescentou** a análise de vocabulário
+> por categoria + mapa de correlação pedida e, na sessão da tarde, **executou** os
+> workflows com as credenciais reais (§8), populando a aba Taxonomia com dados da
+> planilha viva e rodando pela primeira vez a validação não supervisionada. O que falta
+> é, sobretudo, **validação humana** — pendência deliberada do usuário — e a recalibração
+> dos limiares de prioridade apontada em §8.2.

@@ -1323,3 +1323,26 @@ testado no preview sem erro). `estatistica.yml`: agendamento `30 */6` + gatilhos
 workflow_run apos Multimodelo/Comparar/Reclassificar validados/Transformer. Nenhuma aba
 nova na planilha foi necessaria (le CLASSIF__*, MULTIMODELO_TURNOS, registros.json e a aba
 principal para M/N). `CONTEXTO_ESTATISTICA_CLASSIFICACAO.md` completado com a metodologia.
+
+## Execucao com credenciais reais + 1a validacao nao supervisionada (2026-06-10, tarde)
+
+`relevancia_termos.yml` rodou pela primeira vez contra a planilha viva (run
+`27298524010`, dry-run, 36s; secrets `GCP_SA_KEY`/`SPREADSHEET_ID` ja presentes no
+repo). Commit `6065597` publicou `termos_relevantes.json` (44 categorias, vocabulario
+TF-IDF de 8.933 termos), `correlacao_categorias.json`, `confusao_historico_ia.json` e
+`cruzamento_taxonomia.json`; Pages atualizado (run `27298562277`). Aba `Taxonomia`
+verificada em preview local com os dados reais (heatmap 44x44, 15 pares, 30 candidatos,
+termos clicaveis, console limpo). Conteudo coerente: termos esperados por categoria e
+topo dos candidatos a revisao apontando duplicacoes estruturais da taxonomia
+(`Climatizacao > Ar condicionado` x `Manutencao Preventiva > Ar condicionado split`,
+confusao 22,7% e correlacao vocabular 0,647; `Hidraulica` e `Telhados/calhas/rufos`
+duplicados em dois grupos; `Extintor` x `Sistemas de combate a incendio`).
+
+`validacao_nao_supervisionada.yml` executou pela primeira vez (run `27298888472`,
+dry-run, ~35s, nada gravado). Diagnostico dos 5 cancelamentos de 09/06: nenhum chegou a
+executar — todos presos na fila do grupo de concorrencia `escrita-planilha` (0 jobs),
+inclusive o de 1h34m. Resultado real: 13.825 chamados, 53 categorias, `tfidf_svd_100`,
+silhouette 0,0972, Davies-Bouldin 3,99, Calinski-Harabasz 128,2; prioridades
+Alta=8.589 (62%), Media=1.719, Baixa=3.517. Pendencia aberta: recalibrar os limiares de
+prioridade (62% em "Alta" nao tria) antes de usar como fila de revisao humana. Tudo
+exploratorio, contra a categoria historica; `validados=0` permanece.

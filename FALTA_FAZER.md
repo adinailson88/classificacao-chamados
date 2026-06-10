@@ -243,8 +243,21 @@ quente quando correlação → 1).
       (c) 1ª aba (`Classificação`) reformada com gráficos que recalculam com os filtros
       (concordância por categoria com volume; rosca concorda×diverge; faixa de confiança),
       evolução por turno movida para o rodapé rotulada. Verificado no preview.
-- [ ] **Rodar com credenciais** (workflow `relevancia_termos.yml`) para gerar os JSON reais
-      e popular a aba `Taxonomia` (hoje em estado vazio) contra a planilha viva.
+- [x] **Rodar com credenciais** (workflow `relevancia_termos.yml`) para gerar os JSON reais
+      e popular a aba `Taxonomia` contra a planilha viva. ✅ Executado em 10/06/2026,
+      run `27298524010` (dry-run, `top_n=25`, `min_df=5`, `min_chamados_categoria=10`),
+      sucesso em 36s; commit de dados `6065597` com os 4 JSON
+      (`termos_relevantes` 44 categorias, `correlacao_categorias`,
+      `confusao_historico_ia`, `cruzamento_taxonomia`). Pages publicado
+      (run `27298562277`). Aba `Taxonomia` verificada no preview local com os dados
+      reais (heatmap 44×44, 15 pares, 30 candidatos, termos por categoria; sem erro
+      de console). Conferência de conteúdo: termos coerentes (ex.: Ar condicionado →
+      "gelando", "split", "gás", "parou funcionar") e topo dos candidatos a revisão
+      aponta duplicações reais da taxonomia — `Climatização > Ar condicionado` ×
+      `Manutenção Preventiva > Ar condicionado split` (confusão 22,7%, correlação
+      vocabular 0,647), `Hidráulica` duplicada em Hidrossanitária × Manutenção
+      Preventiva, `Telhados/calhas/rufos` duplicado em Estrutura Predial × Manutenção
+      Preventiva. Decisão de fusão/desambiguação segue sendo **humana**.
 
 ## Housekeeping
 - [ ] Remover Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.
@@ -277,6 +290,30 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 > corretamente o que já existe, não processar mais registros.
 
 ---
+
+## Atualizacao - execucao com credenciais reais (2026-06-10, tarde)
+
+- [x] `relevancia_termos.yml` executado com sucesso (run `27298524010`, dry-run, 36s).
+  Os 4 JSON reais foram publicados em `docs/dados/` (commit `6065597`) e o Pages
+  atualizou (run `27298562277`). Aba `Taxonomia` verificada em preview local com os
+  dados reais: heatmap 44x44, 15 pares, 30 candidatos, termos por categoria, sem erro
+  de console. Conteudo coerente; topo dos candidatos aponta duplicacoes estruturais da
+  taxonomia (Ar condicionado em Climatizacao x Manutencao Preventiva; Hidraulica em
+  dois grupos; Telhados/calhas/rufos duplicado; Extintor x Combate a incendio).
+- [x] **Diagnostico dos cancelamentos** de `validacao_nao_supervisionada.yml`: os 5 runs
+  de 09/06 (incluindo o de "1h34m") **nunca executaram** — ficaram presos na fila do
+  grupo de concorrencia `escrita-planilha` e foram cancelados ainda na fila (0 jobs).
+  Nao ha defeito no script.
+- [x] Primeira execucao real da **validacao nao supervisionada** (run `27298888472`,
+  dry-run, ~35s, nada gravado): 13.825 chamados, 53 categorias, `tfidf_svd_100`,
+  silhouette `0,0972`, Davies-Bouldin `3,99`, Calinski-Harabasz `128,2`. Prioridades:
+  Alta=8.589, Media=1.719, Baixa=3.517.
+- [ ] **Recalibrar os limiares de prioridade** da validacao nao supervisionada antes de
+  usa-la como fila de revisao humana: 62% da base em "Alta" nao tria nada. Opcoes:
+  exigir consenso forte E margem semantica simultaneamente, ou substituir as 3 faixas
+  por um score continuo ordenavel. Decisao do pesquisador.
+- [ ] (segue) Revisao humana da taxonomia a partir de `cruzamento_taxonomia.json`
+  (fusao/desambiguacao dos pares duplicados) — etapa 46, decisao do pesquisador.
 
 ## Atualizacao executada pelo Codex - 2026-06-05 13:48
 
