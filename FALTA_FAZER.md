@@ -327,9 +327,24 @@ se vale combinar, e por que a IA erra (que informacoes pedir ao solicitante).
   Estado vazio honesto enquanto `validados=0`. Verificado no preview (vazio + simulado).
 - [x] Testes offline novos: `tests/test_decisao_memoria.py` (18 testes, todos passando)
   cobrindo regras de decisao, veto na predicao OOF, ensembles e analise de erros.
-- [ ] **Ao terminar a conferencia manual (M/N)**: rodar
+- [x] **Primeira execucao real** do `avaliacao_final.yml` (run `27300506477`, sucesso;
+  commit de dados `3ca6cdb`): a planilha JA TEM **354 conferencias** (305 decisoes
+  travadas, 49 restritos, **2 conflitos** — duas conferencias 'Correto' com categorias
+  diferentes, a localizar filtrando M=Correto e N=Correto com C<>G). Resultado PARCIAL
+  (~2,2% da base, amostra possivelmente nao aleatoria):
+  ranking validado `linear_svc` 67,9% [62,6–73,1] > `regressao_logistica` 66,9% >
+  `sgd` 66,6% > `random_forest` 61,3% > `extra_trees` 58,7% > `lstm` 56,4% >
+  `naive_bayes` 54,1%; melhor vs segunda +0,98 p.p. (McNemar p=0,73, NAO
+  significativo); nenhum ensemble supera a melhor IA com significancia
+  (maioria_ponderada +0,33 p.p., p=1,0) -> por ora **nao vale combinar**.
+  Analise de erros (91 erros / 263 acertos): erros tem titulos MAIS LONGOS
+  (mediana 69 vs 46, p=0,008, delta=0,18) e mais tokens (p=0,029) — a hipotese
+  "texto curto -> erro" NAO se confirma nesta amostra parcial; cobertura de termos
+  discriminativos ainda sem significancia (p=0,17). Reavaliar ao fim da conferencia.
+- [ ] **Ao terminar a conferencia manual (M/N)**: rodar de novo
   `gh workflow run avaliacao_final.yml --repo adinailson88/classificacao-chamados`
-  e ler a aba `Decisao`. Opcional antes disso: dry-run da reclassificacao para ver
+  e ler a aba `Decisao` (a resposta final substitui a parcial). Antes disso, conferir
+  os **2 conflitos** apontados acima. Opcional: dry-run da reclassificacao para ver
   o reuso/veto em acao.
 
 ## Atualizacao - execucao com credenciais reais (2026-06-10, tarde)

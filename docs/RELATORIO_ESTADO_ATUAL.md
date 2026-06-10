@@ -160,6 +160,31 @@ fila. Nesta sessão o run `27298888472` executou em ~35s (dry-run, sem escrita):
 > Nota metodológica: ambos os resultados são **exploratórios** e medidos contra a
 > categoria histórica, que não é verdade absoluta. `validados=0` permanece.
 
+### 8.3 Memória de decisão + primeira avaliação validada (sessão da noite) ✅
+
+Implementadas as regras de memória pedidas pelo pesquisador: categoria conferida
+como **errada** fica vetada para o chamado (a predição escolhe a melhor classe fora
+do veto, com probabilidade renormalizada); categoria conferida como **certa** trava
+a decisão e é reaproveitada sem reprocessar. Módulos novos: `decisao_validada.py`,
+`avaliacao_final.py`, `analise_erros.py`; workflow `avaliacao_final.yml`; aba
+`Decisão` no painel; 18 testes offline (todos passando).
+
+Na primeira execução real (run `27300506477`), a planilha já tinha **354
+conferências** (305 decisões travadas; 2 conflitos a revisar). Resultado **parcial**
+(~2,2% da base, amostra possivelmente não aleatória):
+
+- Ranking validado: `linear_svc` 67,9% [IC95 62,6–73,1] à frente, mas sem
+  significância sobre a segunda (`regressao_logistica`, McNemar p=0,73).
+- **Combinar IAs ainda não compensa**: nenhum ensemble supera a melhor IA isolada
+  com significância (melhor delta +0,33 p.p., p=1,0).
+- Análise de erros: nesta amostra, os erros têm títulos **mais longos** que os
+  acertos (p=0,008) — a hipótese "texto pobre → erro" não se confirmou até aqui;
+  a cobertura de termos discriminativos ainda não discrimina (p=0,17). Releitura
+  obrigatória quando a conferência terminar.
+
+`validados` deixou de ser 0 nesta data; as métricas validadas continuam
+**parciais** até o fim da conferência manual.
+
 > **Conclusão honesta**: o repositório já estava metodologicamente sólido e alinhado às
 > premissas do doutorado. Esta revisão **confirmou** a consistência (compilação, testes,
 > workflows, separação de métricas, privacidade), **acrescentou** a análise de vocabulário
