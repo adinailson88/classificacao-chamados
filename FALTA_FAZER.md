@@ -235,9 +235,16 @@ quente quando correlação → 1).
       ranqueia candidatos a revisão de taxonomia; viewer ganhou a tabela; workflow roda os
       dois; testado em sintético (par sobreposto no topo, ruído zerado).
 - [x] **Documentação do dashboard atualizada** (`docs/index.html`, aba Documentação):
-      card "O que mudou" com todas as novidades + link para o mapa.
+      card metodológico (registro impessoal/acadêmico) com todos os procedimentos.
+- [x] **Reestruturação do painel** (`docs/index.html`): (a) abas `Modelos`+`Multimodelo`
+      fundidas em `Modelos` (reclassificação multimodelo movida para lá; removidos cartões
+      duplicados de progresso/evolução por modelo); (b) mapa de correlação embutido como aba
+      `Taxonomia` (heatmap + termos + pares + candidatos a revisão), não mais só página avulsa;
+      (c) 1ª aba (`Classificação`) reformada com gráficos que recalculam com os filtros
+      (concordância por categoria com volume; rosca concorda×diverge; faixa de confiança),
+      evolução por turno movida para o rodapé rotulada. Verificado no preview.
 - [ ] **Rodar com credenciais** (workflow `relevancia_termos.yml`) para gerar os JSON reais
-      e conferir termos/mapa/cruzamento contra a planilha viva.
+      e popular a aba `Taxonomia` (hoje em estado vazio) contra a planilha viva.
 
 ## Housekeeping
 - [ ] Remover Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.

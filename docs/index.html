@@ -124,8 +124,8 @@
     <button data-t="cat">Categorias</button>
     <button data-t="metrics">Metricas</button>
     <button data-t="modelos">Modelos</button>
-    <button data-t="multi">Multimodelo</button>
     <button data-t="estat">Estatistica</button>
+    <button data-t="taxon">Taxonomia</button>
     <button data-t="reclass">Reclassificacao</button>
     <button data-t="docs">Documentacao</button>
   </nav>
@@ -133,16 +133,20 @@
   <section id="tab-class">
     <div class="grid">
       <div class="card full">
-        <h2>Evolucao da concordancia por turno <span class="notefiltro">serie temporal - nao usa os filtros</span></h2>
-        <canvas id="cEvol"></canvas>
+        <h2>Concordancia por categoria (maiores volumes) <span class="notefiltro">recalcula com os filtros</span></h2>
+        <canvas id="cDistCat"></canvas>
+      </div>
+      <div class="card">
+        <h2>Concordancia x divergencia IA &times; historico <span class="notefiltro">recalcula com os filtros</span></h2>
+        <canvas id="cDiverg"></canvas>
       </div>
       <div class="card">
         <h2>Distribuicao por faixa de confianca <span class="notefiltro">recalcula com os filtros</span></h2>
         <canvas id="cFaixa"></canvas>
       </div>
-      <div class="card">
-        <h2>Confianca media por turno <span class="notefiltro">serie temporal - nao usa os filtros</span></h2>
-        <canvas id="cConf"></canvas>
+      <div class="card full">
+        <h2>Evolucao da concordancia por turno <span class="notefiltro">serie temporal - nao usa os filtros</span></h2>
+        <canvas id="cEvol"></canvas>
       </div>
     </div>
   </section>
@@ -253,27 +257,40 @@
         <th>Modelo</th><th>Lote</th><th>N</th><th>Acuracia</th><th>F1-macro</th><th>Bal.acc</th><th>Revisao</th><th>Treino</th>
       </tr></thead><tbody></tbody></table></div>
     </div>
-  </section>
-
-  <section id="tab-multi" class="hide">
-    <div class="alerta" id="multiAviso">Dados multimodelo indisponiveis no JSON publicado. As 7 IAs ja foram materializadas em abas separadas; se esta mensagem aparecer, confira a ultima exportacao do dashboard e os arquivos <code>multimodelo_metricas.json</code>, <code>multimodelo_turnos.json</code> e <code>registros_&lt;modelo&gt;.json</code>. Nao use <code>aplicar=true</code> para reclassificacao sem revisar o dry-run.</div>
-    <div class="card full">
-      <h2>Progresso por modelo (multimodelo materializado)</h2>
-      <p class="muted">Cada IA classifica TODA a base na sua propria aba, com predicao out-of-fold (a IA nao treina na linha que rotula). Concordancia vs categoria historica.</p>
-      <div class="tablebox"><table id="tabMulti"><thead><tr>
-        <th>Modelo</th><th>Classificados</th><th>Pendentes</th><th>Concordancia acumulada</th><th>Concordancia ultimo lote</th><th>Metodo</th><th>Atualizado</th>
-      </tr></thead><tbody></tbody></table></div>
-    </div>
-    <div class="card full">
-      <h2>Evolucao da concordancia acumulada por modelo</h2>
-      <canvas id="cMulti"></canvas>
-    </div>
     <div class="card full">
       <h2>Reclassificacao multimodelo (ganho liquido por modelo)</h2>
+      <p class="muted">Ganho liquido (corrigidos &minus; prejudicados) da Etapa 2 por modelo, contra o historico. Comecar sempre por dry-run; nao usar <code>aplicar=true</code> sem revisar o ganho.</p>
       <div class="tablebox"><table id="tabMultiReclass"><thead><tr>
         <th>Modelo</th><th>Turnos</th><th>Corrigidos</th><th>Prejudicados</th><th>Ganho liquido</th>
       </tr></thead><tbody></tbody></table></div>
       <p class="muted" id="multiReclassVazio"></p>
+    </div>
+  </section>
+
+  <section id="tab-taxon" class="hide">
+    <div class="alerta" id="taxonAviso">Analise exploratoria de vocabulario. Os termos e a correlacao sao agregados sobre o texto dos chamados; o cruzamento usa a confianca/previsao da IA contra a categoria historica. E triagem de taxonomia (prioriza revisao humana), NAO metrica de acuracia validada.</div>
+    <div class="grid">
+      <div class="card full">
+        <h2>Mapa de correlacao entre categorias <span class="notefiltro">cosseno entre centroides TF-IDF</span></h2>
+        <p class="muted">Celula mais quente = vocabulario mais sobreposto (correlacao &rarr; 1), como num mapa de geoprocessamento. Clique numa categoria (linha) para ver seus termos caracteristicos.</p>
+        <div style="overflow:auto" id="taxonHeat"><p class="muted">Sem dados de correlacao publicados. Rode o workflow <code>relevancia_termos.yml</code> (gera <code>correlacao_categorias.json</code>).</p></div>
+        <div id="taxonLegend" class="muted" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <h2>Termos caracteristicos <span id="taxonCatNome"></span></h2>
+        <div id="taxonTermos"><p class="muted">Selecione uma categoria no mapa.</p></div>
+      </div>
+      <div class="card">
+        <h2>Pares mais proximos (vocabulario)</h2>
+        <div class="tablebox"><table id="tabTaxonPares"><thead><tr><th>Categoria A</th><th>Categoria B</th><th>Similaridade</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="card full">
+        <h2>Candidatos a revisao de taxonomia <span class="notefiltro">confusao IA&times;historico &times; correlacao</span></h2>
+        <p class="muted">Pares que a IA confunde (troca uma categoria pela outra) E que tem vocabulario sobreposto. Quando os dois sinais coincidem, sao candidatos a fusao, renomeacao ou criterio de desambiguacao (etapa 46 do roteiro).</p>
+        <div class="tablebox"><table id="tabTaxonCruz"><thead><tr>
+          <th>Historico (A)</th><th>IA preve (B)</th><th>Taxa de confusao A&rarr;B</th><th>Correlacao vocabular</th><th>Score de revisao</th>
+        </tr></thead><tbody><tr><td colspan="5" class="muted">Sem <code>cruzamento_taxonomia.json</code> publicado ainda.</td></tr></tbody></table></div>
+      </div>
     </div>
   </section>
 
@@ -614,6 +631,8 @@ function aplicarFiltros(){
   CAT = agrupaCategorias(FILTRADO);
   renderChips();
   renderCat();
+  renderDistCategoria(CAT);
+  renderDivergencia(FILTRADO);
   renderFaixaFiltrada(FILTRADO);
   renderKpisFiltrados(FILTRADO);
 }
@@ -641,17 +660,37 @@ async function trocarModelo(modelo){
   if(TURNOS_POR_FONTE().length) renderClass(TURNOS_POR_FONTE());  // grafico de turno acompanha o modelo
   Object.values(FILT).forEach(s=>s.clear());   // executores/grupos mudam por modelo
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
-  else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
+  else { renderChips(); renderCat(); renderDistCategoria([]); renderDivergencia([]); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
 }
 
 function renderClass(turnos){
   const labels = turnos.map(t=>t.turno);
-  destroy("cEvol"); destroy("cConf");
+  destroy("cEvol");
   charts.cEvol = new Chart(cEvol,{type:"line",data:{labels,datasets:[
     {label:"Concordancia do turno (%)",data:turnos.map(t=>N(t.taxa_concordancia)*100),borderColor:"#68737d",pointRadius:0,borderWidth:1},
-    {label:"Concordancia acumulada (%)",data:turnos.map(t=>N(t.concordancia_acumulada)*100),borderColor:"#1d4ed8",pointRadius:0,borderWidth:2}
+    {label:"Concordancia acumulada (%)",data:turnos.map(t=>N(t.concordancia_acumulada)*100),borderColor:"#1d4ed8",pointRadius:0,borderWidth:2},
+    {label:"Confianca media (%)",data:turnos.map(t=>N(t.confianca_media)*100),borderColor:"#2f5f9e",pointRadius:0,borderWidth:1.5,borderDash:[4,3]}
   ]},options:chartOpts("%")});
-  charts.cConf = new Chart(cConf,{type:"line",data:{labels,datasets:[{label:"Confianca media (%)",data:turnos.map(t=>N(t.confianca_media)*100),borderColor:"#2f5f9e",pointRadius:0,borderWidth:1.5,fill:false}]},options:chartOpts("%")});
+}
+// Graficos da 1a aba que RECALCULAM com os filtros (usam CAT/FILTRADO ja filtrados).
+function renderDistCategoria(cat){
+  const top=[...(cat||[])].sort((a,b)=>N(b.qtd_classificados)-N(a.qtd_classificados)).slice(0,12);
+  destroy("cDistCat");
+  charts.cDistCat=new Chart(cDistCat,{type:"bar",data:{labels:top.map(c=>c.categoria),datasets:[
+    {label:"Chamados",data:top.map(c=>N(c.qtd_classificados)),backgroundColor:"#d9ded7",yAxisID:"y",order:2},
+    {type:"line",label:"Concordancia (%)",data:top.map(c=>N(c.taxa_concordancia)*100),borderColor:"#1d4ed8",backgroundColor:"#1d4ed8",pointRadius:3,borderWidth:2,yAxisID:"y1",order:1}
+  ]},options:{responsive:true,plugins:{legend:{labels:{color:"#24303a",boxWidth:12}}},scales:{
+    x:{ticks:{color:"#68737d",autoSkip:false,maxRotation:60,minRotation:30},grid:{display:false}},
+    y:{position:"left",ticks:{color:"#68737d"},grid:{color:"#edf0ea"},title:{display:true,text:"Chamados",color:"#68737d"}},
+    y1:{position:"right",min:0,max:100,ticks:{color:"#68737d",callback:v=>v+"%"},grid:{display:false},title:{display:true,text:"Concordancia",color:"#68737d"}}
+  }}});
+}
+function renderDivergencia(reg){
+  const ok=reg.reduce((s,x)=>s+x.k,0), div=reg.length-ok;
+  destroy("cDiverg");
+  charts.cDiverg=new Chart(cDiverg,{type:"doughnut",data:{labels:["Concorda com historico","Diverge do historico"],
+    datasets:[{data:[ok,div],backgroundColor:["#1d4ed8","#b42318"]}]},
+    options:{plugins:{legend:{labels:{color:"#24303a"}},tooltip:{callbacks:{label:c=>`${c.label}: ${fmt(c.parsed)} (${reg.length?pct(c.parsed/reg.length):"-"})`}}}}});
 }
 
 function rowCat(c){
@@ -890,37 +929,64 @@ function renderEstatistica(est){
   if(vmi && N(vm.n_verdade_derivada)>0) vmi.textContent = `Verdade derivada em ${fmt(vm.n_verdade_derivada)} chamados validados (amostra possivelmente nao aleatoria; preliminar).`;
   if(tVM) tVM.innerHTML = algum ? vpm.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${fmt(r.n)}</td><td>${r.acerto_validado==null?"-":pct(r.acerto_validado)}</td></tr>`).join("") : `<tr><td colspan="3">Sem conferencia humana suficiente ainda (preencha M e N).</td></tr>`;
 }
-function renderMulti(mm, turnos, rt){
-  const aviso=document.getElementById("multiAviso");
-  const tb=document.querySelector("#tabMulti tbody");
-  const ok=Array.isArray(mm)&&mm.length;
-  aviso.classList.toggle("hide", !!ok);
-  if(!ok){ tb.innerHTML=""; destroy("cMulti"); }
-  else {
-    const ord=[...mm].sort((a,b)=>N(b.concordancia_acumulada)-N(a.concordancia_acumulada));
-    tb.innerHTML = ord.map(r=>`<tr><td>${esc(r.modelo)}</td><td>${fmt(r.feitos_total)}</td><td>${fmt(r.pendentes_restantes)}</td>
-      <td>${pct(r.concordancia_acumulada)}</td><td>${pct(r.concordancia_ultimo_lote)}</td><td>${esc(r.metodo_ultimo)}</td><td>${fmtData(r.atualizado_em)}</td></tr>`).join("");
-    // evolucao da concordancia ACUMULADA por turno, 1 serie por modelo
-    const ts=Array.isArray(turnos)?turnos:[];
-    const porMod={}; ts.forEach(t=>{ (porMod[t.modelo]||(porMod[t.modelo]=[])).push(t); });
-    Object.values(porMod).forEach(a=>a.sort((x,y)=>N(x.turno)-N(y.turno)));
-    const maxT=Math.max(1,...ts.map(t=>N(t.turno)));
-    const labels=Array.from({length:maxT},(_,i)=>i+1);
-    const nomes=ord.map(r=>r.modelo).filter(m=>porMod[m]);
-    destroy("cMulti");
-    charts.cMulti = new Chart(cMulti,{type:"line",data:{labels,datasets:nomes.map((m,i)=>{
-      const byT={}; porMod[m].forEach(t=>byT[N(t.turno)]=N(t.concordancia_acumulada)*100);
-      return {label:m,data:labels.map(l=>byT[l]!=null?byT[l]:null),borderColor:PALETA[i%PALETA.length],
-        backgroundColor:PALETA[i%PALETA.length],pointRadius:0,borderWidth:1.5,spanGaps:true};
-    })},options:chartOpts("%")});
-  }
-  // reclassificacao multimodelo (agregado por modelo)
+function renderReclassMulti(rt){
+  // Reclassificacao multimodelo (agregado por modelo) — agora dentro da aba Modelos.
   const trb=document.querySelector("#tabMultiReclass tbody"), rv=document.getElementById("multiReclassVazio");
-  if(!Array.isArray(rt)||!rt.length){ trb.innerHTML=""; rv.textContent="Reclassificacao multimodelo ainda nao executada."; return; }
-  rv.textContent="";
+  if(!trb) return;
+  if(!Array.isArray(rt)||!rt.length){ trb.innerHTML=""; if(rv)rv.textContent="Reclassificacao multimodelo ainda nao executada."; return; }
+  if(rv) rv.textContent="";
   const agg={}; rt.forEach(r=>{ const m=r.modelo; (agg[m]||(agg[m]={t:0,c:0,p:0,g:0}));
     agg[m].t++; agg[m].c+=N(r.corrigidos); agg[m].p+=N(r.prejudicados); agg[m].g+=N(r.ganho_liquido); });
   trb.innerHTML = Object.keys(agg).sort().map(m=>`<tr><td>${esc(m)}</td><td>${fmt(agg[m].t)}</td><td>${fmt(agg[m].c)}</td><td>${fmt(agg[m].p)}</td><td class="${agg[m].g>=0?'status-ok':'status-bad'}">${fmt(agg[m].g)}</td></tr>`).join("");
+}
+
+// ---- Taxonomia: mapa de correlacao + termos caracteristicos + cruzamento ----
+let TAXON_CORR=null, TAXON_TERMOS=null;
+function corHeat(v){
+  v=Math.max(0,Math.min(1,N(v)));
+  const stops=[[13,27,42],[27,73,101],[42,157,143],[233,196,106],[244,162,97],[231,111,81]];
+  const t=v*(stops.length-1), i=Math.floor(t), f=t-i;
+  const a=stops[i], b=stops[Math.min(i+1,stops.length-1)];
+  const c=a.map((x,k)=>Math.round(x+(b[k]-x)*f));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+function taxonTermos(cat){
+  document.getElementById("taxonCatNome").textContent = cat?("· "+cat):"";
+  const info = TAXON_TERMOS && TAXON_TERMOS.termos_por_categoria && TAXON_TERMOS.termos_por_categoria[cat];
+  const box=document.getElementById("taxonTermos");
+  if(!info){ box.innerHTML='<p class="muted">Sem termos para esta categoria.</p>'; return; }
+  const pills=(info.top_log_odds||[]).map(t=>`<span class="chip"><b>${esc(t.termo)}</b> <span class="muted">z=${esc(t.z)}</span></span>`).join(" ");
+  box.innerHTML=`<p class="muted">${fmt(info.n_chamados)} chamados</p><div class="fchips" style="position:static">${pills}</div>`;
+}
+function renderTaxonomia(corr, termos, cruz){
+  TAXON_CORR=corr&&corr.categorias?corr:null; TAXON_TERMOS=termos&&termos.termos_por_categoria?termos:null;
+  const heat=document.getElementById("taxonHeat"), leg=document.getElementById("taxonLegend");
+  if(TAXON_CORR){
+    const cats=TAXON_CORR.categorias, M=TAXON_CORR.matriz;
+    let h='<table style="border-collapse:collapse"><tr><th></th>'+
+      cats.map(c=>`<th style="height:96px;white-space:nowrap;vertical-align:bottom;font-size:11px;color:#68737d"><span style="display:inline-block;transform:rotate(-60deg);transform-origin:left bottom;width:16px">${esc(c.length>16?c.slice(0,16)+"…":c)}</span></th>`).join("")+'</tr>';
+    cats.forEach((c,i)=>{
+      h+=`<tr><th style="text-align:right;padding-right:8px;color:#68737d;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-size:12px" title="${esc(c)}" data-cat="${esc(c)}">${esc(c.length>28?c.slice(0,28)+"…":c)}</th>`;
+      cats.forEach((d,j)=>{ const v=M[i][j];
+        h+=`<td title="${esc(c)} × ${esc(d)} = ${N(v).toFixed(3)}" data-cat="${esc(c)}" style="width:18px;height:18px;cursor:pointer;background:${corHeat(v)};border:1px solid rgba(0,0,0,.18)"></td>`; });
+      h+='</tr>';
+    });
+    h+='</table>';
+    heat.innerHTML=h;
+    heat.querySelectorAll("[data-cat]").forEach(el=>el.onclick=()=>taxonTermos(el.dataset.cat));
+    if(leg) leg.innerHTML=`${fmt(cats.length)} categorias · gerado em ${esc(TAXON_CORR.gerado_em||"—")} · escala de cor: 0,0 (frio) a 1,0 (quente)`;
+    const pb=document.querySelector("#tabTaxonPares tbody");
+    if(pb) pb.innerHTML=(TAXON_CORR.pares_mais_proximos||[]).slice(0,15)
+      .map(p=>`<tr><td>${esc(p.categoria_a)}</td><td>${esc(p.categoria_b)}</td><td>${N(p.similaridade).toFixed(3)}</td></tr>`).join("");
+    if(cats.length) taxonTermos(cats[0]);
+  }
+  const cb=document.querySelector("#tabTaxonCruz tbody");
+  const lin=(cruz&&cruz.candidatos_revisao)||[];
+  if(cb && lin.length){
+    cb.innerHTML=lin.slice(0,30).map(c=>`<tr><td>${esc(c.categoria_historica)}</td><td>${esc(c.categoria_ia)}</td>
+      <td>${pct(c.taxa_confusao)}</td><td>${N(c.correlacao_vocabular).toFixed(3)}</td>
+      <td style="font-weight:600;color:${corHeat(Math.min(1,N(c.score_revisao)*2))}">${N(c.score_revisao).toFixed(3)}</td></tr>`).join("");
+  }
 }
 function renderMetaAviso(cal){
   const el=document.getElementById("metaAviso"); if(!el) return;
@@ -1005,7 +1071,7 @@ function ajustarFiltros(aba){
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
-  ["class","cat","metrics","modelos","multi","estat","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["class","cat","metrics","modelos","estat","taxon","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
   ajustarFiltros(b.dataset.t);
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
@@ -1015,13 +1081,14 @@ document.querySelectorAll("#tabCat th").forEach(th=>th.onclick=()=>{ const k=th.
 document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.querySelectorAll(".ms-panel").forEach(p=>p.classList.add("hide")); });
 
 (async function(){
-  const [turnos,cat,rt,met,resumo,cal,calModels,calAjustada,mod,compCat,registros,multiMet,multiTurnos,multiRecl,estat] = await Promise.all([
+  const [turnos,cat,rt,met,resumo,cal,calModels,calAjustada,mod,compCat,registros,multiMet,multiTurnos,multiRecl,estat,taxCorr,taxTermos,taxCruz] = await Promise.all([
     getJSON("log_turnos_classificacao.json"), getJSON("metricas_por_categoria.json"),
     getJSON("log_turnos_reclassificacao.json"), getJSON("metricas_experimento.json"),
     getJSON("resumo.json"), getJSON("calibracao.json"), getJSON("calibracao_modelos.json"), getJSON("calibracao_ajustada_modelos.json"), getJSON("comparacao_modelos.json"),
     getJSON("comparacao_categoria.json"), getJSON("registros.json"), getJSON("multimodelo_metricas.json"),
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
-    getJSON("estatistica.json")
+    getJSON("estatistica.json"),
+    getJSON("correlacao_categorias.json"), getJSON("termos_relevantes.json"), getJSON("cruzamento_taxonomia.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -1035,7 +1102,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   popularSeletorModelos();
   if(TURNOS.length) renderClass(TURNOS);
   if(REG.length){ construirFiltros(); aplicarFiltros(); }
-  else { renderChips(); renderCat(); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
+  else { renderChips(); renderCat(); renderDistCategoria([]); renderDivergencia([]); renderFaixaFiltrada([]); renderKpisFiltrados([]); }
   renderCompCategoria();
   renderCalibracao(cal);
   renderCalibracaoModelos(calModels);
@@ -1043,7 +1110,8 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   renderMatrizValidacao(cal||{});
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : [], Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : []);
-  renderMulti(Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : [], Array.isArray(multiRecl) ? multiRecl : []);
+  renderReclassMulti(Array.isArray(multiRecl) ? multiRecl : []);
+  renderTaxonomia(taxCorr, taxTermos, taxCruz);
   renderEstatistica(estat);
   renderReclass(Array.isArray(rt) ? rt : []);
 })();
