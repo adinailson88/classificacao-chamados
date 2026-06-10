@@ -127,6 +127,7 @@
     <button data-t="estat">Estatistica</button>
     <button data-t="taxon">Taxonomia</button>
     <button data-t="reclass">Reclassificacao</button>
+    <button data-t="decisao">Decisao</button>
     <button data-t="docs">Documentacao</button>
   </nav>
 
@@ -307,6 +308,41 @@
           <th>Turno</th><th>Reclassificados</th><th>Antes</th><th>Depois</th><th>Corrigidos</th><th>Prejudicados</th><th>Ganho liquido</th><th>Executor</th>
         </tr></thead><tbody></tbody></table></div>
         <p class="muted" id="reclassVazio"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-decisao" class="hide">
+    <div class="alerta" id="decisaoAviso">Aguardando a conferencia manual (colunas M/N) para liberar a resposta final.</div>
+    <div class="grid">
+      <div class="card full">
+        <h2>Qual IA usar? — ranking pelo acerto VALIDADO</h2>
+        <div class="tablebox"><table id="tabDecRank"><thead><tr>
+          <th>#</th><th>Modelo</th><th>Acerto validado</th><th>IC 95%</th><th>Peso (log-odds)</th><th>Peso normalizado</th>
+        </tr></thead><tbody></tbody></table></div>
+        <p class="muted" id="decRankInfo"></p>
+      </div>
+      <div class="card full">
+        <h2>Vale a pena combinar as IAs?</h2>
+        <p id="decVeredicto" class="muted">Sem dados ainda.</p>
+        <div class="tablebox"><table id="tabDecEns"><thead><tr>
+          <th>Metodo de combinacao</th><th>Acerto validado</th><th>IC 95%</th><th>&Delta; vs melhor IA</th><th>p (McNemar)</th>
+        </tr></thead><tbody></tbody></table></div>
+        <p class="muted">Pesos do voto ponderado aprendidos out-of-fold (k-fold sobre os validados); votos em categoria ja conferida como errada sao vetados (regra de memoria).</p>
+      </div>
+      <div class="card full">
+        <h2>Por que a IA erra? — erros &times; acertos por caracteristica do texto</h2>
+        <div class="tablebox"><table id="tabDecErr"><thead><tr>
+          <th>Caracteristica</th><th>Mediana nos erros</th><th>Mediana nos acertos</th><th>p (Mann-Whitney)</th><th>&delta; de Cliff</th>
+        </tr></thead><tbody></tbody></table></div>
+        <p class="muted" id="decErrLeitura"></p>
+      </div>
+      <div class="card full">
+        <h2>O que pedir ao solicitante (por categoria, sem pedir a categoria)</h2>
+        <div class="tablebox"><table id="tabDecCat"><thead><tr>
+          <th>Categoria (verdade validada)</th><th>Conferidos</th><th>Erros da IA</th><th>Taxa de erro</th><th>Informacao a solicitar na abertura</th>
+        </tr></thead><tbody></tbody></table></div>
+        <p class="muted" id="decForm"></p>
       </div>
     </div>
   </section>
@@ -988,6 +1024,74 @@ function renderTaxonomia(corr, termos, cruz){
       <td style="font-weight:600;color:${corHeat(Math.min(1,N(c.score_revisao)*2))}">${N(c.score_revisao).toFixed(3)}</td></tr>`).join("");
   }
 }
+// ---- Decisao: qual IA usar, ensembles e analise de erros (pos-conferencia) ----
+function renderDecisao(av, er){
+  const aviso=document.getElementById("decisaoAviso");
+  const temAv = av && av.status==="ok";
+  const temEr = er && er.status==="ok";
+  if(aviso){
+    if(temAv){
+      const vc=av.vale_combinar||{};
+      aviso.classList.remove("bad");
+      aviso.innerHTML=`<strong>Resposta final (validada em ${fmt(av.n_avaliado)} chamados conferidos):</strong> `
+        +`melhor IA isolada = <strong>${esc(av.melhor_ia)}</strong>; recomendacao = <strong>${esc(vc.recomendacao||"-")}</strong>. `
+        +`${esc(vc.justificativa||"")} Métrica contra a verdade conferida por humano (M/N/P), nao contra o historico.`;
+    } else {
+      const n=(av&&av.validados)!=null?av.validados:0;
+      const min=(av&&av.minimo_recomendado)||50;
+      aviso.innerHTML=`<strong>Aguardando a conferencia manual.</strong> Chamados com decisao travada ate agora: `
+        +`<strong>${fmt(n)}</strong> (minimo recomendado: ${fmt(min)}). Ao terminar a conferencia (M/N), rode o workflow `
+        +`<code>avaliacao_final.yml</code> — esta aba se preenche sozinha com a resposta: qual IA, com que peso, se vale combinar e por que ela erra.`;
+    }
+  }
+  const tR=document.querySelector("#tabDecRank tbody");
+  if(tR) tR.innerHTML = temAv ? (av.por_modelo||[]).map((m,i)=>
+      `<tr><td>${i+1}</td><td>${esc(m.modelo)}</td><td>${pct(m.acerto_validado)}</td>`
+      +`<td>${pct(m.ic95[0])} – ${pct(m.ic95[1])}</td><td>${esc(m.peso_log_odds)}</td><td>${esc(m.peso_normalizado)}</td></tr>`).join("")
+    : `<tr><td colspan="6" class="muted">Sem dados validados ainda.</td></tr>`;
+  const ri=document.getElementById("decRankInfo");
+  if(ri && temAv && av.melhor_vs_segundo){
+    const d=av.melhor_vs_segundo;
+    ri.textContent=`A melhor IA supera a segunda (${d.segundo}) em ${(100*d.delta).toFixed(2)} p.p.`
+      +(d.p_mcnemar!=null?` (McNemar p=${Number(d.p_mcnemar).toFixed(4)}${d.p_mcnemar<0.05?", significativo":", NAO significativo"}).`:".");
+  }
+  const tE=document.querySelector("#tabDecEns tbody");
+  if(tE) tE.innerHTML = temAv ? (av.ensembles||[]).map(e=>
+      `<tr><td>${esc(e.metodo)}</td><td>${pct(e.acerto_validado)}</td>`
+      +`<td>${pct(e.ic95[0])} – ${pct(e.ic95[1])}</td>`
+      +`<td class="${e.delta_vs_melhor_ia>0?'status-ok':'muted'}">${(100*e.delta_vs_melhor_ia).toFixed(2)} p.p.</td>`
+      +`<td>${e.p_mcnemar_vs_melhor_ia==null?"-":Number(e.p_mcnemar_vs_melhor_ia).toFixed(4)}</td></tr>`).join("")
+    : `<tr><td colspan="5" class="muted">Sem dados validados ainda.</td></tr>`;
+  const vd=document.getElementById("decVeredicto");
+  if(vd && temAv){
+    const vc=av.vale_combinar||{};
+    vd.innerHTML = vc.veredicto
+      ? `<strong class="status-ok">SIM</strong> — ${esc(vc.justificativa||"")}`
+      : `<strong>NAO</strong> — ${esc(vc.justificativa||"")}`;
+  }
+  const tErr=document.querySelector("#tabDecErr tbody");
+  if(tErr) tErr.innerHTML = temEr ? (er.comparacao_erros_vs_acertos||[]).map(c=>{
+      const sig = c.p_mann_whitney!=null && c.p_mann_whitney<0.05 && Math.abs(c.delta_cliff)>=0.147;
+      return `<tr><td>${esc(c.caracteristica)}</td><td>${esc(c.mediana_erros)}</td><td>${esc(c.mediana_acertos)}</td>`
+        +`<td class="${sig?'status-ok':''}">${c.p_mann_whitney==null?"-":Number(c.p_mann_whitney).toFixed(4)}</td>`
+        +`<td>${esc(c.delta_cliff)}</td></tr>`; }).join("")
+    : `<tr><td colspan="5" class="muted">Sem conferencia da IA (coluna N) suficiente ainda.</td></tr>`;
+  const el=document.getElementById("decErrLeitura");
+  if(el && temEr) el.textContent = er.leitura||"";
+  const tC=document.querySelector("#tabDecCat tbody");
+  if(tC) tC.innerHTML = temEr ? (er.por_categoria||[]).filter(c=>c.n_conferidos>0).map(c=>
+      `<tr><td>${esc(c.categoria)}</td><td>${fmt(c.n_conferidos)}</td><td>${fmt(c.erros_ia)}</td>`
+      +`<td>${pct(c.taxa_erro_ia)}</td><td>${esc(c.informacao_a_solicitar||"—")}</td></tr>`).join("")
+    : `<tr><td colspan="5" class="muted">Sem dados ainda.</td></tr>`;
+  const fo=document.getElementById("decForm");
+  if(fo){
+    const campos=(er&&er.campos_formulario_sugeridos)||[];
+    if(campos.length) fo.innerHTML = "<strong>Campos sugeridos no formulario de abertura (independentes de categoria):</strong> "
+      + campos.map(c=>`<em>${esc(c.campo)}</em> — ${esc(c.pergunta)}`).join(" · ")
+      + " O solicitante nunca escolhe a categoria; ela e derivada do texto.";
+  }
+}
+
 function renderMetaAviso(cal){
   const el=document.getElementById("metaAviso"); if(!el) return;
   const val=N(cal&&cal.validados);
@@ -1071,7 +1175,7 @@ function ajustarFiltros(aba){
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");
-  ["class","cat","metrics","modelos","estat","taxon","reclass","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["class","cat","metrics","modelos","estat","taxon","reclass","decisao","docs"].forEach(t=>document.getElementById("tab-"+t).classList.toggle("hide",t!==b.dataset.t));
   ajustarFiltros(b.dataset.t);
 });
 document.getElementById("filtroCat").addEventListener("input",renderCat);
@@ -1089,6 +1193,9 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
     getJSON("multimodelo_turnos.json"), getJSON("multimodelo_reclass_turnos.json"),
     getJSON("estatistica.json"),
     getJSON("correlacao_categorias.json"), getJSON("termos_relevantes.json"), getJSON("cruzamento_taxonomia.json")
+  ]);
+  const [avFinal, anErros] = await Promise.all([
+    getJSON("avaliacao_final.json"), getJSON("analise_erros.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -1114,6 +1221,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   renderTaxonomia(taxCorr, taxTermos, taxCruz);
   renderEstatistica(estat);
   renderReclass(Array.isArray(rt) ? rt : []);
+  renderDecisao(Array.isArray(avFinal)?null:avFinal, Array.isArray(anErros)?null:anErros);
 })();
 </script>
 </body>

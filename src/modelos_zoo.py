@@ -54,6 +54,11 @@ class _ModeloProba:
         idx = proba.argmax(axis=1)
         return self.classes_[idx], proba[np.arange(len(idx)), idx]
 
+    def predict_dist(self, textos):
+        """(classes_, matriz n x K de probabilidades) — permite escolher a melhor
+        categoria EXCLUINDO classes vetadas (memoria de conferencia humana)."""
+        return self.classes_, self.pipe.predict_proba(list(textos))
+
 
 class _ModeloMargem:
     """Para LinearSVC (sem proba): score = softmax da decision_function."""
@@ -69,13 +74,20 @@ class _ModeloMargem:
         return self
 
     def predict_score(self, textos):
+        p = self._proba(textos)
+        idx = p.argmax(axis=1)
+        return self.classes_[idx], p[np.arange(len(idx)), idx]
+
+    def _proba(self, textos):
         m = np.atleast_2d(self.pipe.decision_function(list(textos)))
         if m.shape[1] == 1:  # caso binário
             m = np.hstack([-m, m])
         e = np.exp(m - m.max(axis=1, keepdims=True))
-        p = e / e.sum(axis=1, keepdims=True)
-        idx = p.argmax(axis=1)
-        return self.classes_[idx], p[np.arange(len(idx)), idx]
+        return e / e.sum(axis=1, keepdims=True)
+
+    def predict_dist(self, textos):
+        """(classes_, matriz n x K do softmax da margem)."""
+        return self.classes_, self._proba(textos)
 
 
 class _ModeloLSTM:
@@ -93,6 +105,12 @@ class _ModeloLSTM:
     def predict_score(self, textos):
         import classificador_producao as cp
         return cp.predizer(self.clf, self.eh_lstm, textos)
+
+    def predict_dist(self, textos):
+        """(classes_, matriz n x K) tanto para o LSTM quanto para o fallback RF."""
+        if self.eh_lstm:
+            return self.clf.predict_dist(textos)
+        return self.clf.classes_, self.clf.predict_proba(list(textos))
 
 
 class _ModeloTransformerFT:
@@ -163,22 +181,28 @@ class _ModeloTransformerFT:
     def predict_score(self, textos):
         if self._fb is not None:
             return self._fb.predict_score(textos)
+        _, prob = self.predict_dist(textos)
+        idx = prob.argmax(axis=1)
+        preds = np.array([self._id2lab[int(j)] for j in idx])
+        return preds, prob[np.arange(len(idx)), idx]
+
+    def predict_dist(self, textos):
+        """(classes_, matriz n x K do softmax completo)."""
+        if self._fb is not None:
+            return self._fb.predict_dist(textos)
         import torch
         textos = [str(t) for t in textos]
         device = next(self._model.parameters()).device
         self._model.eval()
-        preds, scores = [], []
+        blocos = []
         with torch.no_grad():
             for i in range(0, len(textos), self.batch):
                 lote = textos[i:i + self.batch]
                 enc = self._tok(lote, truncation=True, padding=True, max_length=self.max_len, return_tensors="pt")
                 logits = self._model(input_ids=enc["input_ids"].to(device),
                                      attention_mask=enc["attention_mask"].to(device)).logits
-                prob = torch.softmax(logits, dim=1)
-                p, idx = prob.max(dim=1)
-                preds.extend(self._id2lab[int(j)] for j in idx.cpu())
-                scores.extend(float(x) for x in p.cpu())
-        return np.array(preds), np.array(scores)
+                blocos.append(torch.softmax(logits, dim=1).cpu().numpy())
+        return self.classes_, np.vstack(blocos) if blocos else np.zeros((0, len(self.classes_ or [])))
 
 
 def criar_modelo(nome: str):

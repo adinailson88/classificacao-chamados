@@ -27,6 +27,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planilha as pl  # noqa: E402
 import memoria_validada as mv  # noqa: E402
+import decisao_validada as dv  # noqa: E402
 import classificacao_multimodelo as clf  # noqa: E402
 from tempo import agora_bahia  # noqa: E402
 
@@ -138,7 +139,8 @@ def linhas_ja_reclass(sh, aba: str) -> set[int]:
     return feitas
 
 
-def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_extra, args) -> dict:
+def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_extra, args,
+                         decisoes=None) -> dict:
     mm = config["multimodelo"]
     run_id = config.get("run_id", "")
     gerado = agora_bahia()
@@ -146,15 +148,26 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     lim_alta = float(config.get("classificacao", {}).get("limiar_alta_confianca", 0.95))
     aba_classif = clf.nome_aba(mm["aba_classificacao"], modelo)
     aba_reclass = clf.nome_aba(mm["aba_reclassificacao"], modelo)
+    decisoes = decisoes or {}
 
     calibrador = _carregar_calibrador(modelo) if getattr(args, "usar_calibrado", False) else None
     baixa = carregar_classif_baixa(sh, aba_classif, lim_alta, calibrador)
     feitas = linhas_ja_reclass(sh, aba_reclass)
-    cand_linhas = [ln for ln in baixa if ln not in feitas and ln in por_linha]
+
+    # REGRA DE MEMORIA 1 (acerto conferido): chamado com decisao travada pela
+    # conferencia humana NAO e reprocessado — a categoria decidida e reaproveitada.
+    decididos = [ln for ln in baixa
+                 if ln not in feitas and ln in por_linha
+                 and decisoes.get(ln, {}).get("status") == dv.STATUS_DECIDIDO]
+    cand_linhas = [ln for ln in baixa
+                   if ln not in feitas and ln in por_linha and ln not in set(decididos)]
     cand_linhas.sort(key=lambda ln: (baixa[ln].get("conf_sel", baixa[ln]["conf_1"]), ln))
     if calibrador:
         print(f"[{modelo}] selecao por confianca CALIBRADA ({calibrador.get('metodo','?')}).")
-    if not cand_linhas:
+    if decididos:
+        print(f"[{modelo}] {len(decididos)} chamados com decisao humana travada: "
+              "reaproveitados sem reprocessar.")
+    if not cand_linhas and not decididos:
         print(f"[{modelo}] 0 candidatos a reclassificar.")
         return {"modelo": modelo, "reclassificados": 0, "ganho_liquido": 0}
 
@@ -162,39 +175,86 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     sel = cand_linhas[:n_lote]
     lote = [por_linha[ln] for ln in sel]
 
-    # Base sempre-no-treino: TODAS as linhas elegiveis menos o lote + memoria.
-    sel_set = set(sel)
-    base_textos = [e["texto"] for e in elegiveis if e["linha"] not in sel_set] + list(base_extra[0])
-    base_cats = [e["categoria_original"] for e in elegiveis if e["linha"] not in sel_set] + list(base_extra[1])
+    # REGRA DE MEMORIA 2 (erro conferido): categorias ja marcadas como ERRADAS
+    # para o chamado sao vetadas na predicao (nao repetir o erro).
+    vetos = [set(decisoes.get(e["linha"], {}).get("eliminadas") or set()) for e in lote]
+    n_com_veto = sum(1 for v in vetos if v)
+    if n_com_veto:
+        print(f"[{modelo}] {n_com_veto} chamados do lote com categorias vetadas pela conferencia.")
 
-    print(f"[{modelo}] candidatos_baixa={len(cand_linhas)} | lote_agora={len(lote)} | base={len(base_textos)}")
-    preds, scores, metodo = clf.prever_out_of_fold(
-        modelo, lote, base_textos, base_cats,
-        k_folds=int(mm.get("k_folds", 5)), min_base=int(mm.get("min_base_treino", 200)),
-        fracao_topup=float(mm.get("fracao_topup", 0.25)))
+    # Base sempre-no-treino: TODAS as linhas elegiveis menos o lote + memoria.
+    # Rotulo de treino: categoria DECIDIDA pela conferencia quando existir
+    # (verdade validada), senao o historico.
+    sel_set = set(sel)
+    base_textos, base_cats = [], []
+    for e in elegiveis:
+        if e["linha"] in sel_set:
+            continue
+        base_textos.append(e["texto"])
+        d = decisoes.get(e["linha"], {})
+        base_cats.append(d.get("decidida") or e["categoria_original"])
+    base_textos += list(base_extra[0])
+    base_cats += list(base_extra[1])
 
     registros = []
-    for e, p, s in zip(lote, preds, scores):
-        if p is None:
-            continue
-        orig = e["categoria_original"]
-        cat_1 = baixa[e["linha"]]["cat_1"]
-        conf_1 = baixa[e["linha"]]["conf_1"]
-        cat_2, conf_2 = str(p), round(float(s), 4)
-        antes_ok = (cat_1 == orig)
-        depois_ok = (cat_2 == orig)
-        if not antes_ok and depois_ok:
-            res = "corrigido"
-        elif antes_ok and not depois_ok:
-            res = "prejudicado"
-        elif antes_ok and depois_ok:
-            res = "mantido_correto"
-        else:
-            res = "mantido_errado"
-        registros.append({"linha": e["linha"], "id": e["id"], "original": orig,
+    metodo = "memoria"
+    if lote:
+        print(f"[{modelo}] candidatos_baixa={len(cand_linhas)} | lote_agora={len(lote)} | base={len(base_textos)}")
+        preds, scores, metodo = clf.prever_out_of_fold(
+            modelo, lote, base_textos, base_cats,
+            k_folds=int(mm.get("k_folds", 5)), min_base=int(mm.get("min_base_treino", 200)),
+            fracao_topup=float(mm.get("fracao_topup", 0.25)), vetos=vetos)
+
+        for e, p, s in zip(lote, preds, scores):
+            if p is None:
+                continue
+            d = decisoes.get(e["linha"], {})
+            # Referencia de comparacao: verdade validada quando travada; senao o
+            # historico — INVALIDO quando a conferencia marcou o historico como errado.
+            alvo = d.get("decidida") or e["categoria_original"]
+            alvo_confiavel = bool(d.get("decidida")) or \
+                (e["categoria_original"] not in (d.get("eliminadas") or set()))
+            cat_1 = baixa[e["linha"]]["cat_1"]
+            conf_1 = baixa[e["linha"]]["conf_1"]
+            cat_2, conf_2 = str(p), round(float(s), 4)
+            if not alvo_confiavel:
+                # historico conferido como ERRADO e sem verdade travada: nao ha
+                # referencia para medir acerto — nao conta em corrigidos/prejudicados.
+                antes_ok = depois_ok = False
+                res = "sem_referencia"
+            else:
+                antes_ok = (cat_1 == alvo)
+                depois_ok = (cat_2 == alvo)
+                if not antes_ok and depois_ok:
+                    res = "corrigido"
+                elif antes_ok and not depois_ok:
+                    res = "prejudicado"
+                elif antes_ok and depois_ok:
+                    res = "mantido_correto"
+                else:
+                    res = "mantido_errado"
+            registros.append({"linha": e["linha"], "id": e["id"], "original": alvo,
+                              "base_comparacao": "validada" if d.get("decidida") else (
+                                  "historico" if alvo_confiavel else "sem_referencia"),
+                              "cat_1": cat_1, "conf_1": conf_1, "antes_ok": antes_ok,
+                              "cat_2": cat_2, "conf_2": conf_2, "depois_ok": depois_ok,
+                              "mudou": cat_2 != cat_1, "delta": round(conf_2 - conf_1, 4), "res": res})
+
+    # Chamados decididos: reusa a categoria conferida como certa (conf=1.0 por
+    # definicao humana), sem reprocessar. Registrado a parte (res=decidido_humano).
+    for ln in decididos:
+        e = por_linha[ln]
+        d = decisoes[ln]
+        cat_1 = baixa[ln]["cat_1"]
+        conf_1 = baixa[ln]["conf_1"]
+        cat_2 = d["decidida"]
+        antes_ok = (cat_1 == cat_2)
+        registros.append({"linha": ln, "id": e["id"], "original": cat_2,
+                          "base_comparacao": "validada",
                           "cat_1": cat_1, "conf_1": conf_1, "antes_ok": antes_ok,
-                          "cat_2": cat_2, "conf_2": conf_2, "depois_ok": depois_ok,
-                          "mudou": cat_2 != cat_1, "delta": round(conf_2 - conf_1, 4), "res": res})
+                          "cat_2": cat_2, "conf_2": 1.0, "depois_ok": True,
+                          "mudou": cat_2 != cat_1, "delta": round(1.0 - conf_1, 4),
+                          "res": "decidido_humano"})
 
     if not registros:
         print(f"[{modelo}] nada reclassificado (base insuficiente).")
@@ -202,20 +262,24 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
 
     corr = sum(1 for r in registros if r["res"] == "corrigido")
     prej = sum(1 for r in registros if r["res"] == "prejudicado")
+    reuso = sum(1 for r in registros if r["res"] == "decidido_humano")
+    sem_ref = sum(1 for r in registros if r["res"] == "sem_referencia")
     ganho = corr - prej
     print(f"[{modelo}] reclass={len(registros)} | corrigidos={corr} | prejudicados={prej} | "
-          f"GANHO={ganho} | metodo={metodo}")
+          f"GANHO={ganho} | reuso_decisao_humana={reuso} | sem_referencia={sem_ref} | metodo={metodo}")
 
     if not args.aplicar:
         return {"modelo": modelo, "reclassificados": len(registros), "ganho_liquido": ganho,
-                "corrigidos": corr, "prejudicados": prej, "dry_run": True}
+                "corrigidos": corr, "prejudicados": prej, "reuso_decisao_humana": reuso,
+                "sem_referencia": sem_ref, "dry_run": True}
 
     cab = ["run_id", "modelo", "linha_planilha", "id_chamado", "categoria_original",
            "categoria_antes", "confianca_antes", "acerto_antes", "categoria_depois",
-           "confianca_depois", "acerto_depois", "mudou", "delta_confianca", "resultado", "data"]
+           "confianca_depois", "acerto_depois", "mudou", "delta_confianca", "resultado",
+           "base_comparacao", "data"]
     linhas = [[run_id, modelo, r["linha"], r["id"], r["original"], r["cat_1"], r["conf_1"],
                str(r["antes_ok"]), r["cat_2"], r["conf_2"], str(r["depois_ok"]), str(r["mudou"]),
-               r["delta"], r["res"], gerado] for r in registros]
+               r["delta"], r["res"], r.get("base_comparacao", "historico"), gerado] for r in registros]
     _append_resiliente(sh, aba_reclass, cab, linhas, colunas_percentuais=[7, 10])
 
     # Turnos de 15 no log consolidado.
@@ -256,7 +320,8 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
             print(f"[{modelo}] FALHA ao gravar coluna 2: {type(e).__name__}: {e}", file=sys.stderr)
 
     return {"modelo": modelo, "reclassificados": len(registros), "ganho_liquido": ganho,
-            "corrigidos": corr, "prejudicados": prej, "metodo": metodo}
+            "corrigidos": corr, "prejudicados": prej, "reuso_decisao_humana": reuso,
+            "sem_referencia": sem_ref, "metodo": metodo}
 
 
 def parse_args():
@@ -309,12 +374,24 @@ def main() -> int:
     memoria = mv.carregar_memoria_validada(sh, config["abas_experimento"]["validacao_humana"]) \
         if memoria_cfg.get("habilitada", True) else []
     mem_textos, mem_cats = mv.expandir_treino_com_memoria([], [], memoria, peso=int(memoria_cfg.get("peso_treino", 3)))
-    print(f"modelos={modelos} | elegiveis={len(elegiveis)} | memoria_validada={len(memoria)}")
+
+    # Memoria de DECISAO das conferencias M/N/P: trava acertos conferidos e veta
+    # categorias conferidas como erradas (regras do pesquisador, 2026-06-10).
+    decisoes = dv.carregar_decisoes(sh, config["aba_principal"])
+    res_dec = dv.resumo_decisoes(decisoes)
+    print(f"modelos={modelos} | elegiveis={len(elegiveis)} | memoria_validada={len(memoria)} | "
+          f"conferencias={res_dec['com_conferencia']} (decididos={res_dec['decididos']}, "
+          f"restritos={res_dec['restritos']}, conflitos={res_dec['conflitos']})")
+    if res_dec["conflitos"]:
+        print(f"[aviso] {res_dec['conflitos']} chamados com conferencias contraditorias "
+              "(duas categorias diferentes marcadas como 'Correto') — devolvidos a revisao humana.",
+              file=sys.stderr)
 
     resumos = []
     for modelo in modelos:
         try:
-            r = reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, (mem_textos, mem_cats), args)
+            r = reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap,
+                                     (mem_textos, mem_cats), args, decisoes=decisoes)
         except Exception as e:  # noqa: BLE001
             print(f"[{modelo}] FALHOU: {type(e).__name__}: {e}", file=sys.stderr)
             continue

@@ -1346,3 +1346,24 @@ silhouette 0,0972, Davies-Bouldin 3,99, Calinski-Harabasz 128,2; prioridades
 Alta=8.589 (62%), Media=1.719, Baixa=3.517. Pendencia aberta: recalibrar os limiares de
 prioridade (62% em "Alta" nao tria) antes de usar como fila de revisao humana. Tudo
 exploratorio, contra a categoria historica; `validados=0` permanece.
+
+## Memoria de decisao das conferencias + resposta final (2026-06-10, noite)
+
+Regras novas pedidas pelo pesquisador e implementadas: categoria conferida como ERRADA
+(M/N/P) fica vetada para o chamado (a predicao escolhe a melhor classe fora do veto,
+via `predict_dist` em todos os modelos do zoo + `prever_out_of_fold(vetos=)`);
+categoria conferida como CERTA trava a decisao e e reaproveitada sem reprocessar
+(`decidido_humano` na reclassificacao). Modulo central: `src/decisao_validada.py`
+(decidida/eliminadas/conflito/status). A reclassificacao multimodelo passou a treinar
+com a verdade validada quando travada e a medir corrigidos/prejudicados contra ela
+(`base_comparacao`; historico conferido como errado vira `sem_referencia`).
+
+Resposta final pre-armada para o fim da conferencia manual: `src/avaliacao_final.py`
+(acerto validado por IA, IC95, pesos log-odds, ensembles com pesos out-of-fold,
+McNemar vs melhor IA, veredicto vale-combinar) e `src/analise_erros.py` (erros x
+acertos por qualidade do texto com Mann-Whitney/delta de Cliff; por categoria, termos
+discriminativos ausentes nos erros -> o que pedir ao solicitante, sem pedir categoria).
+Workflow manual `avaliacao_final.yml` gera `avaliacao_final.json` e `analise_erros.json`
+(status aguardando_validacao enquanto validados < minimo). Dashboard ganhou a aba
+`Decisao` consumindo os dois JSON, com estado vazio honesto. Testes offline:
+`tests/test_decisao_memoria.py` (18/18 OK). Nada foi gravado na planilha.

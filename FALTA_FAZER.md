@@ -291,6 +291,47 @@ gh workflow run dashboard.yml --repo adinailson88/classificacao-chamados
 
 ---
 
+## Atualizacao - memoria de decisao + resposta final pronta (2026-06-10, noite)
+
+Pedido do pesquisador: (a) a reclassificacao deve ELIMINAR categorias ja conferidas
+como erradas (nao repetir o erro) e REUSAR categorias conferidas como certas (nao
+reprocessar o decidido); (b) deixar tudo pronto para que, ao fim da conferencia
+manual, dashboard e scripts respondam: qual IA usar, com que peso, o quanto e melhor,
+se vale combinar, e por que a IA erra (que informacoes pedir ao solicitante).
+
+- [x] **`src/decisao_validada.py`** (novo): memoria de decisao por chamado a partir de
+  M/N/P + C/G/O — `decidida` (trava), `eliminadas` (veto), `conflito` (duas conferencias
+  'Correto' contraditorias devolvidas a revisao), status decidido/restrito/sem_validacao.
+- [x] **`predict_dist`** em todos os modelos do zoo (proba, margem softmax, LSTM,
+  transformer) + `prever_out_of_fold(..., vetos=)`: a predicao escolhe a melhor
+  categoria FORA do conjunto vetado, com confianca renormalizada.
+- [x] **`reclassificacao_multimodelo.py`** integrado a memoria: linhas decididas sao
+  reaproveitadas sem reprocessar (res=`decidido_humano`), categorias vetadas nao se
+  repetem, o treino usa a verdade validada quando travada, e a comparacao passa a ser
+  contra a verdade validada (campo novo `base_comparacao`; historico conferido como
+  errado vira `sem_referencia` e nao conta em corrigidos/prejudicados).
+- [x] **`src/avaliacao_final.py`** (novo): acerto VALIDADO por IA (+IC95 bootstrap),
+  pesos (log-odds/normalizado), ensembles maioria simples/ponderada/confianca calibrada
+  maxima com pesos aprendidos OUT-OF-FOLD, McNemar vs melhor IA, veredicto
+  vale-combinar. Gera `docs/dados/avaliacao_final.json`; com validados < minimo, sai
+  `status=aguardando_validacao` (sem inventar numero).
+- [x] **`src/analise_erros.py`** (novo): erros x acertos da IA (conferencia N) por
+  caracteristica do texto (comprimentos, tokens, campos preenchidos, cobertura dos
+  termos discriminativos da categoria verdadeira), Mann-Whitney + delta de Cliff;
+  por categoria, termos que faltaram nos erros -> "informacao a solicitar" na abertura
+  (sem nunca pedir a categoria ao solicitante). Gera `docs/dados/analise_erros.json`.
+- [x] **`.github/workflows/avaliacao_final.yml`** (novo, manual): roda os dois scripts
+  e commita os JSON.
+- [x] **Aba `Decisao`** no dashboard: ranking validado com pesos, vale-combinar com
+  McNemar, erros x acertos, checklist por categoria e campos de formulario sugeridos.
+  Estado vazio honesto enquanto `validados=0`. Verificado no preview (vazio + simulado).
+- [x] Testes offline novos: `tests/test_decisao_memoria.py` (18 testes, todos passando)
+  cobrindo regras de decisao, veto na predicao OOF, ensembles e analise de erros.
+- [ ] **Ao terminar a conferencia manual (M/N)**: rodar
+  `gh workflow run avaliacao_final.yml --repo adinailson88/classificacao-chamados`
+  e ler a aba `Decisao`. Opcional antes disso: dry-run da reclassificacao para ver
+  o reuso/veto em acao.
+
 ## Atualizacao - execucao com credenciais reais (2026-06-10, tarde)
 
 - [x] `relevancia_termos.yml` executado com sucesso (run `27298524010`, dry-run, 36s).

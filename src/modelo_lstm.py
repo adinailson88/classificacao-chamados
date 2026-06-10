@@ -165,6 +165,11 @@ class ClassificadorLSTM:
         confs = probs[np.arange(len(idx)), idx]
         return preds, confs
 
+    def predict_dist(self, textos):
+        """(classes_, matriz n x K do softmax completo)."""
+        X = self._vetorizar(textos)
+        return self.classes_, self.model.predict(X, verbose=0)
+
     def save(self, diretorio: str | Path) -> None:
         d = Path(diretorio)
         d.mkdir(parents=True, exist_ok=True)

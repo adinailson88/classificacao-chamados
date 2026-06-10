@@ -90,7 +90,41 @@ def linhas_ja_classificadas(sh, aba: str) -> set[int]:
     return feitas
 
 
-def prever_out_of_fold(nome, lote, base_textos, base_cats, k_folds, min_base, fracao_topup):
+def _prever_com_veto(m, textos, vetos):
+    """Predicao escolhendo a melhor classe FORA do conjunto vetado de cada item.
+
+    `vetos`: lista (alinhada a `textos`) de conjuntos de categorias que a
+    conferencia humana ja marcou como ERRADAS para aquele chamado — a regra de
+    memoria exige nao repeti-las. Sem vetos, cai no predict_score normal.
+    A confianca apos o veto e a probabilidade RENORMALIZADA entre as classes
+    permitidas: P(classe | nao esta entre as vetadas).
+    """
+    if not vetos or not any(vetos):
+        preds, scores = m.predict_score(textos)
+        return [str(p) for p in preds], [float(s) for s in scores]
+    classes, prob = m.predict_dist(textos)
+    classes = [str(c) for c in classes]
+    preds, scores = [], []
+    for i, veto in enumerate(vetos):
+        p = np.asarray(prob[i], dtype=float).copy()
+        if veto:
+            mask = np.array([c in veto for c in classes])
+            if not mask.all():  # se TODAS as classes fossem vetadas, ignora o veto
+                p[mask] = 0.0
+        tot = float(p.sum())
+        if tot <= 0:
+            preds.append(None)
+            scores.append(0.0)
+            continue
+        p = p / tot
+        j = int(p.argmax())
+        preds.append(classes[j])
+        scores.append(float(p[j]))
+    return preds, scores
+
+
+def prever_out_of_fold(nome, lote, base_textos, base_cats, k_folds, min_base, fracao_topup,
+                       vetos=None):
     """Predicao honesta (sem vazamento) das linhas do `lote`.
 
     base_* = linhas ja classificadas (rotulo historico) + memoria validada, que
@@ -100,17 +134,21 @@ def prever_out_of_fold(nome, lote, base_textos, base_cats, k_folds, min_base, fr
       na base e preve o lote (lote fora do treino -> out-of-fold).
     - Inicial/grande: K-fold sobre o lote (a base apenas reforca o treino de cada
       fold), garantindo que cada linha do lote seja prevista sem ter sido treinada.
+    - `vetos` (opcional): lista alinhada ao lote com o conjunto de categorias que a
+      conferencia humana marcou como erradas para cada chamado; a predicao escolhe
+      a melhor classe fora do veto (regra: nao repetir erro ja conferido).
     """
     textos_lote = [e["texto"] for e in lote]
     cats_lote = [e["categoria_original"] for e in lote]
     n = len(lote)
+    vetos = list(vetos) if vetos else [set()] * n
 
     base_n = len(base_textos)
     if base_n >= min_base and n <= max(50, int(fracao_topup * base_n)):
         m = zoo.criar_modelo(nome)
         m.fit(base_textos, base_cats)
-        preds, scores = m.predict_score(textos_lote)
-        return [str(p) for p in preds], [float(s) for s in scores], "topup"
+        preds, scores = _prever_com_veto(m, textos_lote, vetos)
+        return preds, scores, "topup"
 
     # K-fold OOF sobre o lote.
     from sklearn.model_selection import KFold
@@ -121,8 +159,8 @@ def prever_out_of_fold(nome, lote, base_textos, base_cats, k_folds, min_base, fr
             return [None], [0.0], "sem_base"
         m = zoo.criar_modelo(nome)
         m.fit(base_textos, base_cats)
-        preds, scores = m.predict_score(textos_lote)
-        return [str(p) for p in preds], [float(s) for s in scores], "base_unica"
+        preds, scores = _prever_com_veto(m, textos_lote, vetos)
+        return preds, scores, "base_unica"
 
     preds = [None] * n
     scores = [0.0] * n
@@ -132,9 +170,9 @@ def prever_out_of_fold(nome, lote, base_textos, base_cats, k_folds, min_base, fr
         y_tr = [cats_lote[i] for i in tr_idx] + list(base_cats)
         m = zoo.criar_modelo(nome)
         m.fit(x_tr, y_tr)
-        p, s = m.predict_score([textos_lote[i] for i in te_idx])
+        p, s = _prever_com_veto(m, [textos_lote[i] for i in te_idx], [vetos[i] for i in te_idx])
         for j, i in enumerate(te_idx):
-            preds[i] = str(p[j])
+            preds[i] = None if p[j] is None else str(p[j])
             scores[i] = float(s[j])
     return preds, scores, f"kfold_{kk}"
 
