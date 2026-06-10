@@ -209,6 +209,7 @@ python src/resetar_experimento.py --aplicar --confirmar RESETAR
 10. `reclassificar_validados.yml`: reclassifica AUTOMATICAMENTE os chamados ja validados (colunas `M` e `N` preenchidas) com o modelo robusto, gravando o resultado na coluna `O` (Classificacao IA - 2). Cron a cada 15 min, no maximo 15 chamados por execucao; so treina quando ha validados pendentes.
 11. `transformer_ft.yml`: 8o modelo, **BERTimbau com fine-tuning** (contextual, self-attention). PESADO (torch + transformers, fine-tuning em CPU) — manual, timeout alto. Acoes: `reclassificar_validados` (refaz a coluna `O` de todos os validados com o transformer, 1 treino) ou `comparar` (avalia numa janela held-out e grava em `COMPARACAO_MODELOS`, lado a lado com os 7).
 12. `iniciar_pipeline.yml`: orquestrador manual que dispara Etapa 1 + reclassificar_validados + dashboard de uma vez.
+13. `relevancia_termos.yml`: termos caracteristicos por categoria + mapa de correlacao, manual, dry-run por padrao; commita os JSON agregados.
 
 Nos workflows manuais com input `aplicar`, mantenha `false` ate revisar logs, ganho liquido e impacto esperado.
 
@@ -249,12 +250,29 @@ docs/dados/calibracao_ajustada_modelos.json # calibracao escalar preliminar por 
 
 O site publicado pelo GitHub Pages deve identificar o projeto como `Classificacao de Chamados - Painel Experimental`. A referencia a Malha IA deve aparecer apenas como contexto de origem, nao como nome principal do site.
 
+## Relevancia de termos + mapa de correlacao (exploratorio)
+
+`src/relevancia_termos.py` calcula, por categoria, os **termos caracteristicos**
+(log-odds com prior de Dirichlet + peso TF-IDF — ex.: `agua`, `torneira`, `sanitario`
+para hidraulica) e o **mapa de correlacao** entre categorias (cosseno entre centroides
+TF-IDF). E uma triagem de **taxonomia**, nao uma metrica de acuracia: nao decide categoria
+e nao altera o historico. Saidas agregadas e sanitizadas em `docs/dados/termos_relevantes.json`
+e `docs/dados/correlacao_categorias.json`; visualizador (mapa de calor estilo
+geoprocessamento) em `docs/mapa_correlacao.html`. Workflow manual `relevancia_termos.yml`,
+dry-run por padrao. Detalhes em `docs/RELEVANCIA_TERMOS.md`.
+
+```bash
+python src/relevancia_termos.py --top-n 25 --min-df 5 --min-chamados-categoria 10
+```
+
 ## Documentacao
 
 1. `CONTEXTO.md`: panorama vivo do repositorio, decisoes e proximos passos.
 2. `docs/GUIA_TECNICO.md`: explicacao dos scripts, colunas, executores e fluxos.
 3. `dados/README.md`: schemas dos artefatos JSON internos.
 4. `docs/index.html`: painel publico com graficos, tabelas, metricas e aba de documentacao.
+5. `docs/RELEVANCIA_TERMOS.md`: termos caracteristicos por categoria + mapa de correlacao.
+6. `docs/RELATORIO_ESTADO_ATUAL.md`: diagnostico tecnico/metodologico desta revisao.
 
 ## Apps Script
 

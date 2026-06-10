@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa de Correlação entre Categorias — Classificação de Chamados</title>
+<style>
+  :root{ --bg:#0f1419; --pane:#1a2129; --line:#2a323c; --txt:#e6edf3; --mut:#9aa7b4; --accent:#58a6ff; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+  header{padding:18px 22px;border-bottom:1px solid var(--line)}
+  h1{font-size:18px;margin:0 0 4px}
+  .sub{color:var(--mut);font-size:13px;max-width:900px}
+  .wrap{display:flex;gap:18px;padding:18px 22px;flex-wrap:wrap;align-items:flex-start}
+  .pane{background:var(--pane);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .grid{overflow:auto;max-width:100%}
+  table{border-collapse:collapse}
+  td,th{font-size:11px;text-align:center}
+  th.col{height:120px;white-space:nowrap;vertical-align:bottom;padding:0 2px}
+  th.col span{display:inline-block;transform:rotate(-60deg);transform-origin:left bottom;width:18px;color:var(--mut)}
+  th.row{text-align:right;padding-right:8px;color:var(--mut);white-space:nowrap;max-width:230px;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+  th.row:hover{color:var(--accent)}
+  td.cell{width:20px;height:20px;cursor:pointer;border:1px solid rgba(0,0,0,.25)}
+  td.cell:hover{outline:2px solid var(--accent);outline-offset:-2px}
+  .legend{display:flex;align-items:center;gap:8px;margin-top:10px;color:var(--mut);font-size:12px}
+  .bar{height:12px;width:180px;border-radius:3px;background:linear-gradient(90deg,#0d1b2a,#1b4965,#2a9d8f,#e9c46a,#f4a261,#e76f51)}
+  .side{min-width:300px;max-width:380px;flex:1}
+  .side h2{font-size:15px;margin:0 0 8px}
+  .pill{display:inline-block;background:#22303c;border:1px solid var(--line);border-radius:14px;padding:3px 10px;margin:3px 4px 3px 0;font-size:12px}
+  .pill b{color:var(--accent)}
+  .muted{color:var(--mut);font-size:12px}
+  .pares li{margin:3px 0}
+  .note{margin-top:14px;padding:10px 12px;border-left:3px solid var(--accent);background:#10202e;border-radius:4px;color:var(--mut);font-size:12px}
+  a{color:var(--accent)}
+  .err{color:#f4a261}
+</style>
+</head>
+<body>
+<header>
+  <h1>Mapa de correlação entre categorias <span class="muted">· vocabulário (cosseno entre centróides TF-IDF)</span></h1>
+  <div class="sub">Análogo a um mapa de geoprocessamento: célula <b>quente</b> quando a similaridade do vocabulário tende a <b>1</b>
+  (categorias que se sobrepõem — candidatas a confusão ou fusão na taxonomia) e <b>fria</b> quando tende a 0 (bem separadas).
+  Clique numa categoria (linha) ou numa célula para ver os termos característicos. <span class="err">Sinal exploratório de triagem de taxonomia — não é métrica de acurácia validada.</span></div>
+</header>
+<div class="wrap">
+  <div class="pane grid">
+    <div id="heat"></div>
+    <div class="legend"><span>0,0</span><div class="bar"></div><span>1,0</span><span class="muted">— similaridade do cosseno</span></div>
+    <div class="muted" id="meta" style="margin-top:8px"></div>
+  </div>
+  <div class="pane side">
+    <h2 id="selTitle">Termos característicos</h2>
+    <div id="termos"><span class="muted">Selecione uma categoria no mapa ao lado.</span></div>
+    <h2 style="margin-top:18px">Pares mais próximos</h2>
+    <ul class="pares muted" id="pares"></ul>
+    <div class="note">Termos por <b>log-odds</b> com prior de Dirichlet (característicos da categoria vs. as demais).
+    Gerado por <code>src/relevancia_termos.py</code>; dados em <code>dados/termos_relevantes.json</code> e <code>dados/correlacao_categorias.json</code>.</div>
+  </div>
+</div>
+<script>
+// escala "quente" (fria->quente) aproximando viridis/turbo para leitura tipo mapa de calor
+function cor(v){
+  v = Math.max(0, Math.min(1, v));
+  const stops = [[13,27,42],[27,73,101],[42,157,143],[233,196,106],[244,162,97],[231,111,81]];
+  const t = v*(stops.length-1), i = Math.floor(t), f = t-i;
+  const a = stops[i], b = stops[Math.min(i+1,stops.length-1)];
+  const c = a.map((x,k)=>Math.round(x+(b[k]-x)*f));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+async function carregar(nome){ const r = await fetch('dados/'+nome); if(!r.ok) throw new Error(nome); return r.json(); }
+let CORR=null, TERMOS=null;
+function mostrarTermos(cat){
+  document.getElementById('selTitle').textContent = 'Termos característicos · '+cat;
+  const info = (TERMOS && TERMOS.termos_por_categoria[cat]) || null;
+  const box = document.getElementById('termos');
+  if(!info){ box.innerHTML='<span class="muted">Sem termos para esta categoria (abaixo do mínimo de chamados).</span>'; return; }
+  const lo = info.top_log_odds.map(t=>`<span class="pill"><b>${t.termo}</b> <span class="muted">z=${t.z}</span></span>`).join('');
+  box.innerHTML = `<div class="muted" style="margin-bottom:6px">${info.n_chamados} chamados</div>${lo}`;
+}
+function render(){
+  const cats = CORR.categorias, M = CORR.matriz;
+  let html = '<table><tr><th></th>';
+  cats.forEach(c=> html += `<th class="col"><span title="${c}">${c.length>16?c.slice(0,16)+'…':c}</span></th>`);
+  html += '</tr>';
+  cats.forEach((c,i)=>{
+    html += `<tr><th class="row" title="${c}" onclick="mostrarTermos('${c.replace(/'/g,"\\'")}')">${c.length>30?c.slice(0,30)+'…':c}</th>`;
+    cats.forEach((d,j)=>{
+      const v = M[i][j];
+      html += `<td class="cell" style="background:${cor(v)}" title="${c} × ${d} = ${v.toFixed(3)}" onclick="mostrarTermos('${c.replace(/'/g,"\\'")}')"></td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  document.getElementById('heat').innerHTML = html;
+  document.getElementById('meta').textContent =
+    `${cats.length} categorias · gerado em ${CORR.gerado_em||'—'} · ${(TERMOS&&TERMOS.parametros&&TERMOS.parametros.representacao)||''}`;
+  document.getElementById('pares').innerHTML =
+    (CORR.pares_mais_proximos||[]).slice(0,12)
+      .map(p=>`<li>${p.categoria_a} <b>×</b> ${p.categoria_b} — <b>${p.similaridade.toFixed(3)}</b></li>`).join('');
+  if(cats.length) mostrarTermos(cats[0]);
+}
+(async()=>{
+  try{ [CORR,TERMOS] = await Promise.all([carregar('correlacao_categorias.json'), carregar('termos_relevantes.json')]); render(); }
+  catch(e){ document.getElementById('heat').innerHTML =
+    '<span class="err">Não foi possível carregar os dados ('+e.message+'). Rode <code>python src/relevancia_termos.py</code> e o workflow <code>relevancia_termos.yml</code> para gerar os JSON.</span>'; }
+})();
+</script>
+</body>
+</html>

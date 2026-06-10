@@ -221,6 +221,20 @@ Resultados são **contra o histórico**, não contra validação humana.
 
 > 📄 **Mapa completo do estado das 50 etapas do roteiro**: ver `ESTADO_DO_ROTEIRO.md`.
 
+## P7 — RELEVÂNCIA DE TERMOS + MAPA DE CORRELAÇÃO (solicitado 2026-06-10) ✅ implementado
+Ideia do usuário: clusters de palavras-chave por categoria (ex.: água/torneira/sanitário →
+hidráulica) + "mapa de correlação" entre categorias (analogia geoprocessamento: célula
+quente quando correlação → 1).
+- [x] `src/relevancia_termos.py`: log-odds (prior Dirichlet) + peso TF-IDF por categoria;
+      cosseno entre centróides → matriz de correlação + pares mais próximos. Dry-run padrão.
+- [x] `docs/mapa_correlacao.html`: mapa de calor + termos por categoria (clicável).
+- [x] `.github/workflows/relevancia_termos.yml` (manual, `aplicar=false`).
+- [x] `docs/RELEVANCIA_TERMOS.md` + `docs/RELATORIO_ESTADO_ATUAL.md`.
+- [x] Lógica testada em corpus sintético (par HIDRAULICA×HIDROSSANITARIO destacado).
+- [ ] **Rodar com credenciais** (workflow) para gerar os JSON reais e conferir os termos.
+- [ ] Cruzar o mapa com a **matriz de confusão IA×histórico** para priorizar a revisão da
+      taxonomia (etapa 46 do roteiro).
+
 ## Housekeeping
 - [ ] Remover Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.
 - [ ] **Atualizar `CONTEXTO.md`** a cada correção (o quê, workflow/run ID, estado dos JSONs, pendências).
