@@ -1,0 +1,141 @@
+{
+  "gerado_em": "10/06/2026 16:24",
+  "natureza": "acerto contra a VERDADE VALIDADA pela conferencia humana (M/N/P); NAO e concordancia com o historico",
+  "validados": 305,
+  "minimo_recomendado": 50,
+  "conferencias": {
+    "com_conferencia": 354,
+    "decididos": 305,
+    "restritos": 49,
+    "conflitos": 2
+  },
+  "n_avaliado": 305,
+  "status": "ok",
+  "por_modelo": [
+    {
+      "modelo": "linear_svc",
+      "n": 305,
+      "acerto_validado": 0.6787,
+      "ic95": [
+        0.6261,
+        0.7311
+      ],
+      "peso_log_odds": 0.7478,
+      "peso_normalizado": 0.1572
+    },
+    {
+      "modelo": "regressao_logistica",
+      "n": 305,
+      "acerto_validado": 0.6689,
+      "ic95": [
+        0.6131,
+        0.7246
+      ],
+      "peso_log_odds": 0.703,
+      "peso_normalizado": 0.1549
+    },
+    {
+      "modelo": "sgd",
+      "n": 305,
+      "acerto_validado": 0.6656,
+      "ic95": [
+        0.6131,
+        0.718
+      ],
+      "peso_log_odds": 0.6882,
+      "peso_normalizado": 0.1541
+    },
+    {
+      "modelo": "random_forest",
+      "n": 305,
+      "acerto_validado": 0.6131,
+      "ic95": [
+        0.5574,
+        0.6689
+      ],
+      "peso_log_odds": 0.4604,
+      "peso_normalizado": 0.142
+    },
+    {
+      "modelo": "extra_trees",
+      "n": 305,
+      "acerto_validado": 0.5869,
+      "ic95": [
+        0.5311,
+        0.6426
+      ],
+      "peso_log_odds": 0.3511,
+      "peso_normalizado": 0.1359
+    },
+    {
+      "modelo": "lstm",
+      "n": 305,
+      "acerto_validado": 0.5639,
+      "ic95": [
+        0.5115,
+        0.6164
+      ],
+      "peso_log_odds": 0.2571,
+      "peso_normalizado": 0.1306
+    },
+    {
+      "modelo": "naive_bayes",
+      "n": 305,
+      "acerto_validado": 0.541,
+      "ic95": [
+        0.4885,
+        0.5967
+      ],
+      "peso_log_odds": 0.1643,
+      "peso_normalizado": 0.1253
+    }
+  ],
+  "melhor_ia": "linear_svc",
+  "melhor_vs_segundo": {
+    "segundo": "regressao_logistica",
+    "delta": 0.0098,
+    "p_mcnemar": 0.7283324808813632
+  },
+  "ensembles": [
+    {
+      "metodo": "maioria_ponderada",
+      "acerto_validado": 0.682,
+      "ic95": [
+        0.6294,
+        0.7344
+      ],
+      "delta_vs_melhor_ia": 0.0033,
+      "p_mcnemar_vs_melhor_ia": 1.0
+    },
+    {
+      "metodo": "confianca_calibrada_max",
+      "acerto_validado": 0.6787,
+      "ic95": [
+        0.6262,
+        0.7311
+      ],
+      "delta_vs_melhor_ia": -0.0,
+      "p_mcnemar_vs_melhor_ia": 1.0
+    },
+    {
+      "metodo": "maioria_simples",
+      "acerto_validado": 0.6721,
+      "ic95": [
+        0.6164,
+        0.7246
+      ],
+      "delta_vs_melhor_ia": -0.0066,
+      "p_mcnemar_vs_melhor_ia": 0.8388197422027588
+    }
+  ],
+  "vale_combinar": {
+    "veredicto": false,
+    "recomendacao": "linear_svc",
+    "justificativa": "Nenhum ensemble supera a melhor IA isolada com significancia (McNemar p>=0,05) — combinar nao compensa o custo adicional; use 'linear_svc' com calibracao."
+  },
+  "observacoes": [
+    "Pesos do voto ponderado aprendidos out-of-fold (k-fold nos validados).",
+    "Votos que cairiam em categoria ja conferida como ERRADA sao vetados (regra de memoria).",
+    "Amostra validada pode nao ser aleatoria (priorizou divergentes); interpretar como piso/teto conforme o desenho da conferencia."
+  ]
+}
