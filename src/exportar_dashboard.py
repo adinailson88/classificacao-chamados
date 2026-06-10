@@ -111,6 +111,52 @@ def sanitizar_comparacao_previsoes(rows):
     return seguros
 
 
+def exportar_reclass_resumo(sh, config):
+    """Agrega as abas RECLASS__<modelo> em contagens seguras (sem texto/ID).
+
+    Por modelo: total reclassificado, contagem por resultado (corrigido,
+    prejudicado, mantido_correto, mantido_errado, decidido_humano,
+    sem_referencia), por base de comparacao (validada/historico) e quantos
+    mudaram de categoria. Alimenta a aba Reclassificacao do painel.
+    """
+    mm = config.get("multimodelo", {}) or {}
+    template = mm.get("aba_reclassificacao", "RECLASS__{modelo}")
+    modelos = list(mm.get("modelos_leves", [])) + list(mm.get("modelos_pesados", []))
+    por_modelo = []
+    for m in modelos:
+        rows = aba_para_objetos(sh, template.replace("{modelo}", m))
+        if not rows:
+            continue
+        res = {}
+        base = {}
+        mudou = 0
+        ultima = ""
+        for r in rows:
+            res[str(r.get("resultado", "")).strip() or "?"] = res.get(str(r.get("resultado", "")).strip() or "?", 0) + 1
+            b = str(r.get("base_comparacao", "")).strip() or "historico"
+            base[b] = base.get(b, 0) + 1
+            if str(r.get("mudou", "")).strip().lower() == "true":
+                mudou += 1
+            d = str(r.get("data", "")).strip()
+            if d > ultima:
+                ultima = d
+        corr = res.get("corrigido", 0)
+        prej = res.get("prejudicado", 0)
+        por_modelo.append({
+            "modelo": m, "total_reclassificado": len(rows), "mudou_categoria": mudou,
+            "por_resultado": res, "por_base_comparacao": base,
+            "corrigidos": corr, "prejudicados": prej, "ganho_liquido": corr - prej,
+            "reuso_decisao_humana": res.get("decidido_humano", 0),
+            "sem_referencia": res.get("sem_referencia", 0),
+            "ultima_execucao": ultima,
+        })
+    return {"gerado_em": agora_bahia(),
+            "natureza": ("reclassificacao por modelo; corrigidos/prejudicados medidos contra a "
+                         "verdade VALIDADA quando travada (base_comparacao=validada), senao contra "
+                         "o historico (preliminar)"),
+            "por_modelo": por_modelo}
+
+
 def main() -> int:
     with CONFIG_PADRAO.open(encoding="utf-8") as f:
         config = json.load(f)
@@ -151,6 +197,15 @@ def main() -> int:
             json.dumps(dados, ensure_ascii=False), encoding="utf-8")
         resumo["abas"][chave_json] = len(dados)
         print(f"{chave_json}: {len(dados)} linhas")
+
+    # Resumo agregado da reclassificacao por modelo (abas RECLASS__*, sem texto).
+    try:
+        rr = exportar_reclass_resumo(sh, config)
+        (SAIDA / "reclass_resumo.json").write_text(json.dumps(rr, ensure_ascii=False), encoding="utf-8")
+        resumo["abas"]["reclass_resumo"] = len(rr.get("por_modelo", []))
+        print(f"reclass_resumo: {len(rr.get('por_modelo', []))} modelos")
+    except Exception as e:  # noqa: BLE001
+        print(f"reclass_resumo falhou: {type(e).__name__}: {e}", file=sys.stderr)
 
     # Calibração (confiança × acerto) — critério central do objetivo final.
     try:

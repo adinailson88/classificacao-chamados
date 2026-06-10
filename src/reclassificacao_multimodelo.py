@@ -97,20 +97,25 @@ def aplicar_calibrado(calibrador: dict, conf) -> float:
     return float(g[i] * (1 - frac) + g[i + 1] * frac)
 
 
-def carregar_classif_baixa(sh, aba: str, limiar: float, calibrador: dict | None = None) -> dict[int, dict]:
-    """linha -> {cat_1, conf_1, conf_sel} dos casos com confianca < limiar.
+def carregar_classif(sh, aba: str, limiar: float | None = None,
+                     calibrador: dict | None = None) -> dict[int, dict]:
+    """linha -> {cat_1, conf_1, conf_sel} da aba CLASSIF__<modelo>.
 
     conf_1 e sempre a confianca BRUTA (auditoria). Quando `calibrador` e fornecido,
     a SELECAO usa a confianca CALIBRADA (conf_sel = P(acerto|conf_bruta)); senao
     conf_sel = conf_1. Assim, modelos cuja saida bruta e enganosa (ex.: linear_svc)
     deixam de marcar como "baixa confianca" casos que, calibrados, sao confiaveis.
+
+    Com `limiar` definido, retorna apenas os casos com conf_sel < limiar (modo
+    baixa-confianca). Com limiar=None, retorna TODOS (modo --so-validados, em que
+    o criterio de selecao e a conferencia humana, nao a confianca).
     """
     try:
         vals = sh.worksheet(aba).get_values("A:K", value_render_option="UNFORMATTED_VALUE")
     except Exception:  # noqa: BLE001
         return {}
     # CLASSIF cols: 1 linha,3 cat_original,4 cat_ia,5 confianca
-    baixa = {}
+    out = {}
     for r in vals[1:]:
         if len(r) < 6:
             continue
@@ -120,9 +125,9 @@ def carregar_classif_baixa(sh, aba: str, limiar: float, calibrador: dict | None 
             continue
         conf = parse_conf(r[5])
         conf_sel = aplicar_calibrado(calibrador, conf) if calibrador else conf
-        if conf_sel < limiar:
-            baixa[ln] = {"cat_1": str(r[4]).strip(), "conf_1": conf, "conf_sel": conf_sel}
-    return baixa
+        if limiar is None or conf_sel < limiar:
+            out[ln] = {"cat_1": str(r[4]).strip(), "conf_1": conf, "conf_sel": conf_sel}
+    return out
 
 
 def linhas_ja_reclass(sh, aba: str) -> set[int]:
@@ -150,17 +155,23 @@ def reclassificar_modelo(sh, config, modelo, elegiveis, por_linha, cap, base_ext
     aba_reclass = clf.nome_aba(mm["aba_reclassificacao"], modelo)
     decisoes = decisoes or {}
 
+    so_validados = getattr(args, "so_validados", False)
     calibrador = _carregar_calibrador(modelo) if getattr(args, "usar_calibrado", False) else None
-    baixa = carregar_classif_baixa(sh, aba_classif, lim_alta, calibrador)
+    # Modo padrao: candidatos = baixa confianca. Modo --so-validados: candidatos =
+    # chamados COM conferencia humana (independente da confianca).
+    baixa = carregar_classif(sh, aba_classif, None if so_validados else lim_alta, calibrador)
     feitas = linhas_ja_reclass(sh, aba_reclass)
+
+    universo = [ln for ln in baixa if ln not in feitas and ln in por_linha]
+    if so_validados:
+        universo = [ln for ln in universo if ln in decisoes]
+        print(f"[{modelo}] modo SO-VALIDADOS: universo={len(universo)} chamados com conferencia.")
 
     # REGRA DE MEMORIA 1 (acerto conferido): chamado com decisao travada pela
     # conferencia humana NAO e reprocessado — a categoria decidida e reaproveitada.
-    decididos = [ln for ln in baixa
-                 if ln not in feitas and ln in por_linha
-                 and decisoes.get(ln, {}).get("status") == dv.STATUS_DECIDIDO]
-    cand_linhas = [ln for ln in baixa
-                   if ln not in feitas and ln in por_linha and ln not in set(decididos)]
+    decididos = [ln for ln in universo
+                 if decisoes.get(ln, {}).get("status") == dv.STATUS_DECIDIDO]
+    cand_linhas = [ln for ln in universo if ln not in set(decididos)]
     cand_linhas.sort(key=lambda ln: (baixa[ln].get("conf_sel", baixa[ln]["conf_1"]), ln))
     if calibrador:
         print(f"[{modelo}] selecao por confianca CALIBRADA ({calibrador.get('metodo','?')}).")
@@ -335,6 +346,10 @@ def parse_args():
     p.add_argument("--usar-calibrado", action="store_true",
                    help="Seleciona candidatos pela confianca CALIBRADA (calibracao_ajustada_modelos.json) "
                         "em vez da bruta. Reduz candidatos espurios em modelos mal calibrados.")
+    p.add_argument("--so-validados", action="store_true",
+                   help="Reclassifica APENAS os chamados com conferencia humana (M/N/P), "
+                        "independente da confianca: decididos sao reaproveitados "
+                        "(decidido_humano) e restritos sao re-preditos com veto.")
     p.add_argument("--gravar-coluna-2", action="store_true",
                    help="Grava a reclassificacao na coluna 'Classificacao IA - 2' (O) da aba principal, "
                         "sem tocar em G/M/N. Use com UM unico modelo no escopo (ex.: pesados=lstm). "
