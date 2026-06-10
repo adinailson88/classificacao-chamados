@@ -82,9 +82,15 @@ O que **foi** verificado neste ambiente está marcado como ✅ abaixo.
 - **`src/relevancia_termos.py`** — termos característicos por categoria (log-odds com prior
   de Dirichlet + peso TF-IDF) e **mapa de correlação** (cosseno entre centróides). Exploratório,
   dry-run por padrão, JSON sanitizados, não toca no histórico. Testado em corpus sintético ✅.
+- **`src/cruzamento_taxonomia.py`** — cruza a **matriz de confusão IA×histórico** com a
+  correlação vocabular e ranqueia **candidatos a revisão de taxonomia** (pares confundidos E
+  com vocabulário sobreposto). Testado: par sobreposto no topo, ruído zerado ✅.
 - **`docs/mapa_correlacao.html`** — visualizador (mapa de calor estilo geoprocessamento +
-  termos por categoria). Renderização verificada ✅.
-- **`.github/workflows/relevancia_termos.yml`** — workflow manual, `aplicar=false` por padrão.
+  termos por categoria + tabela de candidatos a revisão). Renderização verificada ✅.
+- **`.github/workflows/relevancia_termos.yml`** — workflow manual, `aplicar=false` por padrão,
+  roda os dois scripts e commita os 4 JSON.
+- **`docs/index.html`** (aba Documentação) — card "O que mudou" com todas as novidades +
+  link para o mapa. Verificado no preview ✅.
 - **`docs/RELEVANCIA_TERMOS.md`** e este relatório.
 
 Detalhe e justificativa metodológica em [`RELEVANCIA_TERMOS.md`](RELEVANCIA_TERMOS.md).

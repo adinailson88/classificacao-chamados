@@ -231,9 +231,13 @@ quente quando correlação → 1).
 - [x] `.github/workflows/relevancia_termos.yml` (manual, `aplicar=false`).
 - [x] `docs/RELEVANCIA_TERMOS.md` + `docs/RELATORIO_ESTADO_ATUAL.md`.
 - [x] Lógica testada em corpus sintético (par HIDRAULICA×HIDROSSANITARIO destacado).
-- [ ] **Rodar com credenciais** (workflow) para gerar os JSON reais e conferir os termos.
-- [ ] Cruzar o mapa com a **matriz de confusão IA×histórico** para priorizar a revisão da
-      taxonomia (etapa 46 do roteiro).
+- [x] **Cruzamento confusão IA×histórico × correlação** (`src/cruzamento_taxonomia.py`):
+      ranqueia candidatos a revisão de taxonomia; viewer ganhou a tabela; workflow roda os
+      dois; testado em sintético (par sobreposto no topo, ruído zerado).
+- [x] **Documentação do dashboard atualizada** (`docs/index.html`, aba Documentação):
+      card "O que mudou" com todas as novidades + link para o mapa.
+- [ ] **Rodar com credenciais** (workflow `relevancia_termos.yml`) para gerar os JSON reais
+      e conferir termos/mapa/cruzamento contra a planilha viva.
 
 ## Housekeeping
 - [ ] Remover Apps Script legado (`apps_script/Code.gs`) quando não for mais útil.

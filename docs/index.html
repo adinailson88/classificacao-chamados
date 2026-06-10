@@ -349,6 +349,16 @@
   </section>
 
   <section id="tab-docs" class="hide">
+    <div class="card full" style="margin-bottom:12px;border-left:3px solid #2a9d8f">
+      <h2>O que mudou — novidades recentes</h2>
+      <p class="muted">Registro das adicoes metodologicas mais recentes do experimento. Todas as metricas abaixo sao <strong>contra a categoria historica</strong> (concordancia), nao acerto validado por humano (<code>validados=0</code>).</p>
+      <div class="definition"><strong>🗺️ Relevancia de termos + mapa de correlacao (novo)</strong>: para cada categoria, os <em>termos caracteristicos</em> (ex.: agua, torneira, sanitario &rarr; hidraulica), via log-odds com prior de Dirichlet + peso TF-IDF; e um <em>mapa de correlacao</em> (cosseno entre os centroides TF-IDF das categorias) que destaca, como num mapa de calor de geoprocessamento, quais categorias tem vocabulario sobreposto. Visualizador: <a href="mapa_correlacao.html"><strong>abrir o mapa de correlacao</strong></a>. Gerado por <code>src/relevancia_termos.py</code> (workflow <code>relevancia_termos.yml</code>).</div>
+      <div class="definition"><strong>🔀 Cruzamento confusao &times; correlacao (novo)</strong>: combina a <em>matriz de confusao IA&times;historico</em> (com que frequencia a IA troca a categoria A pela B) com a correlacao vocabular. Pares altos NAS DUAS dimensoes sao os <em>candidatos mais fortes a revisao de taxonomia</em> (fusao, renomeacao ou criterio de desambiguacao &mdash; etapa 46 do roteiro). E triagem para priorizar revisao humana, nao decide taxonomia. Gerado por <code>src/cruzamento_taxonomia.py</code>; aparece na tabela "Candidatos a revisao de taxonomia" do <a href="mapa_correlacao.html">mapa</a>.</div>
+      <div class="definition"><strong>📊 Comparacao multimodelo das 7 IAs</strong>: naive_bayes, regressao_logistica, linear_svc, sgd, extra_trees, random_forest e lstm, cada uma classificando TODA a base na propria aba, com predicao <em>out-of-fold</em> (a IA que rotula a linha nunca treinou nela). Abas <strong>Modelos</strong> e <strong>Multimodelo</strong>.</div>
+      <div class="definition"><strong>📐 Analises estatisticas nao parametricas</strong>: Shapiro rejeitou normalidade nos 7 modelos &rarr; a aba <strong>Estatistica</strong> usa Spearman, Friedman/Nemenyi, Cochran Q, McNemar, Kappa (Cohen e Fleiss) e bootstrap (IC 95%), sem forcar normalidade.</div>
+      <div class="definition"><strong>🎯 Calibracao preliminar por modelo</strong>: diagnostico bruto (ECE, Brier, faixa &ge;95%) e calibracao escalar out-of-fold de P(previsao correta | confianca). Ainda contra historico; a calibracao definitiva depende de validacao humana. Aba <strong>Metricas</strong>.</div>
+      <div class="definition"><strong>✅ Conferencia dupla M&times;N (validacao humana)</strong>: o veredito humano e registrado em duas colunas independentes &mdash; <code>M</code> (a classificacao historica esta Correto/Errado) e <code>N</code> (a classificacao da IA esta Correto/Errado) &mdash; formando a matriz 2&times;2 IA&times;GLPI, que distingue ate os casos em que a IA corrige o historico. A reclassificacao tem sua propria conferencia em <code>P</code>. Esta etapa esta <strong>pausada por decisao do usuario</strong>.</div>
+    </div>
     <div class="docgrid">
       <div class="card">
         <h2>O que este painel mostra</h2>

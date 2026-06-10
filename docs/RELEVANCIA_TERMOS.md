@@ -57,14 +57,39 @@ gh workflow run relevancia_termos.yml --repo adinailson88/classificacao-chamados
   -f aplicar=false -f top_n=25 -f min_df=5 -f min_chamados_categoria=10
 ```
 
+## Cruzamento com a matriz de confusão IA×histórico
+
+`src/cruzamento_taxonomia.py` junta dois sinais que, sozinhos, não decidem taxonomia:
+
+- **confusão IA×histórico**: `P(IA prevê B | histórico = A)` — com que frequência os
+  chamados da categoria A acabam recebendo B pela IA (coluna G / Etapa 1);
+- **correlação vocabular**: o cosseno entre centróides (reaproveita `relevancia_termos`).
+
+Ranqueia os pares (A→B) altos **nas duas** dimensões (`score_revisao` = média geométrica):
+são os **candidatos mais fortes a revisão de taxonomia** — confusão alta *sem* sobreposição
+de vocabulário tende a ser ruído; confusão alta *com* vocabulário sobreposto sugere fusão,
+renomeação ou critério de desambiguação (etapa 46 do roteiro). É **triagem**, não veredito:
+não funde categorias, não altera o histórico, não é acurácia validada.
+
+```bash
+python src/cruzamento_taxonomia.py --top 40 --min-df 5 --min-chamados-categoria 10
+```
+
+Verificado em corpus sintético: com a IA trocando HIDRAULICA↔HIDROSSANITARIO (par de
+vocabulário sobreposto), o cruzamento colocou esse par no topo e zerou o score de confusões
+sem sobreposição (ex.: ELETRICA→PREDIAL_CIVIL). ✅
+
 ## Saídas
 
 - `docs/dados/termos_relevantes.json` — `termos_por_categoria[cat] = {n_chamados, top_log_odds[], top_tfidf[]}`.
 - `docs/dados/correlacao_categorias.json` — `categorias[]`, `matriz[][]` (cosseno),
   `pares_mais_proximos[]`.
+- `docs/dados/confusao_historico_ia.json` — matriz de confusão IA×histórico (bruta + normalizada).
+- `docs/dados/cruzamento_taxonomia.json` — `candidatos_revisao[]` (confusão × correlação × score).
 - `docs/mapa_correlacao.html` — visualizador standalone (mapa de calor + termos por
-  categoria ao clicar). Abre direto pelo GitHub Pages.
-- Abas privadas (só com `--aplicar`): `RELEVANCIA_TERMOS`, `CORRELACAO_CATEGORIAS`.
+  categoria + tabela de candidatos a revisão de taxonomia). Abre pelo GitHub Pages.
+- Abas privadas (só com `--aplicar`): `RELEVANCIA_TERMOS`, `CORRELACAO_CATEGORIAS`,
+  `CRUZAMENTO_TAXONOMIA`.
 
 ## Como ler no doutorado
 

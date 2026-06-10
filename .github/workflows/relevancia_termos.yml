@@ -1,9 +1,11 @@
 name: Relevancia de termos + mapa de correlacao
 
-# Calcula termos caracteristicos por categoria (log-odds + TF-IDF) e o mapa de
-# correlacao vocabular entre categorias. So LE a planilha; gera agregados
+# Calcula termos caracteristicos por categoria (log-odds + TF-IDF), o mapa de
+# correlacao vocabular entre categorias e o CRUZAMENTO confusao IA x historico x
+# correlacao (candidatos a revisao de taxonomia). So LE a planilha; gera agregados
 # sanitizados em docs/dados/ (sem texto de chamado) e os commita para o painel.
-# Com aplicar=true grava tambem as abas privadas RELEVANCIA_TERMOS/CORRELACAO_CATEGORIAS.
+# Com aplicar=true grava tambem as abas privadas RELEVANCIA_TERMOS,
+# CORRELACAO_CATEGORIAS e CRUZAMENTO_TAXONOMIA.
 
 on:
   workflow_dispatch:
@@ -57,6 +59,13 @@ jobs:
             CMD="$CMD --aplicar"
           fi
           eval "$CMD"
+      - name: Rodar cruzamento confusao x correlacao (taxonomia)
+        run: |
+          CMD="python src/cruzamento_taxonomia.py --min-df '${{ github.event.inputs.min_df || '5' }}' --min-chamados-categoria '${{ github.event.inputs.min_chamados_categoria || '10' }}'"
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
+            CMD="$CMD --aplicar"
+          fi
+          eval "$CMD"
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json
@@ -64,9 +73,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/dados/termos_relevantes.json docs/dados/correlacao_categorias.json
+          git add docs/dados/termos_relevantes.json docs/dados/correlacao_categorias.json docs/dados/confusao_historico_ia.json docs/dados/cruzamento_taxonomia.json
           git diff --cached --quiet && { echo "sem mudancas nos dados"; exit 0; }
-          git commit -m "termos relevantes + mapa de correlacao [skip ci]"
+          git commit -m "termos + correlacao + cruzamento de taxonomia [skip ci]"
           for i in 1 2 3 4 5; do
             git pull --rebase --autostash origin main && git push && exit 0
             echo "push rejeitado (tentativa $i/5); novo rebase em 5s"; sleep 5

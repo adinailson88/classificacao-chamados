@@ -265,6 +265,16 @@ dry-run por padrao. Detalhes em `docs/RELEVANCIA_TERMOS.md`.
 python src/relevancia_termos.py --top-n 25 --min-df 5 --min-chamados-categoria 10
 ```
 
+`src/cruzamento_taxonomia.py` cruza a **matriz de confusao IA×historico** com a correlacao
+vocabular e ranqueia os **candidatos a revisao de taxonomia** (pares confundidos pela IA E
+com vocabulario sobreposto -> fusao/desambiguacao, etapa 46). Gera
+`docs/dados/confusao_historico_ia.json` e `docs/dados/cruzamento_taxonomia.json`, exibidos no
+mesmo visualizador. Roda junto no workflow `relevancia_termos.yml`.
+
+```bash
+python src/cruzamento_taxonomia.py --top 40 --min-df 5 --min-chamados-categoria 10
+```
+
 ## Documentacao
 
 1. `CONTEXTO.md`: panorama vivo do repositorio, decisoes e proximos passos.

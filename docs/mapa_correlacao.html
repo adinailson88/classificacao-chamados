@@ -51,10 +51,30 @@
   <div class="pane side">
     <h2 id="selTitle">Termos característicos</h2>
     <div id="termos"><span class="muted">Selecione uma categoria no mapa ao lado.</span></div>
-    <h2 style="margin-top:18px">Pares mais próximos</h2>
+    <h2 style="margin-top:18px">Pares mais próximos (vocabulário)</h2>
     <ul class="pares muted" id="pares"></ul>
     <div class="note">Termos por <b>log-odds</b> com prior de Dirichlet (característicos da categoria vs. as demais).
     Gerado por <code>src/relevancia_termos.py</code>; dados em <code>dados/termos_relevantes.json</code> e <code>dados/correlacao_categorias.json</code>.</div>
+  </div>
+</div>
+<div class="wrap" style="padding-top:0">
+  <div class="pane" style="flex:1;min-width:100%">
+    <h2 style="font-size:15px;margin:0 0 4px">Candidatos a revisão de taxonomia <span class="muted">· confusão IA×histórico × correlação vocabular</span></h2>
+    <div class="muted" style="margin-bottom:8px">Pares que a IA <b>confunde</b> (troca uma categoria pela outra) <b>e</b> que têm <b>vocabulário sobreposto</b>.
+    Quando os dois sinais coincidem, é forte indício de que a taxonomia precisa de fusão, renomeação ou critério de desambiguação (etapa 46 do roteiro).
+    <span class="err">Concordância contra histórico, não acerto validado — prioriza revisão humana, não decide.</span></div>
+    <div class="tablebox" style="overflow:auto">
+      <table id="tabCruz" style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--line)">Histórico (A)</th>
+          <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--line)">IA prevê (B)</th>
+          <th style="text-align:right;padding:6px 10px;border-bottom:1px solid var(--line)">Taxa de confusão A→B</th>
+          <th style="text-align:right;padding:6px 10px;border-bottom:1px solid var(--line)">Correlação vocabular</th>
+          <th style="text-align:right;padding:6px 10px;border-bottom:1px solid var(--line)">Score de revisão</th>
+        </tr></thead>
+        <tbody id="cruzBody"><tr><td class="muted" colspan="5" style="padding:8px 10px">Sem <code>cruzamento_taxonomia.json</code> ainda — rode <code>src/cruzamento_taxonomia.py</code> (workflow <code>relevancia_termos.yml</code>).</td></tr></tbody>
+      </table>
+    </div>
   </div>
 </div>
 <script>
@@ -99,10 +119,25 @@ function render(){
       .map(p=>`<li>${p.categoria_a} <b>×</b> ${p.categoria_b} — <b>${p.similaridade.toFixed(3)}</b></li>`).join('');
   if(cats.length) mostrarTermos(cats[0]);
 }
+function renderCruz(cruz){
+  const body = document.getElementById('cruzBody');
+  const lin = (cruz && cruz.candidatos_revisao) || [];
+  if(!lin.length){ return; }
+  body.innerHTML = lin.slice(0,30).map(c=>{
+    const sc = c.score_revisao;
+    return `<tr style="border-bottom:1px solid var(--line)">
+      <td style="padding:6px 10px">${c.categoria_historica}</td>
+      <td style="padding:6px 10px">${c.categoria_ia}</td>
+      <td style="padding:6px 10px;text-align:right">${(c.taxa_confusao*100).toFixed(1)}%</td>
+      <td style="padding:6px 10px;text-align:right">${c.correlacao_vocabular.toFixed(3)}</td>
+      <td style="padding:6px 10px;text-align:right"><b style="color:${cor(Math.min(1,sc*2))}">${sc.toFixed(3)}</b></td>
+    </tr>`;}).join('');
+}
 (async()=>{
   try{ [CORR,TERMOS] = await Promise.all([carregar('correlacao_categorias.json'), carregar('termos_relevantes.json')]); render(); }
   catch(e){ document.getElementById('heat').innerHTML =
     '<span class="err">Não foi possível carregar os dados ('+e.message+'). Rode <code>python src/relevancia_termos.py</code> e o workflow <code>relevancia_termos.yml</code> para gerar os JSON.</span>'; }
+  try{ renderCruz(await carregar('cruzamento_taxonomia.json')); }catch(e){ /* opcional: aparece quando houver previsoes da IA */ }
 })();
 </script>
 </body>
