@@ -272,10 +272,28 @@
     <div class="alerta" id="taxonAviso">Analise exploratoria de vocabulario. Os termos e a correlacao sao agregados sobre o texto dos chamados; o cruzamento usa a confianca/previsao da IA contra a categoria historica. E triagem de taxonomia (prioriza revisao humana), NAO metrica de acuracia validada.</div>
     <div class="grid">
       <div class="card full">
-        <h2>Mapa de correlacao entre categorias <span class="notefiltro">cosseno entre centroides TF-IDF</span></h2>
-        <p class="muted">Celula mais quente = vocabulario mais sobreposto (correlacao &rarr; 1), como num mapa de geoprocessamento. Clique numa categoria (linha) para ver seus termos caracteristicos.</p>
-        <div style="overflow:auto" id="taxonHeat"><p class="muted">Sem dados de correlacao publicados. Rode o workflow <code>relevancia_termos.yml</code> (gera <code>correlacao_categorias.json</code>).</p></div>
-        <div id="taxonLegend" class="muted" style="margin-top:8px"></div>
+        <h2>Correlacao POR CATEGORIA <span class="notefiltro">cosseno entre centroides TF-IDF</span></h2>
+        <p class="muted">Escolha a categoria: o grafico mostra todas as correlatas em ordem decrescente; as muito fracas (abaixo do limiar) sao agrupadas em <strong>"Outros"</strong>. Formato compacto, proprio para exportar.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+          <label>Categoria: <select id="selTaxonCat"></select></label>
+          <label>Limiar minimo: <select id="selTaxonLimiar">
+            <option value="0.05">0,05</option>
+            <option value="0.10" selected>0,10</option>
+            <option value="0.15">0,15</option>
+            <option value="0.20">0,20</option>
+            <option value="0.30">0,30</option>
+          </select></label>
+        </div>
+        <canvas id="cTaxonCat"></canvas>
+        <p class="muted" id="taxonCatInfo"></p>
+      </div>
+      <div class="card full">
+        <details>
+          <summary style="cursor:pointer"><strong>Mapa completo (matriz de todas as categorias)</strong> — clique para expandir; grande, use a visao por categoria acima para exportar</summary>
+          <p class="muted">Celula mais quente = vocabulario mais sobreposto (correlacao &rarr; 1), como num mapa de geoprocessamento. Clique numa categoria (linha) para ver seus termos caracteristicos.</p>
+          <div style="overflow:auto" id="taxonHeat"><p class="muted">Sem dados de correlacao publicados. Rode o workflow <code>relevancia_termos.yml</code> (gera <code>correlacao_categorias.json</code>).</p></div>
+          <div id="taxonLegend" class="muted" style="margin-top:8px"></div>
+        </details>
       </div>
       <div class="card">
         <h2>Termos caracteristicos <span id="taxonCatNome"></span></h2>
@@ -297,9 +315,21 @@
 
   <section id="tab-reclass" class="hide">
     <div class="alerta" id="reclassAviso">Etapa 2 (reclassificacao) ainda nao executada apos o reset. Nao iniciar a validacao humana ainda; o proximo passo tecnico e um dry-run ou aplicacao controlada da reclassificacao.</div>
+    <div class="kpis" id="kpisRM"></div>
+    <div class="grid">
+      <div class="card full">
+        <h2>Reclassificacao por modelo (inclui casos validados pelo humano)</h2>
+        <div class="tablebox"><table id="tabReclassModelo"><thead><tr>
+          <th>Modelo</th><th>Reclassificados</th><th>Reuso decisao humana</th><th>Corrigidos</th><th>Prejudicados</th><th>Ganho liquido</th><th>Mudou categoria</th><th>Sem referencia</th><th>Base validada</th><th>Ultima execucao</th>
+        </tr></thead><tbody></tbody></table></div>
+        <p class="muted">"Reuso decisao humana" = chamados com conferencia 'Correto' reaproveitados sem reprocessar (regra de memoria). "Sem referencia" = historico conferido como errado e ainda sem verdade travada (nao conta em corrigidos/prejudicados). "Base validada" = registros cuja comparacao usou a verdade conferida por humano.</p>
+      </div>
+      <div class="card"><h2>Ganho liquido por modelo</h2><canvas id="cReclassModelo"></canvas></div>
+      <div class="card"><h2>Composicao dos resultados por modelo</h2><canvas id="cReclassComp"></canvas></div>
+    </div>
     <div class="kpis" id="kpisR"></div>
     <div class="grid">
-      <div class="card full"><h2>Ganho liquido por turno</h2><canvas id="cGanho"></canvas></div>
+      <div class="card full"><h2>Ganho liquido por turno (Etapa 2 / coluna O)</h2><canvas id="cGanho"></canvas></div>
       <div class="card"><h2>Concordancia antes x depois</h2><canvas id="cAntesDepois"></canvas></div>
       <div class="card"><h2>Corrigidos vs prejudicados</h2><canvas id="cCorr"></canvas></div>
       <div class="card full">
@@ -402,6 +432,11 @@
   </section>
 
   <section id="tab-docs" class="hide">
+    <div class="card full" style="margin-bottom:12px;border-left:3px solid #1d4ed8">
+      <h2>Exportar e reproduzir as analises</h2>
+      <p><a href="exportar_analises.py" download="exportar_analises.py" style="font-weight:600">⬇ Baixar script Python (exportar_analises.py)</a> — reproduz os calculos de TODAS as abas direto da planilha, com cada calculo comentado (o que e, como e calculado, como ler). Requisitos: voce precisa ter a planilha do experimento, uma credencial de conta de servico Google (JSON, somente leitura) e o ID da planilha. Uso: <code>python exportar_analises.py --credenciais credenciais_sa.json --planilha SEU_ID</code>. O script e somente-leitura.</p>
+      <p class="muted">Para exportar os graficos do painel como imagem, use o botao <strong>⬇ PNG</strong> no canto de cada grafico.</p>
+    </div>
     <div class="card full" style="margin-bottom:12px;border-left:3px solid #2a9d8f">
       <h2>Notas metodologicas</h2>
       <p class="muted">Sintese dos procedimentos analiticos adotados no experimento. Salvo indicacao em contrario, todas as metricas referem-se a <strong>concordancia com a categoria historica</strong>, e nao a acerto validado por revisao humana (atualmente <code>validados=0</code>).</p>
@@ -555,6 +590,32 @@ function fmtData(v){
 }
 const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
+
+// ---- Exportacao de imagens: botao "PNG" em todo card com grafico ----
+function baixarCanvasPNG(canvas, nome){
+  // Compoe sobre fundo branco (os canvas sao transparentes) antes de baixar.
+  const tmp=document.createElement("canvas");
+  tmp.width=canvas.width; tmp.height=canvas.height;
+  const ctx=tmp.getContext("2d");
+  ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,tmp.width,tmp.height);
+  ctx.drawImage(canvas,0,0);
+  const a=document.createElement("a");
+  a.download=(nome||canvas.id||"grafico")+"_"+new Date().toISOString().slice(0,10)+".png";
+  a.href=tmp.toDataURL("image/png");
+  a.click();
+}
+function instalarBotoesPNG(){
+  document.querySelectorAll(".card canvas").forEach(cv=>{
+    const card=cv.closest(".card"); if(!card) return;
+    const h2=card.querySelector("h2"); if(!h2 || h2.querySelector(".btn-png")) return;
+    const b=document.createElement("button");
+    b.className="btn-png"; b.type="button"; b.textContent="⬇ PNG";
+    b.title="Baixar este grafico como imagem PNG";
+    b.style.cssText="float:right;font-size:11px;padding:2px 8px;border:1px solid #c8d0d8;border-radius:6px;background:#f4f6f8;cursor:pointer;color:#24303a";
+    b.onclick=()=>baixarCanvasPNG(cv, cv.id);
+    h2.appendChild(b);
+  });
+}
 
 let CAT=[], MET=[], TURNOS=[], RESUMO={}, COMP_CAT=[], sortK="qtd_classificados", sortDir=-1, charts={};
 let MODELOS_ROWS=[];
@@ -827,10 +888,52 @@ function renderMatrizValidacao(cal){
         <td>${fmt(m.ia_erro_glpi_erro)}</td></tr>
     </tbody></table></div>`;
 }
-function renderReclass(rt){
+function renderReclassModelo(rr){
+  // Resumo agregado das abas RECLASS__<modelo> (reclass_resumo.json) — inclui a
+  // reclassificacao dos casos validados pelo humano (reuso + veto).
+  const box=document.getElementById("kpisRM");
+  const tb=document.querySelector("#tabReclassModelo tbody");
+  const lin=(rr&&rr.por_modelo)||[];
+  if(!tb) return false;
+  if(!lin.length){
+    if(box) box.innerHTML="";
+    tb.innerHTML=`<tr><td colspan="10" class="muted">Nenhuma reclassificacao por modelo registrada ainda. Rode o workflow <code>multimodelo_reclassificacao.yml</code> (opcao <code>so_validados</code> reclassifica os chamados ja conferidos).</td></tr>`;
+    return false;
+  }
+  const tot=k=>lin.reduce((s,m)=>s+N(m[k]),0);
+  if(box) box.innerHTML = kpi(fmt(tot("total_reclassificado")),"Reclassificados (todas as IAs)")
+    +kpi(fmt(tot("reuso_decisao_humana")),"Reuso de decisao humana")
+    +kpi(fmt(tot("corrigidos")),"Corrigidos")
+    +kpi(fmt(tot("prejudicados")),"Prejudicados")
+    +kpi(fmt(tot("ganho_liquido")),"Ganho liquido");
+  const ord=[...lin].sort((a,b)=>N(b.ganho_liquido)-N(a.ganho_liquido));
+  tb.innerHTML = ord.map(m=>{
+    const bc=m.por_base_comparacao||{};
+    return `<tr><td>${esc(m.modelo)}</td><td>${fmt(m.total_reclassificado)}</td>`
+      +`<td>${fmt(m.reuso_decisao_humana)}</td><td>${fmt(m.corrigidos)}</td><td>${fmt(m.prejudicados)}</td>`
+      +`<td class="${N(m.ganho_liquido)>=0?'status-ok':'status-bad'}">${fmt(m.ganho_liquido)}</td>`
+      +`<td>${fmt(m.mudou_categoria)}</td><td>${fmt(m.sem_referencia)}</td>`
+      +`<td>${fmt(bc.validada||0)}</td><td>${esc(m.ultima_execucao||"—")}</td></tr>`;
+  }).join("");
+  destroy("cReclassModelo"); destroy("cReclassComp");
+  const labels=ord.map(m=>m.modelo);
+  charts.cReclassModelo = new Chart(cReclassModelo,{type:"bar",
+    data:{labels,datasets:[{label:"Ganho liquido",data:ord.map(m=>N(m.ganho_liquido)),
+      backgroundColor:ord.map(m=>N(m.ganho_liquido)>=0?"#2563eb":"#b42318")}]},
+    options:chartOpts("")});
+  charts.cReclassComp = new Chart(cReclassComp,{type:"bar",
+    data:{labels,datasets:[
+      {label:"Corrigidos",data:ord.map(m=>N(m.corrigidos)),backgroundColor:"#2563eb"},
+      {label:"Prejudicados",data:ord.map(m=>N(m.prejudicados)),backgroundColor:"#b42318"},
+      {label:"Reuso decisao humana",data:ord.map(m=>N(m.reuso_decisao_humana)),backgroundColor:"#2f5f9e"},
+      {label:"Sem referencia",data:ord.map(m=>N(m.sem_referencia)),backgroundColor:"#68737d"}]},
+    options:{...chartOpts(""),scales:{x:{stacked:true,ticks:{color:"#24303a"}},y:{stacked:true,ticks:{color:"#24303a"}}}}});
+  return true;
+}
+function renderReclass(rt, temMulti){
   const box=document.getElementById("kpisR"), vazio=document.getElementById("reclassVazio");
   const aviso=document.getElementById("reclassAviso");
-  if(aviso) aviso.classList.toggle("hide", !!rt.length);
+  if(aviso) aviso.classList.toggle("hide", !!rt.length || !!temMulti);
   if(!rt.length){ box.innerHTML=""; vazio.textContent="Ainda nao ha dados de reclassificacao publicados (Etapa 2 nao executada apos o reset)."; return; }
   vazio.textContent="";
   const tot=k=>rt.reduce((s,t)=>s+N(t[k]),0);
@@ -994,8 +1097,52 @@ function taxonTermos(cat){
   const pills=(info.top_log_odds||[]).map(t=>`<span class="chip"><b>${esc(t.termo)}</b> <span class="muted">z=${esc(t.z)}</span></span>`).join(" ");
   box.innerHTML=`<p class="muted">${fmt(info.n_chamados)} chamados</p><div class="fchips" style="position:static">${pills}</div>`;
 }
+function renderTaxonCat(){
+  // Visao POR CATEGORIA do mapa de correlacao: barras decrescentes + "Outros".
+  if(!TAXON_CORR) return;
+  const sel=document.getElementById("selTaxonCat");
+  const selLim=document.getElementById("selTaxonLimiar");
+  if(!sel || !sel.value) return;
+  const cats=TAXON_CORR.categorias, M=TAXON_CORR.matriz;
+  const i=cats.indexOf(sel.value);
+  if(i<0) return;
+  const limiar=parseFloat(selLim&&selLim.value||"0.10");
+  const pares=cats.map((c,j)=>({cat:c,v:N(M[i][j])})).filter(p=>p.cat!==sel.value);
+  pares.sort((a,b)=>b.v-a.v);
+  const fortes=pares.filter(p=>p.v>=limiar);
+  const fracos=pares.filter(p=>p.v<limiar);
+  const labels=fortes.map(p=>p.cat.length>42?p.cat.slice(0,42)+"…":p.cat);
+  const data=fortes.map(p=>p.v);
+  const cores=fortes.map(p=>corHeat(p.v));
+  if(fracos.length){
+    const media=fracos.reduce((s,p)=>s+p.v,0)/fracos.length;
+    labels.push(`Outros (${fracos.length} categorias, media)`);
+    data.push(media);
+    cores.push("#9aa4ad");
+  }
+  destroy("cTaxonCat");
+  const alvo=document.getElementById("cTaxonCat");
+  alvo.parentElement.style.minHeight = (40 + 22*labels.length) + "px";
+  charts.cTaxonCat = new Chart(alvo,{type:"bar",
+    data:{labels,datasets:[{label:"Correlacao vocabular (cosseno)",data,backgroundColor:cores}]},
+    options:{indexAxis:"y",plugins:{legend:{display:false}},
+      scales:{x:{min:0,max:1,ticks:{color:"#24303a"}},y:{ticks:{color:"#24303a",autoSkip:false,font:{size:11}}}}}});
+  const info=document.getElementById("taxonCatInfo");
+  if(info) info.textContent=`${fortes.length} categorias com correlacao >= ${limiar.toFixed(2)} com "${sel.value}"; `
+    +`${fracos.length} agrupadas em "Outros". Fonte: correlacao_categorias.json (${TAXON_CORR.gerado_em||"—"}).`;
+  taxonTermos(sel.value); // sincroniza o painel de termos com a categoria escolhida
+}
 function renderTaxonomia(corr, termos, cruz){
   TAXON_CORR=corr&&corr.categorias?corr:null; TAXON_TERMOS=termos&&termos.termos_por_categoria?termos:null;
+  // Seletor da visao por categoria.
+  const sel=document.getElementById("selTaxonCat");
+  if(sel && TAXON_CORR){
+    sel.innerHTML=TAXON_CORR.categorias.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+    sel.onchange=renderTaxonCat;
+    const selLim=document.getElementById("selTaxonLimiar");
+    if(selLim) selLim.onchange=renderTaxonCat;
+    renderTaxonCat();
+  }
   const heat=document.getElementById("taxonHeat"), leg=document.getElementById("taxonLegend");
   if(TAXON_CORR){
     const cats=TAXON_CORR.categorias, M=TAXON_CORR.matriz;
@@ -1009,7 +1156,10 @@ function renderTaxonomia(corr, termos, cruz){
     });
     h+='</table>';
     heat.innerHTML=h;
-    heat.querySelectorAll("[data-cat]").forEach(el=>el.onclick=()=>taxonTermos(el.dataset.cat));
+    heat.querySelectorAll("[data-cat]").forEach(el=>el.onclick=()=>{
+      const s=document.getElementById("selTaxonCat");
+      if(s){ s.value=el.dataset.cat; renderTaxonCat(); } else taxonTermos(el.dataset.cat);
+    });
     if(leg) leg.innerHTML=`${fmt(cats.length)} categorias · gerado em ${esc(TAXON_CORR.gerado_em||"—")} · escala de cor: 0,0 (frio) a 1,0 (quente)`;
     const pb=document.querySelector("#tabTaxonPares tbody");
     if(pb) pb.innerHTML=(TAXON_CORR.pares_mais_proximos||[]).slice(0,15)
@@ -1194,8 +1344,8 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
     getJSON("estatistica.json"),
     getJSON("correlacao_categorias.json"), getJSON("termos_relevantes.json"), getJSON("cruzamento_taxonomia.json")
   ]);
-  const [avFinal, anErros] = await Promise.all([
-    getJSON("avaliacao_final.json"), getJSON("analise_erros.json")
+  const [avFinal, anErros, reclassResumo] = await Promise.all([
+    getJSON("avaliacao_final.json"), getJSON("analise_erros.json"), getJSON("reclass_resumo.json")
   ]);
   CAT = Array.isArray(cat) ? cat : [];
   MET = Array.isArray(met) ? met : [];
@@ -1220,8 +1370,10 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   renderReclassMulti(Array.isArray(multiRecl) ? multiRecl : []);
   renderTaxonomia(taxCorr, taxTermos, taxCruz);
   renderEstatistica(estat);
-  renderReclass(Array.isArray(rt) ? rt : []);
+  const temMulti = renderReclassModelo(Array.isArray(reclassResumo)?null:reclassResumo);
+  renderReclass(Array.isArray(rt) ? rt : [], temMulti);
   renderDecisao(Array.isArray(avFinal)?null:avFinal, Array.isArray(anErros)?null:anErros);
+  instalarBotoesPNG();
 })();
 </script>
 </body>
