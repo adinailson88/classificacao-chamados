@@ -110,6 +110,7 @@
     </select>
     <strong>Filtros (multi):</strong>
     <div class="ms" data-campo="g"></div>
+    <div class="ms" data-campo="m"></div>
     <div class="ms" data-campo="f"></div>
     <div class="ms" data-campo="e"></div>
     <div class="ms" data-campo="k"></div>
@@ -633,10 +634,17 @@ function TURNOS_POR_FONTE(){
               concordancia_acumulada:t.concordancia_acumulada, confianca_media:t.confianca_media}))
     .sort((a,b)=>N(a.turno)-N(b.turno));
 }
-const FILT={g:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
-const ROT_CAMPO={g:"Grupo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
+const FILT={g:new Set(),m:new Set(),f:new Set(),e:new Set(),k:new Set(),v:new Set()};
+const ROT_CAMPO={g:"Grupo",m:"Tipo",f:"Faixa",e:"Executor",k:"Situacao",v:"Validacao humana"};
 const ROT_FAIXA={acima_95:">=95%",entre_70_95:"70-95%",abaixo_70:"<70%"};
-function valDe(x,c){ if(c==="k")return x.k?"concorda":"diverge"; if(c==="v")return x.v||"(sem validacao)"; return x[c]||""; }
+function normFiltro(v){
+  return String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim().toLowerCase();
+}
+function tipoManutencao(cat){
+  const n = normFiltro(cat);
+  return (n.startsWith("manutencao preventiva >") || n.startsWith("manutencao preventiva>")) ? "Preventiva" : "Corretiva";
+}
+function valDe(x,c){ if(c==="k")return x.k?"concorda":"diverge"; if(c==="v")return x.v||"(sem validacao)"; if(c==="m")return x.m||tipoManutencao(x.o); return x[c]||""; }
 function rotDe(c,v){ return c==="f" ? (ROT_FAIXA[v]||v) : v; }
 function passa(x){ return Object.keys(FILT).every(c=> !FILT[c].size || FILT[c].has(valDe(x,c))); }
 function agrupaCategorias(reg){

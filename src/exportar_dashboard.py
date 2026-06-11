@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -67,6 +68,20 @@ def com_retentativa(rotulo, func, tentativas=5, espera_inicial=20):
             espera = espera_inicial * tentativa
             print(f"{rotulo}: falha transitoria ({type(e).__name__}); nova tentativa em {espera}s", file=sys.stderr)
             time.sleep(espera)
+
+
+def _normalizar_categoria(valor):
+    texto = unicodedata.normalize("NFKD", str(valor or ""))
+    texto = "".join(c for c in texto if not unicodedata.combining(c))
+    return " ".join(texto.split()).casefold()
+
+
+def tipo_manutencao(categoria):
+    """Classifica o chamado pelo prefixo da categoria historica."""
+    normalizada = _normalizar_categoria(categoria)
+    if normalizada.startswith("manutencao preventiva >") or normalizada.startswith("manutencao preventiva>"):
+        return "Preventiva"
+    return "Corretiva"
 
 
 def aba_para_objetos(sh, nome):
@@ -256,7 +271,7 @@ def main() -> int:
         ex = str(rr[6]).strip() if len(rr) > 6 else ""
         fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
         regs.append({"l": ln, "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
-                     "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex,
+                     "m": tipo_manutencao(orig), "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex,
                      "k": 1 if cia == orig else 0, "v": valida.get(ln, "")})
     (SAIDA / "registros.json").write_text(json.dumps(regs, ensure_ascii=False), encoding="utf-8")
     resumo["registros"] = len(regs)
@@ -292,7 +307,7 @@ def main() -> int:
             ex = str(rr[7]).strip() if len(rr) > 7 else modelo
             fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
             rm.append({"l": ln, "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
-                       "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex or modelo,
+                       "m": tipo_manutencao(orig), "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex or modelo,
                        "k": 1 if cia == orig else 0, "v": valida.get(ln, "")})
         if rm:
             (SAIDA / f"registros_{modelo}.json").write_text(
