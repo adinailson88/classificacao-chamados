@@ -193,3 +193,34 @@ conferências** (305 decisões travadas; 2 conflitos a revisar). Resultado **par
 > planilha viva e rodando pela primeira vez a validação não supervisionada. O que falta
 > é, sobretudo, **validação humana** — pendência deliberada do usuário — e a recalibração
 > dos limiares de prioridade apontada em §8.2.
+
+## 9. Revisao tecnica final antes de M/N/P (2026-06-11 11:50)
+
+Revisao pontual executada sem mudar o desenho metodologico e sem escrever na planilha.
+
+O que foi corrigido:
+
+- `planilha.ler_conferencias` e `decisao_validada.carregar_decisoes` agora localizam C/G/O/M/N/P por cabecalho normalizado, com fallback para o layout atual.
+- `src/auditar_conferencias.py` audita conferencias humanas, gera `docs/dados/auditoria_conferencias.json` sanitizado e so grava `AUDITORIA_CONFERENCIAS` com `--aplicar`.
+- `.github/workflows/auditar_conferencias.yml` e `.github/workflows/check_final_ready.yml` foram adicionados.
+- `src/check_final_ready.py` verifica arquivos, compilacao e JSONs publicos sem acessar texto de chamado.
+- `reclassificar_validados.yml` ficou dry-run por padrao e exige `confirmacao=APLICAR_O` para gravar O.
+- `classificacao_ia_2_dryrun.yml` explicita que nao grava O.
+- `validacao_nao_supervisionada.py` passou a usar `score_prioridade_revisao` e prioridade Alta seletiva por percentil 85/top 15%.
+
+Validacoes executadas:
+
+- `git pull --rebase`: `Already up to date`.
+- `python -m py_compile` dos arquivos alterados: OK.
+- `python src/check_final_ready.py`: OK; compilou todo `src`, validou JSONs publicos e reportou `status=ok`.
+- `python -m unittest discover -s tests -v`: OK com dependencias leves via `PYTHONPATH` para `.codex_deps`; 23 testes.
+- Workflows referenciam scripts existentes.
+
+Workflows/runs verificados:
+
+- `avaliacao_final.yml`: sucesso `27300506477`; falha posterior `27301142348`.
+- `dashboard.yml`: sucessos recentes; alguns `workflow_run` pulados.
+- `multimodelo_reclassificacao.yml`: run pendente `27353706958`; run `27352686850` existe e esta cancelado. `gh run view 27352686850 --log` nao retornou log.
+- `reclassificar_validados.yml`: ultimos sucessos observados em 06/06/2026.
+
+Estado atual dos dados publicos: `avaliacao_final.json` esta com `status=ok`, `validados=305`, `conflitos=2` e `melhor_ia=linear_svc`. O proximo passo humano e revisar/concluir M/N/P, com atencao aos conflitos, antes de qualquer decisao de gravar a coluna O.

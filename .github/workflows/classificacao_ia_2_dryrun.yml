@@ -15,7 +15,7 @@ on:
         type: boolean
         default: false
       aplicar_abas:
-        description: "Gravar abas COMITE/DRYRUN sem gravar coluna O"
+        description: "true = grava CANDIDATOS/COMITE/CLASSIFICACAO_2_DRYRUN; nao grava coluna O"
         type: boolean
         default: true
 
@@ -54,6 +54,7 @@ jobs:
           printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
       - name: Rodar comite em dry-run
         run: |
+          echo "NAO grava coluna O"
           CMD="python src/classificacao_ia_2_comite.py --limite '${{ github.event.inputs.limite || '200' }}'"
           if [ "${{ github.event.inputs.usar_minilm }}" = "true" ]; then
             CMD="$CMD --usar-minilm"
@@ -62,7 +63,10 @@ jobs:
             CMD="$CMD --incluir-sem-mn"
           fi
           if [ "${{ github.event.inputs.aplicar_abas }}" = "true" ]; then
+            echo "grava somente abas auxiliares"
             CMD="$CMD --aplicar"
+          else
+            echo "nao grava abas auxiliares"
           fi
           eval "$CMD"
       - name: Remover credenciais

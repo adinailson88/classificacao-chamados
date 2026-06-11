@@ -1382,3 +1382,15 @@ recolhido em details). (c) Exportacao: botao PNG em todos os graficos e
 docs/exportar_analises.py para download (reproduz os calculos de todas as abas direto
 da planilha, comentado, somente leitura). Verificado em preview local sem erros.
 Briefing completo para o Codex no topo de FALTA_FAZER.md.
+
+## Atualizacao Codex - prontidao tecnica antes da conferencia final (2026-06-11 11:50)
+
+Revisao pontual executada no clone `repo_classificacao_tmp`, sem alterar arquitetura e sem tocar nas colunas C/G/M/N/P/O da planilha. O objetivo foi deixar o gargalo restante concentrado na conferencia humana M/N/P.
+
+Correcoes implementadas: leitura robusta por cabecalho em `planilha.ler_conferencias` e `decisao_validada.carregar_decisoes` (normalizacao sem acento/caixa/espacos, fallback posicional C/G/O/M/N/P); novo `src/auditar_conferencias.py` com JSON publico sanitizado e aba privada opcional; novo workflow `auditar_conferencias.yml`; novo `src/check_final_ready.py` e workflow `check_final_ready.yml`; `reclassificar_validados.yml` agora e manual, dry-run por padrao, com input `modelo` e confirmacao `APLICAR_O` para gravar O; `classificacao_ia_2_dryrun.yml` explicita que nao grava O; `validacao_nao_supervisionada.py` ganhou `score_prioridade_revisao` e corte de prioridade Alta por percentil 85/top 15%.
+
+Validacoes locais: `git pull --rebase` em `repo_classificacao_tmp` retornou `Already up to date`; `python -m py_compile` dos arquivos alterados OK; `src/check_final_ready.py` compilou todo `src` e retornou `status=ok`; `python -m unittest discover -s tests -v` passou com 23 testes usando as dependencias leves ja existentes em `.codex_deps` do clone anterior via `PYTHONPATH`.
+
+Auditoria de Actions: os workflows referenciam scripts existentes; `gh run list` mostrou `avaliacao_final.yml` com sucesso `27300506477` e falha posterior `27301142348`, `dashboard.yml` com sucessos recentes e alguns skips por `workflow_run`, `multimodelo_reclassificacao.yml` com run pendente `27353706958` e run cancelado `27352686850`, e `reclassificar_validados.yml` com ultimos sucessos em 06/06/2026. `gh run view 27352686850 --log` nao retornou log; o run existe e esta cancelado.
+
+Estado observado nos JSONs publicos: `avaliacao_final.json` registra `status=ok`, `validados=305`, `conflitos=2`, `melhor_ia=linear_svc`; `reclass_resumo.json` lista os modelos publicados. Proximo passo humano: concluir/revisar as colunas M/N/P, especialmente os 2 conflitos, antes de aplicar qualquer nova escrita na coluna O.

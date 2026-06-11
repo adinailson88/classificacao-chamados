@@ -520,3 +520,20 @@ se vale combinar, e por que a IA erra (que informacoes pedir ao solicitante).
   com 5 tentativas antes do `git push`, igual ao dashboard.
 - Motivo: evitar falha por corrida de push quando `dashboard.yml`, Pages ou outro workflow
   commitar dados enquanto a estatistica esta terminando.
+
+## Atualizacao Codex - revisao tecnica final para conferencia humana (2026-06-11 11:50)
+
+- [x] Criado `src/auditar_conferencias.py`: auditoria read-only por padrao, JSON publico sanitizado em `docs/dados/auditoria_conferencias.json`, e escrita opcional da aba privada `AUDITORIA_CONFERENCIAS` apenas com `--aplicar`.
+- [x] Criado workflow manual `auditar_conferencias.yml`, com `aplicar=false` por padrao e commit apenas do JSON sanitizado.
+- [x] Criado `src/check_final_ready.py` e workflow manual `check_final_ready.yml`; o verificador nao acessa a planilha, compila scripts e confere JSONs publicos essenciais.
+- [x] `planilha.ler_conferencias` e `decisao_validada.carregar_decisoes` passaram a localizar C/G/O/M/N/P por cabecalho normalizado, com fallback para as posicoes atuais.
+- [x] `reclassificar_validados.yml` ficou manual, dry-run por padrao, com input `modelo` (`robusto`, `transformer_ft`, `producao`, `baseline`) e confirmacao literal `APLICAR_O` para gravar coluna O.
+- [x] `classificacao_ia_2_dryrun.yml` passou a imprimir explicitamente que NAO grava coluna O e que `aplicar_abas=true` grava somente abas auxiliares.
+- [x] `validacao_nao_supervisionada.py` ganhou `score_prioridade_revisao` continuo e prioridade `Alta` seletiva por percentil 85/top 15%, preservando as colunas antigas.
+- [x] Testes offline de conferencia por cabecalho/fallback/veto adicionados em `tests/test_decisao_memoria.py`.
+
+Validacoes executadas: `git pull --rebase` retornou `Already up to date`; `python -m py_compile` dos arquivos alterados OK; `python -m py_compile` de todo `src` OK via `src/check_final_ready.py`; `python -m unittest discover -s tests -v` OK com `PYTHONPATH` apontando para `.codex_deps` do clone anterior (23 testes); `python src/check_final_ready.py` OK.
+
+Workflows verificados por `gh run list`: `avaliacao_final.yml` teve ultimo sucesso `27300506477` e falha posterior `27301142348`; `dashboard.yml` teve sucessos recentes e skips por `workflow_run`; `multimodelo_reclassificacao.yml` tem run atual pendente `27353706958` e run cancelado `27352686850`; `reclassificar_validados.yml` teve ultimos runs antigos com sucesso em 06/06/2026. `gh run view 27352686850 --log` nao retornou log; o run existe e esta cancelado.
+
+Estado humano: `docs/dados/avaliacao_final.json` registra `validados=305`, `conflitos=2`, `melhor_ia=linear_svc`, `status=ok`. Proximo passo humano: concluir/revisar M/N/P, especialmente os conflitos, antes de qualquer gravacao controlada em O.

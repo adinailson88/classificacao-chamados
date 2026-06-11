@@ -22,6 +22,8 @@ from __future__ import annotations
 
 from typing import Any
 
+import planilha as pl
+
 STATUS_DECIDIDO = "decidido"
 STATUS_RESTRITO = "restrito"
 STATUS_SEM_VALIDACAO = "sem_validacao"
@@ -98,21 +100,18 @@ def carregar_decisoes(sh, aba_principal: str,
     menos uma conferencia preenchida. Linhas sem conferencia ficam fora do mapa
     (status implicitamente 'sem_validacao').
     """
-    cols = [col_historico, col_ia1, col_reclass, col_conf_glpi, col_conf_ia, col_conf_reclass]
-    hi = max(cols)
-
-    def letra(n: int) -> str:
-        s = ""
-        while n > 0:
-            n, r = divmod(n - 1, 26)
-            s = chr(65 + r) + s
-        return s
-
     try:
         ws = sh.worksheet(aba_principal)
-        bloco = ws.get_values(f"A1:{letra(hi)}", value_render_option="UNFORMATTED_VALUE")
+        bloco = ws.get_values("A:P", value_render_option="UNFORMATTED_VALUE")
     except Exception:  # noqa: BLE001
         return {}
+    cab = bloco[0] if bloco else []
+    col_historico = pl.localizar_coluna(cab, ("CATEGORIA COMPLETA",), col_historico)
+    col_ia1 = pl.localizar_coluna(cab, ("Classificacao IA", "Classificação IA"), col_ia1)
+    col_reclass = pl.localizar_coluna(cab, ("Classificacao IA - 2", "Classificação IA - 2"), col_reclass)
+    col_conf_glpi = pl.localizar_coluna(cab, ("CONFERENCIA GLPI", "CONFERÊNCIA GLPI"), col_conf_glpi)
+    col_conf_ia = pl.localizar_coluna(cab, ("CONFERENCIA IA", "CONFERÊNCIA IA"), col_conf_ia)
+    col_conf_reclass = pl.localizar_coluna(cab, ("CONFERENCIA IA - 2", "CONFERÊNCIA IA - 2"), col_conf_reclass)
 
     def cel(linha: list[Any], c1: int) -> str:
         i = c1 - 1

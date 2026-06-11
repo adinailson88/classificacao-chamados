@@ -247,7 +247,8 @@ def calcular_semantica(chamados: list[dict[str, Any]], n_componentes: int) -> tu
     return linhas, metricas
 
 
-def prioridade(item: dict[str, Any], votos: dict[str, Any]) -> tuple[str, str]:
+def score_prioridade(item: dict[str, Any], votos: dict[str, Any], total_modelos: int) -> tuple[float, list[str]]:
+    """Score continuo para ordenar a revisao humana."""
     motivos = []
     if item["outlier_semantico"] == "SIM":
         motivos.append("outlier na categoria histórica")
@@ -255,12 +256,33 @@ def prioridade(item: dict[str, Any], votos: dict[str, Any]) -> tuple[str, str]:
         motivos.append("outra categoria semanticamente mais próxima")
     if votos["consenso_contra_historico"] == "SIM":
         motivos.append("consenso forte dos modelos contra histórico")
-    if votos["qtd_modelos_concordantes"] >= 6 and votos["categoria_majoritaria"] != item["categoria_historica"]:
-        return "Alta", " + ".join(motivos or ["consenso forte contra histórico"])
-    if len(motivos) >= 2:
-        return "Alta", " + ".join(motivos)
-    if motivos:
-        return "Media", " + ".join(motivos)
+    consenso = 0.0
+    if votos["categoria_majoritaria"] and votos["categoria_majoritaria"] != item["categoria_historica"]:
+        consenso = min(1.0, votos["qtd_modelos_concordantes"] / max(total_modelos, 1))
+    entropia_max = math.log(max(votos["n_categorias_sugeridas"], 2), 2)
+    entropia = min(1.0, votos["entropia_votos"] / entropia_max) if entropia_max else 0.0
+    margem = max(0.0, min(1.0, float(item["margem_semantica"]) / 0.20))
+    distancia = max(0.0, min(1.0, float(item["distancia_categoria_historica"])))
+    outlier = 1.0 if item["outlier_semantico"] == "SIM" else 0.0
+    score = 0.25 * outlier + 0.25 * margem + 0.25 * consenso + 0.15 * entropia + 0.10 * distancia
+    return round(float(score), 6), motivos
+
+
+def prioridade_por_score(score: float, motivos: list[str], item: dict[str, Any],
+                         votos: dict[str, Any], corte_alta: float) -> tuple[str, str]:
+    consenso_forte = (
+        votos["qtd_modelos_concordantes"] >= 6
+        and votos["categoria_majoritaria"]
+        and votos["categoria_majoritaria"] != item["categoria_historica"]
+    )
+    margem_relevante = (
+        item["categoria_semantica_mais_proxima"] != item["categoria_historica"]
+        and item["margem_semantica"] > 0.05
+    )
+    if score >= corte_alta and score > 0 and (score >= 0.45 or (consenso_forte and margem_relevante)):
+        return "Alta", " + ".join(motivos or ["score no topo da priorizacao"])
+    if score >= 0.25 or motivos:
+        return "Media", " + ".join(motivos or ["score intermediario de priorizacao"])
     return "Baixa", "sem sinal forte"
 
 
@@ -297,11 +319,20 @@ def main() -> int:
     semantica, metricas = calcular_semantica(chamados, args.n_componentes)
     votos_modelos = carregar_votos_modelos(sh, config, modelos)
 
-    linhas = []
-    cont_prioridade = Counter()
+    preliminares = []
+    scores = []
+    total_modelos = max(len(modelos), 1)
     for item in semantica:
         rv = resumo_votos(votos_modelos.get(int(item["linha"]), []), item["categoria_historica"])
-        pr, motivo = prioridade(item, rv)
+        score, motivos = score_prioridade(item, rv, total_modelos)
+        scores.append(score)
+        preliminares.append((item, rv, score, motivos))
+
+    corte_alta = float(np.percentile(scores, 85)) if scores else 1.0
+    linhas = []
+    cont_prioridade = Counter()
+    for item, rv, score, motivos in preliminares:
+        pr, motivo = prioridade_por_score(score, motivos, item, rv, corte_alta)
         cont_prioridade[pr] += 1
         linhas.append([
             item["linha"],
@@ -318,25 +349,33 @@ def main() -> int:
             rv["n_categorias_sugeridas"],
             rv["entropia_votos"],
             rv["consenso_contra_historico"],
+            score,
             pr,
             motivo,
             gerado,
         ])
 
-    linhas.sort(key=lambda r: ({"Alta": 0, "Media": 1, "Baixa": 2}.get(r[14], 9), -float(r[6]), int(r[0])))
+    linhas.sort(key=lambda r: ({"Alta": 0, "Media": 1, "Baixa": 2}.get(r[15], 9), -float(r[14]), int(r[0])))
 
     cab = [
         "linha", "id_chamado", "categoria_historica", "distancia_categoria_historica",
         "categoria_semantica_mais_proxima", "distancia_categoria_mais_proxima", "margem_semantica",
         "score_outlier", "outlier_semantico", "categoria_majoritaria_modelos",
         "qtd_modelos_concordantes", "n_categorias_sugeridas", "entropia_votos",
-        "consenso_contra_historico", "prioridade_revisao", "motivo_prioridade", "data_execucao",
+        "consenso_contra_historico", "score_prioridade_revisao",
+        "prioridade_revisao", "motivo_prioridade", "data_execucao",
     ]
 
     print(json.dumps({
         "gerado_em": gerado,
         "metricas": metricas,
         "prioridades": dict(cont_prioridade),
+        "criterio_prioridade": {
+            "score": "outlier + margem semantica + consenso contra historico + entropia + distancia a categoria historica",
+            "corte_alta_percentil": 85,
+            "corte_alta_score_observado": round(corte_alta, 6),
+            "alta_maxima_esperada": "top 15% salvo empates no corte e criterios fortes",
+        },
         "linhas": len(linhas),
         "modo": "aplicar" if args.aplicar else "dry-run",
     }, ensure_ascii=False, indent=2))

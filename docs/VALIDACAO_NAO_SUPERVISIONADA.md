@@ -328,3 +328,11 @@ python src/validacao_nao_supervisionada.py --aplicar
 ```
 
 A implementação deve seguir o padrão operacional do repositório: ler contexto antes, aplicar menor alteração necessária, preservar dados sensíveis e não declarar validação humana antes de ela existir.
+
+## 13. Atualizacao implementada em 2026-06-11
+
+O script `src/validacao_nao_supervisionada.py` passou a calcular `score_prioridade_revisao`, combinando outlier semantico, margem semantica, consenso dos modelos contra o historico, entropia dos votos e distancia a categoria historica.
+
+A prioridade `Alta` deixou de ser ampla por regra booleana e passou a ser seletiva: usa corte no percentil 85 dos scores observados, com expectativa operacional de top 15%, salvo empates e criterios fortes. As faixas `Media` e `Baixa` foram mantidas, e as colunas antigas nao foram removidas.
+
+Se nao houver dados reais disponiveis no ambiente de execucao, a logica fica implementada, mas a distribuicao real na planilha deve ser tratada como: Informação insuficiente para verificar.

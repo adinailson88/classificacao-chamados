@@ -548,3 +548,17 @@ Validação automática definitiva do acerto da IA.
 A redação técnica recomendada é:
 
 > A análise não supervisionada foi utilizada para identificar padrões latentes, sobreposição semântica entre categorias e chamados atípicos em relação à categoria histórica. Os resultados orientaram a priorização da validação humana, sem substituir a conferência manual utilizada como verdade de referência.
+
+## 15. Regra implementada de score continuo (2026-06-11)
+
+O script atual calcula `score_prioridade_revisao` por linha. O score combina:
+
+- outlier semantico na categoria historica;
+- margem semantica entre a categoria historica e a categoria mais proxima;
+- consenso dos modelos contra o historico;
+- entropia dos votos;
+- distancia a categoria historica.
+
+A classe `Alta` e atribuida de forma mais seletiva, usando o percentil 85 dos scores observados como corte operacional. Isso evita repetir o comportamento anterior, no qual cerca de 62% da base ficou em prioridade `Alta` e a triagem perdeu utilidade. `Media` e `Baixa` continuam presentes, e a aba privada preserva as colunas antigas mais a nova coluna de score.
+
+Quando o script for executado sem acesso aos dados reais, registrar: Informação insuficiente para verificar a distribuição real na planilha.

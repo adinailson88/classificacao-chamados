@@ -1,9 +1,10 @@
 name: Reclassificar validados (M e N) -> coluna O
 
-# Reclassifica AUTOMATICAMENTE os chamados ja validados pela conferencia dupla
+# Reclassifica manualmente os chamados ja validados pela conferencia dupla
 # (coluna M = CONFERENCIA GLPI e coluna N = CONFERENCIA IA preenchidas) e ainda sem
-# reclassificacao (coluna O vazia). Usa o modelo MAIS ROBUSTO (transformer + memoria
-# validada; fallback LSTM/RF) e grava o resultado na coluna O, sem tocar em G/M/N.
+# reclassificacao (coluna O vazia). O modelo "robusto" usa MiniLM + classificador
+# local; "transformer_ft" usa BERTimbau fine-tuning e deve ser preferido apenas
+# quando sua execucao pesada for intencional. Grava O somente com confirmacao.
 #
 # Cadencia: a cada 15 min, no MAXIMO 15 chamados por execucao (1 turno). O script so
 # treina o modelo quando ha chamados validados pendentes; sem candidatos, e no-op barato.
@@ -19,10 +20,22 @@ on:
       max_turnos:
         description: "Turnos de 15 por execucao"
         default: "1"
+      modelo:
+        description: "Modelo de reclassificacao"
+        type: choice
+        default: robusto
+        options:
+          - robusto
+          - transformer_ft
+          - producao
+          - baseline
       aplicar:
         description: "Gravar na coluna O (false = dry-run)"
         type: boolean
-        default: true
+        default: false
+      confirmacao:
+        description: "Para gravar coluna O com aplicar=true, digite APLICAR_O"
+        default: ""
 
 concurrency:
   group: escrita-planilha
@@ -50,6 +63,9 @@ jobs:
         run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
       - name: Instalar modelo robusto (transformer)
         run: python -m pip install --retries 5 --timeout 120 -r requirements-robusto.txt
+      - name: Instalar transformer fine-tuning se solicitado
+        if: ${{ github.event.inputs.modelo == 'transformer_ft' }}
+        run: python -m pip install --retries 5 --timeout 180 -r requirements-transformer.txt
       - name: Recriar chave da conta de servico
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -59,10 +75,16 @@ jobs:
       - name: Reclassificar validados (robusto -> coluna O)
         run: |
           MT="${{ github.event.inputs.max_turnos }}"; MT="${MT:-1}"
-          if [ "${{ github.event.inputs.aplicar }}" = "false" ]; then
-            python src/reclassificar_validados.py --modelo robusto --max-turnos "$MT"
+          MODELO="${{ github.event.inputs.modelo }}"; MODELO="${MODELO:-robusto}"
+          echo "modelo=$MODELO"
+          if [ "${{ github.event.inputs.aplicar }}" = "true" ]; then
+            if [ "${{ github.event.inputs.confirmacao }}" != "APLICAR_O" ]; then
+              echo "Para gravar a coluna O, confirme com confirmacao=APLICAR_O." >&2
+              exit 1
+            fi
+            python src/reclassificar_validados.py --modelo "$MODELO" --max-turnos "$MT" --aplicar
           else
-            python src/reclassificar_validados.py --modelo robusto --max-turnos "$MT" --aplicar
+            python src/reclassificar_validados.py --modelo "$MODELO" --max-turnos "$MT"
           fi
       - name: Remover credenciais
         if: always()

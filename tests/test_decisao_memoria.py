@@ -13,10 +13,31 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import decisao_validada as dv  # noqa: E402
+import planilha as pl  # noqa: E402
 from classificacao_multimodelo import _prever_com_veto, prever_out_of_fold  # noqa: E402
 from avaliacao_final import (mcnemar_p, peso_log_odds, votar_maioria,  # noqa: E402
                              confianca_maxima)
 from analise_erros import cliffs_delta, cobertura_termos  # noqa: E402
+
+
+class _WorksheetFalsa:
+    def __init__(self, valores):
+        self.valores = valores
+
+    def get_values(self, *_args, **_kwargs):
+        return self.valores
+
+
+class _SpreadsheetFalsa:
+    def __init__(self, valores):
+        self.valores = valores
+
+    def worksheet(self, _nome):
+        return _WorksheetFalsa(self.valores)
+
+
+def _linha(*valores, largura=16):
+    return list(valores) + [""] * max(0, largura - len(valores))
 
 
 class TestDecidir(unittest.TestCase):
@@ -63,6 +84,11 @@ class TestDecidir(unittest.TestCase):
         d = dv.decidir("HIDRAULICA", "ELETRICA", "CLIMATIZACAO", None, None, "Correto")
         self.assertEqual(d["decidida"], "CLIMATIZACAO")
         self.assertEqual(d["fonte_decisao"], "conferencia_reclass")
+
+    def test_reclass_correta_trava(self):
+        d = dv.decidir("HIDRAULICA", "ELETRICA", "CLIMATIZACAO", None, None, "Correto")
+        self.assertEqual(d["status"], dv.STATUS_DECIDIDO)
+        self.assertEqual(d["decidida"], "CLIMATIZACAO")
 
     def test_decidida_nao_eliminada(self):
         # Mesma categoria certa numa conferencia e errada noutra coluna nao
@@ -112,6 +138,45 @@ class TestVeto(unittest.TestCase):
             "naive_bayes", lote, base_t, base_c, k_folds=5, min_base=10,
             fracao_topup=0.9, vetos=[{"HID"}] * len(lote))
         self.assertTrue(all(p != "HID" for p in preds))
+
+
+class TestLeituraPorCabecalho(unittest.TestCase):
+    def test_decisao_por_cabecalhos_ordem_normal(self):
+        cab = _linha("ID", "TITULO", "CATEGORIA COMPLETA", "D", "E", "F",
+                     "Classificacao IA", "H", "I", "J", "K", "L",
+                     "CONFERENCIA GLPI", "CONFERENCIA IA", "Classificacao IA - 2",
+                     "CONFERENCIA IA - 2")
+        vals = [cab, _linha("1", "", "HID", "", "", "", "ELE", "", "", "", "", "", "Errado", "Correto", "", "")]
+        decisoes = dv.carregar_decisoes(_SpreadsheetFalsa(vals), "Aba")
+        self.assertEqual(decisoes[2]["decidida"], "ELE")
+        conferencias = pl.ler_conferencias(_SpreadsheetFalsa(vals), "Aba")
+        self.assertEqual(conferencias["2"]["ia"], "Correto")
+        self.assertEqual(conferencias["2"]["glpi"], "Errado")
+
+    def test_decisao_por_cabecalhos_com_acentos(self):
+        cab = _linha("ID", "TÍTULO", "CATEGORIA COMPLETA", "D", "E", "F",
+                     "Classificação IA", "H", "I", "J", "K", "L",
+                     "CONFERÊNCIA GLPI", "CONFERÊNCIA IA", "Classificação IA - 2",
+                     "CONFERÊNCIA IA - 2")
+        vals = [cab, _linha("1", "", "HID", "", "", "", "ELE", "", "", "", "", "", "Correto", "Correto", "CLIMA", "")]
+        decisoes = dv.carregar_decisoes(_SpreadsheetFalsa(vals), "Aba")
+        self.assertTrue(decisoes[2]["conflito"])
+
+    def test_fallback_posicional_sem_cabecalho(self):
+        cab = _linha("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P")
+        vals = [cab, _linha("1", "", "HID", "", "", "", "ELE", "", "", "", "", "", "Errado", "", "CLIMA", "Correto")]
+        decisoes = dv.carregar_decisoes(_SpreadsheetFalsa(vals), "Aba")
+        self.assertEqual(decisoes[2]["decidida"], "CLIMA")
+
+    def test_categoria_errada_vira_veto(self):
+        cab = _linha("ID", "TITULO", "CATEGORIA COMPLETA", "D", "E", "F",
+                     "Classificacao IA", "H", "I", "J", "K", "L",
+                     "CONFERENCIA GLPI", "CONFERENCIA IA", "Classificacao IA - 2",
+                     "CONFERENCIA IA - 2")
+        vals = [cab, _linha("1", "", "HID", "", "", "", "ELE", "", "", "", "", "", "Errado", "", "", "")]
+        decisoes = dv.carregar_decisoes(_SpreadsheetFalsa(vals), "Aba")
+        self.assertEqual(decisoes[2]["status"], dv.STATUS_RESTRITO)
+        self.assertEqual(decisoes[2]["eliminadas"], {"HID"})
 
 
 class TestEnsembles(unittest.TestCase):

@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import json
 import os
+import time
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -161,7 +163,18 @@ def ler_valores(ws, range_a1: str = "A:M") -> list[list[Any]]:
     UNFORMATTED_VALUE retorna números crus (ex.: 0.8887 em vez de "88,87%"),
     o que permite comparar confiança numericamente na reclassificação.
     """
-    return ws.get_values(range_a1, value_render_option="UNFORMATTED_VALUE")
+    for tentativa in range(1, 6):
+        try:
+            return ws.get_values(range_a1, value_render_option="UNFORMATTED_VALUE")
+        except gspread.exceptions.APIError as e:
+            msg = str(e).lower()
+            if "429" not in msg and "quota" not in msg:
+                raise
+            if tentativa >= 5:
+                raise
+            espera = 30 * tentativa
+            print(f"[ler_valores] quota de leitura atingida; retry {tentativa}/5 em {espera}s")
+            time.sleep(espera)
 
 
 def _norm_veredito(valor) -> str | None:
@@ -171,6 +184,29 @@ def _norm_veredito(valor) -> str | None:
     if not s:
         return None
     return "Correto" if s.casefold() == "correto" else "Errado"
+
+
+def normalizar_cabecalho(valor: Any) -> str:
+    """Normaliza cabecalho: sem acento, caixa, espacos duplicados e espacos nas pontas."""
+    texto = unicodedata.normalize("NFKD", str(valor or ""))
+    texto = "".join(c for c in texto if not unicodedata.combining(c))
+    return " ".join(texto.split()).casefold()
+
+
+def mapa_cabecalhos(cabecalho: list[Any]) -> dict[str, int]:
+    """Mapa normalizado -> indice 1-based."""
+    return {normalizar_cabecalho(nome): i for i, nome in enumerate(cabecalho, start=1)}
+
+
+def localizar_coluna(cabecalho: list[Any], nomes: list[str] | tuple[str, ...],
+                     default_1based: int) -> int:
+    """Localiza a primeira coluna por cabecalho normalizado; usa fallback posicional."""
+    mapa = mapa_cabecalhos(cabecalho)
+    for nome in nomes:
+        idx = mapa.get(normalizar_cabecalho(nome))
+        if idx:
+            return idx
+    return default_1based
 
 
 def ler_conferencias(sh, aba_principal: str, col_glpi_1based: int = 13,
@@ -188,18 +224,23 @@ def ler_conferencias(sh, aba_principal: str, col_glpi_1based: int = 13,
     A linha_planilha e a propria posicao na planilha (cabecalho na linha 1).
     Independente da ordem das colunas. Read-only.
     """
-    cols = [col_glpi_1based, col_ia_1based, col_reclass_1based]
-    lo, hi = min(cols), max(cols)
-    a, b = _coluna_letra(lo), _coluna_letra(hi)
     try:
         ws = sh.worksheet(aba_principal)
-        bloco = ws.get_values(f"{a}1:{b}", value_render_option="UNFORMATTED_VALUE")
+        bloco = ws.get_values("A:P", value_render_option="UNFORMATTED_VALUE")
     except Exception:  # noqa: BLE001
         return {}
+    cab = bloco[0] if bloco else []
+    col_glpi_1based = localizar_coluna(
+        cab, ("CONFERENCIA GLPI", "CONFERÊNCIA GLPI"), col_glpi_1based)
+    col_ia_1based = localizar_coluna(
+        cab, ("CONFERENCIA IA", "CONFERÊNCIA IA"), col_ia_1based)
+    col_reclass_1based = localizar_coluna(
+        cab, ("CONFERENCIA IA - 2", "CONFERÊNCIA IA - 2"), col_reclass_1based)
+
     out = {}
     for pos, linha in enumerate(bloco[1:], start=2):
         def _cel(c1):
-            idx = c1 - lo
+            idx = c1 - 1
             return _norm_veredito(linha[idx]) if len(linha) > idx else None
         v_glpi = _cel(col_glpi_1based)
         v_ia = _cel(col_ia_1based)
@@ -214,18 +255,13 @@ def indice_coluna_por_cabecalho(ws, nome: str, default_1based: int) -> int:
     """Indice (1-based) da coluna cujo cabecalho (linha 1) casa com `nome`
     (normalizado: sem caixa, sem espacos extras e SEM acentos). Se nao encontrar,
     retorna default_1based."""
-    import unicodedata
-    def norm(s):  # noqa: E306
-        t = unicodedata.normalize("NFKD", str(s or ""))
-        t = "".join(c for c in t if not unicodedata.combining(c))
-        return " ".join(t.split()).casefold()
     try:
         cab = ws.row_values(1)
     except Exception:  # noqa: BLE001
         return default_1based
-    alvo = norm(nome)
+    alvo = normalizar_cabecalho(nome)
     for i, c in enumerate(cab, start=1):
-        if norm(c) == alvo:
+        if normalizar_cabecalho(c) == alvo:
             return i
     return default_1based
 
