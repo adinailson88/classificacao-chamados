@@ -1367,3 +1367,18 @@ Workflow manual `avaliacao_final.yml` gera `avaliacao_final.json` e `analise_err
 (status aguardando_validacao enquanto validados < minimo). Dashboard ganhou a aba
 `Decisao` consumindo os dois JSON, com estado vazio honesto. Testes offline:
 `tests/test_decisao_memoria.py` (18/18 OK). Nada foi gravado na planilha.
+
+## Reclassificacao dos validados + exportacoes + correlacao por categoria (2026-06-11)
+
+Pedidos do pesquisador implementados: (a) reclassificacao dos chamados JA conferidos
+pelo humano (`--so-validados` em reclassificacao_multimodelo.py + input no workflow):
+6 leves APLICADOS (run 27302191867; 354 por modelo = 305 reuso decidido_humano + 49
+re-preditos com veto, todos sem_referencia), LSTM so-validados na fila (27352686850);
+resumo agregado em docs/dados/reclass_resumo.json (gerado por exportar_dashboard.py),
+exibido na aba Reclassificacao com KPIs/tabela/graficos (total atual: 2.304
+reclassificados, 1.830 reusos). (b) Mapa de correlacao POR CATEGORIA na aba Taxonomia
+(seletor + barras decrescentes + "Outros" abaixo do limiar 0,05-0,30; heatmap completo
+recolhido em details). (c) Exportacao: botao PNG em todos os graficos e
+docs/exportar_analises.py para download (reproduz os calculos de todas as abas direto
+da planilha, comentado, somente leitura). Verificado em preview local sem erros.
+Briefing completo para o Codex no topo de FALTA_FAZER.md.

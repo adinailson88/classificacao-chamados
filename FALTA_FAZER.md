@@ -4,13 +4,70 @@
 > `CLAUDE_CONTINUACAO_2026-06-05.md` (removido). O panorama histórico continua em
 > `CONTEXTO.md`; aqui fica só o **que ainda falta**, priorizado.
 >
-> Atualizado: 2026-06-06 (America/Bahia, UTC-03:00).
+> Atualizado: 2026-06-11 (America/Bahia, UTC-03:00).
+
+## BRIEFING PARA O CODEX — estado em 2026-06-11 e o que vem a seguir
+
+### Onde o projeto está
+1. **Pipeline completo e no ar.** 7 IAs materializadas out-of-fold (13.825 chamados
+   cada), estatística não paramétrica, calibração preliminar, taxonomia (termos +
+   correlação + cruzamento) com dados reais, dashboard publicado no Pages.
+2. **Validação humana COMEÇOU** (não está mais em `validados=0`): **354 conferências**
+   nas colunas M/N da `CHAMADOS_ESQUELETO_REDUZIDO` → 305 decisões travadas,
+   49 restritos, **2 conflitos pendentes de revisão** (M=Correto e N=Correto com
+   C≠G — impossível; filtrar e corrigir na planilha).
+3. **Memória de decisão implementada** (`src/decisao_validada.py` + `predict_dist` no
+   zoo + `prever_out_of_fold(vetos=)`): categoria conferida como ERRADA fica vetada
+   por chamado; conferida como CERTA trava e é reusada sem reprocessar. Regra do
+   pesquisador — **não relaxar**.
+4. **Reclassificação dos validados executada** (`--so-validados`): 6 leves aplicados
+   (354 cada = 305 reuso `decidido_humano` + 49 re-preditos com veto, todos
+   `sem_referencia`); LSTM com legado etapa-2 (+14 de ganho) e run so-validados na
+   fila. Resumo em `docs/dados/reclass_resumo.json`, exibido na aba `Reclassificacao`.
+5. **Resposta final parcial publicada** (`avaliacao_final.json`, n=305): ranking
+   VALIDADO `linear_svc` 67,9% [62,6–73,1] > reg_log 66,9% > sgd 66,6% > rf 61,3% >
+   et 58,7% > lstm 56,4% > nb 54,1%; melhor vs 2ª NÃO significativo (McNemar p=0,73);
+   **nenhum ensemble supera a melhor IA** (melhor delta +0,33 p.p., p=1,0) → por ora
+   não vale combinar. Análise de erros (n=354, 91 erros): erros têm títulos MAIS
+   LONGOS (p=0,008) — hipótese "texto pobre → erro" NÃO confirmada nesta amostra
+   parcial; cobertura de termos discriminativos ainda sem significância (p=0,17).
+   Tudo na aba `Decisao`.
+6. **Exportação**: botão ⬇PNG em todos os gráficos; `docs/exportar_analises.py`
+   (download na Documentação) reproduz os cálculos de todas as abas direto da
+   planilha, comentado, somente leitura.
+7. **Taxonomia**: visão POR CATEGORIA (seletor + barras + "Outros" abaixo do limiar);
+   heatmap 44×44 completo recolhido em `<details>`.
+
+### O que executar a seguir (prioridade)
+1. **Aguardar o pesquisador terminar a conferência manual (M/N)** — pendência humana,
+   não técnica. Quando terminar: `gh workflow run avaliacao_final.yml` (a aba
+   `Decisao` substitui a resposta parcial pela final) e re-rodar
+   `multimodelo_reclassificacao.yml` com `so_validados=true` + `aplicar=true`
+   (novos conferidos entram no reuso/veto).
+2. **Conferir os 2 conflitos** (item humano; ver §1.2).
+3. **Confirmar o run LSTM so-validados** (`27352686850`, estava na fila do grupo
+   `escrita-planilha`) e, depois dele, rodar `dashboard.yml` para atualizar
+   `reclass_resumo.json`.
+4. **Recalibrar os limiares de prioridade da validação não supervisionada**
+   (62% da base caiu em "Alta" — não tria; propor score contínuo; decisão do
+   pesquisador antes de implementar).
+5. **Revisão humana da taxonomia** (etapa 46) com `cruzamento_taxonomia.json`
+   (duplicações estruturais: Ar condicionado, Hidráulica, Telhados, Extintor).
+6. Reavaliar a análise de erros quando a conferência terminar (a amostra parcial
+   priorizou divergentes; o achado "títulos longos erram mais" pode inverter).
+
+### Regras inegociáveis (manter)
+- Concordância com histórico ≠ acurácia validada; rotular sempre.
+- Dry-run por padrão; `aplicar=true` só manual e justificado.
+- Não tocar em C (histórico) nem M/N/P (conferências); reclassificação grava em
+  RECLASS__/coluna O.
+- Não publicar texto de chamado nos JSON do Pages (só agregados/termos).
+- Memória de decisão: errado conferido nunca volta; certo conferido nunca reprocessa.
 
 ## Estado atual (resumo)
 - **Etapa 1 (LSTM single-model)** na aba `Classificacao`: base elegível de **13.825**
   chamados, classificação progressiva em turnos de 15 concluída (0 pendentes),
-  54 categorias, `validados=0`, `ece_historico=0.0379` no `resumo.json` gerado em
-  06/06/2026 13:34. Fonte do painel: `registros.json`.
+  54 categorias, `ece_historico=0.0379`. Fonte do painel: `registros.json`.
 - **Multimodelo materializado** — as **7 IAs completas**, 13.825 chamados por modelo,
   0 pendentes, predição **out-of-fold** (`kfold_5`). Concordância vs categoria histórica:
   `linear_svc` 80,26% > `extra_trees` 78,47% > `sgd` 77,51% > `random_forest` 76,80% >
@@ -20,10 +77,11 @@
   e exibia ~96.775 predições como se fossem chamados. **Não recriar.**
 - Análise estatística assume **pressupostos não paramétricos** (Shapiro rejeitou
   normalidade nos 7 modelos): Spearman, Friedman/Nemenyi, Cochran Q, McNemar e bootstrap.
-  Resultados são **contra o histórico**, não contra validação humana.
+  Resultados contra o histórico são preliminares; os validados estão na aba `Decisao`.
 
-> ⚠️ Todas as métricas atuais são **concordância contra a categoria histórica (C)**,
-> **não** acerto validado por humano. `validados=0`.
+> ⚠️ As métricas das abas históricas são **concordância contra a categoria
+> histórica (C)**. O acerto **validado** (conferência humana M/N/P) existe desde
+> 2026-06-10 e vive na aba `Decisao` — parcial até a conferência terminar.
 
 ---
 
