@@ -78,6 +78,8 @@
   .mod{border:1px solid var(--bd);border-radius:8px;padding:12px 13px;background:var(--panel-soft)}
   .mod h3{margin:0 0 6px;font-size:14px;color:var(--ink)}
   .mod .tipo{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);font-weight:700;margin-bottom:8px}
+  .tempo-exec{font-size:12px;background:#fbf6ec;border:1px solid #e7d9bd;border-left:3px solid #b07000;border-radius:5px;padding:6px 9px;margin:0 0 8px;color:var(--ink)}
+  td.tempo-exec{background:transparent;border:none;border-left:none;padding:6px 8px;margin:0}
   .mod p{margin:0 0 8px;font-size:13px}
   .eqbox{font-family:"Cambria Math","Times New Roman",Georgia,serif;font-size:14px;background:#fff;border:1px solid var(--bd);border-left:3px solid var(--teal);border-radius:5px;padding:7px 10px;margin:0 0 8px;overflow-wrap:anywhere}
   .xls{font-size:12.5px;background:#eef3fd;border:1px solid #c3d4f2;border-radius:5px;padding:7px 10px;margin:0 0 8px}
@@ -487,18 +489,19 @@
       <h2>Modelos de IA: tamanho (resumo)</h2>
       <p class="muted">Valores aproximados. "Entrada" e como o modelo le o texto; "tamanho" e a ordem de grandeza dos parametros. Detalhe de cada um nos cartoes abaixo.</p>
       <div class="tablebox"><table class="compacta">
-        <thead><tr><th style="width:24%">Modelo</th><th style="width:30%">Tipo</th><th style="width:28%">Entrada</th><th style="width:18%">Tamanho</th></tr></thead>
+        <thead><tr><th style="width:20%">Modelo</th><th style="width:24%">Tipo</th><th style="width:22%">Entrada</th><th style="width:14%">Tamanho</th><th style="width:20%">Tempo medio</th></tr></thead>
         <tbody>
-          <tr><td>Naive Bayes</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
-          <tr><td>Regressao Logistica</td><td>TF-IDF + linear</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
-          <tr><td>LinearSVC</td><td>TF-IDF + SVM linear</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
-          <tr><td>SGD</td><td>TF-IDF + linear online</td><td>ate 30.000 termos</td><td>~30k x categorias</td></tr>
-          <tr><td>ExtraTrees / Random Forest</td><td>TF-IDF + arvores</td><td>ate 30.000 termos</td><td>200 arvores</td></tr>
-          <tr><td>LSTM padrao</td><td>rede neural BiLSTM</td><td>vocab 8.000; 120 tokens; emb. 128</td><td>~1,1 milhao</td></tr>
-          <tr><td>LSTM robusto</td><td>rede neural 2x BiLSTM</td><td>vocab 20.000; 220 tokens; emb. 192</td><td>~4,6 milhoes</td></tr>
-          <tr><td>Robusto (Transformer)</td><td>MiniLM multilingue</td><td>~128 tokens; emb. 384 dims</td><td>~118 milhoes</td></tr>
+          <tr><td>Naive Bayes</td><td>TF-IDF + classico</td><td>ate 30.000 termos</td><td>~30k x categorias</td><td class="tempo-exec" data-tempo-modelo="naive_bayes" data-curto="1">&hellip;</td></tr>
+          <tr><td>Regressao Logistica</td><td>TF-IDF + linear</td><td>ate 30.000 termos</td><td>~30k x categorias</td><td class="tempo-exec" data-tempo-modelo="regressao_logistica" data-curto="1">&hellip;</td></tr>
+          <tr><td>LinearSVC</td><td>TF-IDF + SVM linear</td><td>ate 30.000 termos</td><td>~30k x categorias</td><td class="tempo-exec" data-tempo-modelo="linear_svc" data-curto="1">&hellip;</td></tr>
+          <tr><td>SGD</td><td>TF-IDF + linear online</td><td>ate 30.000 termos</td><td>~30k x categorias</td><td class="tempo-exec" data-tempo-modelo="sgd" data-curto="1">&hellip;</td></tr>
+          <tr><td>ExtraTrees / Random Forest</td><td>TF-IDF + arvores</td><td>ate 30.000 termos</td><td>200 arvores</td><td class="tempo-exec" data-tempo-modelo="extra_trees,random_forest" data-curto="1">&hellip;</td></tr>
+          <tr><td>LSTM padrao</td><td>rede neural BiLSTM</td><td>vocab 8.000; 120 tokens; emb. 128</td><td>~1,1 milhao</td><td class="tempo-exec" data-tempo-workflow="etapa1_turnos.yml" data-curto="1">&hellip;</td></tr>
+          <tr><td>LSTM robusto</td><td>rede neural 2x BiLSTM</td><td>vocab 20.000; 220 tokens; emb. 192</td><td>~4,6 milhoes</td><td class="tempo-exec" data-tempo-workflow="reclassificacao_robusta.yml" data-curto="1">&hellip;</td></tr>
+          <tr><td>Robusto (Transformer)</td><td>MiniLM multilingue</td><td>~128 tokens; emb. 384 dims</td><td>~118 milhoes</td><td class="tempo-exec" data-tempo-workflow="transformer_ft.yml" data-curto="1">&hellip;</td></tr>
         </tbody>
       </table></div>
+      <p class="muted">Coluna "Tempo medio" (dinamica, recalculada a cada visita): nos modelos leves e a media de tempo de treino + inferencia na maior base avaliada (<code>comparacao_modelos.json</code>); no LSTM e no Transformer e a duracao media dos ultimos runs concluidos do workflow correspondente no GitHub Actions (inclui instalacao de dependencias e leitura/escrita da planilha &mdash; tempo real de parede, nao so o treino).</p>
     </div>
 
     <div class="card full" style="margin-top:12px">
@@ -508,6 +511,7 @@
         <div class="mod">
           <h3>Naive Bayes</h3>
           <div class="tipo">TF-IDF &middot; probabilistico</div>
+          <div class="tempo-exec" data-tempo-modelo="naive_bayes">&#9201; carregando medicao&hellip;</div>
           <p>Estima a probabilidade de cada categoria multiplicando a "cara" de cada palavra naquela categoria, assumindo (ingenuamente) que as palavras sao independentes.</p>
           <div class="eqbox">P(cat | texto) &prop; P(cat) &times; &prod;<sub>i</sub> P(palavra<sub>i</sub> | cat)</div>
           <div class="xls"><strong>Excel:</strong> uma aba por categoria com a probabilidade de cada palavra; para um chamado, <code>=P(categoria)*PRODUTO(probabilidades das palavras presentes)</code> e escolhe a categoria com o maior resultado.</div>
@@ -517,6 +521,7 @@
         <div class="mod">
           <h3>Regressao Logistica</h3>
           <div class="tipo">TF-IDF &middot; linear probabilistico</div>
+          <div class="tempo-exec" data-tempo-modelo="regressao_logistica">&#9201; carregando medicao&hellip;</div>
           <p>Da um peso a cada termo; soma os pesos das palavras do chamado e converte essa soma em probabilidade pela funcao sigmoide (softmax para varias categorias).</p>
           <div class="eqbox">z = &sum;<sub>i</sub> w<sub>i</sub>x<sub>i</sub> + b &nbsp;&rarr;&nbsp; P(y|x) = 1 / (1 + e<sup>&minus;z</sup>)</div>
           <div class="xls"><strong>Excel:</strong> <code>z = SOMARPRODUTO(pesos; tfidf) + b</code> e depois <code>=1/(1+EXP(-z))</code>. Cada palavra "puxa" para uma categoria conforme o peso.</div>
@@ -526,6 +531,7 @@
         <div class="mod">
           <h3>LinearSVC (SVM linear)</h3>
           <div class="tipo">TF-IDF &middot; margem maxima</div>
+          <div class="tempo-exec" data-tempo-modelo="linear_svc">&#9201; carregando medicao&hellip;</div>
           <p>Tambem soma pesos das palavras, mas escolhe os pesos para deixar a maior "folga" (margem) entre as categorias. A saida e uma <em>distancia</em>, nao uma probabilidade &mdash; por isso precisa de calibracao.</p>
           <div class="eqbox">decisao = sinal( w&middot;x + b ) &nbsp;|&nbsp; treino: min &frac12;&#8741;w&#8741;<sup>2</sup></div>
           <div class="xls"><strong>Excel:</strong> mesma <code>=SOMARPRODUTO(pesos; tfidf)+b</code>, mas os pesos sao calibrados para maximizar a separacao. O numero alto NAO significa "95% de certeza".</div>
@@ -535,6 +541,7 @@
         <div class="mod">
           <h3>SGD</h3>
           <div class="tipo">TF-IDF &middot; linear incremental</div>
+          <div class="tempo-exec" data-tempo-modelo="sgd">&#9201; carregando medicao&hellip;</div>
           <p>Mesmo tipo de modelo linear (logistico/SVM), mas treinado por <em>descida de gradiente estocastica</em>: os pesos sao ajustados aos poucos, um lote de cada vez.</p>
           <div class="eqbox">w &larr; w &minus; &eta; &nabla;L(w; x, y)</div>
           <div class="xls"><strong>Excel:</strong> como arrastar a formula linha a linha corrigindo um pouquinho os pesos a cada chamado: <code>peso_novo = peso_velho - taxa * erro * tfidf</code>.</div>
@@ -544,6 +551,7 @@
         <div class="mod">
           <h3>ExtraTrees / Random Forest</h3>
           <div class="tipo">TF-IDF &middot; arvores que votam</div>
+          <div class="tempo-exec" data-tempo-modelo="extra_trees,random_forest">&#9201; carregando medicao&hellip;</div>
           <p>Muitas arvores de decisao, cada uma fazendo perguntas do tipo "o termo X aparece mais que um limiar?". A categoria final e o voto da maioria das arvores.</p>
           <div class="eqbox">y&#770; = moda{ arvore<sub>1</sub>(x), &hellip;, arvore<sub>B</sub>(x) }</div>
           <div class="xls"><strong>Excel:</strong> varias colunas com <code>=SE(tfidf_palavra&gt;limiar; ramo_A; ramo_B)</code> encadeadas (cada arvore) e, no fim, <code>=MODO(votos_das_arvores)</code>.</div>
@@ -553,6 +561,7 @@
         <div class="mod">
           <h3>LSTM (rede neural)</h3>
           <div class="tipo">sequencia &middot; rede recorrente bidirecional</div>
+          <div class="tempo-exec" data-tempo-workflow="etapa1_turnos.yml">&#9201; carregando medicao&hellip;</div>
           <p>Le o chamado palavra por palavra mantendo uma "memoria" que se atualiza a cada token, com portas que decidem o que guardar ou esquecer. Le nos dois sentidos (BiLSTM) e no fim aplica softmax.</p>
           <div class="eqbox">h<sub>t</sub> = LSTM(h<sub>t&minus;1</sub>, x<sub>t</sub>) &nbsp;|&nbsp; c<sub>t</sub> = f<sub>t</sub>&middot;c<sub>t&minus;1</sub> + i<sub>t</sub>&middot;c&#771;<sub>t</sub></div>
           <div class="xls"><strong>Excel:</strong> uma coluna "memoria" em que cada celula usa a celula da linha anterior: <code>=memoria_anterior*porta_esquecer + nova_info*porta_entrar</code>, varrendo o texto do inicio ao fim e do fim ao inicio.</div>
@@ -562,6 +571,7 @@
         <div class="mod">
           <h3>Robusto (Transformer / MiniLM)</h3>
           <div class="tipo">transformer pre-treinado em portugues</div>
+          <div class="tempo-exec" data-tempo-workflow="transformer_ft.yml">&#9201; carregando medicao&hellip;</div>
           <p>Em vez de ler em ordem, cada palavra "olha" todas as outras com pesos de <em>atencao</em>. Vem pre-treinado em milhoes de frases; aqui gera um vetor do chamado e um classificador decide a categoria. Pesado: roda raramente.</p>
           <div class="eqbox">Atencao(Q,K,V) = softmax( Q&middot;K<sup>T</sup> / &radic;d ) &middot; V</div>
           <div class="xls"><strong>Excel:</strong> imagine uma matriz "palavra x palavra" de pesos de relevancia (atencao) preenchida por <code>=SOFTMAX(produto entre vetores)</code>; nao cabe numa celula simples &mdash; e o ganho (e o custo) do modelo.</div>
@@ -590,6 +600,72 @@ function fmtData(v){
 }
 const color = t => t>=0.9?"var(--green)":t>=0.7?"var(--amber)":"var(--red)";
 async function getJSON(f){ try{ const r=await fetch("./dados/"+f+"?_="+Date.now()); return await r.json(); }catch(e){ return []; } }
+
+// ---- Tempo medio de execucao por modelo (aba Documentacao) ----
+// Leves: media de tempo_treino_s/tempo_inferencia_s na maior base avaliada
+// (comparacao_modelos.json). Pesados (LSTM, Transformer): duracao media dos
+// ultimos runs concluidos do workflow no GitHub Actions (tempo de parede).
+function fmtDur(s){
+  s=N(s);
+  if(s>0&&s<1) return "<1 s";
+  s=Math.round(s);
+  if(s<60) return s.toLocaleString("pt-BR")+" s";
+  const m=Math.floor(s/60), h=Math.floor(m/60);
+  if(h) return h+"h "+String(m%60).padStart(2,"0")+"min";
+  const sec=s%60;
+  return m+"min"+(sec?" "+String(sec).padStart(2,"0")+"s":"");
+}
+const _durWfCache={};
+async function duracaoMediaWorkflow(arq){
+  if(_durWfCache[arq]) return _durWfCache[arq];
+  const base="https://api.github.com/repos/adinailson88/classificacao-chamados/actions/workflows/"+arq+"/runs?per_page=8";
+  const pegar=async url=>{
+    const r=await fetch(url); if(!r.ok) return [];
+    const j=await r.json(); return j.workflow_runs||[];
+  };
+  let p;
+  try{
+    let runs=await pegar(base+"&status=success");
+    let aprox=false;
+    if(!runs.length){ runs=(await pegar(base+"&status=completed")).filter(w=>w.conclusion!=="skipped"); aprox=true; }
+    const durs=runs.map(w=>(new Date(w.updated_at)-new Date(w.run_started_at))/1000).filter(s=>s>0);
+    p = durs.length ? {media:durs.reduce((a,b)=>a+b,0)/durs.length, n:durs.length, aprox} : null;
+  }catch(e){ p=null; }
+  _durWfCache[arq]=p;
+  return p;
+}
+async function renderTemposModelos(cmp){
+  const por={};
+  (Array.isArray(cmp)?cmp:[]).forEach(r=>{ (por[r.modelo]=por[r.modelo]||[]).push(r); });
+  const resumoModelo=m=>{
+    const v=por[m]; if(!v||!v.length) return null;
+    const mx=Math.max(...v.map(x=>N(x.limite)));
+    const big=v.filter(x=>N(x.limite)===mx);
+    const med=a=>a.reduce((s,x)=>s+x,0)/a.length;
+    return {base:mx, n:big.length, treino:med(big.map(x=>N(x.tempo_treino_s))), inf:med(big.map(x=>N(x.tempo_inferencia_s)))};
+  };
+  document.querySelectorAll("[data-tempo-modelo]").forEach(el=>{
+    const curto=!!el.dataset.curto;
+    const partes=el.dataset.tempoModelo.split(",").map(m=>{
+      const r=resumoModelo(m); if(!r) return null;
+      const pref=el.dataset.tempoModelo.includes(",")?esc(m)+": ":"";
+      return curto
+        ? pref+"treino "+fmtDur(r.treino)+" &middot; inf. "+fmtDur(r.inf)
+        : pref+"treino "+fmtDur(r.treino)+" &middot; inferencia "+fmtDur(r.inf)+" na base de "+fmt(r.base)+" chamados"+(r.n>1?" (media de "+r.n+" medicoes)":"");
+    }).filter(Boolean);
+    el.innerHTML = partes.length
+      ? "&#9201; "+partes.join("<br>&#9201; ")+(curto?"":" &mdash; atualizado pelo workflow <code>comparar_modelos</code>")
+      : "&#9201; sem medicao publicada ainda (rode o workflow <code>comparar_modelos</code>)";
+  });
+  for(const el of document.querySelectorAll("[data-tempo-workflow]")){
+    const arq=el.dataset.tempoWorkflow, curto=!!el.dataset.curto;
+    const d=await duracaoMediaWorkflow(arq);
+    if(!d){ el.innerHTML="&#9201; sem runs concluidos de <code>"+esc(arq)+"</code> para medir"; continue; }
+    el.innerHTML = curto
+      ? "&#9201; ~"+fmtDur(d.media)+"/run"+(d.aprox?" (aprox.)":"")
+      : "&#9201; duracao media do workflow <code>"+esc(arq)+"</code>: <strong>"+fmtDur(d.media)+"</strong> por execucao (media de "+d.n+(d.n>1?" runs concluidos":" run concluido")+(d.aprox?", incluindo nao-sucesso":"")+", via GitHub Actions; tempo de parede com instalacao de dependencias)";
+  }
+}
 
 // ---- Exportacao de imagens: botao "PNG" em todo card com grafico ----
 function baixarCanvasPNG(canvas, nome){
@@ -1374,6 +1450,7 @@ document.addEventListener("click",e=>{ if(!e.target.closest(".ms")) document.que
   renderMatrizValidacao(cal||{});
   renderMetaAviso(cal||{});
   renderModelos(Array.isArray(mod) ? mod : [], Array.isArray(multiMet) ? multiMet : [], Array.isArray(multiTurnos) ? multiTurnos : []);
+  renderTemposModelos(Array.isArray(mod) ? mod : []);
   renderReclassMulti(Array.isArray(multiRecl) ? multiRecl : []);
   renderTaxonomia(taxCorr, taxTermos, taxCruz);
   renderEstatistica(estat);
