@@ -80,7 +80,7 @@ def main() -> int:
         "gerado_em": gerado,
         "cache_version": 1,
         "natureza": "manifesto_sanitizado_do_cache_operacional",
-        "arquivo_cache_gitignored": str(args.saida.relative_to(RAIZ)),
+        "arquivo_cache_gitignored": str(args.saida.resolve().relative_to(RAIZ)),
         "abas": manifest_abas,
     }
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
