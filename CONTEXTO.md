@@ -1394,3 +1394,24 @@ Validacoes locais: `git pull --rebase` em `repo_classificacao_tmp` retornou `Alr
 Auditoria de Actions: os workflows referenciam scripts existentes; `gh run list` mostrou `avaliacao_final.yml` com sucesso `27300506477` e falha posterior `27301142348`, `dashboard.yml` com sucessos recentes e alguns skips por `workflow_run`, `multimodelo_reclassificacao.yml` com run pendente `27353706958` e run cancelado `27352686850`, e `reclassificar_validados.yml` com ultimos sucessos em 06/06/2026. `gh run view 27352686850 --log` nao retornou log; o run existe e esta cancelado.
 
 Estado observado nos JSONs publicos: `avaliacao_final.json` registra `status=ok`, `validados=305`, `conflitos=2`, `melhor_ia=linear_svc`; `reclass_resumo.json` lista os modelos publicados. Proximo passo humano: concluir/revisar as colunas M/N/P, especialmente os 2 conflitos, antes de aplicar qualquer nova escrita na coluna O.
+
+## Atualizacao Codex - cache operacional para reduzir cotas do Sheets (2026-06-12)
+
+Implementada arquitetura de lote noturno com cache local para reduzir leituras repetidas
+na Google Sheets API. `src/planilha.py` agora aceita `PLANILHA_CACHE_JSON` e passa a
+servir um subconjunto read-only da planilha a partir de JSON local, mantendo a interface
+usada pelos scripts (`worksheet`, `worksheets`, `get_values`, `get_all_values`,
+`row_values`). `src/atualizar_cache_planilha.py` faz a leitura unica das abas reais e
+grava `dados/cache_planilha.json` (gitignored, efemero, pode conter texto livre) e o
+manifesto sanitizado `docs/dados/cache_planilha_manifest.json`.
+
+Novo workflow `.github/workflows/lote_noturno_cache.yml`: roda diariamente as 02:30
+America/Bahia, recria a credencial, atualiza o cache efemero, executa auditoria,
+dashboard, relevancia de termos, cruzamento de taxonomia, avaliacao final, analise de
+erros e estatistica usando o cache, remove credenciais/cache bruto e commita apenas
+`docs/dados`. O desenho evita versionar o arquivo bruto da planilha em repo publicado e
+reduz tanto consumo de cota quanto conflitos de commits entre workflows independentes.
+
+Documentacao tecnica curta: `docs/CACHE_PLANILHA_WORKFLOWS.md`. Backup operacional:
+verificacao agendada para 09:00 deve conferir o run noturno e disparar o workflow manual
+se o lote ainda estiver falho, cancelado ou incompleto.

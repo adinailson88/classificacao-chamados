@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import unicodedata
 from pathlib import Path
@@ -25,6 +26,101 @@ import gspread
 RAIZ = Path(__file__).resolve().parents[1]
 CREDENCIAIS_PADRAO = RAIZ / "credenciais_sa.json"
 ID_LOCAL = RAIZ / "spreadsheet_id.local"  # arquivo gitignored (uso local)
+CACHE_ENV = "PLANILHA_CACHE_JSON"
+
+
+class LocalWorksheet:
+    """Subconjunto read-only de gspread.Worksheet, usado por cache local."""
+
+    def __init__(self, title: str, values: list[list[Any]]):
+        self.title = title
+        self._values = [list(r) for r in values]
+
+    def get_all_values(self, *args, **kwargs) -> list[list[Any]]:  # noqa: ARG002
+        return [list(r) for r in self._values]
+
+    def get_values(self, range_name: str | None = None, *args, **kwargs) -> list[list[Any]]:  # noqa: ARG002
+        return _slice_a1(self._values, range_name)
+
+    def row_values(self, row: int) -> list[Any]:
+        idx = max(int(row) - 1, 0)
+        return list(self._values[idx]) if idx < len(self._values) else []
+
+
+class LocalSpreadsheet:
+    """Subconjunto read-only de gspread.Spreadsheet, usado por cache local."""
+
+    def __init__(self, worksheets: dict[str, list[list[Any]]]):
+        self._worksheets = {
+            nome: LocalWorksheet(nome, valores)
+            for nome, valores in worksheets.items()
+        }
+
+    def worksheet(self, nome: str) -> LocalWorksheet:
+        try:
+            return self._worksheets[nome]
+        except KeyError as exc:
+            raise gspread.WorksheetNotFound(nome) from exc
+
+    def worksheets(self) -> list[LocalWorksheet]:
+        return list(self._worksheets.values())
+
+    def add_worksheet(self, *args, **kwargs):  # noqa: ANN001, ARG002
+        raise RuntimeError("Cache local e read-only; escrita na planilha desabilitada.")
+
+
+def _coluna_indice_zero(letras: str | None, default: int) -> int:
+    if not letras:
+        return default
+    n = 0
+    for c in letras.upper():
+        if not ("A" <= c <= "Z"):
+            continue
+        n = n * 26 + (ord(c) - 64)
+    return max(n - 1, 0)
+
+
+def _slice_a1(valores: list[list[Any]], range_a1: str | None) -> list[list[Any]]:
+    """Recorta matriz local para intervalos A1 simples usados pelos scripts."""
+    if not range_a1:
+        return [list(r) for r in valores]
+    rng = str(range_a1).split("!", 1)[-1].upper().replace("$", "").strip()
+    if ":" not in rng:
+        rng = f"{rng}:{rng}"
+    m = re.fullmatch(r"([A-Z]*)(\d*)\:([A-Z]*)(\d*)", rng)
+    if not m:
+        return [list(r) for r in valores]
+    col_ini_s, lin_ini_s, col_fim_s, lin_fim_s = m.groups()
+    col_ini = _coluna_indice_zero(col_ini_s, 0)
+    col_fim = _coluna_indice_zero(col_fim_s, max((len(r) for r in valores), default=0) - 1)
+    lin_ini = max(int(lin_ini_s) - 1, 0) if lin_ini_s else 0
+    lin_fim = int(lin_fim_s) if lin_fim_s else len(valores)
+    if col_fim < col_ini:
+        col_ini, col_fim = col_fim, col_ini
+    out: list[list[Any]] = []
+    for linha in valores[lin_ini:lin_fim]:
+        row = list(linha)
+        out.append(row[col_ini:min(len(row), col_fim + 1)])
+    return out
+
+
+def _cache_configurado() -> Path | None:
+    valor = os.getenv(CACHE_ENV)
+    if not valor:
+        return None
+    caminho = Path(valor)
+    if not caminho.is_absolute():
+        caminho = RAIZ / caminho
+    return caminho
+
+
+def _abrir_cache(caminho: Path) -> LocalSpreadsheet:
+    with caminho.open("r", encoding="utf-8") as f:
+        payload = json.load(f)
+    abas = payload.get("worksheets") or {}
+    if not isinstance(abas, dict):
+        raise RuntimeError(f"Cache invalido em {caminho}: campo worksheets ausente.")
+    return LocalSpreadsheet({str(k): v.get("values", []) if isinstance(v, dict) else v for k, v in abas.items()})
 
 
 def id_planilha(config: dict) -> str:
@@ -74,6 +170,11 @@ def _cliente(credenciais: str | Path | None = None):
 
 def abrir_planilha(spreadsheet_id: str, credenciais: str | Path | None = None):
     """Abre o workbook (Spreadsheet) inteiro, para acessar várias abas."""
+    cache = _cache_configurado()
+    if cache:
+        if not cache.exists():
+            raise FileNotFoundError(f"Cache local da planilha nao encontrado em {cache}.")
+        return _abrir_cache(cache)
     return _cliente(credenciais).open_by_key(spreadsheet_id)
 
 
