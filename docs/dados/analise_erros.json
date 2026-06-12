@@ -1,5 +1,5 @@
 {
-  "gerado_em": "10/06/2026 16:24",
+  "gerado_em": "12/06/2026 00:10",
   "natureza": "analise exploratoria de erros da IA contra a conferencia humana; orienta a qualidade da ABERTURA do chamado, nao e metrica de producao",
   "n_conferidos_ia": 354,
   "minimo_recomendado": 30,
@@ -64,11 +64,11 @@
     {
       "caracteristica": "cobertura_termos_categoria",
       "n_erros": 44,
-      "n_acertos": 261,
+      "n_acertos": 263,
       "mediana_erros": 0.08,
       "mediana_acertos": 0.08,
-      "p_mann_whitney": 0.1672872959767684,
-      "delta_cliff": -0.128
+      "p_mann_whitney": 0.16561462184693,
+      "delta_cliff": -0.1284
     }
   ],
   "leitura": "Se 'cobertura_termos_categoria' e comprimentos forem significativamente menores nos ERROS (p<0,05 e |delta de Cliff|>=0,147), a hipotese se confirma: texto pobre -> erro de categoria. O checklist por categoria lista os termos discriminativos ausentes nos erros — e a informacao que o formulario deve induzir o solicitante a fornecer, sem nunca pedir a categoria em si.",
@@ -366,6 +366,22 @@
       "informacao_a_solicitar": null
     },
     {
+      "categoria": "Hidrossanitária > Bomba",
+      "n_conferidos": 1,
+      "erros_ia": 0,
+      "taxa_erro_ia": 0.0,
+      "termos_que_faltaram_nos_erros": [],
+      "informacao_a_solicitar": null
+    },
+    {
+      "categoria": "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
+      "n_conferidos": 2,
+      "erros_ia": 0,
+      "taxa_erro_ia": 0.0,
+      "termos_que_faltaram_nos_erros": [],
+      "informacao_a_solicitar": null
+    },
+    {
       "categoria": "Estrutura Predial > Forro",
       "n_conferidos": 5,
       "erros_ia": 0,
@@ -423,14 +439,6 @@
     },
     {
       "categoria": "Área Externa e Ambiental > Poda de Árvore / Roçagem",
-      "n_conferidos": 1,
-      "erros_ia": 0,
-      "taxa_erro_ia": 0.0,
-      "termos_que_faltaram_nos_erros": [],
-      "informacao_a_solicitar": null
-    },
-    {
-      "categoria": "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
       "n_conferidos": 1,
       "erros_ia": 0,
       "taxa_erro_ia": 0.0,
