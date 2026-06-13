@@ -1,5 +1,5 @@
 {
-  "gerado_em": "13/06/2026 11:37",
+  "gerado_em": "13/06/2026 16:11",
   "n_linhas_comuns": 13825,
   "modelos": [
     "naive_bayes",
@@ -1176,44 +1176,44 @@
     }
   ],
   "validacao_humana_modelos": {
-    "n_verdade_derivada": 307,
+    "n_verdade_derivada": 0,
     "base": "conferencia dupla M/N (N=Correto->G; senao M=Correto->C)",
     "nota": "Preliminar enquanto a amostra validada e pequena/nao aleatoria.",
     "por_modelo": [
       {
-        "modelo": "linear_svc",
-        "n": 307,
-        "acerto_validado": 0.6808
+        "modelo": "naive_bayes",
+        "n": 0,
+        "acerto_validado": null
       },
       {
         "modelo": "regressao_logistica",
-        "n": 307,
-        "acerto_validado": 0.671
+        "n": 0,
+        "acerto_validado": null
+      },
+      {
+        "modelo": "linear_svc",
+        "n": 0,
+        "acerto_validado": null
       },
       {
         "modelo": "sgd",
-        "n": 307,
-        "acerto_validado": 0.671
-      },
-      {
-        "modelo": "random_forest",
-        "n": 307,
-        "acerto_validado": 0.5993
+        "n": 0,
+        "acerto_validado": null
       },
       {
         "modelo": "extra_trees",
-        "n": 307,
-        "acerto_validado": 0.5831
+        "n": 0,
+        "acerto_validado": null
+      },
+      {
+        "modelo": "random_forest",
+        "n": 0,
+        "acerto_validado": null
       },
       {
         "modelo": "lstm",
-        "n": 307,
-        "acerto_validado": 0.57
-      },
-      {
-        "modelo": "naive_bayes",
-        "n": 307,
-        "acerto_validado": 0.5375
+        "n": 0,
+        "acerto_validado": null
       }
     ]
   }
