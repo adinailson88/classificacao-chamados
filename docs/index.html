@@ -83,6 +83,13 @@
   .xls{font-size:12.5px;background:#eef3fd;border:1px solid #c3d4f2;border-radius:5px;padding:7px 10px;margin:0 0 8px}
   .xls code,.eqbox code{font-family:Consolas,"Courier New",monospace;background:#f3f5fb;padding:0 3px;border-radius:3px}
   .ref{font-size:11.5px;color:var(--mut);border-top:1px dashed var(--bd);padding-top:6px;margin-top:4px}
+  .fluxo-ia{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:8px;margin:12px 0}
+  .fluxo-ia .passo{border:1px solid var(--bd);border-radius:6px;background:var(--panel-soft);padding:9px 10px;min-width:0}
+  .fluxo-ia .n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;font-size:11px;font-weight:700;margin-bottom:6px}
+  .fluxo-ia strong{display:block;color:var(--ink);font-size:12.5px;margin-bottom:3px}
+  .fluxo-ia span{display:block;color:var(--mut);font-size:11.5px;line-height:1.3}
+  @media(max-width:980px){.fluxo-ia{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:560px){.fluxo-ia{grid-template-columns:1fr}}
   .alerta{border:1px solid #e7c9a3;background:#fdf4e7;color:#7a4d12;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:13px}
   .alerta.bad{border-color:#e2b3ad;background:#fbeae8;color:#7a1d14}
   .taxon-mapas{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:12px}
@@ -560,6 +567,42 @@
       <div class="eqbox">tfidf(t, d) = tf(t, d) &times; log( N / df(t) )</div>
       <div class="xls"><strong>Analogia Excel:</strong> imagine uma planilha com um chamado por linha e uma coluna por palavra. Em cada celula: <code>=(vezes que a palavra aparece no chamado) * LOG(total_de_chamados / chamados_que_contem_a_palavra)</code>. Palavra rara e que aparece muito num chamado &rarr; celula alta.</div>
       <p class="ref">Refs.: SPARCK JONES (1972); SALTON &amp; BUCKLEY (1988); MANNING, RAGHAVAN &amp; SCHUTZE (2008), <em>Introduction to Information Retrieval</em>, cap. 6.</p>
+    </div>
+
+    <div class="card full" style="margin-top:12px;border-left:3px solid #1d4ed8">
+      <h2>Como a IA le um chamado de manutencao</h2>
+      <p>A entrada do experimento nao e a planilha inteira, mas um texto tecnico composto pelos campos <code>B + D + E + F</code>: titulo GLPI, descricao GLPI, titulo da O.S.M. e descricao da O.S.M. A categoria historica em <code>C</code> e usada como referencia inicial de treino e comparacao; ela ainda nao e verdade final quando nao ha validacao humana.</p>
+      <div class="fluxo-ia" aria-label="Fluxo do texto do chamado ate a auditoria">
+        <div class="passo"><span class="n">1</span><strong>Texto do chamado</strong><span>Titulo, descricao GLPI e dados da O.S.M.</span></div>
+        <div class="passo"><span class="n">2</span><strong>Tokens ou termos</strong><span>Quebra do texto em unidades analisaveis.</span></div>
+        <div class="passo"><span class="n">3</span><strong>Vetores</strong><span>TF-IDF, embedding LSTM ou embedding transformer.</span></div>
+        <div class="passo"><span class="n">4</span><strong>Contexto</strong><span>Associacao entre problema, equipamento, local e acao.</span></div>
+        <div class="passo"><span class="n">5</span><strong>Previsao</strong><span>Categoria IA, confianca, executor e criticidade.</span></div>
+        <div class="passo"><span class="n">6</span><strong>Auditoria</strong><span>Historico, conferencia humana e reclassificacao.</span></div>
+      </div>
+      <div class="tablebox"><table class="compacta">
+        <thead><tr><th style="width:20%">Etapa</th><th style="width:38%">O que acontece</th><th style="width:42%">Como isso aparece neste projeto</th></tr></thead>
+        <tbody>
+          <tr><td>1. Texto unico</td><td>Os campos narrativos do chamado sao unidos para formar uma descricao mais completa do problema.</td><td><code>B + D + E + F</code>: abertura GLPI e informacao operacional da ordem de servico.</td></tr>
+          <tr><td>2. Tokens ou termos</td><td>O texto e quebrado em unidades menores. Em redes neurais, essas unidades sao tokens; nos modelos classicos, sao termos e bigramas.</td><td>LSTM usa sequencia de tokens; modelos leves usam TF-IDF com termos uni+bigramas.</td></tr>
+          <tr><td>3. Vetores numericos</td><td>As unidades textuais viram numeros para que o modelo possa calcular similaridade, peso ou probabilidade.</td><td>TF-IDF gera vetores esparsos; LSTM usa camada de embedding; transformer local usa embedding contextual.</td></tr>
+          <tr><td>4. Contexto</td><td>O modelo tenta aproveitar relacoes entre palavras do chamado, como equipamento, defeito, local, urgencia e acao executada.</td><td>LSTM captura ordem sequencial; transformer usa atencao; lineares capturam associacao forte entre termos e categorias.</td></tr>
+          <tr><td>5. Categoria e confianca</td><td>O modelo escolhe a categoria mais provavel e retorna um escore de confianca.</td><td>Saidas principais: <code>G</code> classificacao IA, <code>H</code> avaliacao/confianca, <code>I</code> executor e <code>J</code> criticidade.</td></tr>
+          <tr><td>6. Auditoria</td><td>A previsao e comparada com a categoria historica e depois com a validacao humana, quando houver.</td><td><code>K</code> mede concordancia IA x historico; <code>M</code>, <code>N</code> e <code>P</code> sustentam a validacao humana.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tablebox" style="margin-top:10px"><table class="compacta">
+        <thead><tr><th style="width:30%">Ideia do anexo sobre LLM</th><th style="width:38%">Uso correto no chamados-manutencao</th><th style="width:32%">Cuidado de interpretacao</th></tr></thead>
+        <tbody>
+          <tr><td>Tokenizacao</td><td>Ajuda a explicar por que o texto precisa ser quebrado antes do modelo.</td><td>Nos modelos TF-IDF, o termo/bigrama cumpre papel parecido, mas nao e token de LLM generativo.</td></tr>
+          <tr><td>Embeddings</td><td>Explica a camada de embedding do LSTM e o embedding contextual do transformer local.</td><td>TF-IDF tambem gera vetor, mas nao e embedding neural.</td></tr>
+          <tr><td>Atencao / Transformer</td><td>Serve para explicar o modelo robusto local e o BERTimbau/transformer_ft quando usados.</td><td>Nao descreve a Etapa 1 oficial inteira, que usa LSTM e comparativos TF-IDF.</td></tr>
+          <tr><td>Janela de contexto</td><td>Ajuda a justificar limites como 120, 128 ou 220 tokens nos modelos neurais.</td><td>Texto fora do limite pode ser truncado; por isso campos objetivos no chamado importam.</td></tr>
+          <tr><td>Saida por probabilidade</td><td>Ajuda a explicar <code>H</code> avaliacao/confianca e a necessidade de calibracao.</td><td>Softmax alto nao e prova final; a validacao humana e a calibracao decidem confiabilidade.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted">Essa leitura aproxima o painel do raciocinio visual de arquitetura LLM, mas com uma ressalva metodologica: o fluxo oficial do experimento e local-only. Nao ha chamada a API externa de LLM; quando aparece "transformer", trata-se de modelo local para casos especificos e mais custosos.</p>
+      <p class="ref">Referencia conceitual: o Transformer combina embeddings e mecanismo de atencao para modelar relacoes entre tokens; no experimento, essa ideia ajuda a explicar o modelo robusto local, enquanto TF-IDF e LSTM continuam sendo explicados por seus proprios mecanismos.</p>
     </div>
 
     <div class="card full" style="margin-top:12px">
