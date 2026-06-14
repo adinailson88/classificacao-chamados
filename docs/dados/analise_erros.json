@@ -1,5 +1,5 @@
 {
-  "gerado_em": "12/06/2026 08:41",
+  "gerado_em": "14/06/2026 05:54",
   "natureza": "analise exploratoria de erros da IA contra a conferencia humana; orienta a qualidade da ABERTURA do chamado, nao e metrica de producao",
   "n_conferidos_ia": 354,
   "minimo_recomendado": 30,
@@ -64,15 +64,23 @@
     {
       "caracteristica": "cobertura_termos_categoria",
       "n_erros": 44,
-      "n_acertos": 263,
+      "n_acertos": 261,
       "mediana_erros": 0.08,
       "mediana_acertos": 0.08,
-      "p_mann_whitney": 0.16561462184693,
-      "delta_cliff": -0.1284
+      "p_mann_whitney": 0.15320312029431166,
+      "delta_cliff": -0.1324
     }
   ],
   "leitura": "Se 'cobertura_termos_categoria' e comprimentos forem significativamente menores nos ERROS (p<0,05 e |delta de Cliff|>=0,147), a hipotese se confirma: texto pobre -> erro de categoria. O checklist por categoria lista os termos discriminativos ausentes nos erros — e a informacao que o formulario deve induzir o solicitante a fornecer, sem nunca pedir a categoria em si.",
   "por_categoria": [
+    {
+      "categoria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_conferidos": 2,
+      "erros_ia": 2,
+      "taxa_erro_ia": 1.0,
+      "termos_que_faltaram_nos_erros": [],
+      "informacao_a_solicitar": null
+    },
     {
       "categoria": "Manutenção Preventiva > Quadros Elétricos",
       "n_conferidos": 1,
@@ -129,14 +137,6 @@
         }
       ],
       "informacao_a_solicitar": "Pedir que o solicitante descreva o problema citando o objeto e o sintoma (vocabulario tipico desta categoria: computador, google, email, mail, curso)."
-    },
-    {
-      "categoria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_conferidos": 3,
-      "erros_ia": 2,
-      "taxa_erro_ia": 0.6667,
-      "termos_que_faltaram_nos_erros": [],
-      "informacao_a_solicitar": null
     },
     {
       "categoria": "Manutenção Preventiva > Vistoria em Instalações",
@@ -197,9 +197,9 @@
     },
     {
       "categoria": "Elétrica > Instalações elétricas",
-      "n_conferidos": 48,
+      "n_conferidos": 47,
       "erros_ia": 10,
-      "taxa_erro_ia": 0.2083,
+      "taxa_erro_ia": 0.2128,
       "termos_que_faltaram_nos_erros": [
         {
           "termo": "nobreak",
@@ -303,9 +303,9 @@
     },
     {
       "categoria": "Instalação de Acessórios e Mobiliário > Instalação/Reparo de Equipamentos, Acessórios e Mobiliários",
-      "n_conferidos": 24,
+      "n_conferidos": 23,
       "erros_ia": 2,
-      "taxa_erro_ia": 0.0833,
+      "taxa_erro_ia": 0.087,
       "termos_que_faltaram_nos_erros": [],
       "informacao_a_solicitar": null
     },
@@ -407,6 +407,14 @@
     },
     {
       "categoria": "Elétrica > Subestação",
+      "n_conferidos": 1,
+      "erros_ia": 0,
+      "taxa_erro_ia": 0.0,
+      "termos_que_faltaram_nos_erros": [],
+      "informacao_a_solicitar": null
+    },
+    {
+      "categoria": "Suprimentos / Apoio Técnico > Transporte",
       "n_conferidos": 1,
       "erros_ia": 0,
       "taxa_erro_ia": 0.0,
