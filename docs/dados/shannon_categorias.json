@@ -147,17 +147,17 @@
       "maior_risco": "alta_ambiguidade"
     },
     {
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "modelos": 8,
+      "suporte_max": 238,
+      "entropia_media_normalizada": 0.4896,
+      "maior_risco": "alta_ambiguidade"
+    },
+    {
       "categoria_historica": "Elétrica > Instalações elétricas",
       "modelos": 9,
       "suporte_max": 1917,
       "entropia_media_normalizada": 0.484,
-      "maior_risco": "alta_ambiguidade"
-    },
-    {
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "modelos": 8,
-      "suporte_max": 236,
-      "entropia_media_normalizada": 0.481,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -721,21 +721,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "lstm",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
-      "categorias_previstas": 28,
-      "entropia_previsoes": 3.7019,
-      "entropia_normalizada": 0.77,
-      "categorias_efetivas": 13.013,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.3814,
-      "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_2_pct": 0.0593,
-      "concordancia_historico": 0.3814,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "transformer_ft",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "suporte": 1300,
@@ -778,6 +763,21 @@
       "top_2_previsto": "Climatização > Ar condicionado central",
       "top_2_pct": 0.2051,
       "concordancia_historico": 0.2051,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "lstm",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 120,
+      "categorias_previstas": 28,
+      "entropia_previsoes": 3.6911,
+      "entropia_normalizada": 0.7678,
+      "categorias_efetivas": 12.9165,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.3833,
+      "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_2_pct": 0.0583,
+      "concordancia_historico": 0.3833,
       "risco": "alta_ambiguidade"
     },
     {
@@ -2057,6 +2057,21 @@
     },
     {
       "modelo": "random_forest",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 120,
+      "categorias_previstas": 10,
+      "entropia_previsoes": 1.8679,
+      "entropia_normalizada": 0.5623,
+      "categorias_efetivas": 3.65,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.55,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.275,
+      "concordancia_historico": 0.55,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "random_forest",
       "categoria_historica": "Outros > Erro de chamado",
       "suporte": 247,
       "categorias_previstas": 16,
@@ -2071,32 +2086,17 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "random_forest",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
-      "categorias_previstas": 10,
-      "entropia_previsoes": 1.8364,
-      "entropia_normalizada": 0.5528,
-      "categorias_efetivas": 3.5711,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.5593,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2712,
-      "concordancia_historico": 0.5593,
-      "risco": "ambiguidade_moderada"
-    },
-    {
       "modelo": "naive_bayes",
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
+      "suporte": 120,
       "categorias_previstas": 6,
-      "entropia_previsoes": 1.4274,
-      "entropia_normalizada": 0.5522,
-      "categorias_efetivas": 2.6895,
+      "entropia_previsoes": 1.414,
+      "entropia_normalizada": 0.547,
+      "categorias_efetivas": 2.6648,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6441,
+      "top_1_pct": 0.65,
       "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.2458,
+      "top_2_pct": 0.2417,
       "concordancia_historico": 0.0,
       "risco": "ambiguidade_moderada"
     },
@@ -2281,6 +2281,21 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "extra_trees",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 238,
+      "categorias_previstas": 9,
+      "entropia_previsoes": 1.6121,
+      "entropia_normalizada": 0.5086,
+      "categorias_efetivas": 3.057,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.6218,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.2395,
+      "concordancia_historico": 0.6218,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "sgd",
       "categoria_historica": "Elétrica > Instalações elétricas",
       "suporte": 959,
@@ -2323,21 +2338,6 @@
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_2_pct": 0.0647,
       "concordancia_historico": 0.609,
-      "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "extra_trees",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 236,
-      "categorias_previstas": 9,
-      "entropia_previsoes": 1.5891,
-      "entropia_normalizada": 0.5013,
-      "categorias_efetivas": 3.0087,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.6271,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2373,
-      "concordancia_historico": 0.6271,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2538,16 +2538,16 @@
     {
       "modelo": "linear_svc",
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
-      "categorias_previstas": 12,
-      "entropia_previsoes": 1.6738,
-      "entropia_normalizada": 0.4669,
-      "categorias_efetivas": 3.1905,
+      "suporte": 120,
+      "categorias_previstas": 13,
+      "entropia_previsoes": 1.7578,
+      "entropia_normalizada": 0.475,
+      "categorias_efetivas": 3.3818,
       "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.7203,
+      "top_1_pct": 0.7083,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0847,
-      "concordancia_historico": 0.7203,
+      "top_2_pct": 0.0833,
+      "concordancia_historico": 0.7083,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2671,6 +2671,21 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 120,
+      "categorias_previstas": 13,
+      "entropia_previsoes": 1.6248,
+      "entropia_normalizada": 0.4391,
+      "categorias_efetivas": 3.084,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.75,
+      "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_2_pct": 0.0417,
+      "concordancia_historico": 0.75,
+      "risco": "estavel"
+    },
+    {
       "modelo": "random_forest",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "suporte": 319,
@@ -2701,6 +2716,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "sgd",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 120,
+      "categorias_previstas": 12,
+      "entropia_previsoes": 1.5487,
+      "entropia_normalizada": 0.432,
+      "categorias_efetivas": 2.9256,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.7583,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0583,
+      "concordancia_historico": 0.7583,
+      "risco": "estavel"
+    },
+    {
       "modelo": "linear_svc",
       "categoria_historica": "Elétrica > Instalações elétricas",
       "suporte": 959,
@@ -2728,21 +2758,6 @@
       "top_2_previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
       "top_2_pct": 0.0719,
       "concordancia_historico": 0.7451,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
-      "categorias_previstas": 13,
-      "entropia_previsoes": 1.5586,
-      "entropia_normalizada": 0.4212,
-      "categorias_efetivas": 2.9456,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.7627,
-      "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_2_pct": 0.0424,
-      "concordancia_historico": 0.7627,
       "risco": "estavel"
     },
     {
@@ -2819,21 +2834,6 @@
       "top_2_pct": 0.2435,
       "concordancia_historico": 0.6596,
       "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
-      "categorias_previstas": 12,
-      "entropia_previsoes": 1.4857,
-      "entropia_normalizada": 0.4144,
-      "categorias_efetivas": 2.8005,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.7712,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0508,
-      "concordancia_historico": 0.7712,
-      "risco": "estavel"
     },
     {
       "modelo": "extra_trees",
@@ -4036,6 +4036,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "etapa1_oficial",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 120,
+      "categorias_previstas": 7,
+      "entropia_previsoes": 0.52,
+      "entropia_normalizada": 0.1852,
+      "categorias_efetivas": 1.434,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.9333,
+      "top_2_previsto": "Hidrossanitária > ETA / ETE",
+      "top_2_pct": 0.0167,
+      "concordancia_historico": 0.9333,
+      "risco": "estavel"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Manutenção Preventiva > Elevador",
       "suporte": 92,
@@ -4228,21 +4243,6 @@
       "top_2_previsto": "Posto de trabalho > Contratação de Posto de trabalho",
       "top_2_pct": 0.0217,
       "concordancia_historico": 0.962,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "etapa1_oficial",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 118,
-      "categorias_previstas": 7,
-      "entropia_previsoes": 0.4743,
-      "entropia_normalizada": 0.169,
-      "categorias_efetivas": 1.3893,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.9407,
-      "top_2_previsto": "Hidrossanitária > ETA / ETE",
-      "top_2_pct": 0.0169,
-      "concordancia_historico": 0.9407,
       "risco": "estavel"
     },
     {
