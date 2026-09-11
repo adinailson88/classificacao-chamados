@@ -1,8 +1,8 @@
 {
   "resumo": {
-    "linhas_com_2_ou_mais_modelos": 14298,
-    "linhas_alta_ambiguidade": 6014,
-    "entropia_media_votos": 1.0045
+    "linhas_com_2_ou_mais_modelos": 14304,
+    "linhas_alta_ambiguidade": 6523,
+    "entropia_media_votos": 1.0302
   },
   "linhas_mais_ambiguas": [
     {
@@ -63,25 +63,6 @@
       ]
     },
     {
-      "linha": 962,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.585,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 3.0,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 6952,
       "categoria_historica": "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
       "n_modelos": 9,
@@ -101,7 +82,64 @@
       ]
     },
     {
-      "linha": 7920,
+      "linha": 7913,
+      "categoria_historica": "Estrutura Predial > Forro",
+      "n_modelos": 9,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.585,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 3.0,
+      "maioria": "Estrutura Predial > Forro",
+      "maioria_pct": 0.3333,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8225,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.585,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 3.0,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.3333,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11439,
+      "categoria_historica": "Climatização > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.585,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 3.0,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.3333,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13099,
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "n_modelos": 9,
       "categorias_votadas": 3,
@@ -114,132 +152,26 @@
         "linear_svc",
         "lstm",
         "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 9824,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado central",
-      "n_modelos": 9,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.585,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 3.0,
-      "maioria": "Manutenção Preventiva > Ar condicionado central",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 10509,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.585,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 3.0,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 10889,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.585,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 3.0,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "lstm",
-        "naive_bayes",
-        "random_forest",
         "regressao_logistica",
         "sgd",
         "transformer_ft"
       ]
     },
     {
-      "linha": 11950,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.585,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 3.0,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 12480,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.585,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 3.0,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 14075,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "n_modelos": 2,
+      "linha": 14073,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "n_modelos": 8,
       "categorias_votadas": 2,
       "entropia_votos": 1.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
-        "extra_trees"
-      ]
-    },
-    {
-      "linha": 14077,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 2,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees"
+        "linear_svc",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd"
       ]
     },
     {
@@ -260,20 +192,20 @@
       ]
     },
     {
-      "linha": 14238,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "linha": 14300,
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
       "categorias_votadas": 2,
       "entropia_votos": 1.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
+        "extra_trees",
         "lstm",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
+        "naive_bayes",
+        "random_forest"
       ]
     },
     {
@@ -464,23 +396,6 @@
       ]
     },
     {
-      "linha": 843,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Placas de identificação",
-      "n_modelos": 9,
-      "categorias_votadas": 2,
-      "entropia_votos": 0.9911,
-      "entropia_normalizada": 0.9911,
-      "categorias_efetivas": 1.9877,
-      "maioria": "Instalação de Acessórios e Mobiliário > Placas de identificação",
-      "maioria_pct": 0.5556,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
       "linha": 891,
       "categoria_historica": "Elétrica > Instalações elétricas",
       "n_modelos": 9,
@@ -546,6 +461,23 @@
         "linear_svc",
         "regressao_logistica",
         "sgd"
+      ]
+    },
+    {
+      "linha": 1011,
+      "categoria_historica": "Manutenção Preventiva > Vistoria em Instalações",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "lstm",
+        "sgd",
+        "transformer_ft"
       ]
     },
     {
@@ -855,6 +787,23 @@
       ]
     },
     {
+      "linha": 4744,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
       "linha": 4907,
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "n_modelos": 9,
@@ -947,13 +896,13 @@
       "entropia_votos": 0.9911,
       "entropia_normalizada": 0.9911,
       "categorias_efetivas": 1.9877,
-      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.5556,
       "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm"
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
       ]
     },
     {
@@ -969,6 +918,159 @@
       "modelos_divergentes": [
         "extra_trees",
         "naive_bayes",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 7900,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 7959,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8081,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8171,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8240,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "extra_trees",
+        "lstm",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8299,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8459,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8509,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8586,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
         "random_forest",
         "transformer_ft"
       ]
@@ -991,20 +1093,71 @@
       ]
     },
     {
-      "linha": 8935,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "linha": 8639,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
       "n_modelos": 9,
       "categorias_votadas": 2,
       "entropia_votos": 0.9911,
       "entropia_normalizada": 0.9911,
       "categorias_efetivas": 1.9877,
-      "maioria": "Outros > Erro de chamado",
+      "maioria": "Climatização > Ar condicionado split",
       "maioria_pct": 0.5556,
       "modelos_divergentes": [
         "etapa1_oficial",
         "extra_trees",
-        "naive_bayes",
-        "random_forest"
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8656,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8657,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 8984,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
       ]
     },
     {
@@ -1020,6 +1173,1145 @@
       "modelos_divergentes": [
         "extra_trees",
         "naive_bayes",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9234,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9312,
+      "categoria_historica": "Manutenção Preventiva > Reservatório",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9321,
+      "categoria_historica": "Manutenção Preventiva > Reservatório",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9322,
+      "categoria_historica": "Manutenção Preventiva > Reservatório",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9461,
+      "categoria_historica": "Manutenção Preventiva > Reservatório",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9462,
+      "categoria_historica": "Manutenção Preventiva > Reservatório",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9528,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9532,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9555,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9556,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Quadros Elétricos",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9578,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9579,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Quadros Elétricos",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9601,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9602,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Quadros Elétricos",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9624,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9625,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Quadros Elétricos",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9671,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9717,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 9936,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Iluminação",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10005,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10006,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10059,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10143,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10365,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Reservatório",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10393,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10457,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10500,
+      "categoria_historica": "Elétrica > Nobreak",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Iluminação",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10549,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10607,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10612,
+      "categoria_historica": "Elétrica > Iluminação",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10700,
+      "categoria_historica": "Estrutura Predial > Infiltração",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Iluminação",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10746,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10754,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10778,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10847,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10921,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10954,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Iluminação",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10957,
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11060,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11198,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11457,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11553,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11685,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11867,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Reservatório",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11914,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11926,
+      "categoria_historica": "Climatização > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Infiltração",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "naive_bayes",
+        "random_forest"
+      ]
+    },
+    {
+      "linha": 11981,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11991,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12116,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12168,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12225,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Ar condicionado central",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12261,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12284,
+      "categoria_historica": "Elétrica > Iluminação",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12339,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12351,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12354,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12447,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12563,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Quadros Elétricos",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12685,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Elétrica > Iluminação",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12758,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12794,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12846,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Reservatório",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12861,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12878,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13074,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13312,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13403,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
         "random_forest",
         "transformer_ft"
       ]
@@ -1042,21 +2334,72 @@
       ]
     },
     {
-      "linha": 407,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "linha": 13687,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Manutenção Preventiva > Reservatório",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13786,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13801,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 2,
+      "entropia_votos": 0.9911,
+      "entropia_normalizada": 0.9911,
+      "categorias_efetivas": 1.9877,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5556,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "random_forest",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 1266,
+      "categoria_historica": "Projetos e Reformas > Reforma",
       "n_modelos": 9,
       "categorias_votadas": 4,
       "entropia_votos": 1.9749,
       "entropia_normalizada": 0.9875,
       "categorias_efetivas": 3.9311,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.3333,
       "modelos_divergentes": [
-        "extra_trees",
+        "etapa1_oficial",
+        "lstm",
         "naive_bayes",
         "random_forest",
         "regressao_logistica",
-        "sgd",
         "transformer_ft"
       ]
     },
@@ -1068,15 +2411,15 @@
       "entropia_votos": 1.9749,
       "entropia_normalizada": 0.9875,
       "categorias_efetivas": 3.9311,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria": "Posto de trabalho > Contratação de Posto de trabalho",
       "maioria_pct": 0.3333,
       "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
         "linear_svc",
         "lstm",
+        "naive_bayes",
         "regressao_logistica",
-        "sgd"
+        "sgd",
+        "transformer_ft"
       ]
     },
     {
@@ -1087,14 +2430,14 @@
       "entropia_votos": 1.9749,
       "entropia_normalizada": 0.9875,
       "categorias_efetivas": 3.9311,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria": "Estrutura Predial > Forro",
       "maioria_pct": 0.3333,
       "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
         "linear_svc",
         "lstm",
+        "naive_bayes",
         "regressao_logistica",
+        "sgd",
         "transformer_ft"
       ]
     },
@@ -1125,71 +2468,14 @@
       "entropia_votos": 1.9749,
       "entropia_normalizada": 0.9875,
       "categorias_efetivas": 3.9311,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria": "Climatização > Ar condicionado split",
       "maioria_pct": 0.3333,
       "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
+        "linear_svc",
         "lstm",
+        "naive_bayes",
         "regressao_logistica",
         "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10890,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "n_modelos": 9,
-      "categorias_votadas": 4,
-      "entropia_votos": 1.9749,
-      "entropia_normalizada": 0.9875,
-      "categorias_efetivas": 3.9311,
-      "maioria": "Instalação de Acessórios e Mobiliário > Placas de identificação",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11370,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 4,
-      "entropia_votos": 1.9749,
-      "entropia_normalizada": 0.9875,
-      "categorias_efetivas": 3.9311,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12438,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 4,
-      "entropia_votos": 1.9749,
-      "entropia_normalizada": 0.9875,
-      "categorias_efetivas": 3.9311,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.3333,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
         "transformer_ft"
       ]
     },
@@ -1213,25 +2499,64 @@
       ]
     },
     {
-      "linha": 13970,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.375,
+      "linha": 13392,
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "n_modelos": 9,
+      "categorias_votadas": 4,
+      "entropia_votos": 1.9749,
+      "entropia_normalizada": 0.9875,
+      "categorias_efetivas": 3.9311,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.3333,
       "modelos_divergentes": [
         "etapa1_oficial",
         "extra_trees",
+        "linear_svc",
         "lstm",
-        "naive_bayes",
-        "random_forest"
+        "random_forest",
+        "regressao_logistica"
       ]
     },
     {
-      "linha": 13971,
+      "linha": 13477,
+      "categoria_historica": "Elétrica > Iluminação",
+      "n_modelos": 9,
+      "categorias_votadas": 4,
+      "entropia_votos": 1.9749,
+      "entropia_normalizada": 0.9875,
+      "categorias_efetivas": 3.9311,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.3333,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 13636,
+      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
+      "n_modelos": 9,
+      "categorias_votadas": 4,
+      "entropia_votos": 1.9749,
+      "entropia_normalizada": 0.9875,
+      "categorias_efetivas": 3.9311,
+      "maioria": "Manutenção Preventiva > Ar condicionado split",
+      "maioria_pct": 0.3333,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 13970,
       "categoria_historica": "Climatização > Ar condicionado split",
       "n_modelos": 8,
       "categorias_votadas": 3,
@@ -1243,7 +2568,7 @@
       "modelos_divergentes": [
         "linear_svc",
         "lstm",
-        "random_forest",
+        "naive_bayes",
         "regressao_logistica",
         "sgd"
       ]
@@ -1256,18 +2581,54 @@
       "entropia_votos": 1.5613,
       "entropia_normalizada": 0.9851,
       "categorias_efetivas": 2.9512,
-      "maioria": "Outros > Erro de chamado",
+      "maioria": "Hidrossanitária > Hidráulica",
       "maioria_pct": 0.375,
       "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
+        "linear_svc",
         "lstm",
         "naive_bayes",
-        "random_forest"
+        "regressao_logistica",
+        "sgd"
       ]
     },
     {
-      "linha": 14150,
+      "linha": 14039,
+      "categoria_historica": "Manutenção Preventiva > Gerador",
+      "n_modelos": 8,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.5613,
+      "entropia_normalizada": 0.9851,
+      "categorias_efetivas": 2.9512,
+      "maioria": "Manutenção Preventiva > Gerador",
+      "maioria_pct": 0.375,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 14041,
+      "categoria_historica": "Manutenção Preventiva > Gerador",
+      "n_modelos": 8,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.5613,
+      "entropia_normalizada": 0.9851,
+      "categorias_efetivas": 2.9512,
+      "maioria": "Manutenção Preventiva > Gerador",
+      "maioria_pct": 0.375,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 14059,
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "n_modelos": 8,
       "categorias_votadas": 3,
@@ -1277,9 +2638,27 @@
       "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "maioria_pct": 0.375,
       "modelos_divergentes": [
-        "lstm",
+        "extra_trees",
+        "linear_svc",
         "naive_bayes",
         "random_forest",
+        "regressao_logistica"
+      ]
+    },
+    {
+      "linha": 14061,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 8,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.5613,
+      "entropia_normalizada": 0.9851,
+      "categorias_efetivas": 2.9512,
+      "maioria": "Estrutura Predial > Pintura",
+      "maioria_pct": 0.375,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
         "regressao_logistica",
         "sgd"
       ]
@@ -1292,12 +2671,12 @@
       "entropia_votos": 1.5613,
       "entropia_normalizada": 0.9851,
       "categorias_efetivas": 2.9512,
-      "maioria": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.375,
       "modelos_divergentes": [
-        "extra_trees",
+        "etapa1_oficial",
         "linear_svc",
-        "naive_bayes",
+        "lstm",
         "regressao_logistica",
         "sgd"
       ]
@@ -1310,12 +2689,12 @@
       "entropia_votos": 1.5613,
       "entropia_normalizada": 0.9851,
       "categorias_efetivas": 2.9512,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.375,
       "modelos_divergentes": [
-        "extra_trees",
+        "etapa1_oficial",
+        "linear_svc",
         "lstm",
-        "naive_bayes",
         "regressao_logistica",
         "sgd"
       ]
@@ -1361,48 +2740,8 @@
       ]
     },
     {
-      "linha": 8972,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 8,
-      "entropia_votos": 2.9477,
-      "entropia_normalizada": 0.9826,
-      "categorias_efetivas": 7.7152,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9942,
-      "categoria_historica": "Estrutura Predial > Infiltração",
-      "n_modelos": 9,
-      "categorias_votadas": 8,
-      "entropia_votos": 2.9477,
-      "entropia_normalizada": 0.9826,
-      "categorias_efetivas": 7.7152,
-      "maioria": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11721,
-      "categoria_historica": "Elétrica > Instalações elétricas",
+      "linha": 13094,
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 9,
       "categorias_votadas": 8,
       "entropia_votos": 2.9477,
@@ -1418,106 +2757,6 @@
         "naive_bayes",
         "random_forest",
         "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12769,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 9,
-      "categorias_votadas": 8,
-      "entropia_votos": 2.9477,
-      "entropia_normalizada": 0.9826,
-      "categorias_efetivas": 7.7152,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13254,
-      "categoria_historica": "Equipamentos de Transporte > Elevador",
-      "n_modelos": 9,
-      "categorias_votadas": 8,
-      "entropia_votos": 2.9477,
-      "entropia_normalizada": 0.9826,
-      "categorias_efetivas": 7.7152,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13385,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "n_modelos": 9,
-      "categorias_votadas": 8,
-      "entropia_votos": 2.9477,
-      "entropia_normalizada": 0.9826,
-      "categorias_efetivas": 7.7152,
-      "maioria": "Hidrossanitária > Bomba",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13799,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado central",
-      "n_modelos": 9,
-      "categorias_votadas": 8,
-      "entropia_votos": 2.9477,
-      "entropia_normalizada": 0.9826,
-      "categorias_efetivas": 7.7152,
-      "maioria": "Manutenção Preventiva > Ar condicionado central",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 867,
-      "categoria_historica": "Projetos e Reformas > Reforma",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Projetos e Reformas > Reforma",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
       ]
     },
     {
@@ -1561,26 +2800,6 @@
       ]
     },
     {
-      "linha": 4433,
-      "categoria_historica": "Manutenção Preventiva > Vistoria em Instalações",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 6427,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 9,
@@ -1601,19 +2820,19 @@
       ]
     },
     {
-      "linha": 8235,
-      "categoria_historica": "Climatização > Ar condicionado split",
+      "linha": 8054,
+      "categoria_historica": "Elétrica > Instalações elétricas",
       "n_modelos": 9,
       "categorias_votadas": 5,
       "entropia_votos": 2.281,
       "entropia_normalizada": 0.9824,
       "categorias_efetivas": 4.8603,
-      "maioria": "Climatização > Ar condicionado split",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
+        "extra_trees",
         "linear_svc",
         "lstm",
-        "naive_bayes",
         "random_forest",
         "regressao_logistica",
         "sgd",
@@ -1621,54 +2840,14 @@
       ]
     },
     {
-      "linha": 8580,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "linha": 12589,
+      "categoria_historica": "Outros > Erro de chamado",
       "n_modelos": 9,
       "categorias_votadas": 5,
       "entropia_votos": 2.281,
       "entropia_normalizada": 0.9824,
       "categorias_efetivas": 4.8603,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8678,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9008,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria": "Outros > Erro de chamado",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
         "extra_trees",
@@ -1676,92 +2855,12 @@
         "lstm",
         "naive_bayes",
         "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 9368,
-      "categoria_historica": "Posto de trabalho > Contratação de Posto de trabalho",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Posto de trabalho > Contratação de Posto de trabalho",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
         "sgd",
         "transformer_ft"
       ]
     },
     {
-      "linha": 10023,
-      "categoria_historica": "Elétrica > Nobreak",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Elétrica > Nobreak",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10042,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10191,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11003,
+      "linha": 12845,
       "categoria_historica": "Climatização > Ar condicionado split",
       "n_modelos": 9,
       "categorias_votadas": 5,
@@ -1771,229 +2870,9 @@
       "maioria": "Climatização > Ar condicionado split",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
+        "extra_trees",
         "linear_svc",
         "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11555,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12166,
-      "categoria_historica": "Hidrossanitária > Bomba",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Hidrossanitária > Bomba",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12420,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12453,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12703,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12777,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13052,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13432,
-      "categoria_historica": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13477,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13603,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13909,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.281,
-      "entropia_normalizada": 0.9824,
-      "categorias_efetivas": 4.8603,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
         "random_forest",
         "regressao_logistica",
         "sgd",
@@ -2016,6 +2895,26 @@
         "lstm",
         "naive_bayes",
         "random_forest",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 473,
+      "categoria_historica": "Suprimentos / Apoio Técnico > Limpeza de equipamentos, ambiente e mobiliário",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Elétrica > Iluminação",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "lstm",
+        "naive_bayes",
+        "random_forest",
+        "regressao_logistica",
         "sgd",
         "transformer_ft"
       ]
@@ -2048,13 +2947,33 @@
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria": "Elétrica > Iluminação",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
         "etapa1_oficial",
-        "extra_trees",
         "linear_svc",
         "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 840,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
         "regressao_logistica",
         "sgd",
         "transformer_ft"
@@ -2201,6 +3120,26 @@
       ]
     },
     {
+      "linha": 3474,
+      "categoria_historica": "Manutenção Preventiva > Hidráulica",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "linear_svc",
+        "lstm",
+        "random_forest",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
       "linha": 3696,
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "n_modelos": 9,
@@ -2301,21 +3240,21 @@
       ]
     },
     {
-      "linha": 5573,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "linha": 4808,
+      "categoria_historica": "Outros > Erro de chamado",
       "n_modelos": 9,
       "categorias_votadas": 7,
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
-        "linear_svc",
+        "etapa1_oficial",
+        "extra_trees",
         "lstm",
         "naive_bayes",
         "random_forest",
-        "regressao_logistica",
         "sgd",
         "transformer_ft"
       ]
@@ -2381,46 +3320,6 @@
       ]
     },
     {
-      "linha": 8062,
-      "categoria_historica": "Posto de trabalho > Contratação de Posto de trabalho",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Posto de trabalho > Contratação de Posto de trabalho",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8063,
-      "categoria_historica": "Posto de trabalho > Contratação de Posto de trabalho",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Posto de trabalho > Contratação de Posto de trabalho",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
       "linha": 8159,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 9,
@@ -2428,11 +3327,11 @@
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
         "etapa1_oficial",
-        "extra_trees",
+        "linear_svc",
         "lstm",
         "naive_bayes",
         "regressao_logistica",
@@ -2441,18 +3340,18 @@
       ]
     },
     {
-      "linha": 9227,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "linha": 8350,
+      "categoria_historica": "Elétrica > Iluminação",
       "n_modelos": 9,
       "categorias_votadas": 7,
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
+        "etapa1_oficial",
+        "extra_trees",
         "naive_bayes",
         "random_forest",
         "regressao_logistica",
@@ -2461,47 +3360,7 @@
       ]
     },
     {
-      "linha": 9762,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10441,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10749,
+      "linha": 8643,
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "n_modelos": 9,
       "categorias_votadas": 7,
@@ -2521,14 +3380,14 @@
       ]
     },
     {
-      "linha": 11140,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "linha": 9676,
+      "categoria_historica": "Posto de trabalho > Contratação de Posto de trabalho",
       "n_modelos": 9,
       "categorias_votadas": 7,
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria": "Posto de trabalho > Contratação de Posto de trabalho",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
         "linear_svc",
@@ -2541,20 +3400,80 @@
       ]
     },
     {
-      "linha": 11723,
+      "linha": 9942,
+      "categoria_historica": "Estrutura Predial > Infiltração",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10343,
+      "categoria_historica": "Elétrica > Subestação",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "extra_trees",
+        "lstm",
+        "random_forest",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 10441,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Hidrossanitária > Hidráulica",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 11721,
       "categoria_historica": "Elétrica > Instalações elétricas",
       "n_modelos": 9,
       "categorias_votadas": 7,
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Elétrica > Instalações elétricas",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
+        "etapa1_oficial",
         "linear_svc",
         "lstm",
         "naive_bayes",
-        "random_forest",
         "regressao_logistica",
         "sgd",
         "transformer_ft"
@@ -2568,113 +3487,73 @@
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "maioria": "Estrutura Predial > Infiltração",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
         "etapa1_oficial",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12769,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "regressao_logistica",
+        "sgd",
+        "transformer_ft"
+      ]
+    },
+    {
+      "linha": 12813,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 9,
+      "categorias_votadas": 7,
+      "entropia_votos": 2.7255,
+      "entropia_normalizada": 0.9708,
+      "categorias_efetivas": 6.6138,
+      "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.2222,
+      "modelos_divergentes": [
         "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11990,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado central",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Manutenção Preventiva > Ar condicionado central",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
         "linear_svc",
         "lstm",
         "naive_bayes",
         "random_forest",
-        "regressao_logistica",
         "sgd",
         "transformer_ft"
       ]
     },
     {
-      "linha": 12208,
-      "categoria_historica": "Manutenção Preventiva > Gerador",
+      "linha": 12837,
+      "categoria_historica": "Hidrossanitária > Hidráulica",
       "n_modelos": 9,
       "categorias_votadas": 7,
       "entropia_votos": 2.7255,
       "entropia_normalizada": 0.9708,
       "categorias_efetivas": 6.6138,
-      "maioria": "Manutenção Preventiva > Gerador",
+      "maioria": "Hidrossanitária > Hidráulica",
       "maioria_pct": 0.2222,
       "modelos_divergentes": [
+        "etapa1_oficial",
         "linear_svc",
         "lstm",
         "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12252,
-      "categoria_historica": "Manutenção Preventiva > Elevador",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Manutenção Preventiva > Elevador",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12498,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Placas de identificação",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Instalação de Acessórios e Mobiliário > Placas de identificação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 12635,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
         "regressao_logistica",
         "sgd",
         "transformer_ft"
@@ -2696,1123 +3575,6 @@
         "lstm",
         "naive_bayes",
         "random_forest",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13070,
-      "categoria_historica": "Manutenção Preventiva > Elevador",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Manutenção Preventiva > Elevador",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13094,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13119,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13499,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Telhados, calhas, rufos, etc.",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13604,
-      "categoria_historica": "Elétrica > Gerador",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13628,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13794,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13875,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13920,
-      "categoria_historica": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "n_modelos": 9,
-      "categorias_votadas": 7,
-      "entropia_votos": 2.7255,
-      "entropia_normalizada": 0.9708,
-      "categorias_efetivas": 6.6138,
-      "maioria": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 13986,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 8,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.25,
-      "entropia_normalizada": 0.969,
-      "categorias_efetivas": 4.7568,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.25,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 14014,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 8,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.25,
-      "entropia_normalizada": 0.969,
-      "categorias_efetivas": 4.7568,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.25,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 14072,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 8,
-      "categorias_votadas": 5,
-      "entropia_votos": 2.25,
-      "entropia_normalizada": 0.969,
-      "categorias_efetivas": 4.7568,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.25,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 97,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 189,
-      "categoria_historica": "Manutenção Preventiva > Esgoto",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Hidrossanitária > Bomba",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 503,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 943,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 1116,
-      "categoria_historica": "Elétrica > Nobreak",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 1189,
-      "categoria_historica": "Manutenção Preventiva > Vistoria em Instalações",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 1398,
-      "categoria_historica": "Estrutura Predial > Telhados, calhas, rufos, etc.",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 1515,
-      "categoria_historica": "Manutenção Preventiva > Quadros Elétricos",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 1784,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 1919,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 2656,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 3037,
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 3855,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 4295,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 4569,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 4808,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8169,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8170,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8220,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8243,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 8350,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8565,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8643,
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Hidrossanitária > Hidráulica",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8835,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8843,
-      "categoria_historica": "Estrutura Predial > Forro",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Forro",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8862,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 8928,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9091,
-      "categoria_historica": "Manutenção Preventiva > Esgoto",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9184,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9185,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9253,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9416,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 9837,
-      "categoria_historica": "Elétrica > Nobreak",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Nobreak",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10098,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10318,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10795,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado central",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado central",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10802,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 10892,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11170,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11187,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11231,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11256,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11300,
-      "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Manutenção Preventiva > Ar condicionado split",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
-        "sgd",
-        "transformer_ft"
-      ]
-    },
-    {
-      "linha": 11301,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 9,
-      "categorias_votadas": 6,
-      "entropia_votos": 2.5033,
-      "entropia_normalizada": 0.9684,
-      "categorias_efetivas": 5.6696,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.2222,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
         "sgd",
         "transformer_ft"
       ]
