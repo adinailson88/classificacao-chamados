@@ -45,6 +45,7 @@ Os resultados alimentam o painel público e o artigo/capítulo da tese em Biossi
 | `avaliacao_final.yml` | Acerto validado, intervalos e análise de erros |
 | `estatistica.yml` | Estatísticas e comparações entre modelos |
 | `consolidar_validacao.yml` | Consolidação M/N/P/Q; cron em dry-run e aplicação somente manual |
+| `sincronizar_correcoes_glpi.yml` | Dry-run e sincronização controlada das categorias aprovadas com o GLPI |
 | `dashboard.yml` | Atualização do painel e dos dados publicados |
 | `artigo_pdf.yml` | Geração do PDF a partir do Markdown |
 
