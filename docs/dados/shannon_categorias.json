@@ -70,13 +70,6 @@
       "maior_risco": "ambiguidade_moderada"
     },
     {
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "modelos": 8,
-      "suporte_max": 94,
-      "entropia_media_normalizada": 0.6465,
-      "maior_risco": "alta_ambiguidade"
-    },
-    {
       "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
       "modelos": 9,
       "suporte_max": 258,
@@ -88,6 +81,13 @@
       "modelos": 9,
       "suporte_max": 102,
       "entropia_media_normalizada": 0.6436,
+      "maior_risco": "alta_ambiguidade"
+    },
+    {
+      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "modelos": 8,
+      "suporte_max": 95,
+      "entropia_media_normalizada": 0.6399,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -163,8 +163,8 @@
     {
       "categoria_historica": "Elétrica > Instalações elétricas",
       "modelos": 9,
-      "suporte_max": 2876,
-      "entropia_media_normalizada": 0.4829,
+      "suporte_max": 2877,
+      "entropia_media_normalizada": 0.4826,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -191,8 +191,8 @@
     {
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "modelos": 9,
-      "suporte_max": 1273,
-      "entropia_media_normalizada": 0.4231,
+      "suporte_max": 1274,
+      "entropia_media_normalizada": 0.4235,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -226,8 +226,8 @@
     {
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "modelos": 9,
-      "suporte_max": 2963,
-      "entropia_media_normalizada": 0.2855,
+      "suporte_max": 2964,
+      "entropia_media_normalizada": 0.2857,
       "maior_risco": "estavel"
     },
     {
@@ -370,16 +370,16 @@
     {
       "modelo": "lstm",
       "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 32,
-      "categorias_previstas": 15,
-      "entropia_previsoes": 3.4599,
-      "entropia_normalizada": 0.8856,
-      "categorias_efetivas": 11.0033,
+      "suporte": 33,
+      "categorias_previstas": 16,
+      "entropia_previsoes": 3.5509,
+      "entropia_normalizada": 0.8877,
+      "categorias_efetivas": 11.7203,
       "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_1_pct": 0.2812,
+      "top_1_pct": 0.2727,
       "top_2_previsto": "Estrutura Predial > Instalações Especiais (gás, ar comprimido, etc.)",
-      "top_2_pct": 0.125,
-      "concordancia_historico": 0.2812,
+      "top_2_pct": 0.1212,
+      "concordancia_historico": 0.2727,
       "risco": "alta_ambiguidade"
     },
     {
@@ -745,16 +745,16 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 426,
+      "suporte": 427,
       "categorias_previstas": 5,
-      "entropia_previsoes": 1.7894,
-      "entropia_normalizada": 0.7707,
-      "categorias_efetivas": 3.4568,
+      "entropia_previsoes": 1.7912,
+      "entropia_normalizada": 0.7714,
+      "categorias_efetivas": 3.461,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.4131,
+      "top_1_pct": 0.4122,
       "top_2_previsto": "Elétrica > Instalações elétricas",
-      "top_2_pct": 0.3474,
-      "concordancia_historico": 0.061,
+      "top_2_pct": 0.3466,
+      "concordancia_historico": 0.0609,
       "risco": "alta_ambiguidade"
     },
     {
@@ -818,21 +818,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 32,
-      "categorias_previstas": 10,
-      "entropia_previsoes": 2.5389,
-      "entropia_normalizada": 0.7643,
-      "categorias_efetivas": 5.8115,
-      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_1_pct": 0.5,
-      "top_2_previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_2_pct": 0.0938,
-      "concordancia_historico": 0.5,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "extra_trees",
       "categoria_historica": "Elétrica > Subestação",
       "suporte": 54,
@@ -878,6 +863,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "suporte": 33,
+      "categorias_previstas": 10,
+      "entropia_previsoes": 2.4916,
+      "entropia_normalizada": 0.7501,
+      "categorias_efetivas": 5.6241,
+      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_1_pct": 0.5152,
+      "top_2_previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_2_pct": 0.0909,
+      "concordancia_historico": 0.5152,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "lstm",
       "categoria_historica": "Estrutura Predial > Telhados, calhas, rufos, etc.",
       "suporte": 209,
@@ -890,21 +890,6 @@
       "top_2_previsto": "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
       "top_2_pct": 0.1818,
       "concordancia_historico": 0.2201,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 32,
-      "categorias_previstas": 9,
-      "entropia_previsoes": 2.3636,
-      "entropia_normalizada": 0.7456,
-      "categorias_efetivas": 5.1466,
-      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_1_pct": 0.5,
-      "top_2_previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_2_pct": 0.1562,
-      "concordancia_historico": 0.5,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1013,6 +998,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "sgd",
+      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "suporte": 33,
+      "categorias_previstas": 9,
+      "entropia_previsoes": 2.3216,
+      "entropia_normalizada": 0.7324,
+      "categorias_efetivas": 4.9989,
+      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_1_pct": 0.5152,
+      "top_2_previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_2_pct": 0.1515,
+      "concordancia_historico": 0.5152,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Manutenção Preventiva > Esgoto",
       "suporte": 34,
@@ -1030,16 +1030,16 @@
     {
       "modelo": "random_forest",
       "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 63,
+      "suporte": 64,
       "categorias_previstas": 7,
-      "entropia_previsoes": 2.043,
-      "entropia_normalizada": 0.7277,
-      "categorias_efetivas": 4.1211,
+      "entropia_previsoes": 2.0377,
+      "entropia_normalizada": 0.7259,
+      "categorias_efetivas": 4.106,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.4603,
+      "top_1_pct": 0.4531,
       "top_2_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_2_pct": 0.3016,
-      "concordancia_historico": 0.3016,
+      "top_2_pct": 0.3125,
+      "concordancia_historico": 0.3125,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1148,21 +1148,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "linear_svc",
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 32,
-      "categorias_previstas": 8,
-      "entropia_previsoes": 2.125,
-      "entropia_normalizada": 0.7083,
-      "categorias_efetivas": 4.362,
-      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_1_pct": 0.5,
-      "top_2_previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_2_pct": 0.25,
-      "concordancia_historico": 0.5,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "lstm",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "suporte": 325,
@@ -1253,21 +1238,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "extra_trees",
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 94,
-      "categorias_previstas": 8,
-      "entropia_previsoes": 2.1025,
-      "entropia_normalizada": 0.7008,
-      "categorias_efetivas": 4.2944,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.383,
-      "top_2_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "top_2_pct": 0.383,
-      "concordancia_historico": 0.383,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "transformer_ft",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "suporte": 262,
@@ -1313,6 +1283,21 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "extra_trees",
+      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "suporte": 95,
+      "categorias_previstas": 8,
+      "entropia_previsoes": 2.0948,
+      "entropia_normalizada": 0.6983,
+      "categorias_efetivas": 4.2716,
+      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_1_pct": 0.3895,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.3789,
+      "concordancia_historico": 0.3895,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "sgd",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "suporte": 1307,
@@ -1325,6 +1310,21 @@
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "top_2_pct": 0.1461,
       "concordancia_historico": 0.3114,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "linear_svc",
+      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "suporte": 33,
+      "categorias_previstas": 8,
+      "entropia_previsoes": 2.0902,
+      "entropia_normalizada": 0.6967,
+      "categorias_efetivas": 4.2582,
+      "top_1_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_1_pct": 0.5152,
+      "top_2_previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "top_2_pct": 0.2424,
+      "concordancia_historico": 0.5152,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1718,21 +1718,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "naive_bayes",
-      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 32,
-      "categorias_previstas": 3,
-      "entropia_previsoes": 1.0141,
-      "entropia_normalizada": 0.6398,
-      "categorias_efetivas": 2.0196,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.75,
-      "top_2_previsto": "Climatização > Ar condicionado split",
-      "top_2_pct": 0.1875,
-      "concordancia_historico": 0.0,
-      "risco": "ambiguidade_moderada"
-    },
-    {
       "modelo": "lstm",
       "categoria_historica": "Elétrica > Gerador",
       "suporte": 38,
@@ -1775,6 +1760,21 @@
       "top_2_previsto": "Estrutura Predial > Infiltração",
       "top_2_pct": 0.0862,
       "concordancia_historico": 0.5862,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "naive_bayes",
+      "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+      "suporte": 33,
+      "categorias_previstas": 3,
+      "entropia_previsoes": 0.9957,
+      "entropia_normalizada": 0.6282,
+      "categorias_efetivas": 1.9941,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.7576,
+      "top_2_previsto": "Climatização > Ar condicionado split",
+      "top_2_pct": 0.1818,
+      "concordancia_historico": 0.0,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1825,16 +1825,16 @@
     {
       "modelo": "lstm",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 959,
+      "suporte": 960,
       "categorias_previstas": 38,
-      "entropia_previsoes": 3.2719,
-      "entropia_normalizada": 0.6235,
-      "categorias_efetivas": 9.659,
+      "entropia_previsoes": 3.2731,
+      "entropia_normalizada": 0.6237,
+      "categorias_efetivas": 9.6671,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.4494,
+      "top_1_pct": 0.449,
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_2_pct": 0.0949,
-      "concordancia_historico": 0.4494,
+      "top_2_pct": 0.0948,
+      "concordancia_historico": 0.449,
       "risco": "alta_ambiguidade"
     },
     {
@@ -2318,6 +2318,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "lstm",
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "suporte": 427,
+      "categorias_previstas": 29,
+      "entropia_previsoes": 2.4869,
+      "entropia_normalizada": 0.5119,
+      "categorias_efetivas": 5.6059,
+      "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "top_1_pct": 0.5738,
+      "top_2_previsto": "Elétrica > Instalações elétricas",
+      "top_2_pct": 0.096,
+      "concordancia_historico": 0.5738,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "naive_bayes",
       "categoria_historica": "Climatização > Ar condicionado central",
       "suporte": 40,
@@ -2330,21 +2345,6 @@
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
       "top_2_pct": 0.1,
       "concordancia_historico": 0.0,
-      "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "lstm",
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 426,
-      "categorias_previstas": 29,
-      "entropia_previsoes": 2.482,
-      "entropia_normalizada": 0.5109,
-      "categorias_efetivas": 5.5865,
-      "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_1_pct": 0.5751,
-      "top_2_previsto": "Elétrica > Instalações elétricas",
-      "top_2_pct": 0.0962,
-      "concordancia_historico": 0.5751,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2365,16 +2365,16 @@
     {
       "modelo": "sgd",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 959,
+      "suporte": 960,
       "categorias_previstas": 29,
-      "entropia_previsoes": 2.4515,
-      "entropia_normalizada": 0.5046,
-      "categorias_efetivas": 5.4697,
+      "entropia_previsoes": 2.4497,
+      "entropia_normalizada": 0.5043,
+      "categorias_efetivas": 5.4629,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.609,
+      "top_1_pct": 0.6094,
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_2_pct": 0.0615,
-      "concordancia_historico": 0.609,
+      "concordancia_historico": 0.6094,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2393,21 +2393,6 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 959,
-      "categorias_previstas": 28,
-      "entropia_previsoes": 2.4116,
-      "entropia_normalizada": 0.5017,
-      "categorias_efetivas": 5.3208,
-      "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.609,
-      "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_2_pct": 0.0647,
-      "concordancia_historico": 0.609,
-      "risco": "ambiguidade_moderada"
-    },
-    {
       "modelo": "sgd",
       "categoria_historica": "Climatização > Ar condicionado central",
       "suporte": 40,
@@ -2420,6 +2405,21 @@
       "top_2_previsto": "Climatização > Ar condicionado split",
       "top_2_pct": 0.1,
       "concordancia_historico": 0.8,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "suporte": 960,
+      "categorias_previstas": 28,
+      "entropia_previsoes": 2.4099,
+      "entropia_normalizada": 0.5013,
+      "categorias_efetivas": 5.3142,
+      "top_1_previsto": "Elétrica > Instalações elétricas",
+      "top_1_pct": 0.6094,
+      "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "top_2_pct": 0.0646,
+      "concordancia_historico": 0.6094,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2455,16 +2455,16 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 959,
+      "suporte": 960,
       "categorias_previstas": 9,
-      "entropia_previsoes": 1.5829,
-      "entropia_normalizada": 0.4993,
-      "categorias_efetivas": 2.9957,
+      "entropia_previsoes": 1.5843,
+      "entropia_normalizada": 0.4998,
+      "categorias_efetivas": 2.9986,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.6403,
+      "top_1_pct": 0.6396,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1689,
-      "concordancia_historico": 0.6403,
+      "top_2_pct": 0.1688,
+      "concordancia_historico": 0.6396,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2605,16 +2605,16 @@
     {
       "modelo": "random_forest",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 1918,
+      "suporte": 1919,
       "categorias_previstas": 17,
-      "entropia_previsoes": 1.9639,
+      "entropia_previsoes": 1.9641,
       "entropia_normalizada": 0.4805,
-      "categorias_efetivas": 3.9011,
+      "categorias_efetivas": 3.9017,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.6048,
+      "top_1_pct": 0.6045,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1887,
-      "concordancia_historico": 0.6048,
+      "top_2_pct": 0.1892,
+      "concordancia_historico": 0.6045,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2755,16 +2755,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 2876,
+      "suporte": 2877,
       "categorias_previstas": 22,
-      "entropia_previsoes": 1.9639,
+      "entropia_previsoes": 1.9641,
       "entropia_normalizada": 0.4404,
-      "categorias_efetivas": 3.9011,
+      "categorias_efetivas": 3.9016,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.6241,
+      "top_1_pct": 0.6239,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1707,
-      "concordancia_historico": 0.6241,
+      "top_2_pct": 0.171,
+      "concordancia_historico": 0.6239,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2800,32 +2800,17 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 990,
+      "suporte": 991,
       "categorias_previstas": 6,
-      "entropia_previsoes": 1.1184,
-      "entropia_normalizada": 0.4327,
-      "categorias_efetivas": 2.171,
+      "entropia_previsoes": 1.1177,
+      "entropia_normalizada": 0.4324,
+      "categorias_efetivas": 2.1699,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.7606,
+      "top_1_pct": 0.7608,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1535,
-      "concordancia_historico": 0.7606,
+      "top_2_pct": 0.1534,
+      "concordancia_historico": 0.7608,
       "risco": "estavel"
-    },
-    {
-      "modelo": "linear_svc",
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 959,
-      "categorias_previstas": 25,
-      "entropia_previsoes": 1.9997,
-      "entropia_normalizada": 0.4306,
-      "categorias_efetivas": 3.9993,
-      "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.6893,
-      "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_2_pct": 0.0532,
-      "concordancia_historico": 0.6893,
-      "risco": "ambiguidade_moderada"
     },
     {
       "modelo": "random_forest",
@@ -2858,18 +2843,33 @@
       "risco": "estavel"
     },
     {
+      "modelo": "linear_svc",
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "suporte": 960,
+      "categorias_previstas": 26,
+      "entropia_previsoes": 2.0095,
+      "entropia_normalizada": 0.4275,
+      "categorias_efetivas": 4.0263,
+      "top_1_previsto": "Elétrica > Instalações elétricas",
+      "top_1_pct": 0.6885,
+      "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "top_2_pct": 0.0531,
+      "concordancia_historico": 0.6885,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "random_forest",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 849,
+      "suporte": 850,
       "categorias_previstas": 12,
-      "entropia_previsoes": 1.5211,
-      "entropia_normalizada": 0.4243,
-      "categorias_efetivas": 2.8701,
+      "entropia_previsoes": 1.5216,
+      "entropia_normalizada": 0.4244,
+      "categorias_efetivas": 2.871,
       "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_1_pct": 0.6219,
+      "top_1_pct": 0.6212,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2662,
-      "concordancia_historico": 0.6219,
+      "top_2_pct": 0.2671,
+      "concordancia_historico": 0.6212,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2903,6 +2903,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "sgd",
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "suporte": 427,
+      "categorias_previstas": 12,
+      "entropia_previsoes": 1.4942,
+      "entropia_normalizada": 0.4168,
+      "categorias_efetivas": 2.8171,
+      "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "top_1_pct": 0.6581,
+      "top_2_previsto": "Outros > Erro de chamado",
+      "top_2_pct": 0.2436,
+      "concordancia_historico": 0.6581,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "random_forest",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "suporte": 2613,
@@ -2931,21 +2946,6 @@
       "top_2_pct": 0.0654,
       "concordancia_historico": 0.7516,
       "risco": "estavel"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 426,
-      "categorias_previstas": 12,
-      "entropia_previsoes": 1.4845,
-      "entropia_normalizada": 0.4141,
-      "categorias_efetivas": 2.7982,
-      "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_1_pct": 0.6596,
-      "top_2_previsto": "Outros > Erro de chamado",
-      "top_2_pct": 0.2441,
-      "concordancia_historico": 0.6596,
-      "risco": "ambiguidade_moderada"
     },
     {
       "modelo": "extra_trees",
@@ -2980,31 +2980,31 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 1273,
+      "suporte": 1274,
       "categorias_previstas": 11,
-      "entropia_previsoes": 1.3891,
-      "entropia_normalizada": 0.4015,
-      "categorias_efetivas": 2.6192,
+      "entropia_previsoes": 1.3898,
+      "entropia_normalizada": 0.4017,
+      "categorias_efetivas": 2.6204,
       "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_1_pct": 0.6795,
+      "top_1_pct": 0.679,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2168,
-      "concordancia_historico": 0.6795,
+      "top_2_pct": 0.2174,
+      "concordancia_historico": 0.679,
       "risco": "ambiguidade_moderada"
     },
     {
       "modelo": "regressao_logistica",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 426,
+      "suporte": 427,
       "categorias_previstas": 13,
-      "entropia_previsoes": 1.4741,
-      "entropia_normalizada": 0.3984,
-      "categorias_efetivas": 2.7782,
+      "entropia_previsoes": 1.4843,
+      "entropia_normalizada": 0.4011,
+      "categorias_efetivas": 2.7979,
       "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_1_pct": 0.6549,
+      "top_1_pct": 0.6534,
       "top_2_previsto": "Outros > Erro de chamado",
-      "top_2_pct": 0.2559,
-      "concordancia_historico": 0.6549,
+      "top_2_pct": 0.2553,
+      "concordancia_historico": 0.6534,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -3130,16 +3130,16 @@
     {
       "modelo": "lstm",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 990,
+      "suporte": 991,
       "categorias_previstas": 33,
-      "entropia_previsoes": 1.9162,
-      "entropia_normalizada": 0.3799,
-      "categorias_efetivas": 3.7742,
+      "entropia_previsoes": 1.9212,
+      "entropia_normalizada": 0.3808,
+      "categorias_efetivas": 3.7873,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.7121,
+      "top_1_pct": 0.7114,
       "top_2_previsto": "Projetos e Reformas > Reforma",
       "top_2_pct": 0.0737,
-      "concordancia_historico": 0.7121,
+      "concordancia_historico": 0.7114,
       "risco": "estavel"
     },
     {
@@ -3218,21 +3218,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "linear_svc",
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 426,
-      "categorias_previstas": 13,
-      "entropia_previsoes": 1.2333,
-      "entropia_normalizada": 0.3333,
-      "categorias_efetivas": 2.351,
-      "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_1_pct": 0.7746,
-      "top_2_previsto": "Outros > Erro de chamado",
-      "top_2_pct": 0.1268,
-      "concordancia_historico": 0.7746,
-      "risco": "estavel"
-    },
-    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "suporte": 1309,
@@ -3245,6 +3230,21 @@
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
       "top_2_pct": 0.0558,
       "concordancia_historico": 0.7769,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "linear_svc",
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "suporte": 427,
+      "categorias_previstas": 14,
+      "entropia_previsoes": 1.2542,
+      "entropia_normalizada": 0.3294,
+      "categorias_efetivas": 2.3854,
+      "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "top_1_pct": 0.7728,
+      "top_2_previsto": "Outros > Erro de chamado",
+      "top_2_pct": 0.1265,
+      "concordancia_historico": 0.7728,
       "risco": "estavel"
     },
     {
@@ -3355,16 +3355,16 @@
     {
       "modelo": "random_forest",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 1976,
+      "suporte": 1977,
       "categorias_previstas": 15,
-      "entropia_previsoes": 1.1426,
-      "entropia_normalizada": 0.2925,
-      "categorias_efetivas": 2.2078,
+      "entropia_previsoes": 1.1422,
+      "entropia_normalizada": 0.2924,
+      "categorias_efetivas": 2.2072,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.7566,
+      "top_1_pct": 0.7567,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1857,
-      "concordancia_historico": 0.7566,
+      "top_2_pct": 0.1856,
+      "concordancia_historico": 0.7567,
       "risco": "estavel"
     },
     {
@@ -3655,16 +3655,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 2963,
+      "suporte": 2964,
       "categorias_previstas": 16,
-      "entropia_previsoes": 1.087,
-      "entropia_normalizada": 0.2718,
-      "categorias_efetivas": 2.1244,
+      "entropia_previsoes": 1.0868,
+      "entropia_normalizada": 0.2717,
+      "categorias_efetivas": 2.124,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.7789,
+      "top_1_pct": 0.779,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.1657,
-      "concordancia_historico": 0.7789,
+      "concordancia_historico": 0.779,
       "risco": "estavel"
     },
     {
@@ -3700,31 +3700,31 @@
     {
       "modelo": "regressao_logistica",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 990,
+      "suporte": 991,
       "categorias_previstas": 22,
-      "entropia_previsoes": 1.1725,
-      "entropia_normalizada": 0.2629,
-      "categorias_efetivas": 2.254,
+      "entropia_previsoes": 1.1715,
+      "entropia_normalizada": 0.2627,
+      "categorias_efetivas": 2.2525,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.8384,
+      "top_1_pct": 0.8385,
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "top_2_pct": 0.0434,
-      "concordancia_historico": 0.8384,
+      "concordancia_historico": 0.8385,
       "risco": "estavel"
     },
     {
       "modelo": "sgd",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 990,
+      "suporte": 991,
       "categorias_previstas": 23,
-      "entropia_previsoes": 1.1645,
-      "entropia_normalizada": 0.2574,
-      "categorias_efetivas": 2.2416,
+      "entropia_previsoes": 1.1636,
+      "entropia_normalizada": 0.2572,
+      "categorias_efetivas": 2.2402,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.8424,
+      "top_1_pct": 0.8426,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0475,
-      "concordancia_historico": 0.8424,
+      "top_2_pct": 0.0474,
+      "concordancia_historico": 0.8426,
       "risco": "estavel"
     },
     {
@@ -4013,21 +4013,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "linear_svc",
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 990,
-      "categorias_previstas": 24,
-      "entropia_previsoes": 0.9039,
-      "entropia_normalizada": 0.1971,
-      "categorias_efetivas": 1.8711,
-      "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.8828,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0444,
-      "concordancia_historico": 0.8828,
-      "risco": "estavel"
-    },
-    {
       "modelo": "lstm",
       "categoria_historica": "Manutenção Preventiva > Iluminação",
       "suporte": 132,
@@ -4040,6 +4025,21 @@
       "top_2_previsto": "Elétrica > Iluminação",
       "top_2_pct": 0.0455,
       "concordancia_historico": 0.9318,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "linear_svc",
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "suporte": 991,
+      "categorias_previstas": 24,
+      "entropia_previsoes": 0.9031,
+      "entropia_normalizada": 0.197,
+      "categorias_efetivas": 1.8701,
+      "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "top_1_pct": 0.8829,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0444,
+      "concordancia_historico": 0.8829,
       "risco": "estavel"
     },
     {
@@ -4195,16 +4195,16 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 959,
+      "suporte": 960,
       "categorias_previstas": 17,
-      "entropia_previsoes": 0.7283,
-      "entropia_normalizada": 0.1782,
-      "categorias_efetivas": 1.6567,
+      "entropia_previsoes": 0.733,
+      "entropia_normalizada": 0.1793,
+      "categorias_efetivas": 1.6621,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.9062,
+      "top_1_pct": 0.9052,
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_2_pct": 0.0261,
-      "concordancia_historico": 0.9062,
+      "top_2_pct": 0.0271,
+      "concordancia_historico": 0.9052,
       "risco": "estavel"
     },
     {
@@ -4765,16 +4765,16 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "suporte": 990,
+      "suporte": 991,
       "categorias_previstas": 8,
-      "entropia_previsoes": 0.265,
-      "entropia_normalizada": 0.0883,
-      "categorias_efetivas": 1.2016,
+      "entropia_previsoes": 0.271,
+      "entropia_normalizada": 0.0903,
+      "categorias_efetivas": 1.2066,
       "top_1_previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "top_1_pct": 0.9687,
+      "top_1_pct": 0.9677,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0131,
-      "concordancia_historico": 0.9687,
+      "top_2_pct": 0.0141,
+      "concordancia_historico": 0.9677,
       "risco": "estavel"
     },
     {
@@ -5200,11 +5200,11 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 426,
+      "suporte": 427,
       "categorias_previstas": 4,
-      "entropia_previsoes": 0.0908,
-      "entropia_normalizada": 0.0454,
-      "categorias_efetivas": 1.065,
+      "entropia_previsoes": 0.0906,
+      "entropia_normalizada": 0.0453,
+      "categorias_efetivas": 1.0648,
       "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_1_pct": 0.9906,
       "top_2_previsto": "Outros > Erro de chamado",
@@ -5500,7 +5500,7 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
-      "suporte": 32,
+      "suporte": 33,
       "categorias_previstas": 1,
       "entropia_previsoes": -0.0,
       "entropia_normalizada": 0.0,
