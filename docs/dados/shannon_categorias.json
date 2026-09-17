@@ -245,6 +245,13 @@
       "maior_risco": "ambiguidade_moderada"
     },
     {
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "modelos": 9,
+      "suporte_max": 399,
+      "entropia_media_normalizada": 0.2635,
+      "maior_risco": "estavel"
+    },
+    {
       "categoria_historica": "Climatização > Ar condicionado",
       "modelos": 1,
       "suporte_max": 1632,
@@ -257,13 +264,6 @@
       "suporte_max": 198,
       "entropia_media_normalizada": 0.2444,
       "maior_risco": "ambiguidade_moderada"
-    },
-    {
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "modelos": 9,
-      "suporte_max": 396,
-      "entropia_media_normalizada": 0.2348,
-      "maior_risco": "estavel"
     },
     {
       "categoria_historica": "Climatização > Ar condicionado split",
@@ -2798,6 +2798,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "linear_svc",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 135,
+      "categorias_previstas": 2,
+      "entropia_previsoes": 0.4328,
+      "entropia_normalizada": 0.4328,
+      "categorias_efetivas": 1.3498,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.9111,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.0889,
+      "concordancia_historico": 0.9111,
+      "risco": "estavel"
+    },
+    {
       "modelo": "naive_bayes",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "suporte": 991,
@@ -3158,21 +3173,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "linear_svc",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 132,
-      "categorias_previstas": 2,
-      "entropia_previsoes": 0.3591,
-      "entropia_normalizada": 0.3591,
-      "categorias_efetivas": 1.2826,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.9318,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0682,
-      "concordancia_historico": 0.9318,
-      "risco": "estavel"
-    },
-    {
       "modelo": "naive_bayes",
       "categoria_historica": "Estrutura Predial > Pintura",
       "suporte": 59,
@@ -3263,6 +3263,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "naive_bayes",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 135,
+      "categorias_previstas": 5,
+      "entropia_previsoes": 0.7351,
+      "entropia_normalizada": 0.3166,
+      "categorias_efetivas": 1.6645,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.8593,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.1111,
+      "concordancia_historico": 0.8593,
+      "risco": "estavel"
+    },
+    {
       "modelo": "sgd",
       "categoria_historica": "Hidrossanitária > Bomba",
       "suporte": 39,
@@ -3290,6 +3305,21 @@
       "top_2_previsto": "Outros > Erro de chamado",
       "top_2_pct": 0.0692,
       "concordancia_historico": 0.8538,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "random_forest",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 267,
+      "categorias_previstas": 3,
+      "entropia_previsoes": 0.485,
+      "entropia_normalizada": 0.306,
+      "categorias_efetivas": 1.3995,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.9101,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.0787,
+      "concordancia_historico": 0.9101,
       "risco": "estavel"
     },
     {
@@ -3323,6 +3353,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "extra_trees",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 399,
+      "categorias_previstas": 3,
+      "entropia_previsoes": 0.4738,
+      "entropia_normalizada": 0.2989,
+      "categorias_efetivas": 1.3887,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.9123,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.0777,
+      "concordancia_historico": 0.9123,
+      "risco": "estavel"
+    },
+    {
       "modelo": "sgd",
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "suporte": 1309,
@@ -3335,6 +3380,36 @@
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
       "top_2_pct": 0.0558,
       "concordancia_historico": 0.7998,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 135,
+      "categorias_previstas": 3,
+      "entropia_previsoes": 0.4695,
+      "entropia_normalizada": 0.2962,
+      "categorias_efetivas": 1.3847,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.9111,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.0815,
+      "concordancia_historico": 0.9111,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "sgd",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 135,
+      "categorias_previstas": 3,
+      "entropia_previsoes": 0.4695,
+      "entropia_normalizada": 0.2962,
+      "categorias_efetivas": 1.3847,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.9111,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.0815,
+      "concordancia_historico": 0.9111,
       "risco": "estavel"
     },
     {
@@ -3380,21 +3455,6 @@
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
       "top_2_pct": 0.0558,
       "concordancia_historico": 0.8518,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "naive_bayes",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 132,
-      "categorias_previstas": 5,
-      "entropia_previsoes": 0.6766,
-      "entropia_normalizada": 0.2914,
-      "categorias_efetivas": 1.5984,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.8788,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0909,
-      "concordancia_historico": 0.8788,
       "risco": "estavel"
     },
     {
@@ -3548,21 +3608,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "extra_trees",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 396,
-      "categorias_previstas": 3,
-      "entropia_previsoes": 0.4489,
-      "entropia_normalizada": 0.2833,
-      "categorias_efetivas": 1.365,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.9192,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0707,
-      "concordancia_historico": 0.9192,
-      "risco": "estavel"
-    },
-    {
       "modelo": "random_forest",
       "categoria_historica": "Elétrica > Iluminação",
       "suporte": 1528,
@@ -3575,21 +3620,6 @@
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.0772,
       "concordancia_historico": 0.8135,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "random_forest",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 264,
-      "categorias_previstas": 3,
-      "entropia_previsoes": 0.4476,
-      "entropia_normalizada": 0.2824,
-      "categorias_efetivas": 1.3638,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.9205,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0682,
-      "concordancia_historico": 0.9205,
       "risco": "estavel"
     },
     {
@@ -3743,36 +3773,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 132,
-      "categorias_previstas": 3,
-      "entropia_previsoes": 0.3934,
-      "entropia_normalizada": 0.2482,
-      "categorias_efetivas": 1.3135,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.9318,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0606,
-      "concordancia_historico": 0.9318,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 132,
-      "categorias_previstas": 3,
-      "entropia_previsoes": 0.3934,
-      "entropia_normalizada": 0.2482,
-      "categorias_efetivas": 1.3135,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.9318,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0606,
-      "concordancia_historico": 0.9318,
-      "risco": "estavel"
-    },
-    {
       "modelo": "naive_bayes",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Placas de identificação",
       "suporte": 57,
@@ -3800,6 +3800,21 @@
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Placas de identificação",
       "top_2_pct": 0.0465,
       "concordancia_historico": 0.9186,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "lstm",
+      "categoria_historica": "Manutenção Preventiva > Iluminação",
+      "suporte": 135,
+      "categorias_previstas": 6,
+      "entropia_previsoes": 0.5736,
+      "entropia_normalizada": 0.2219,
+      "categorias_efetivas": 1.4883,
+      "top_1_previsto": "Manutenção Preventiva > Iluminação",
+      "top_1_pct": 0.9111,
+      "top_2_previsto": "Elétrica > Iluminação",
+      "top_2_pct": 0.0593,
+      "concordancia_historico": 0.9111,
       "risco": "estavel"
     },
     {
@@ -4010,21 +4025,6 @@
       "top_2_previsto": "Estrutura Predial > Forro",
       "top_2_pct": 0.0571,
       "concordancia_historico": 0.919,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "lstm",
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 132,
-      "categorias_previstas": 5,
-      "entropia_previsoes": 0.4577,
-      "entropia_normalizada": 0.1971,
-      "categorias_efetivas": 1.3734,
-      "top_1_previsto": "Manutenção Preventiva > Iluminação",
-      "top_1_pct": 0.9318,
-      "top_2_previsto": "Elétrica > Iluminação",
-      "top_2_pct": 0.0455,
-      "concordancia_historico": 0.9318,
       "risco": "estavel"
     },
     {
@@ -5335,7 +5335,7 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "suporte": 132,
+      "suporte": 135,
       "categorias_previstas": 1,
       "entropia_previsoes": -0.0,
       "entropia_normalizada": 0.0,
