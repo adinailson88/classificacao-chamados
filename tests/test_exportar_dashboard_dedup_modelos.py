@@ -58,6 +58,13 @@ class ExportarDashboardDedupModelosTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "IDs atuais indisponiveis"):
             deduplicar_registros_modelo([CAB], set(), {}, {}, "linear_svc")
 
+    def test_modelo_sem_previsoes_e_marcado_ausente(self):
+        registros, aud = deduplicar_registros_modelo(
+            [CAB], {"1"}, {"1": 2}, {}, "transformer_ft")
+        self.assertEqual(registros, [])
+        self.assertEqual(aud["ids_unicos"], 0)
+        self.assertEqual(aud["status"], "ausente")
+
 
 if __name__ == "__main__":
     unittest.main()
