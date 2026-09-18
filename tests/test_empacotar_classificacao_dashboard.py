@@ -35,6 +35,14 @@ class EmpacotarClassificacaoDashboardTest(unittest.TestCase):
                     "ids_invalidos": 0,
                     "ids_esperados": 1,
                     "status": "valido_completo",
+                }, "lstm": {
+                    "registros_brutos": 0,
+                    "ids_unicos": 0,
+                    "duplicados_descartados": 0,
+                    "ids_fora_base_descartados": 0,
+                    "ids_invalidos": 0,
+                    "ids_esperados": 1,
+                    "status": "ausente",
                 }}
             }), encoding="utf-8")
 
@@ -81,6 +89,24 @@ class EmpacotarClassificacaoDashboardTest(unittest.TestCase):
             }), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "campo nao permitido"):
                 empacotar(config, origem, base / "destino")
+
+    def test_aceita_modelo_ausente_quando_auditoria_confirma_zero(self):
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td)
+            origem = base / "origem"
+            origem.mkdir()
+            config = base / "config.json"
+            config.write_text(json.dumps({"multimodelo": {
+                "modelos_leves": [], "modelos_pesados": ["transformer_ft"]
+            }}), encoding="utf-8")
+            (origem / "registros_modelos_auditoria.json").write_text(json.dumps({
+                "modelos": {"transformer_ft": {
+                    "ids_unicos": 0, "ids_invalidos": 0, "status": "ausente"
+                }}
+            }), encoding="utf-8")
+            manifesto = empacotar(config, origem, base / "destino")
+            self.assertEqual(manifesto["arquivos"], [])
+            self.assertEqual(manifesto["ausentes"], ["registros_transformer_ft.json"])
 
 
 if __name__ == "__main__":
