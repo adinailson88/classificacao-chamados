@@ -196,7 +196,8 @@ def deduplicar_registros_modelo(vals, ids_atuais, linha_atual_por_id, valida, mo
         "ids_invalidos": invalidos,
         "ids_esperados": len(ids_atuais),
         "ids_unicos": len(rm),
-        "status": "valido_completo" if len(rm) == len(ids_atuais) else "parcial",
+        "status": ("ausente" if not rm else
+                   "valido_completo" if len(rm) == len(ids_atuais) else "parcial"),
     }
     return rm, auditoria
 
@@ -576,14 +577,18 @@ def main() -> int:
             vals, ids_atuais, linha_atual_por_id, valida, modelo
         )
         auditoria_modelos[modelo] = aud
+        arquivo_modelo = SAIDA / f"registros_{modelo}.json"
         if rm:
-            (SAIDA / f"registros_{modelo}.json").write_text(
+            arquivo_modelo.write_text(
                 json.dumps(rm, ensure_ascii=False), encoding="utf-8")
             registros_modelos[modelo] = len(rm)
             print(f"registros_{modelo}={len(rm)} "
                   f"(brutos={aud['registros_brutos']}, "
                   f"duplicados_descartados={aud['duplicados_descartados']}, "
                   f"status={aud['status']})")
+        else:
+            arquivo_modelo.unlink(missing_ok=True)
+            print(f"registros_{modelo}=0 (status=ausente; JSON obsoleto removido)")
     resumo["registros_modelos"] = registros_modelos
     (SAIDA / "registros_modelos_auditoria.json").write_text(
         json.dumps({"modelos": auditoria_modelos}, ensure_ascii=False, indent=2),
