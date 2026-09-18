@@ -82,6 +82,18 @@ function aplicarMigracaoImportrange() {
     const destino = principal.getRange(2, 1, quantidade, 6);
     destino.setNumberFormat("@");
     destino.setValues(plano.matriz.map(linha => linha.map(valorLiteral_)));
+
+    // Depois que A2:D2 deixam de ser fórmulas matriciais, elimina qualquer
+    // resíduo A:F abaixo da última linha coberta pelo snapshot. O preflight
+    // só permite isso quando G:Q não possuem dados além dessa linha.
+    const maxLinhaSnapshot = plano.mapaSnapshot.maxLinha;
+    const ultimaAntesLimpeza = principal.getLastRow();
+    let linhasResiduoLimpas = 0;
+    if (ultimaAntesLimpeza > maxLinhaSnapshot) {
+      linhasResiduoLimpas = ultimaAntesLimpeza - maxLinhaSnapshot;
+      principal.getRange(maxLinhaSnapshot + 1, 1, linhasResiduoLimpas, 6).clearContent();
+    }
+
     SpreadsheetApp.flush();
 
     const lido = principal.getRange(2, 1, quantidade, 6).getDisplayValues();
@@ -103,7 +115,7 @@ function aplicarMigracaoImportrange() {
       "",
       "IMPORTRANGE",
       "VALORES_MATERIALIZADOS",
-      "linhas=" + quantidade + "; backup=" + backupName
+      "linhas=" + quantidade + "; residuos_A_F_limpos=" + linhasResiduoLimpas + "; backup=" + backupName
     );
 
     preview.getRange(SYNC_CFG.authorizationCell).clearContent();
@@ -147,7 +159,7 @@ function sincronizarChamadosPorId() {
       range.setValues([item.depois.map(valorLiteral_)]);
       log.appendRow([
         agora_(), "ATUALIZADO", item.id, item.linha,
-        item.antes[1], item.depois[1],
+        item.antes[2], item.depois[1],
         "campos=" + item.camposAlterados.join(",")
       ]);
     }
@@ -212,7 +224,8 @@ function montarPlanoMigracao_() {
   const fonte = lerFonteChamados_();
   const osm = lerOrdensServico_();
   const mapaSnapshot = lerMapaAtualSnapshot_(snapshot);
-  const formulas = auditarFormulasImportacao_(principal, mapaSnapshot.maxLinha);
+  const ultimaLinhaFisicaComConteudo = Math.max(principal.getLastRow(), mapaSnapshot.maxLinha);
+  const formulas = auditarFormulasImportacao_(principal, ultimaLinhaFisicaComConteudo);
   const ultimaCritica = ultimaLinhaComDados_(principal, 7, 11); // G:Q
 
   const faltantes = [];
@@ -283,6 +296,8 @@ function montarPlanoMigracao_() {
       formulasImportrangeAF: formulas.importrange,
       formulasInesperadasAF: formulas.formulasInesperadas.length,
       ultimaLinhaComDadosGQ: ultimaCritica,
+      ultimaLinhaFisicaComConteudo: ultimaLinhaFisicaComConteudo,
+      linhasResiduoAFAbaixoSnapshot: Math.max(0, ultimaLinhaFisicaComConteudo - mapaSnapshot.maxLinha),
       bloqueios: bloqueios
     }
   };
@@ -587,6 +602,8 @@ function escreverPreviewMigracao_(plano) {
     ["FORMULAS_IMPORTRANGE_A_F", plano.resumo.formulasImportrangeAF],
     ["FORMULAS_INESPERADAS_A_F", plano.resumo.formulasInesperadasAF],
     ["ULTIMA_LINHA_DADOS_G_Q", plano.resumo.ultimaLinhaComDadosGQ],
+    ["ULTIMA_LINHA_FISICA_COM_CONTEUDO", plano.resumo.ultimaLinhaFisicaComConteudo],
+    ["LINHAS_RESIDUO_A_F_ABAIXO_SNAPSHOT", plano.resumo.linhasResiduoAFAbaixoSnapshot],
     ["BLOQUEIOS", plano.bloqueios.join(" | ")]
   ];
   sh.getRange(1, 1, linhas.length, 2).setValues(linhas);
