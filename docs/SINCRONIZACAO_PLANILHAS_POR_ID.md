@@ -55,7 +55,7 @@ Para cada linha 2..N:
    - F = descrições unidas por `; `;
 7. não escrever em G:Q.
 
-Na auditoria, 69 IDs históricos estavam ausentes do espelho GLPI corrente, mas todos existiam na fonte histórica. Esses IDs não devem ser excluídos.
+Na auditoria, 69 IDs históricos estavam ausentes do espelho GLPI corrente, mas todos existiam na fonte histórica. Esses IDs não devem ser excluídos. Como a descrição/solução desses 69 não está disponível no espelho corrente, a migração permanece bloqueada até que essa informação seja recuperada ou uma decisão explícita aceite a perda desse campo.
 
 A sincronização posterior abandona o número da linha como chave. A coluna A passa a ser fixa; B:F são atualizadas apenas pelo ID e IDs novos são acrescentados ao final.
 
@@ -125,7 +125,7 @@ Regras:
 - A nunca é alterada para IDs já existentes;
 - B:F são atualizadas pelo ID corrente quando ele existe no espelho GLPI;
 - IDs históricos que não aparecem mais no espelho atual são preservados e não bloqueiam a sincronização;
-- IDs novos entram ao final;
+- IDs presentes apenas no espelho corrente não entram automaticamente ao final enquanto a semântica dessa diferença não estiver validada;
 - G:Q nunca são escritos;
 - IDs duplicados bloqueiam a execução;
 - mais de 100 novos IDs em uma execução bloqueiam;
@@ -151,3 +151,10 @@ A automação de correções GLPI permanece pausada.
 Seu estado está preservado na branch `feat/glpi-correcoes-seguras`, em `docs/CODEX_PROXIMA_SESSAO.md`.
 
 Não habilitar `GLPI_BATCH_ENABLED=true` nem executar PUT no GLPI até A:F estarem materializadas, sincronizadas por ID e validadas.
+
+
+## Anomalia adicional observada no preflight
+
+O preflight de 18/09/2026 listou 55 IDs presentes somente no espelho GLPI corrente. A inspeção mostrou que 54 deles são de 2019 e apenas um é de 2026. Portanto, o rótulo operacional "novo" é inadequado para esse conjunto.
+
+Até que a origem dessas diferenças seja compreendida, a sincronização automática deve bloquear qualquer inclusão de IDs existentes apenas na fonte corrente.
