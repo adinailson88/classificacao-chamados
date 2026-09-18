@@ -1,0 +1,24 @@
+name: Lint piloto COPIA Apps Script
+
+on:
+  push:
+    branches:
+      - fix/sincronizacao-sheets-por-id
+    paths:
+      - 'scripts/sincronizar_copia_sem_importrange.gs'
+      - '.github/workflows/lint-sync-copia.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar sintaxe JavaScript
+        run: |
+          cp scripts/sincronizar_copia_sem_importrange.gs /tmp/sincronizar_copia_sem_importrange.js
+          node --check /tmp/sincronizar_copia_sem_importrange.js
