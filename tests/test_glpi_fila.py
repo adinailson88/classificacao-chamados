@@ -66,7 +66,21 @@ class TestUpsert(unittest.TestCase):
         self.assertEqual(mesclado["categoria_correta"], "Destino")
         self.assertEqual(mesclado["status_glpi"], "APLICADO")
         self.assertEqual(mesclado["data_execucao"], "17/09/2026 10:00")
-        self.assertEqual(mesclado["situacao_validacao"], "CONFLITO")
+        self.assertEqual(mesclado["situacao_validacao"], "ELEGIVEL")
+
+    def test_concluido_ausente_dos_candidatos_nao_vira_conflito(self):
+        original = fila.upsert_fila([], fila.selecionar_candidatos([CAB, linha(7)]))[0]
+        self.assertEqual(original["situacao_validacao"], "ELEGIVEL")
+        original.update(aprovado_glpi=True, status_glpi="APLICADO")
+        proxima = fila.upsert_fila([original], [])[0]
+        self.assertEqual(proxima["status_glpi"], "APLICADO")
+        self.assertEqual(proxima["situacao_validacao"], "ELEGIVEL")
+        self.assertIs(proxima["aprovado_glpi"], True)
+
+    def test_ja_aplicado_ausente_tambem_permanece_concluido(self):
+        original = fila.upsert_fila([], fila.selecionar_candidatos([CAB, linha(8)]))[0]
+        original.update(aprovado_glpi=True, status_glpi="JA_APLICADO")
+        self.assertEqual(fila.upsert_fila([original], [])[0]["situacao_validacao"], "ELEGIVEL")
 
     def test_aprovado_ausente_da_origem_fica_bloqueado(self):
         original = fila.upsert_fila([], fila.selecionar_candidatos([CAB, linha(5)]))[0]
@@ -105,6 +119,40 @@ class TestEscritaIsolada(unittest.TestCase):
         with patch.object(fila.pl, "ler_valores", return_value=bloco_textual):
             with self.assertRaises(ValueError):
                 fila.atualizar_resultado(self.sh, resultado)
+
+
+class TestLogAppendOnly(unittest.TestCase):
+    def test_log_acrescenta_sem_titulo_e_sem_sobrescrever_historico(self):
+        sh = MagicMock()
+        ws = sh.worksheet.return_value
+        ws.row_values.return_value = list(fila.COLUNAS_LOG)
+        log_ws = fila.preparar_log(sh)
+        resultado = {"id_chamado": "123", "titulo": "Titulo privado",
+                     "descricao": "Descricao privada", "categoria_api_antes": "Origem",
+                     "categoria_correta": "Destino", "status_glpi": "APLICADO",
+                     "categoria_api_depois": "Destino", "erro": ""}
+        fila.anexar_log(log_ws, "run-1", "2026-09-17T12:00:00+00:00", resultado)
+        fila.anexar_log(log_ws, "run-2", "2026-09-18T12:00:00+00:00",
+                        dict(resultado, status_glpi="JA_APLICADO"))
+        self.assertEqual(ws.append_row.call_count, 2)
+        primeira = ws.append_row.call_args_list[0].args[0]
+        self.assertEqual(primeira, ["run-1", "2026-09-17T12:00:00+00:00", "123",
+                                    "Origem", "Destino", "APLICADO", "Destino", ""])
+        self.assertNotIn("Titulo privado", primeira)
+        self.assertNotIn("Descricao privada", primeira)
+        ws.batch_update.assert_not_called()
+        ws.update.assert_not_called()
+
+    def test_log_novo_cria_somente_cabecalho(self):
+        sh = MagicMock()
+        sh.worksheet.side_effect = fila.gspread.WorksheetNotFound("log")
+        ws = sh.add_worksheet.return_value
+        ws.row_values.return_value = []
+        fila.preparar_log(sh)
+        sh.add_worksheet.assert_called_once_with(title=fila.ABA_LOG, rows=2,
+                                                   cols=len(fila.COLUNAS_LOG))
+        ws.update.assert_called_once_with(range_name="A1", values=[list(fila.COLUNAS_LOG)],
+                                          value_input_option="RAW")
 
 
 if __name__ == "__main__":

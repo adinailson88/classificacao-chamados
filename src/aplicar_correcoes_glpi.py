@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import sys
+import uuid
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,6 +39,24 @@ def mapa_categorias(categorias):
 
 def _data():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def _run_id():
+    github_id = os.getenv("GITHUB_RUN_ID", "").strip()
+    if github_id:
+        return f"github-{github_id}-{os.getenv('GITHUB_RUN_ATTEMPT', '1')}"
+    return f"local-{uuid.uuid4()}"
+
+
+def _resposta_put_confirma(resposta, ticket_id):
+    """Aceita a forma documentada no GLPI 9.1.1 e a forma legada já testada."""
+    return isinstance(resposta, list) and any(
+        isinstance(item, dict) and (
+            item.get(ticket_id) is True
+            or item.get("id") is True
+            or str(item.get("id")) == ticket_id
+        ) for item in resposta
+    )
 
 
 def executar_linha(linha, cliente, por_nome, por_id, *, aplicar=False, fonte_valida=True):
@@ -95,24 +114,31 @@ def executar_linha(linha, cliente, por_nome, por_id, *, aplicar=False, fonte_val
         erro_put = ""
         try:
             resposta = cliente.corrigir_ticket(ticket_id, destino_id)
-            if not isinstance(resposta, list) or not any(
-                isinstance(item, dict) and str(item.get("id")) in (ticket_id, "True")
-                for item in resposta
-            ):
-                erro_put = "PUT sem confirmação para o Ticket"
+            if not _resposta_put_confirma(resposta, ticket_id):
+                erro_put = "Resposta PUT sem confirmação para o Ticket"
         except gc.GLPIError as exc:
-            erro_put = str(exc)
+            erro_put = f"PUT retornou erro: {exc}"
         # Mesmo uma resposta de erro pode ocorrer depois de o servidor gravar.
         # A leitura posterior é obrigatória para toda tentativa de PUT.
-        posterior = cliente.ticket(ticket_id)
-        saida["categoria_api_depois"] = (
-            str(por_id[int(posterior.get("itilcategories_id") or 0)].get("completename"))
-            if isinstance(posterior, dict) and int(posterior.get("itilcategories_id") or 0) in por_id
-            else ""
-        )
+        try:
+            posterior = cliente.ticket(ticket_id)
+        except gc.GLPIError as exc:
+            saida.update(status_glpi="ERRO", data_execucao=_data(),
+                         erro=((erro_put + "; ") if erro_put else "")
+                         + f"GET posterior falhou: {exc}")
+            return saida
         saida["data_execucao"] = _data()
-        if erro_put or not isinstance(posterior, dict) or int(posterior.get("itilcategories_id") or 0) != destino_id:
-            saida.update(status_glpi="ERRO", erro=erro_put or "GET posterior diferente do destino")
+        posterior_id = int(posterior.get("itilcategories_id") or 0) if isinstance(posterior, dict) else 0
+        if isinstance(posterior, dict):
+            categoria_posterior = por_id.get(posterior_id)
+            saida["categoria_api_depois"] = (
+                str(categoria_posterior["completename"]) if categoria_posterior else f"ID:{posterior_id}"
+            )
+        if not isinstance(posterior, dict) or str(posterior.get("id")) != ticket_id or posterior_id != destino_id:
+            saida.update(status_glpi="ERRO", erro=(erro_put + "; " if erro_put else "")
+                         + "GET posterior não confirmou Ticket e categoria de destino")
+        elif erro_put:
+            saida.update(status_glpi="APLICADO", erro=(erro_put + "; GET posterior confirmou destino")[:160])
         else:
             saida.update(status_glpi="APLICADO", erro="")
     except (gc.GLPIError, ValueError, TypeError, KeyError) as exc:
@@ -150,6 +176,8 @@ def main(argv=None):
         parser.error("Um ou mais IDs solicitados não têm aprovação TRUE na fila")
     if args.limite:
         selecionadas = selecionadas[:args.limite]
+    log_ws = fila.preparar_log(sh) if args.aplicar and selecionadas else None
+    run_id = _run_id() if log_ws is not None else ""
     contagem = Counter()
     with gc.GLPIClient.from_env() as cliente:
         por_nome, por_id = mapa_categorias(cliente.categorias())
@@ -162,6 +190,7 @@ def main(argv=None):
                                       aplicar=args.aplicar, fonte_valida=valida)
             contagem[resultado.get("status_glpi") or "SEM_STATUS"] += 1
             if args.aplicar and resultado != linha:
+                fila.anexar_log(log_ws, run_id, _data(), resultado)
                 fila.atualizar_resultado(sh, resultado)
     print(json.dumps({"selecionados": len(selecionadas), "status": dict(contagem)}, ensure_ascii=False))
 

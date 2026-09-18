@@ -26,7 +26,7 @@ jobs:
   executar:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ vars.GLPI_RUNNER_READY == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.GLPI_RUNNER_READY == 'true' }}
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
       GLPI_URL: ${{ secrets.GLPI_URL }}
@@ -43,7 +43,7 @@ jobs:
       - name: Dependências
         run: python -m pip install -r requirements-leves.txt
       - name: Testes da rotina GLPI
-        run: python -m unittest discover -s tests -p 'test_glpi_correcoes.py'
+        run: python -m unittest discover -s tests -p 'test_glpi_*.py'
       - name: Preparar credencial privada da planilha
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -65,7 +65,7 @@ jobs:
             python src/aplicar_correcoes_glpi.py --teste --limite 5
           fi
       - name: Aplicar lote aprovado
-        if: ${{ vars.GLPI_BATCH_ENABLED == 'true' && (github.event_name == 'schedule' || inputs.aplicar == true) }}
+        if: ${{ vars.GLPI_RUNNER_READY == 'true' && vars.GLPI_BATCH_ENABLED == 'true' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.aplicar == true)) }}
         env:
           IDS: ${{ inputs.ids }}
         run: |

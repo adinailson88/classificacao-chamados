@@ -24,6 +24,7 @@ from tempo import agora_bahia  # noqa: E402
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
 ABA_FILA = "FILA_CORRECOES_GLPI"
+ABA_LOG = "LOG_CORRECOES_GLPI"
 
 COLUNAS_FILA = (
     "id_chamado", "titulo", "categoria_glpi_planilha", "categoria_correta",
@@ -39,6 +40,11 @@ COLUNAS_AUDITORIA = (
     "status_glpi", "categoria_api_antes", "categoria_api_depois",
     "data_execucao", "erro",
 )
+COLUNAS_LOG = (
+    "run_id", "data_hora", "id_chamado", "categoria_api_antes",
+    "categoria_destino", "status", "categoria_api_depois", "erro",
+)
+STATUS_CONCLUIDOS = frozenset(("APLICADO", "JA_APLICADO"))
 
 
 def _valor(linha: list[Any], indice: int) -> str:
@@ -150,6 +156,10 @@ def upsert_fila(existentes: list[dict[str, Any]],
         if not ident or ident in vistos_candidatos:
             raise ValueError("Candidatos contem ID vazio ou duplicado.")
         vistos_candidatos.add(ident)
+        if ident in por_id and por_id[ident]["status_glpi"] in STATUS_CONCLUIDOS:
+            # A categoria C pode mudar após a correção. Não reabre um resultado
+            # já confirmado nem substitui a aprovação e o snapshot históricos.
+            continue
         if ident not in por_id:
             por_id[ident] = {col: "" for col in COLUNAS_FILA}
             por_id[ident].update(candidato)
@@ -178,7 +188,7 @@ def upsert_fila(existentes: list[dict[str, Any]],
                 if atual["status_glpi"] == "PENDENTE":
                     atual["erro"] = ""
     for ident in ordem:
-        if ident not in vistos_candidatos:
+        if ident not in vistos_candidatos and por_id[ident]["status_glpi"] not in STATUS_CONCLUIDOS:
             # M, Q ou C podem mudar na fonte apos uma aprovacao. Conserva a
             # linha por ID, mas nunca deixa um snapshot ausente como elegivel.
             por_id[ident]["situacao_validacao"] = "CONFLITO"
@@ -303,6 +313,33 @@ def atualizar_resultado(sh, resultado: dict[str, Any], nome: str = ABA_FILA) -> 
                       "values": [[valores[0], valores[1], valores[2],
                                   atual["data_candidato"], valores[3], valores[4]]]}],
                     value_input_option="RAW")
+
+
+def preparar_log(sh, nome: str = ABA_LOG):
+    """Valida/cria a aba privada antes de qualquer tentativa de PUT."""
+    try:
+        ws = sh.worksheet(nome)
+    except gspread.WorksheetNotFound:
+        ws = sh.add_worksheet(title=nome, rows=2, cols=len(COLUNAS_LOG))
+    cab = ws.row_values(1)
+    if not cab:
+        ws.update(range_name="A1", values=[list(COLUNAS_LOG)], value_input_option="RAW")
+    elif cab != list(COLUNAS_LOG):
+        raise ValueError("Cabecalho do log difere do esquema esperado.")
+    return ws
+
+
+def anexar_log(ws, run_id: str, data_hora: str, resultado: dict[str, Any]) -> None:
+    """Acrescenta uma tentativa; nunca edita registros históricos."""
+    if not run_id or not data_hora or not _id(resultado.get("id_chamado")):
+        raise ValueError("Log sem run_id, data_hora ou ID Chamado.")
+    valores = [
+        run_id, data_hora, _id(resultado["id_chamado"]),
+        resultado.get("categoria_api_antes", ""), resultado.get("categoria_correta", ""),
+        resultado.get("status_glpi", ""), resultado.get("categoria_api_depois", ""),
+        resultado.get("erro", ""),
+    ]
+    ws.append_row(valores, value_input_option="RAW", insert_data_option="INSERT_ROWS")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
