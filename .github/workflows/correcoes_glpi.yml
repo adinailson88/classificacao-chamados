@@ -1,0 +1,79 @@
+name: Fila de correções GLPI
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+    inputs:
+      aplicar:
+        description: "Permitir PUT nos IDs aprovados (requer GLPI_BATCH_ENABLED)"
+        type: boolean
+        required: true
+        default: false
+      ids:
+        description: "IDs para lote controlado, separados por vírgula; vazio usa limite 5"
+        type: string
+        required: false
+
+concurrency:
+  group: correcoes-glpi
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  executar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ vars.GLPI_RUNNER_READY == 'true' }}
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      GLPI_URL: ${{ secrets.GLPI_URL }}
+      GLPI_USER_TOKEN: ${{ secrets.GLPI_USER_TOKEN }}
+      GLPI_APP_TOKEN: ${{ secrets.GLPI_APP_TOKEN }}
+      GOOGLE_APPLICATION_CREDENTIALS: credenciais_sa.json
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-leves.txt
+      - name: Dependências
+        run: python -m pip install -r requirements-leves.txt
+      - name: Testes da rotina GLPI
+        run: python -m unittest discover -s tests -p 'test_glpi_correcoes.py'
+      - name: Preparar credencial privada da planilha
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          test -n "$GCP_SA_KEY"
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+          chmod 600 credenciais_sa.json
+      - name: Dry-run da fila
+        run: python src/gerar_fila_correcoes_glpi.py
+      - name: Materializar fila por ID
+        run: python src/gerar_fila_correcoes_glpi.py --aplicar
+      - name: Preflight GLPI sem escrita
+        env:
+          IDS: ${{ inputs.ids }}
+        run: |
+          if [ -n "$IDS" ]; then
+            python src/aplicar_correcoes_glpi.py --teste --ids "$IDS" --limite 5
+          else
+            python src/aplicar_correcoes_glpi.py --teste --limite 5
+          fi
+      - name: Aplicar lote aprovado
+        if: ${{ vars.GLPI_BATCH_ENABLED == 'true' && (github.event_name == 'schedule' || inputs.aplicar == true) }}
+        env:
+          IDS: ${{ inputs.ids }}
+        run: |
+          if [ -n "$IDS" ]; then
+            python src/aplicar_correcoes_glpi.py --aplicar --ids "$IDS" --limite 5
+          else
+            python src/aplicar_correcoes_glpi.py --aplicar --limite 5
+          fi
+      - name: Remover credencial
+        if: always()
+        run: rm -f credenciais_sa.json
