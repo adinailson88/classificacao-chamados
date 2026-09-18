@@ -40,21 +40,6 @@ def _texto(valor) -> str:
     return "" if valor is None else str(valor)
 
 
-def _solucoes_validas(solucoes):
-    saida = []
-    for solucao in solucoes:
-        if not isinstance(solucao, dict):
-            continue
-        saida.append({
-            "id": solucao.get("id"),
-            "content": _texto(solucao.get("content")),
-            "date_creation": _texto(solucao.get("date_creation")),
-            "date_mod": _texto(solucao.get("date_mod")),
-            "status": solucao.get("status"),
-        })
-    return saida
-
-
 def diagnosticar_ticket(cliente, ticket_id: str):
     ticket = cliente.ticket(ticket_id)
     if ticket is None:
@@ -63,8 +48,7 @@ def diagnosticar_ticket(cliente, ticket_id: str):
             "existe": False,
             "status": "NAO_ENCONTRADO",
             "descricao": "",
-            "solucoes": [],
-            "solucao_selecionada": "",
+            "solucao": "",
             "descricao_composta": "",
         }
 
@@ -74,36 +58,26 @@ def diagnosticar_ticket(cliente, ticket_id: str):
             "existe": True,
             "status": "RESPOSTA_TICKET_INVALIDA",
             "descricao": "",
-            "solucoes": [],
-            "solucao_selecionada": "",
+            "solucao": "",
             "descricao_composta": "",
         }
 
     descricao = _texto(ticket.get("content"))
-    solucoes = _solucoes_validas(cliente.solucoes_ticket(ticket_id))
+    solucao = _texto(ticket.get("solution"))
 
-    if len(solucoes) == 0:
-        selecionada = ""
-        status = "RECUPERADO_SEM_SOLUCAO" if descricao.strip() else "SEM_DESCRICAO"
-    elif len(solucoes) == 1:
-        selecionada = solucoes[0]["content"]
-        status = "RECUPERADO" if descricao.strip() else "SEM_DESCRICAO"
+    if descricao.strip():
+        status = "RECUPERADO"
+        composta = f"Descrição - {descricao}\n\nSolução - {solucao}"
     else:
-        # Não escolhe silenciosamente entre múltiplas soluções.
-        selecionada = ""
-        status = "MULTIPLAS_SOLUCOES"
-
-    composta = ""
-    if status in {"RECUPERADO", "RECUPERADO_SEM_SOLUCAO"}:
-        composta = f"Descrição - {descricao}\n\nSolução - {selecionada}"
+        status = "SEM_DESCRICAO"
+        composta = ""
 
     return {
         "id_chamado": ticket_id,
         "existe": True,
         "status": status,
         "descricao": descricao,
-        "solucoes": solucoes,
-        "solucao_selecionada": selecionada,
+        "solucao": solucao,
         "descricao_composta": composta,
     }
 
@@ -119,8 +93,7 @@ def executar(cliente, ids=IDS_69):
                 "existe": None,
                 "status": "ERRO_API",
                 "descricao": "",
-                "solucoes": [],
-                "solucao_selecionada": "",
+                "solucao": "",
                 "descricao_composta": "",
                 "erro": str(exc),
             })
@@ -137,8 +110,7 @@ def resumo(resultados):
         "encontrados": sum(1 for x in resultados if x.get("existe") is True),
         "nao_encontrados": sum(1 for x in resultados if x.get("existe") is False),
         "com_descricao": sum(1 for x in resultados if x.get("descricao", "").strip()),
-        "com_uma_solucao": sum(1 for x in resultados if len(x.get("solucoes", [])) == 1),
-        "com_multiplas_solucoes": sum(1 for x in resultados if len(x.get("solucoes", [])) > 1),
+        "com_solucao": sum(1 for x in resultados if x.get("solucao", "").strip()),
         "recuperaveis_para_coluna_d": sum(
             1 for x in resultados if x.get("descricao_composta", "").strip()
         ),
@@ -157,8 +129,7 @@ def salvar_json(path: Path, resultados):
 def salvar_csv(path: Path, resultados):
     campos = [
         "id_chamado", "existe", "status", "descricao",
-        "quantidade_solucoes", "solucao_selecionada",
-        "descricao_composta", "erro",
+        "solucao", "descricao_composta", "erro",
     ]
     with path.open("w", encoding="utf-8-sig", newline="") as arquivo:
         writer = csv.DictWriter(arquivo, fieldnames=campos)
@@ -169,8 +140,7 @@ def salvar_csv(path: Path, resultados):
                 "existe": item.get("existe"),
                 "status": item["status"],
                 "descricao": item.get("descricao", ""),
-                "quantidade_solucoes": len(item.get("solucoes", [])),
-                "solucao_selecionada": item.get("solucao_selecionada", ""),
+                "solucao": item.get("solucao", ""),
                 "descricao_composta": item.get("descricao_composta", ""),
                 "erro": item.get("erro", ""),
             })
