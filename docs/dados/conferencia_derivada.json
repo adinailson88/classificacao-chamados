@@ -1,83 +1,110 @@
 {
- "total_chamados": 0,
- "com_conferencia_glpi": 0,
- "verdade_glpi": 0,
- "verdade_manual": 0,
+ "total_chamados": 14336,
+ "com_conferencia_glpi": 14335,
+ "verdade_glpi": 13764,
+ "verdade_manual": 571,
  "pendente_glpi_errado_sem_q": 0,
- "sem_conferencia": 0,
- "correto_com_q_preenchida": 0,
+ "sem_conferencia": 1,
+ "correto_com_q_preenchida": 1,
  "errado_com_q_igual_a_c": 0,
  "por_modelo": {
   "naive_bayes": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 10105,
+   "errado": 4230,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.7049
   },
   "regressao_logistica": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 11345,
+   "errado": 2990,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.7914
   },
   "linear_svc": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 11700,
+   "errado": 2635,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.8162
   },
   "sgd": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 11428,
+   "errado": 2907,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.7972
   },
   "extra_trees": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 11392,
+   "errado": 2943,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.7947
   },
   "random_forest": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 11266,
+   "errado": 3069,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.7859
   },
   "lstm": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 10103,
+   "errado": 4232,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "avaliados": 14335,
+   "acuracia": 0.7048
   },
   "transformer_ft": {
-   "correto": 0,
-   "errado": 0,
+   "correto": 5739,
+   "errado": 3768,
    "pendente": 0,
-   "sem_predicao": 0,
-   "avaliados": 0,
-   "acuracia": null
+   "sem_predicao": 4828,
+   "avaliados": 9507,
+   "acuracia": 0.6037
   }
  },
- "distribuicao_q": {},
- "categorias_distintas_q": 0,
- "ids_correto_com_q_preenchida": [],
+ "distribuicao_q": {
+  "Manutenção Preventiva > Ar condicionado split": 188,
+  "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)": 105,
+  "Outros > Erro de chamado": 45,
+  "Manutenção Preventiva > Reservatório": 36,
+  "Estrutura Predial > Esquadrias, porta, portão e janelas": 31,
+  "Elétrica > Nobreak": 22,
+  "Estrutura Predial > Forro": 21,
+  "Hidrossanitária > Hidráulica": 21,
+  "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi": 21,
+  "Elétrica > Iluminação": 15,
+  "Instalação de Acessórios e Mobiliário > Placas de identificação": 14,
+  "Elétrica > Instalações elétricas": 9,
+  "Suprimentos / Apoio Técnico > Materiais": 9,
+  "Estrutura Predial > Telhados, calhas, rufos, etc.": 7,
+  "Elétrica > Gerador": 6,
+  "Estrutura Predial > Alvenaria / Pisos / Estrutura": 5,
+  "Hidrossanitária > Bomba": 3,
+  "Hidrossanitária > ETA / ETE": 3,
+  "Manutenção Preventiva > Ar condicionado central": 3,
+  "Estrutura Predial > Instalações Especiais (gás, ar comprimido, etc.)": 2,
+  "Estrutura Predial > Pintura": 2,
+  "Manutenção Preventiva > Telhados, calhas, rufos, etc.": 1,
+  "Suprimentos / Apoio Técnico > Transporte": 1,
+  "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem": 1
+ },
+ "categorias_distintas_q": 24,
+ "ids_correto_com_q_preenchida": [
+  "2026080529"
+ ],
  "ids_errado_com_q_igual_a_c": [],
- "gerado_em": "18/09/2026 01:57",
+ "gerado_em": "18/09/2026 08:33",
  "aba": "CONFERENCIA_MULTIMODELO",
  "regra": "M='Correto' -> verdade = C; M='Errado' + Q preenchida -> verdade = Q; M='Errado' sem Q -> pendente; M vazio -> ignorado"
 }
