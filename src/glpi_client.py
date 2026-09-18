@@ -70,18 +70,6 @@ class GLPIClient:
         data, _ = self._request("GET", f"Ticket/{quote(str(ticket_id), safe='')}")
         return data
 
-    def solucoes_ticket(self, ticket_id: str):
-        """Lê as soluções vinculadas a um Ticket. Nunca altera o GLPI."""
-        data, _ = self._request(
-            "GET",
-            f"Ticket/{quote(str(ticket_id), safe='')}/ITILSolution",
-        )
-        if data is None:
-            return []
-        if not isinstance(data, list):
-            raise GLPIError("Resposta inválida de ITILSolution")
-        return data
-
     def categorias(self):
         """Pagina até esgotar; resultado incompleto não pode produzir um mapa seguro."""
         todas = []
