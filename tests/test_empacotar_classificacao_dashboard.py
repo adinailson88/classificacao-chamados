@@ -26,6 +26,17 @@ class EmpacotarClassificacaoDashboardTest(unittest.TestCase):
             payload = [{"l": "2", "o": "Elétrica", "p": "Elétrica", "c": 0.97}]
             bruto = json.dumps(payload, ensure_ascii=False)
             (origem / "registros_linear_svc.json").write_text(bruto, encoding="utf-8")
+            (origem / "registros_modelos_auditoria.json").write_text(json.dumps({
+                "modelos": {"linear_svc": {
+                    "registros_brutos": 3,
+                    "ids_unicos": 1,
+                    "duplicados_descartados": 2,
+                    "ids_fora_base_descartados": 0,
+                    "ids_invalidos": 0,
+                    "ids_esperados": 1,
+                    "status": "valido_completo",
+                }}
+            }), encoding="utf-8")
 
             manifesto = empacotar(config, origem, destino)
 
@@ -34,6 +45,9 @@ class EmpacotarClassificacaoDashboardTest(unittest.TestCase):
             self.assertFalse(manifesto["contem_id_chamado"])
             self.assertFalse(manifesto["contem_texto_chamado"])
             self.assertEqual(manifesto["arquivos"][0]["registros"], 1)
+            self.assertEqual(manifesto["arquivos"][0]["registros_brutos"], 3)
+            self.assertEqual(manifesto["arquivos"][0]["duplicados_descartados"], 2)
+            self.assertEqual(manifesto["arquivos"][0]["status"], "valido_completo")
             esperado = hashlib.sha256(bruto.encode("utf-8")).hexdigest()
             self.assertEqual(manifesto["arquivos"][0]["sha256"], esperado)
             self.assertEqual(
@@ -50,6 +64,23 @@ class EmpacotarClassificacaoDashboardTest(unittest.TestCase):
             }}), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "modelo invalido"):
                 empacotar(config, base / "origem", base / "destino")
+
+    def test_bloqueia_id_real_no_json_publico(self):
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td)
+            origem = base / "origem"
+            origem.mkdir()
+            config = base / "config.json"
+            config.write_text(json.dumps({"multimodelo": {
+                "modelos_leves": ["linear_svc"], "modelos_pesados": []
+            }}), encoding="utf-8")
+            (origem / "registros_linear_svc.json").write_text(
+                json.dumps([{"l": "2", "id_chamado": "123"}]), encoding="utf-8")
+            (origem / "registros_modelos_auditoria.json").write_text(json.dumps({
+                "modelos": {"linear_svc": {"ids_unicos": 1, "ids_invalidos": 0}}
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "campo nao permitido"):
+                empacotar(config, origem, base / "destino")
 
 
 if __name__ == "__main__":
