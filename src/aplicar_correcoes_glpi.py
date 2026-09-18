@@ -92,12 +92,18 @@ def executar_linha(linha, cliente, por_nome, por_id, *, aplicar=False, fonte_val
         if not aplicar:
             saida.update(status_glpi="DRY_RUN", categoria_api_depois=destino_nome, erro="")
             return saida
-        resposta = cliente.corrigir_ticket(ticket_id, destino_id)
-        if not isinstance(resposta, list) or not any(
-            isinstance(item, dict) and str(item.get("id")) in (ticket_id, "True")
-            for item in resposta
-        ):
-            raise gc.GLPIError("PUT sem confirmação para o Ticket")
+        erro_put = ""
+        try:
+            resposta = cliente.corrigir_ticket(ticket_id, destino_id)
+            if not isinstance(resposta, list) or not any(
+                isinstance(item, dict) and str(item.get("id")) in (ticket_id, "True")
+                for item in resposta
+            ):
+                erro_put = "PUT sem confirmação para o Ticket"
+        except gc.GLPIError as exc:
+            erro_put = str(exc)
+        # Mesmo uma resposta de erro pode ocorrer depois de o servidor gravar.
+        # A leitura posterior é obrigatória para toda tentativa de PUT.
         posterior = cliente.ticket(ticket_id)
         saida["categoria_api_depois"] = (
             str(por_id[int(posterior.get("itilcategories_id") or 0)].get("completename"))
@@ -105,8 +111,8 @@ def executar_linha(linha, cliente, por_nome, por_id, *, aplicar=False, fonte_val
             else ""
         )
         saida["data_execucao"] = _data()
-        if not isinstance(posterior, dict) or int(posterior.get("itilcategories_id") or 0) != destino_id:
-            saida.update(status_glpi="ERRO", erro="GET posterior diferente do destino")
+        if erro_put or not isinstance(posterior, dict) or int(posterior.get("itilcategories_id") or 0) != destino_id:
+            saida.update(status_glpi="ERRO", erro=erro_put or "GET posterior diferente do destino")
         else:
             saida.update(status_glpi="APLICADO", erro="")
     except (gc.GLPIError, ValueError, TypeError, KeyError) as exc:

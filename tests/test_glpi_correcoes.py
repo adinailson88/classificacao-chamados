@@ -19,8 +19,10 @@ class ClienteFalso:
         self.falha_put = falha_put
         self.posterior = posterior
         self.puts = []
+        self.leituras = 0
 
     def ticket(self, ticket_id):
+        self.leituras += 1
         if not self.existe:
             return None
         categoria = self.posterior if self.puts and self.posterior is not None else self.categoria
@@ -118,10 +120,18 @@ class TesteAplicacao(unittest.TestCase):
         self.assertEqual(cliente.puts, [("123", 2)])
 
     def test_falha_put(self):
-        self.assertEqual(executar(ClienteFalso(falha_put=True), aplicar=True)["status_glpi"], "ERRO")
+        cliente = ClienteFalso(falha_put=True)
+        self.assertEqual(executar(cliente, aplicar=True)["status_glpi"], "ERRO")
+        self.assertEqual(cliente.leituras, 2)
 
     def test_get_posterior_divergente(self):
         self.assertEqual(executar(ClienteFalso(posterior=1), aplicar=True)["status_glpi"], "ERRO")
+
+    def test_resposta_put_invalida_ainda_faz_get(self):
+        cliente = ClienteFalso()
+        cliente.corrigir_ticket = lambda ticket_id, categoria_id: None
+        self.assertEqual(executar(cliente, aplicar=True)["status_glpi"], "ERRO")
+        self.assertEqual(cliente.leituras, 2)
 
     def test_idempotencia(self):
         cliente = ClienteFalso()
