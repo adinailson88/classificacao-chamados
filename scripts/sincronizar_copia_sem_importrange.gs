@@ -1106,6 +1106,18 @@ function copia_escreverPreviewMigracao_(plano) {
       plano.resumo.idsCopiaDivergemSnapshot
     ],
     [
+      "TITULOS_DIVERGEM_HISTORICO",
+      plano.resumo.titulosDivergemHistorico
+    ],
+    [
+      "CATEGORIAS_DIVERGEM_HISTORICO",
+      plano.resumo.categoriasDivergemHistorico
+    ],
+    [
+      "ERROS_VISIVEIS_A_F",
+      plano.resumo.errosVisiveisAF
+    ],
+    [
       "IDS_SEM_GLPI_E_SEM_FALLBACK",
       plano.resumo.idsSemGlpiESemFallback
     ],
@@ -1141,7 +1153,31 @@ function copia_escreverPreviewMigracao_(plano) {
     detalhes.push([
       "SEM_GLPI_SEM_FALLBACK",
       x.linha + "/" + x.id,
-      "bloqueia"
+      "informativo; valor atual de D é preservado na migração"
+    ]);
+  });
+
+  plano.divergenciasTitulo.slice(0, 100).forEach(function (x) {
+    detalhes.push([
+      "TITULO_DIVERGENTE",
+      x.linha + "/" + x.id,
+      "COPIA=" + x.copia.slice(0, 120) + " | HIST=" + x.fonte.slice(0, 120)
+    ]);
+  });
+
+  plano.divergenciasCategoria.slice(0, 100).forEach(function (x) {
+    detalhes.push([
+      "CATEGORIA_DIVERGENTE",
+      x.linha + "/" + x.id,
+      "COPIA=" + x.copia.slice(0, 120) + " | HIST=" + x.fonte.slice(0, 120)
+    ]);
+  });
+
+  plano.errosVisiveisAF.slice(0, 100).forEach(function (x) {
+    detalhes.push([
+      "ERRO_VISIVEL_AF",
+      x.linha + "/" + x.id + "/" + x.coluna,
+      x.valor
     ]);
   });
 
