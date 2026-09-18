@@ -266,9 +266,9 @@ function montarPlanoMigracao_() {
     ]);
   }
 
-  const novosAtuais = [];
+  const presentesSomenteAtual = [];
   atual.ordemIds.forEach(id => {
-    if (!idsSnapshot.has(id)) novosAtuais.push(id);
+    if (!idsSnapshot.has(id)) presentesSomenteAtual.push(id);
   });
 
   const bloqueios = [];
@@ -278,6 +278,9 @@ function montarPlanoMigracao_() {
   if (osm.erros.length) bloqueios.push("fonte_os_invalida=" + osm.erros.length);
   if (faltantesHistorico.length) {
     bloqueios.push("ids_snapshot_ausentes_fonte_historica=" + faltantesHistorico.length);
+  }
+  if (semDescricaoAtual.length) {
+    bloqueios.push("descricoes_historicas_nao_recuperadas=" + semDescricaoAtual.length);
   }
   if (ultimaCritica > mapaSnapshot.maxLinha) {
     bloqueios.push("dados_G_Q_sem_snapshot_ate_linha=" + ultimaCritica);
@@ -298,7 +301,7 @@ function montarPlanoMigracao_() {
     matriz: matriz,
     faltantesHistorico: faltantesHistorico,
     semDescricaoAtual: semDescricaoAtual,
-    novosAtuais: novosAtuais,
+    presentesSomenteAtual: presentesSomenteAtual,
     historica: historica,
     atual: atual,
     osm: osm,
@@ -314,7 +317,7 @@ function montarPlanoMigracao_() {
       idsFonteOrdensServico: osm.porId.size,
       idsSnapshotAusentesHistorico: faltantesHistorico.length,
       idsSnapshotSemDescricaoGlpiAtual: semDescricaoAtual.length,
-      idsNovosGlpiAtual: novosAtuais.length,
+      idsPresentesSomenteGlpiAtual: presentesSomenteAtual.length,
       formulasImportrangeAF: formulas.importrange,
       formulasInesperadasAF: formulas.formulasInesperadas.length,
       ultimaLinhaComDadosGQ: ultimaCritica,
@@ -396,7 +399,7 @@ function montarPlanoSincronizacao_() {
   if (atual.erros.length) bloqueios.push("fonte_glpi_atual_invalida=" + atual.erros.length);
   if (osm.erros.length) bloqueios.push("fonte_os_invalida=" + osm.erros.length);
   if (duplicadosDestino.length) bloqueios.push("ids_duplicados_destino=" + duplicadosDestino.length);
-  if (novos.length > SYNC_CFG.maxNewPerRun) bloqueios.push("novos_excedem_limite=" + novos.length);
+  if (novos.length) bloqueios.push("inclusao_automatica_desabilitada_ids_somente_fonte_atual=" + novos.length);
   if (atualizacoes.length > SYNC_CFG.maxExistingUpdatesPerRun) {
     bloqueios.push("atualizacoes_excedem_limite=" + atualizacoes.length);
   }
@@ -414,7 +417,7 @@ function montarPlanoSincronizacao_() {
       idsDestino: porIdDestino.size,
       idsFonteGlpiAtual: atual.porId.size,
       atualizacoes: atualizacoes.length,
-      novos: novos.length,
+      presentesSomenteFonteAtual: novos.length,
       idsHistoricosPreservadosAusentesAtual: preservadosAusentesAtual.length,
       idsDuplicadosDestino: duplicadosDestino.length,
       bloqueios: bloqueios
@@ -681,7 +684,7 @@ function escreverPreviewMigracao_(plano) {
     ["IDS_FONTE_OS", plano.resumo.idsFonteOrdensServico],
     ["IDS_SNAPSHOT_AUSENTES_HISTORICO", plano.resumo.idsSnapshotAusentesHistorico],
     ["IDS_SNAPSHOT_SEM_DESCRICAO_GLPI_ATUAL", plano.resumo.idsSnapshotSemDescricaoGlpiAtual],
-    ["IDS_NOVOS_GLPI_ATUAL", plano.resumo.idsNovosGlpiAtual],
+    ["IDS_PRESENTES_SOMENTE_GLPI_ATUAL", plano.resumo.idsPresentesSomenteGlpiAtual],
     ["FORMULAS_IMPORTRANGE_A_F", plano.resumo.formulasImportrangeAF],
     ["FORMULAS_INESPERADAS_A_F", plano.resumo.formulasInesperadasAF],
     ["ULTIMA_LINHA_DADOS_G_Q", plano.resumo.ultimaLinhaComDadosGQ],
@@ -702,8 +705,8 @@ function escreverPreviewMigracao_(plano) {
   plano.semDescricaoAtual.slice(0, 200).forEach(x => {
     sh.getRange(row++, 1, 1, 3).setValues([["SEM_DESCRICAO_GLPI_ATUAL", x.linha + "/" + x.id, "linha preservada; D ficará vazio"]]);
   });
-  plano.novosAtuais.slice(0, 200).forEach(id => {
-    sh.getRange(row++, 1, 1, 3).setValues([["NOVO_GLPI_ATUAL", id, "não entra na migração inicial; será candidato na sincronização posterior"]]);
+  plano.presentesSomenteAtual.slice(0, 200).forEach(id => {
+    sh.getRange(row++, 1, 1, 3).setValues([["PRESENTE_SOMENTE_GLPI_ATUAL", id, "não entra na migração e não será incluído automaticamente; exige revisão da origem"]]);
   });
   plano.formulas.formulasInesperadas.slice(0, 100).forEach(x => {
     sh.getRange(row++, 1, 1, 3).setValues([["FORMULA_INESPERADA", x.celula, x.formula]]);
@@ -724,7 +727,7 @@ function escreverPreviewSincronizacao_(plano) {
     ["IDS_DESTINO", plano.resumo.idsDestino],
     ["IDS_FONTE_GLPI_ATUAL", plano.resumo.idsFonteGlpiAtual],
     ["ATUALIZACOES", plano.resumo.atualizacoes],
-    ["NOVOS", plano.resumo.novos],
+    ["PRESENTES_SOMENTE_FONTE_ATUAL", plano.resumo.presentesSomenteFonteAtual],
     ["IDS_HISTORICOS_PRESERVADOS_AUSENTES_ATUAL", plano.resumo.idsHistoricosPreservadosAusentesAtual],
     ["IDS_DUPLICADOS_DESTINO", plano.resumo.idsDuplicadosDestino],
     ["BLOQUEIOS", plano.bloqueios.join(" | ")]
