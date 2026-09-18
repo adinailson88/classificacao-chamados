@@ -49,8 +49,68 @@ const COPIA_SYNC_CFG = Object.freeze({
   authorizationCell: "B1",
   authorizationValue: "APLICAR_COPIA",
 
-  // Inclusão automática de IDs que existem apenas no espelho atual permanece
-  // desabilitada enquanto a origem dos 55 IDs divergentes não estiver validada.
+  // Baseline imutável dos IDs que já existiam na primeira comparação entre
+  // o espelho GLPI atual e a base histórica. Eles nunca são candidatos novos.
+  knownExcludedIds: Object.freeze([
+    "2019050568",
+    "2019080444",
+    "2019080445",
+    "2019080446",
+    "2019080448",
+    "2019080450",
+    "2019080451",
+    "2019080454",
+    "2019080456",
+    "2019080457",
+    "2019080458",
+    "2019080459",
+    "2019080464",
+    "2019080465",
+    "2019080466",
+    "2019080467",
+    "2019080468",
+    "2019080469",
+    "2019080470",
+    "2019080471",
+    "2019080472",
+    "2019080473",
+    "2019080477",
+    "2019080478",
+    "2019090314",
+    "2019090315",
+    "2019090316",
+    "2019090317",
+    "2019100155",
+    "2019110186",
+    "2019110187",
+    "2019110316",
+    "2019120045",
+    "2019120046",
+    "2019120047",
+    "2019120048",
+    "2019120055",
+    "2019120058",
+    "2019120297",
+    "2019120298",
+    "2019120299",
+    "2019120300",
+    "2019120301",
+    "2019120302",
+    "2019120303",
+    "2019120304",
+    "2019120305",
+    "2019120306",
+    "2019120307",
+    "2019120308",
+    "2019120309",
+    "2019120310",
+    "2019120311",
+    "2019120318",
+    "2026050353"
+  ]),
+
+  // Só afeta candidatos ausentes da COPIA e fora da baseline acima.
+  // Permanece false até a simulação pós-baseline ser validada.
   allowNewIds: false,
 
   maxExistingUpdatesPerRun: 1000,
@@ -315,7 +375,8 @@ function sincronizarCopiaPorId() {
       status: "APLICADO",
       atualizados: plano.atualizacoes.length,
       novosInseridos: COPIA_SYNC_CFG.allowNewIds ? plano.novos.length : 0,
-      novosIgnorados: COPIA_SYNC_CFG.allowNewIds ? 0 : plano.novos.length
+      novosIgnorados: COPIA_SYNC_CFG.allowNewIds ? 0 : plano.novos.length,
+      baselineExcluida: plano.excluidosBaseline.length
     };
   });
 }
@@ -576,6 +637,7 @@ function copia_montarPlanoSincronizacao_() {
 
   const porIdDestino = new Map();
   const duplicados = [];
+  const baseline = copia_obterBaselineExclusoes_();
 
   valores.forEach(function (linha, i) {
     const id = copia_normalizarId_(linha[0]);
@@ -596,6 +658,7 @@ function copia_montarPlanoSincronizacao_() {
 
   const atualizacoes = [];
   const novos = [];
+  const excluidosBaseline = [];
 
   atual.ordemIds.forEach(function (id) {
     const live = atual.porId.get(id);
@@ -627,7 +690,12 @@ function copia_montarPlanoSincronizacao_() {
     ];
 
     if (!existente) {
-      novos.push({ id: id, valores: desejado });
+      const candidato = { id: id, valores: desejado };
+      if (baseline.ids.has(id)) {
+        excluidosBaseline.push(candidato);
+      } else {
+        novos.push(candidato);
+      }
       return;
     }
 
@@ -667,6 +735,9 @@ function copia_montarPlanoSincronizacao_() {
   });
 
   const bloqueios = [];
+  if (baseline.erros.length) {
+    bloqueios.push("baseline_exclusoes_invalida=" + baseline.erros.length);
+  }
   if (formulas.total > 0) {
     bloqueios.push("formulas_ainda_presentes_A_F=" + formulas.total);
   }
@@ -699,6 +770,7 @@ function copia_montarPlanoSincronizacao_() {
     bloqueios: bloqueios,
     atualizacoes: atualizacoes,
     novos: novos,
+    excluidosBaseline: excluidosBaseline,
     preservadosAusentesAtual: preservadosAusentesAtual,
     duplicados: duplicados,
     resumo: {
@@ -706,7 +778,9 @@ function copia_montarPlanoSincronizacao_() {
       idsDestino: porIdDestino.size,
       idsFonteGlpiAtual: atual.porId.size,
       atualizacoes: atualizacoes.length,
-      idsSomenteFonteAtual: novos.length,
+      idsSomenteFonteAtual: novos.length + excluidosBaseline.length,
+      idsBaselineExclusao: excluidosBaseline.length,
+      idsNovosCandidatos: novos.length,
       inclusaoNovosHabilitada: COPIA_SYNC_CFG.allowNewIds,
       idsHistoricosPreservadosAusentesAtual:
         preservadosAusentesAtual.length,
@@ -715,6 +789,27 @@ function copia_montarPlanoSincronizacao_() {
       bloqueios: bloqueios
     }
   };
+}
+
+
+function copia_obterBaselineExclusoes_() {
+  const ids = new Set();
+  const erros = [];
+
+  COPIA_SYNC_CFG.knownExcludedIds.forEach(function (valor, i) {
+    const id = copia_normalizarId_(valor);
+    if (!id) {
+      erros.push("baseline posição " + (i + 1) + " sem ID");
+      return;
+    }
+    if (ids.has(id)) {
+      erros.push("baseline ID duplicado " + id);
+      return;
+    }
+    ids.add(id);
+  });
+
+  return { ids: ids, erros: erros };
 }
 
 
@@ -1249,6 +1344,8 @@ function copia_escreverPreviewSincronizacao_(plano) {
     ["IDS_FONTE_GLPI_ATUAL", plano.resumo.idsFonteGlpiAtual],
     ["ATUALIZACOES", plano.resumo.atualizacoes],
     ["IDS_SOMENTE_FONTE_ATUAL", plano.resumo.idsSomenteFonteAtual],
+    ["IDS_BASELINE_EXCLUSAO", plano.resumo.idsBaselineExclusao],
+    ["IDS_NOVOS_CANDIDATOS", plano.resumo.idsNovosCandidatos],
     [
       "INCLUSAO_NOVOS_HABILITADA",
       plano.resumo.inclusaoNovosHabilitada
@@ -1278,12 +1375,21 @@ function copia_escreverPreviewSincronizacao_(plano) {
     ]);
   });
 
-  plano.novos.slice(0, 200).forEach(function (x) {
+  plano.excluidosBaseline.slice(0, 200).forEach(function (x) {
     detalhes.push([
-      "SOMENTE_FONTE_ATUAL",
+      "BASELINE_EXCLUSAO",
       x.id,
       "",
-      COPIA_SYNC_CFG.allowNewIds ? "A:F" : "IGNORADO"
+      "NUNCA_INSERIR"
+    ]);
+  });
+
+  plano.novos.slice(0, 200).forEach(function (x) {
+    detalhes.push([
+      "NOVO_CANDIDATO",
+      x.id,
+      "",
+      COPIA_SYNC_CFG.allowNewIds ? "A:F" : "AGUARDANDO_HABILITACAO"
     ]);
   });
 
