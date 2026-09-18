@@ -350,6 +350,11 @@ function copia_montarPlanoMigracao_() {
 
   const mapaSnapshot = copia_lerMapaSnapshot_(snapshot);
   const historica = copia_lerFonteHistorica_();
+
+  // As fontes abaixo são auditadas agora para garantir que a sincronização
+  // posterior por ID está disponível, mas NÃO substituem valores na migração
+  // inicial. A primeira migração apenas materializa exatamente o que já está
+  // visível em COPIA!A:F.
   const atual = copia_lerFonteGlpiAtual_();
   const osm = copia_lerOrdensServico_();
   const fallback = copia_lerFallback_(ss);
@@ -366,10 +371,12 @@ function copia_montarPlanoMigracao_() {
   const idsSnapshot = new Set();
   const faltantesHistorico = [];
   const idsLinhaDivergente = [];
+  const divergenciasTitulo = [];
+  const divergenciasCategoria = [];
+  const errosVisiveisAF = [];
   const ausentesGlpiSemFallback = [];
   const descricoesVaziasFinais = [];
   const matriz = [];
-  const diferencas = [];
 
   for (let linha = 2; linha <= mapaSnapshot.maxLinha; linha++) {
     const idx = linha - 2;
@@ -378,7 +385,8 @@ function copia_montarPlanoMigracao_() {
 
     const existente = atualAF[idx] || ["", "", "", "", "", ""];
     const idExistente = copia_normalizarId_(existente[0]);
-    if (idExistente && idExistente !== id) {
+
+    if (idExistente !== id) {
       idsLinhaDivergente.push({
         linha: linha,
         snapshot: id,
@@ -389,7 +397,36 @@ function copia_montarPlanoMigracao_() {
     const hist = historica.porId.get(id);
     if (!hist) {
       faltantesHistorico.push({ linha: linha, id: id });
-      continue;
+    } else {
+      if (copia_texto_(existente[1]) !== copia_texto_(hist.titulo)) {
+        divergenciasTitulo.push({
+          linha: linha,
+          id: id,
+          copia: copia_texto_(existente[1]),
+          fonte: copia_texto_(hist.titulo)
+        });
+      }
+
+      if (copia_texto_(existente[2]) !== copia_texto_(hist.categoria)) {
+        divergenciasCategoria.push({
+          linha: linha,
+          id: id,
+          copia: copia_texto_(existente[2]),
+          fonte: copia_texto_(hist.categoria)
+        });
+      }
+    }
+
+    for (let col = 0; col < 6; col++) {
+      const valor = copia_texto_(existente[col]);
+      if (copia_eErroPlanilha_(valor)) {
+        errosVisiveisAF.push({
+          linha: linha,
+          coluna: copia_colunaLetra_(col + 1),
+          id: id,
+          valor: valor
+        });
+      }
     }
 
     const live = atual.porId.get(id);
@@ -398,50 +435,21 @@ function copia_montarPlanoMigracao_() {
       ausentesGlpiSemFallback.push({ linha: linha, id: id });
     }
 
-    // Migração conservadora:
-    // 1) preserva D atualmente visível quando válido;
-    // 2) preenche D vazio pelo GLPI direto;
-    // 3) se o ID não está no espelho atual, usa fallback privado.
-    const dAtual = copia_texto_(existente[3]).trim();
-    let descricao = "";
-    if (dAtual && !copia_eErroPlanilha_(dAtual)) {
-      descricao = copia_texto_(existente[3]);
-    } else if (live && live.descricaoComposta) {
-      descricao = live.descricaoComposta;
-    } else if (fallbackD) {
-      descricao = fallbackD;
-    }
-
-    if (!descricao.trim()) {
+    if (!copia_texto_(existente[3]).trim()) {
       descricoesVaziasFinais.push({ linha: linha, id: id });
     }
 
-    const os = osm.porId.get(id) || { titulo: "", descricao: "" };
-
-    const desejado = [
+    // Materialização estritamente conservadora:
+    // A vem do snapshot (já validado contra a COPIA);
+    // B:F são exatamente os valores atualmente exibidos.
+    matriz.push([
       id,
-      hist.titulo,
-      hist.categoria,
-      descricao,
-      os.titulo,
-      os.descricao
-    ];
-
-    matriz.push(desejado);
-
-    for (let c = 0; c < 6; c++) {
-      if (copia_texto_(existente[c]) !== copia_texto_(desejado[c])) {
-        if (diferencas.length < 500) {
-          diferencas.push({
-            linha: linha,
-            coluna: copia_colunaLetra_(c + 1),
-            id: id,
-            antes: copia_texto_(existente[c]).slice(0, 160),
-            depois: copia_texto_(desejado[c]).slice(0, 160)
-          });
-        }
-      }
-    }
+      copia_texto_(existente[1]),
+      copia_texto_(existente[2]),
+      copia_texto_(existente[3]),
+      copia_texto_(existente[4]),
+      copia_texto_(existente[5])
+    ]);
   }
 
   const somenteAtual = [];
@@ -456,15 +464,6 @@ function copia_montarPlanoMigracao_() {
   if (historica.erros.length) {
     bloqueios.push("fonte_historica_invalida=" + historica.erros.length);
   }
-  if (atual.erros.length) {
-    bloqueios.push("fonte_glpi_atual_invalida=" + atual.erros.length);
-  }
-  if (osm.erros.length) {
-    bloqueios.push("fonte_os_invalida=" + osm.erros.length);
-  }
-  if (fallback.erros.length) {
-    bloqueios.push("fallback_invalido=" + fallback.erros.length);
-  }
   if (faltantesHistorico.length) {
     bloqueios.push(
       "ids_snapshot_ausentes_fonte_historica=" + faltantesHistorico.length
@@ -475,9 +474,21 @@ function copia_montarPlanoMigracao_() {
       "ids_COPIA_divergem_snapshot=" + idsLinhaDivergente.length
     );
   }
-  if (ausentesGlpiSemFallback.length) {
+  if (divergenciasTitulo.length) {
     bloqueios.push(
-      "ids_sem_GLPI_e_sem_fallback=" + ausentesGlpiSemFallback.length
+      "titulos_COPIA_divergem_fonte_historica=" +
+      divergenciasTitulo.length
+    );
+  }
+  if (divergenciasCategoria.length) {
+    bloqueios.push(
+      "categorias_COPIA_divergem_fonte_historica=" +
+      divergenciasCategoria.length
+    );
+  }
+  if (errosVisiveisAF.length) {
+    bloqueios.push(
+      "erros_visiveis_A_F=" + errosVisiveisAF.length
     );
   }
   if (ultimaGQ > mapaSnapshot.maxLinha) {
@@ -500,10 +511,13 @@ function copia_montarPlanoMigracao_() {
     formulas: formulas,
     faltantesHistorico: faltantesHistorico,
     idsLinhaDivergente: idsLinhaDivergente,
+    divergenciasTitulo: divergenciasTitulo,
+    divergenciasCategoria: divergenciasCategoria,
+    errosVisiveisAF: errosVisiveisAF,
     ausentesGlpiSemFallback: ausentesGlpiSemFallback,
     descricoesVaziasFinais: descricoesVaziasFinais,
     somenteAtual: somenteAtual,
-    diferencas: diferencas,
+    diferencas: [],
     ultimaGQ: ultimaGQ,
     ultimaFisica: ultimaFisica,
     resumo: {
@@ -516,6 +530,9 @@ function copia_montarPlanoMigracao_() {
       idsFallbackDescricao: fallback.porId.size,
       idsSnapshotAusentesHistorico: faltantesHistorico.length,
       idsCopiaDivergemSnapshot: idsLinhaDivergente.length,
+      titulosDivergemHistorico: divergenciasTitulo.length,
+      categoriasDivergemHistorico: divergenciasCategoria.length,
+      errosVisiveisAF: errosVisiveisAF.length,
       idsSemGlpiESemFallback: ausentesGlpiSemFallback.length,
       descricoesVaziasFinais: descricoesVaziasFinais.length,
       idsSomenteFonteAtual: somenteAtual.length,
@@ -528,7 +545,7 @@ function copia_montarPlanoMigracao_() {
         0,
         ultimaFisica - mapaSnapshot.maxLinha
       ),
-      diferencasAFDetectadas: diferencas.length,
+      diferencasAFDetectadas: 0,
       bloqueios: bloqueios
     }
   };
