@@ -112,6 +112,95 @@ def sanitizar_comparacao_previsoes(rows):
     return seguros
 
 
+def normalizar_id(valor) -> str:
+    """Normaliza IDs numericos do Sheets sem depender da representacao 1693/1693.0."""
+    texto = str(valor or "").strip()
+    if not texto:
+        return ""
+    try:
+        return str(int(float(texto)))
+    except (TypeError, ValueError):
+        return texto
+
+
+def normalizar_confianca(valor) -> float:
+    try:
+        numero = float(str(valor).replace("%", "").replace(",", ".").strip())
+        return numero / 100.0 if numero > 1 else numero
+    except (ValueError, TypeError):
+        return 0.0
+
+
+def deduplicar_registros_modelo(vals, ids_atuais, linha_atual_por_id, valida, modelo):
+    """Produz registros publicos com uma previsao por ID, mantendo a ultima.
+
+    O ID real existe apenas como chave temporaria. O retorno publico nao o contem.
+    ``linha_planilha`` e atualizada pelo mapa da aba principal e nunca e usada
+    como identidade, pois pode mudar quando a base cresce ou e reordenada.
+    """
+    if not ids_atuais:
+        raise RuntimeError("IDs atuais indisponiveis; publicacao por modelo bloqueada")
+
+    por_id = {}
+    brutos = invalidos = 0
+    for rr in vals[1:]:
+        if len(rr) < 6:
+            continue
+        cia = str(rr[4] or "").strip()
+        if not cia:
+            continue
+        brutos += 1
+        idc = normalizar_id(rr[2] if len(rr) > 2 else "")
+        if not idc or not idc.isdigit() or int(idc) <= 0:
+            invalidos += 1
+            continue
+        por_id[idc] = rr
+
+    if invalidos:
+        raise ValueError(f"{modelo}: {invalidos} previsao(oes) com ID vazio/invalido")
+
+    fora_base = sum(1 for idc in por_id if idc not in ids_atuais)
+    rm = []
+    for idc, rr in sorted(
+        por_id.items(), key=lambda item: linha_atual_por_id.get(item[0], 10**12)
+    ):
+        if idc not in ids_atuais:
+            continue
+        ln = str(linha_atual_por_id[idc])
+        orig = str(rr[3] or "").strip()
+        cia = str(rr[4] or "").strip()
+        conf = normalizar_confianca(rr[5])
+        ex = str(rr[7] or "").strip() if len(rr) > 7 else modelo
+        faixa = "acima_95" if conf >= 0.95 else ("entre_70_95" if conf >= 0.70 else "abaixo_70")
+        rm.append({
+            "l": ln,
+            "g": orig.split(" > ")[0].strip() if orig else "(sem)",
+            "m": tipo_manutencao(orig),
+            "o": orig,
+            "p": cia,
+            "c": round(conf, 4),
+            "f": faixa,
+            "e": ex or modelo,
+            "k": 1 if cia == orig else 0,
+            "v": valida.get(ln, ""),
+        })
+
+    if len(rm) > len(ids_atuais):
+        raise RuntimeError(f"{modelo}: registros finais excedem os IDs atuais")
+    auditoria = {
+        "modelo": modelo,
+        "registros_brutos": brutos,
+        "ids_unicos_origem": len(por_id),
+        "duplicados_descartados": brutos - len(por_id),
+        "ids_fora_base_descartados": fora_base,
+        "ids_invalidos": invalidos,
+        "ids_esperados": len(ids_atuais),
+        "ids_unicos": len(rm),
+        "status": "valido_completo" if len(rm) == len(ids_atuais) else "parcial",
+    }
+    return rm, auditoria
+
+
 def exportar_reclass_resumo(sh, config):
     """Agrega as abas RECLASS__<modelo> em contagens seguras (sem texto/ID).
 
@@ -407,24 +496,6 @@ def main() -> int:
     except Exception:  # noqa: BLE001
         pass
 
-    def _id(x) -> str:
-        """UNFORMATTED_VALUE devolve numero (1693.0); padroniza para string.
-        Mesma regra das demais ferramentas, para produzir a MESMA chave."""
-        t = str(x or "").strip()
-        if not t:
-            return ""
-        try:
-            return str(int(float(t)))
-        except (TypeError, ValueError):
-            return t
-
-    def _conf(x):
-        try:
-            f = float(str(x).replace("%", "").replace(",", ".").strip())
-            return f / 100.0 if f > 1 else f
-        except (ValueError, TypeError):
-            return 0.0
-
     # SNAPSHOT_ETAPA_1 e' append-only: uma rematerializacao (G:K) forca reclassificar
     # chamados ja presentes no snapshot, sem apagar o registro antigo (decisao da
     # rodada 20, ver src/rematerializar_etapa1_oficial.py). Sem dedup, um chamado
@@ -440,16 +511,18 @@ def main() -> int:
     # Projetos e Obras' e 2 excluidos no GLPI). Eles nao podem entrar no painel,
     # entao a lista e filtrada pelos ids que existem hoje na aba principal.
     ids_atuais: set[str] = set()
+    linha_atual_por_id: dict[str, int] = {}
     try:
         bloco_principal = com_retentativa(
             "ler ids da aba principal",
             lambda: sh.worksheet(config["aba_principal"]).get_values(
                 "A:A", value_render_option="UNFORMATTED_VALUE"),
         )
-        for rr in bloco_principal[1:]:
-            i = _id(rr[0] if rr else "")
+        for linha_atual, rr in enumerate(bloco_principal[1:], start=2):
+            i = normalizar_id(rr[0] if rr else "")
             if i:
                 ids_atuais.add(i)
+                linha_atual_por_id[i] = linha_atual
     except Exception:  # noqa: BLE001
         ids_atuais = set()
 
@@ -459,7 +532,7 @@ def main() -> int:
         if len(rr) < 6:
             continue
         ln = str(rr[1]).strip()
-        idc = _id(rr[2] if len(rr) > 2 else "")
+        idc = normalizar_id(rr[2] if len(rr) > 2 else "")
         orig = str(rr[3]).strip()
         cia = str(rr[4]).strip()
         if not cia or not idc:
@@ -467,7 +540,7 @@ def main() -> int:
         if ids_atuais and idc not in ids_atuais:
             descartados_fora_da_base += 1
             continue
-        c = _conf(rr[5])
+        c = normalizar_confianca(rr[5])
         ex = str(rr[6]).strip() if len(rr) > 6 else ""
         fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
         por_id[idc] = {"l": ln, "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
@@ -489,6 +562,7 @@ def main() -> int:
     modelos_mm = list(mm.get("modelos_leves", [])) + list(mm.get("modelos_pesados", []))
     padrao = mm.get("aba_classificacao", "CLASSIF__{modelo}")
     registros_modelos = {}
+    auditoria_modelos = {}
     for modelo in modelos_mm:
         nome_aba = padrao.replace("{modelo}", modelo)
         try:
@@ -498,27 +572,23 @@ def main() -> int:
                     "A:K", value_render_option="UNFORMATTED_VALUE"))
         except Exception:  # noqa: BLE001
             vals = []
-        rm = []
-        for rr in vals[1:]:
-            if len(rr) < 6:
-                continue
-            ln = str(rr[1]).strip()
-            orig = str(rr[3]).strip()
-            cia = str(rr[4]).strip()
-            if not cia:
-                continue
-            c = _conf(rr[5])
-            ex = str(rr[7]).strip() if len(rr) > 7 else modelo
-            fa = "acima_95" if c >= 0.95 else ("entre_70_95" if c >= 0.70 else "abaixo_70")
-            rm.append({"l": ln, "g": (orig.split(" > ")[0].strip() if orig else "(sem)"),
-                       "m": tipo_manutencao(orig), "o": orig, "p": cia, "c": round(c, 4), "f": fa, "e": ex or modelo,
-                       "k": 1 if cia == orig else 0, "v": valida.get(ln, "")})
+        rm, aud = deduplicar_registros_modelo(
+            vals, ids_atuais, linha_atual_por_id, valida, modelo
+        )
+        auditoria_modelos[modelo] = aud
         if rm:
             (SAIDA / f"registros_{modelo}.json").write_text(
                 json.dumps(rm, ensure_ascii=False), encoding="utf-8")
             registros_modelos[modelo] = len(rm)
-            print(f"registros_{modelo}={len(rm)}")
+            print(f"registros_{modelo}={len(rm)} "
+                  f"(brutos={aud['registros_brutos']}, "
+                  f"duplicados_descartados={aud['duplicados_descartados']}, "
+                  f"status={aud['status']})")
     resumo["registros_modelos"] = registros_modelos
+    (SAIDA / "registros_modelos_auditoria.json").write_text(
+        json.dumps({"modelos": auditoria_modelos}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
     # Diagnostico de calibracao por IA, usando somente os registros agregados
     # exportados acima. Nao ajusta calibrador nem usa texto de chamado.
