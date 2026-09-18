@@ -17,9 +17,17 @@
  */
 
 const SYNC_CFG = Object.freeze({
-  sourceSpreadsheetId: "1VgHY6NmCQLtA3lcfQAzGIRqJFZGHwcGhZ4zaXkqOmz4",
-  sourceSheetName: "CHAMADOS",
-  sourceCols: Object.freeze({ id: 1, titulo: 2, categoria: 13, descricao: 23 }),
+  // Fonte histórica MATERIALIZADA que originou os 14.336 IDs do experimento.
+  // Pagina1 não depende de IMPORTRANGE; categoria completa = E + " > " + F.
+  historicalSpreadsheetId: "1xnU5sDcEWrDjs_trU3tC0jOHCljp7o_SmRNvyJzqkUg",
+  historicalSheetName: "Pagina1",
+  historicalCols: Object.freeze({ id: 1, titulo: 2, categoria: 5, subcategoria: 6 }),
+
+  // Espelho corrente do GLPI. Usado para descrição/solução e, após a migração,
+  // para atualizar B:D e acrescentar chamados novos por ID.
+  currentSpreadsheetId: "15_fsbXktpvRGJ3OTq2NsWvjMztF4IYiRQmgRASlVWIQ",
+  currentSheetName: "GLPI",
+  currentCols: Object.freeze({ id: 1, titulo: 2, categoria: 6, descricao: 17, solucao: 19 }),
 
   osSpreadsheetId: "1zTSo5oTFDyo3espWmYl1WjpFU57PwHDeZqnxUkrGQ2Y",
   osSheetName: "Ordens de Serviços",
@@ -221,46 +229,56 @@ function montarPlanoMigracao_() {
   const snapshot = ss.getSheetByName(SYNC_CFG.snapshotSheetName);
   if (!principal || !snapshot) throw new Error("Aba principal ou SNAPSHOT_ETAPA_1 não encontrada.");
 
-  const fonte = lerFonteChamados_();
+  const historica = lerFonteHistorica_();
+  const atual = lerFonteAtualGlpi_();
   const osm = lerOrdensServico_();
   const mapaSnapshot = lerMapaAtualSnapshot_(snapshot);
   const ultimaLinhaFisicaComConteudo = Math.max(principal.getLastRow(), mapaSnapshot.maxLinha);
   const formulas = auditarFormulasImportacao_(principal, ultimaLinhaFisicaComConteudo);
   const ultimaCritica = ultimaLinhaComDados_(principal, 7, 11); // G:Q
 
-  const faltantes = [];
+  const faltantesHistorico = [];
+  const semDescricaoAtual = [];
   const matriz = [];
   const idsSnapshot = new Set();
 
   for (let linha = 2; linha <= mapaSnapshot.maxLinha; linha++) {
     const id = mapaSnapshot.porLinha.get(linha);
     idsSnapshot.add(id);
-    const src = fonte.porId.get(id);
-    if (!src) {
-      faltantes.push({ linha: linha, id: id });
+
+    const hist = historica.porId.get(id);
+    if (!hist) {
+      faltantesHistorico.push({ linha: linha, id: id });
       continue;
     }
+
+    const live = atual.porId.get(id);
+    if (!live) semDescricaoAtual.push({ linha: linha, id: id });
+
     const os = osm.porId.get(id) || { titulo: "", descricao: "" };
     matriz.push([
       id,
-      src.titulo,
-      src.categoria,
-      src.descricao,
+      hist.titulo,
+      hist.categoria,
+      live ? live.descricaoComposta : "",
       os.titulo,
       os.descricao
     ]);
   }
 
-  const novosFonte = [];
-  fonte.ordemIds.forEach(id => {
-    if (!idsSnapshot.has(id)) novosFonte.push(id);
+  const novosAtuais = [];
+  atual.ordemIds.forEach(id => {
+    if (!idsSnapshot.has(id)) novosAtuais.push(id);
   });
 
   const bloqueios = [];
   if (mapaSnapshot.erros.length) bloqueios.push("snapshot_invalido=" + mapaSnapshot.erros.length);
-  if (fonte.erros.length) bloqueios.push("fonte_chamados_invalida=" + fonte.erros.length);
+  if (historica.erros.length) bloqueios.push("fonte_historica_invalida=" + historica.erros.length);
+  if (atual.erros.length) bloqueios.push("fonte_glpi_atual_invalida=" + atual.erros.length);
   if (osm.erros.length) bloqueios.push("fonte_os_invalida=" + osm.erros.length);
-  if (faltantes.length) bloqueios.push("ids_snapshot_ausentes_na_fonte=" + faltantes.length);
+  if (faltantesHistorico.length) {
+    bloqueios.push("ids_snapshot_ausentes_fonte_historica=" + faltantesHistorico.length);
+  }
   if (ultimaCritica > mapaSnapshot.maxLinha) {
     bloqueios.push("dados_G_Q_sem_snapshot_ate_linha=" + ultimaCritica);
   }
@@ -278,9 +296,11 @@ function montarPlanoMigracao_() {
     apto: bloqueios.length === 0,
     bloqueios: bloqueios,
     matriz: matriz,
-    faltantes: faltantes,
-    novosFonte: novosFonte,
-    fonte: fonte,
+    faltantesHistorico: faltantesHistorico,
+    semDescricaoAtual: semDescricaoAtual,
+    novosAtuais: novosAtuais,
+    historica: historica,
+    atual: atual,
     osm: osm,
     mapaSnapshot: mapaSnapshot,
     formulas: formulas,
@@ -289,10 +309,12 @@ function montarPlanoMigracao_() {
       status: bloqueios.length ? "BLOQUEADA" : "APTA",
       linhasSnapshot: mapaSnapshot.maxLinha - 1,
       idsSnapshotUnicos: mapaSnapshot.idsUnicos,
-      idsFonteChamados: fonte.porId.size,
+      idsFonteHistorica: historica.porId.size,
+      idsFonteGlpiAtual: atual.porId.size,
       idsFonteOrdensServico: osm.porId.size,
-      idsSnapshotAusentesNaFonte: faltantes.length,
-      idsNovosNaFonte: novosFonte.length,
+      idsSnapshotAusentesHistorico: faltantesHistorico.length,
+      idsSnapshotSemDescricaoGlpiAtual: semDescricaoAtual.length,
+      idsNovosGlpiAtual: novosAtuais.length,
       formulasImportrangeAF: formulas.importrange,
       formulasInesperadasAF: formulas.formulasInesperadas.length,
       ultimaLinhaComDadosGQ: ultimaCritica,
@@ -309,16 +331,16 @@ function montarPlanoSincronizacao_() {
   if (!principal) throw new Error("Aba destino não encontrada.");
 
   const formulas = auditarFormulasImportacao_(principal, Math.max(principal.getLastRow(), 2));
-  const fonte = lerFonteChamados_();
+  const atual = lerFonteAtualGlpi_();
   const osm = lerOrdensServico_();
 
   const ultimaLinha = principal.getLastRow();
   const quantidade = Math.max(ultimaLinha - 1, 0);
-  const atual = quantidade ? principal.getRange(2, 1, quantidade, 6).getDisplayValues() : [];
+  const destino = quantidade ? principal.getRange(2, 1, quantidade, 6).getDisplayValues() : [];
 
   const porIdDestino = new Map();
   const duplicadosDestino = [];
-  atual.forEach((linha, i) => {
+  destino.forEach((linha, i) => {
     const id = normalizarId_(linha[0]);
     if (!id) return;
     const numeroLinha = i + 2;
@@ -329,18 +351,20 @@ function montarPlanoSincronizacao_() {
     porIdDestino.set(id, { linha: numeroLinha, valores: linha.map(texto_) });
   });
 
-  const faltantesNaFonte = [];
+  // IDs históricos que não aparecem mais no espelho atual são PRESERVADOS.
+  // Nunca excluir ou deslocar essas linhas.
+  const preservadosAusentesAtual = [];
   porIdDestino.forEach((info, id) => {
-    if (!fonte.porId.has(id)) faltantesNaFonte.push(id);
+    if (!atual.porId.has(id)) preservadosAusentesAtual.push(id);
   });
 
   const atualizacoes = [];
   const novos = [];
 
-  fonte.ordemIds.forEach(id => {
-    const src = fonte.porId.get(id);
+  atual.ordemIds.forEach(id => {
+    const src = atual.porId.get(id);
     const os = osm.porId.get(id) || { titulo: "", descricao: "" };
-    const desejado = [id, src.titulo, src.categoria, src.descricao, os.titulo, os.descricao];
+    const desejado = [id, src.titulo, src.categoria, src.descricaoComposta, os.titulo, os.descricao];
     const existente = porIdDestino.get(id);
 
     if (!existente) {
@@ -369,10 +393,9 @@ function montarPlanoSincronizacao_() {
   const bloqueios = [];
   if (formulas.importrange > 0) bloqueios.push("IMPORTRANGE_ainda_presente_A_F=" + formulas.importrange);
   if (formulas.formulasInesperadas.length) bloqueios.push("formulas_inesperadas_A_F=" + formulas.formulasInesperadas.length);
-  if (fonte.erros.length) bloqueios.push("fonte_chamados_invalida=" + fonte.erros.length);
+  if (atual.erros.length) bloqueios.push("fonte_glpi_atual_invalida=" + atual.erros.length);
   if (osm.erros.length) bloqueios.push("fonte_os_invalida=" + osm.erros.length);
   if (duplicadosDestino.length) bloqueios.push("ids_duplicados_destino=" + duplicadosDestino.length);
-  if (faltantesNaFonte.length) bloqueios.push("ids_destino_ausentes_na_fonte=" + faltantesNaFonte.length);
   if (novos.length > SYNC_CFG.maxNewPerRun) bloqueios.push("novos_excedem_limite=" + novos.length);
   if (atualizacoes.length > SYNC_CFG.maxExistingUpdatesPerRun) {
     bloqueios.push("atualizacoes_excedem_limite=" + atualizacoes.length);
@@ -384,34 +407,84 @@ function montarPlanoSincronizacao_() {
     atualizacoes: atualizacoes,
     novos: novos,
     ultimaLinhaDestino: ultimaLinha,
-    faltantesNaFonte: faltantesNaFonte,
+    preservadosAusentesAtual: preservadosAusentesAtual,
     duplicadosDestino: duplicadosDestino,
     resumo: {
       status: bloqueios.length ? "BLOQUEADA" : "APTA",
       idsDestino: porIdDestino.size,
-      idsFonte: fonte.porId.size,
+      idsFonteGlpiAtual: atual.porId.size,
       atualizacoes: atualizacoes.length,
       novos: novos.length,
-      idsDestinoAusentesNaFonte: faltantesNaFonte.length,
+      idsHistoricosPreservadosAusentesAtual: preservadosAusentesAtual.length,
       idsDuplicadosDestino: duplicadosDestino.length,
       bloqueios: bloqueios
     }
   };
 }
 
-function lerFonteChamados_() {
-  const ss = SpreadsheetApp.openById(SYNC_CFG.sourceSpreadsheetId);
-  const sh = ss.getSheetByName(SYNC_CFG.sourceSheetName);
-  if (!sh) throw new Error("Aba CHAMADOS não encontrada na fonte.");
+function lerFonteHistorica_() {
+  const ss = SpreadsheetApp.openById(SYNC_CFG.historicalSpreadsheetId);
+  const sh = ss.getSheetByName(SYNC_CFG.historicalSheetName);
+  if (!sh) throw new Error("Aba histórica Pagina1 não encontrada.");
 
   const ultima = sh.getLastRow();
-  if (ultima < 2) throw new Error("Fonte CHAMADOS sem dados.");
+  if (ultima < 2) throw new Error("Fonte histórica sem dados.");
   const n = ultima - 1;
 
-  const ids = sh.getRange(2, SYNC_CFG.sourceCols.id, n, 1).getDisplayValues();
-  const titulos = sh.getRange(2, SYNC_CFG.sourceCols.titulo, n, 1).getDisplayValues();
-  const categorias = sh.getRange(2, SYNC_CFG.sourceCols.categoria, n, 1).getDisplayValues();
-  const descricoes = sh.getRange(2, SYNC_CFG.sourceCols.descricao, n, 1).getDisplayValues();
+  const ids = sh.getRange(2, SYNC_CFG.historicalCols.id, n, 1).getDisplayValues();
+  const titulos = sh.getRange(2, SYNC_CFG.historicalCols.titulo, n, 1).getDisplayValues();
+  const categorias = sh.getRange(2, SYNC_CFG.historicalCols.categoria, n, 1).getDisplayValues();
+  const subcategorias = sh.getRange(2, SYNC_CFG.historicalCols.subcategoria, n, 1).getDisplayValues();
+
+  const porId = new Map();
+  const ordemIds = [];
+  const erros = [];
+
+  for (let i = 0; i < n; i++) {
+    const linha = i + 2;
+    const id = normalizarId_(ids[i][0]);
+    const titulo = texto_(titulos[i][0]);
+    const categoriaBase = texto_(categorias[i][0]).trim();
+    const subcategoria = texto_(subcategorias[i][0]).trim();
+
+    if (!id) {
+      if (titulo || categoriaBase || subcategoria) {
+        erros.push("linha histórica " + linha + " contém dados sem ID");
+      }
+      continue;
+    }
+    if (porId.has(id)) {
+      erros.push("ID histórico duplicado " + id + " nas linhas " + porId.get(id).linhaFonte + " e " + linha);
+      continue;
+    }
+
+    const categoria = subcategoria ? categoriaBase + " > " + subcategoria : categoriaBase;
+    porId.set(id, {
+      id: id,
+      titulo: titulo,
+      categoria: categoria,
+      linhaFonte: linha
+    });
+    ordemIds.push(id);
+  }
+
+  return { porId: porId, ordemIds: ordemIds, erros: erros, ultimaLinha: ultima };
+}
+
+function lerFonteAtualGlpi_() {
+  const ss = SpreadsheetApp.openById(SYNC_CFG.currentSpreadsheetId);
+  const sh = ss.getSheetByName(SYNC_CFG.currentSheetName);
+  if (!sh) throw new Error("Aba GLPI atual não encontrada.");
+
+  const ultima = sh.getLastRow();
+  if (ultima < 2) throw new Error("Fonte GLPI atual sem dados.");
+  const n = ultima - 1;
+
+  const ids = sh.getRange(2, SYNC_CFG.currentCols.id, n, 1).getDisplayValues();
+  const titulos = sh.getRange(2, SYNC_CFG.currentCols.titulo, n, 1).getDisplayValues();
+  const categorias = sh.getRange(2, SYNC_CFG.currentCols.categoria, n, 1).getDisplayValues();
+  const descricoes = sh.getRange(2, SYNC_CFG.currentCols.descricao, n, 1).getDisplayValues();
+  const solucoes = sh.getRange(2, SYNC_CFG.currentCols.solucao, n, 1).getDisplayValues();
 
   const porId = new Map();
   const ordemIds = [];
@@ -423,28 +496,36 @@ function lerFonteChamados_() {
     const titulo = texto_(titulos[i][0]);
     const categoria = texto_(categorias[i][0]);
     const descricao = texto_(descricoes[i][0]);
+    const solucao = texto_(solucoes[i][0]);
 
     if (!id) {
-      if (titulo || categoria || descricao) {
-        erros.push("linha " + linha + " contém dados B/M/W sem ID em A");
+      if (titulo || categoria || descricao || solucao) {
+        erros.push("linha GLPI atual " + linha + " contém dados sem ID");
       }
       continue;
     }
     if (porId.has(id)) {
-      erros.push("ID duplicado " + id + " nas linhas " + porId.get(id).linhaFonte + " e " + linha);
+      erros.push("ID GLPI atual duplicado " + id + " nas linhas " + porId.get(id).linhaFonte + " e " + linha);
       continue;
     }
+
     porId.set(id, {
       id: id,
       titulo: titulo,
       categoria: categoria,
       descricao: descricao,
+      solucao: solucao,
+      descricaoComposta: montarDescricaoGlpi_(descricao, solucao),
       linhaFonte: linha
     });
     ordemIds.push(id);
   }
 
   return { porId: porId, ordemIds: ordemIds, erros: erros, ultimaLinha: ultima };
+}
+
+function montarDescricaoGlpi_(descricao, solucao) {
+  return "Descrição - " + texto_(descricao) + "\n\nSolução - " + texto_(solucao);
 }
 
 function lerOrdensServico_() {
@@ -595,10 +676,12 @@ function escreverPreviewMigracao_(plano) {
     ["DATA_PREFLIGHT", agora_()],
     ["LINHAS_SNAPSHOT", plano.resumo.linhasSnapshot],
     ["IDS_SNAPSHOT_UNICOS", plano.resumo.idsSnapshotUnicos],
-    ["IDS_FONTE_CHAMADOS", plano.resumo.idsFonteChamados],
+    ["IDS_FONTE_HISTORICA", plano.resumo.idsFonteHistorica],
+    ["IDS_FONTE_GLPI_ATUAL", plano.resumo.idsFonteGlpiAtual],
     ["IDS_FONTE_OS", plano.resumo.idsFonteOrdensServico],
-    ["IDS_SNAPSHOT_AUSENTES_NA_FONTE", plano.resumo.idsSnapshotAusentesNaFonte],
-    ["IDS_NOVOS_NA_FONTE", plano.resumo.idsNovosNaFonte],
+    ["IDS_SNAPSHOT_AUSENTES_HISTORICO", plano.resumo.idsSnapshotAusentesHistorico],
+    ["IDS_SNAPSHOT_SEM_DESCRICAO_GLPI_ATUAL", plano.resumo.idsSnapshotSemDescricaoGlpiAtual],
+    ["IDS_NOVOS_GLPI_ATUAL", plano.resumo.idsNovosGlpiAtual],
     ["FORMULAS_IMPORTRANGE_A_F", plano.resumo.formulasImportrangeAF],
     ["FORMULAS_INESPERADAS_A_F", plano.resumo.formulasInesperadasAF],
     ["ULTIMA_LINHA_DADOS_G_Q", plano.resumo.ultimaLinhaComDadosGQ],
@@ -613,11 +696,14 @@ function escreverPreviewMigracao_(plano) {
   sh.getRange(row, 1, 1, 3).setValues([["TIPO", "LINHA/ID", "DETALHE"]]);
   row++;
 
-  plano.faltantes.slice(0, 200).forEach(x => {
-    sh.getRange(row++, 1, 1, 3).setValues([["FALTANTE_NA_FONTE", x.linha + "/" + x.id, ""]]);
+  plano.faltantesHistorico.slice(0, 200).forEach(x => {
+    sh.getRange(row++, 1, 1, 3).setValues([["FALTANTE_HISTORICO", x.linha + "/" + x.id, "bloqueia migração"]]);
   });
-  plano.novosFonte.slice(0, 200).forEach(id => {
-    sh.getRange(row++, 1, 1, 3).setValues([["NOVO_NA_FONTE", id, "não será incluído na migração inicial"]]);
+  plano.semDescricaoAtual.slice(0, 200).forEach(x => {
+    sh.getRange(row++, 1, 1, 3).setValues([["SEM_DESCRICAO_GLPI_ATUAL", x.linha + "/" + x.id, "linha preservada; D ficará vazio"]]);
+  });
+  plano.novosAtuais.slice(0, 200).forEach(id => {
+    sh.getRange(row++, 1, 1, 3).setValues([["NOVO_GLPI_ATUAL", id, "não entra na migração inicial; será candidato na sincronização posterior"]]);
   });
   plano.formulas.formulasInesperadas.slice(0, 100).forEach(x => {
     sh.getRange(row++, 1, 1, 3).setValues([["FORMULA_INESPERADA", x.celula, x.formula]]);
@@ -636,10 +722,10 @@ function escreverPreviewSincronizacao_(plano) {
     ["STATUS", plano.apto ? "APTA" : "BLOQUEADA"],
     ["DATA", agora_()],
     ["IDS_DESTINO", plano.resumo.idsDestino],
-    ["IDS_FONTE", plano.resumo.idsFonte],
+    ["IDS_FONTE_GLPI_ATUAL", plano.resumo.idsFonteGlpiAtual],
     ["ATUALIZACOES", plano.resumo.atualizacoes],
     ["NOVOS", plano.resumo.novos],
-    ["IDS_DESTINO_AUSENTES_NA_FONTE", plano.resumo.idsDestinoAusentesNaFonte],
+    ["IDS_HISTORICOS_PRESERVADOS_AUSENTES_ATUAL", plano.resumo.idsHistoricosPreservadosAusentesAtual],
     ["IDS_DUPLICADOS_DESTINO", plano.resumo.idsDuplicadosDestino],
     ["BLOQUEIOS", plano.bloqueios.join(" | ")]
   ];
