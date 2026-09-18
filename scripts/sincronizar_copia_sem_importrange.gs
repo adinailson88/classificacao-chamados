@@ -192,6 +192,7 @@ function aplicarCopiaSemImportrange() {
     preview.getRange(COPIA_SYNC_CFG.authorizationCell).clearContent();
     preview.getRange("B3").setValue("CONCLUIDA");
     preview.getRange("B4").setValue(copia_agora_());
+    preview.getRange("A5").setValue("BACKUP");
     preview.getRange("B5").setValue(backupName);
 
     return {
@@ -610,10 +611,11 @@ function copia_montarPlanoSincronizacao_() {
       : (hist ? hist.categoria : "");
 
     const existente = porIdDestino.get(id);
-    const descricao = live && live.descricaoComposta
-      ? live.descricaoComposta
-      : (fallback.porId.get(id) ||
-        (existente ? copia_texto_(existente.valores[3]) : ""));
+    const descricao = copia_resolverDescricaoSincronizacao_(
+      live,
+      existente,
+      fallback.porId.get(id) || ""
+    );
 
     const desejado = [
       id,
@@ -634,10 +636,14 @@ function copia_montarPlanoSincronizacao_() {
     const alterados = [];
 
     for (let i = 0; i < 5; i++) {
-      if (
-        copia_texto_(existente.valores[i + 1]) !==
-        copia_texto_(depois[i])
-      ) {
+      const antesComparavel = i === 1
+        ? copia_texto_(existente.valores[i + 1])
+        : copia_textoComparavel_(existente.valores[i + 1]);
+      const depoisComparavel = i === 1
+        ? copia_texto_(depois[i])
+        : copia_textoComparavel_(depois[i]);
+
+      if (antesComparavel !== depoisComparavel) {
         alterados.push(campos[i]);
       }
     }
@@ -1256,6 +1262,9 @@ function copia_escreverPreviewSincronizacao_(plano) {
     ["BLOQUEIOS", plano.bloqueios.join(" | ")]
   ];
 
+  // clearContents() preserva a formatação anterior; força texto no resumo
+  // para evitar que contagens sejam exibidas como datas.
+  sh.getRange(1, 2, linhas.length, 1).setNumberFormat("@");
   sh.getRange(1, 1, linhas.length, 2).setValues(linhas);
 
   const detalhes = [["TIPO", "ID", "LINHA", "CAMPOS"]];
@@ -1404,6 +1413,42 @@ function copia_compararMatrizes_(esperado, lido, limite) {
   }
 
   return divergencias;
+}
+
+
+function copia_resolverDescricaoSincronizacao_(live, existente, fallbackD) {
+  const atualD = existente
+    ? copia_texto_(existente.valores[3])
+    : "";
+
+  if (!live) {
+    return copia_texto_(fallbackD) || atualD;
+  }
+
+  const descricao = copia_texto_(live.descricao).trim();
+  const solucao = copia_texto_(live.solucao).trim();
+
+  // Preserva o padrão materializado da antiga CHAMADOS!W:
+  // a regra geral é descrição pura. Se o registro já era explicitamente
+  // composto por "Descrição - ... / Solução - ...", mantém esse formato.
+  const legadoComposto =
+    /^Descrição - /i.test(atualD) &&
+    /\n\nSolução - /i.test(atualD);
+
+  if (legadoComposto) {
+    return copia_montarDescricaoGlpi_(descricao, solucao) || atualD;
+  }
+
+  if (descricao) return descricao;
+  return copia_texto_(fallbackD) || atualD;
+}
+
+
+function copia_textoComparavel_(valor) {
+  return copia_texto_(valor)
+    .replace(/\u00a0/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 
