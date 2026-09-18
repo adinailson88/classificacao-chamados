@@ -72,8 +72,8 @@
     {
       "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
       "modelos": 9,
-      "suporte_max": 258,
-      "entropia_media_normalizada": 0.6432,
+      "suporte_max": 260,
+      "entropia_media_normalizada": 0.644,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -518,6 +518,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "lstm",
+      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
+      "suporte": 88,
+      "categorias_previstas": 24,
+      "entropia_previsoes": 3.8202,
+      "entropia_normalizada": 0.8332,
+      "categorias_efetivas": 14.125,
+      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_1_pct": 0.3182,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0909,
+      "concordancia_historico": 0.3182,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "linear_svc",
       "categoria_historica": "Outros > Outros",
       "suporte": 36,
@@ -575,21 +590,6 @@
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.1446,
       "concordancia_historico": 0.247,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "lstm",
-      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 86,
-      "categorias_previstas": 24,
-      "entropia_previsoes": 3.7809,
-      "entropia_normalizada": 0.8246,
-      "categorias_efetivas": 13.7458,
-      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_1_pct": 0.3256,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.093,
-      "concordancia_historico": 0.3256,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1028,6 +1028,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "linear_svc",
+      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
+      "suporte": 88,
+      "categorias_previstas": 16,
+      "entropia_previsoes": 2.9319,
+      "entropia_normalizada": 0.733,
+      "categorias_efetivas": 7.6311,
+      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_1_pct": 0.4432,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.125,
+      "concordancia_historico": 0.4432,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Manutenção Preventiva > Esgoto",
       "suporte": 34,
@@ -1070,21 +1085,6 @@
       "top_2_previsto": "Elétrica > Instalações elétricas",
       "top_2_pct": 0.1566,
       "concordancia_historico": 0.0,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "linear_svc",
-      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 86,
-      "categorias_previstas": 16,
-      "entropia_previsoes": 2.872,
-      "entropia_normalizada": 0.718,
-      "categorias_efetivas": 7.3207,
-      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_1_pct": 0.4535,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1279,
-      "concordancia_historico": 0.4535,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1328,21 +1328,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 86,
-      "categorias_previstas": 13,
-      "entropia_previsoes": 2.5641,
-      "entropia_normalizada": 0.6929,
-      "categorias_efetivas": 5.9141,
-      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_1_pct": 0.4884,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1163,
-      "concordancia_historico": 0.4884,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "sgd",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "suporte": 2614,
@@ -1403,21 +1388,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "sgd",
-      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 172,
-      "categorias_previstas": 16,
-      "entropia_previsoes": 2.7521,
-      "entropia_normalizada": 0.688,
-      "categorias_efetivas": 6.737,
-      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_1_pct": 0.4767,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1221,
-      "concordancia_historico": 0.4767,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "transformer_ft",
       "categoria_historica": "Elétrica > Instalações elétricas",
       "suporte": 940,
@@ -1430,6 +1400,36 @@
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_2_pct": 0.1043,
       "concordancia_historico": 0.3596,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
+      "suporte": 88,
+      "categorias_previstas": 13,
+      "entropia_previsoes": 2.529,
+      "entropia_normalizada": 0.6834,
+      "categorias_efetivas": 5.7716,
+      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_1_pct": 0.5,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.1136,
+      "concordancia_historico": 0.5,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "sgd",
+      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
+      "suporte": 174,
+      "categorias_previstas": 16,
+      "entropia_previsoes": 2.7326,
+      "entropia_normalizada": 0.6832,
+      "categorias_efetivas": 6.6467,
+      "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_1_pct": 0.4828,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.1207,
+      "concordancia_historico": 0.4828,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1506,6 +1506,21 @@
       "top_2_pct": 0.1519,
       "concordancia_historico": 0.1519,
       "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "naive_bayes",
+      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
+      "suporte": 88,
+      "categorias_previstas": 8,
+      "entropia_previsoes": 2.0286,
+      "entropia_normalizada": 0.6762,
+      "categorias_efetivas": 4.0801,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.5341,
+      "top_2_previsto": "Climatização > Ar condicionado split",
+      "top_2_pct": 0.1364,
+      "concordancia_historico": 0.0,
+      "risco": "alta_ambiguidade"
     },
     {
       "modelo": "transformer_ft",
@@ -1626,21 +1641,6 @@
       "top_2_pct": 0.175,
       "concordancia_historico": 0.825,
       "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "naive_bayes",
-      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 86,
-      "categorias_previstas": 8,
-      "entropia_previsoes": 2.0063,
-      "entropia_normalizada": 0.6688,
-      "categorias_efetivas": 4.0176,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.5465,
-      "top_2_previsto": "Climatização > Ar condicionado split",
-      "top_2_pct": 0.1395,
-      "concordancia_historico": 0.0,
-      "risco": "alta_ambiguidade"
     },
     {
       "modelo": "extra_trees",
@@ -1853,21 +1853,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "random_forest",
-      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 172,
-      "categorias_previstas": 12,
-      "entropia_previsoes": 2.2409,
-      "entropia_normalizada": 0.6251,
-      "categorias_efetivas": 4.7269,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.4419,
-      "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_2_pct": 0.3256,
-      "concordancia_historico": 0.3256,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "lstm",
       "categoria_historica": "Elétrica > Instalações elétricas",
       "suporte": 961,
@@ -1880,6 +1865,21 @@
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_2_pct": 0.0947,
       "concordancia_historico": 0.4495,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "random_forest",
+      "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
+      "suporte": 174,
+      "categorias_previstas": 12,
+      "entropia_previsoes": 2.2286,
+      "entropia_normalizada": 0.6216,
+      "categorias_efetivas": 4.6867,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.4483,
+      "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
+      "top_2_pct": 0.3218,
+      "concordancia_historico": 0.3218,
       "risco": "alta_ambiguidade"
     },
     {
@@ -2005,16 +2005,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 258,
+      "suporte": 260,
       "categorias_previstas": 13,
-      "entropia_previsoes": 2.2022,
-      "entropia_normalizada": 0.5951,
-      "categorias_efetivas": 4.602,
+      "entropia_previsoes": 2.1949,
+      "entropia_normalizada": 0.5931,
+      "categorias_efetivas": 4.5786,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.4186,
+      "top_1_pct": 0.4231,
       "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_2_pct": 0.3605,
-      "concordancia_historico": 0.3605,
+      "top_2_pct": 0.3577,
+      "concordancia_historico": 0.3577,
       "risco": "alta_ambiguidade"
     },
     {
@@ -3850,16 +3850,16 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
-      "suporte": 86,
+      "suporte": 88,
       "categorias_previstas": 5,
-      "entropia_previsoes": 0.5426,
-      "entropia_normalizada": 0.2337,
-      "categorias_efetivas": 1.4566,
+      "entropia_previsoes": 0.533,
+      "entropia_normalizada": 0.2295,
+      "categorias_efetivas": 1.4469,
       "top_1_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_1_pct": 0.9186,
+      "top_1_pct": 0.9205,
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Placas de identificação",
-      "top_2_pct": 0.0465,
-      "concordancia_historico": 0.9186,
+      "top_2_pct": 0.0455,
+      "concordancia_historico": 0.9205,
       "risco": "estavel"
     },
     {
