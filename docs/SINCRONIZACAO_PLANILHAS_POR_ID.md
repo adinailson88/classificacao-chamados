@@ -4,7 +4,7 @@
 
 A aba `CHAMADOS_ESQUELETO_REDUZIDO` depende de importações externas nas colunas A:F.
 
-A:D usam quatro `IMPORTRANGE` de colunas inteiras da planilha `CHAMADOS`. Em 17/09/2026, a API do Google Sheets retornou `#REF!` / `Import Range internal error.` em A2:D2.
+A:D usam quatro `IMPORTRANGE` de colunas inteiras da planilha `CHAMADOS`. Em 17/09/2026, a API do Google Sheets retornou `#REF!` / `Import Range internal error.` em A2:D2. Diagnóstico posterior confirmou que a própria planilha intermediária `CHAMADOS` também depende de `IMPORTRANGE`: sua coluna A retornou 0 IDs e `Carregando…`.
 
 E:F são ainda mais custosas: cada linha contém fórmulas `FILTER(IMPORTRANGE(...))` contra a planilha de Ordens de Serviço. Isso repete as mesmas importações externas milhares de vezes. A auditoria ao vivo confirmou fórmulas E:F inclusive abaixo da última linha válida do snapshot, reforçando a necessidade de retirar toda a dependência A:F.
 
@@ -15,7 +15,8 @@ O risco não é apenas indisponibilidade. A:D variáveis combinadas com G:Q mate
 Foi verificado ao vivo:
 
 - planilha destino: `1lohPUQOgxzt_DMxnNLKMxnieZq1sVmh4uwBLbbgvfiQ`;
-- fonte CHAMADOS: `1VgHY6NmCQLtA3lcfQAzGIRqJFZGHwcGhZ4zaXkqOmz4`;
+- fonte histórica materializada: `Indicadores - GLPI` (`1xnU5sDcEWrDjs_trU3tC0jOHCljp7o_SmRNvyJzqkUg`), aba `Pagina1`;
+- espelho GLPI corrente: `GLPI_CHAMADOS_MANUTENCAO_ADINAILSON_TESTE` (`15_fsbXktpvRGJ3OTq2NsWvjMztF4IYiRQmgRASlVWIQ`), aba `GLPI`;
 - fonte Ordens de Serviços: `1zTSo5oTFDyo3espWmYl1WjpFU57PwHDeZqnxUkrGQ2Y`;
 - `SNAPSHOT_ETAPA_1` possui bloco final completo de 14.336 registros;
 - esse bloco cobre continuamente `linha_planilha=2` até `14337`;
@@ -30,19 +31,31 @@ Foi verificado ao vivo:
 
 A migração inicial usa o snapshot como autoridade para `linha atual -> ID Chamado`.
 
+A cadeia de origem foi rastreada:
+
+`CHAMADOS2 -> Chamados GLPI -> Indicadores - GLPI / GLPI -> Pagina1`.
+
+A aba `Pagina1` é materializada e contém os 14.336 IDs históricos do snapshot. Por isso ela é usada diretamente, sem atravessar a cadeia de `IMPORTRANGE`.
+
 Para cada linha 2..N:
 
 1. recuperar o ID pelo snapshot mais recente;
-2. localizar o ID na fonte `CHAMADOS`;
+2. localizar o ID em `Pagina1`;
 3. materializar:
    - A = ID;
-   - B = título da fonte;
-   - C = categoria da fonte;
-   - D = descrição GLPI;
-4. agregar as Ordens de Serviço pelo mesmo ID e materializar:
+   - B = título histórico;
+   - C = categoria completa, reconstruída como categoria + subcategoria;
+4. buscar no espelho GLPI corrente o mesmo ID e materializar D exatamente no formato antigo:
+   - `Descrição - <descricao>`;
+   - linha em branco;
+   - `Solução - <solucao>`;
+5. se o ID histórico não existir no espelho GLPI corrente, preservar a linha e deixar D vazio, registrando-o no preview;
+6. agregar as Ordens de Serviço pelo mesmo ID e materializar:
    - E = títulos unidos por `; `;
    - F = descrições unidas por `; `;
-5. não escrever em G:Q.
+7. não escrever em G:Q.
+
+Na auditoria, 69 IDs históricos estavam ausentes do espelho GLPI corrente, mas todos existiam na fonte histórica. Esses IDs não devem ser excluídos.
 
 A sincronização posterior abandona o número da linha como chave. A coluna A passa a ser fixa; B:F são atualizadas apenas pelo ID e IDs novos são acrescentados ao final.
 
@@ -110,10 +123,10 @@ Se a simulação estiver correta:
 Regras:
 
 - A nunca é alterada para IDs já existentes;
-- B:F são atualizadas pelo ID;
+- B:F são atualizadas pelo ID corrente quando ele existe no espelho GLPI;
+- IDs históricos que não aparecem mais no espelho atual são preservados e não bloqueiam a sincronização;
 - IDs novos entram ao final;
 - G:Q nunca são escritos;
-- IDs ausentes da fonte bloqueiam a execução;
 - IDs duplicados bloqueiam a execução;
 - mais de 100 novos IDs em uma execução bloqueiam;
 - mais de 500 registros existentes alterados em uma execução bloqueiam;
