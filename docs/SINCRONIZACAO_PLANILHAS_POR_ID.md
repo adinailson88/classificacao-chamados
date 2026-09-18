@@ -6,7 +6,7 @@ A aba `CHAMADOS_ESQUELETO_REDUZIDO` depende de importações externas nas coluna
 
 A:D usam quatro `IMPORTRANGE` de colunas inteiras da planilha `CHAMADOS`. Em 17/09/2026, a API do Google Sheets retornou `#REF!` / `Import Range internal error.` em A2:D2.
 
-E:F são ainda mais custosas: cada linha contém fórmulas `FILTER(IMPORTRANGE(...))` contra a planilha de Ordens de Serviço. Isso repete as mesmas importações externas milhares de vezes.
+E:F são ainda mais custosas: cada linha contém fórmulas `FILTER(IMPORTRANGE(...))` contra a planilha de Ordens de Serviço. Isso repete as mesmas importações externas milhares de vezes. A auditoria ao vivo confirmou fórmulas E:F inclusive abaixo da última linha válida do snapshot, reforçando a necessidade de retirar toda a dependência A:F.
 
 O risco não é apenas indisponibilidade. A:D variáveis combinadas com G:Q materializadas permitem deslocamento lógico entre ID e conferências humanas.
 
@@ -89,6 +89,8 @@ Em seguida:
 - não escreve em G:Q;
 - relê A:F integralmente;
 - exige igualdade com o plano;
+- verifica que G:Q não possuem dados além da última linha coberta pelo snapshot;
+- remove resíduos A:F abaixo dessa última linha, inclusive fórmulas E:F antigas que tenham sido preenchidas além do conjunto válido;
 - registra resumo em `LOG_SINCRONIZACAO_A_F`.
 
 ### 4. Simular sincronização normal
