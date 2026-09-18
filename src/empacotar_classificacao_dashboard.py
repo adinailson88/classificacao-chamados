@@ -22,6 +22,8 @@ CONFIG_PADRAO = RAIZ / "config_experimento.json"
 ORIGEM_PADRAO = RAIZ / "docs" / "dados"
 DESTINO_PADRAO = RAIZ / "artefatos" / "dashboard" / "classificacao"
 PADRAO_MODELO = re.compile(r"^[a-z0-9_]+$")
+AUDITORIA = "registros_modelos_auditoria.json"
+CHAVES_PUBLICAS = {"l", "g", "m", "o", "p", "c", "f", "e", "k", "v"}
 
 
 def _sha256(caminho: Path) -> str:
@@ -59,6 +61,11 @@ def empacotar(config_path: Path, origem: Path, destino: Path) -> dict[str, Any]:
     esperados = arquivos_classificacao(config)
     destino.mkdir(parents=True, exist_ok=True)
 
+    auditoria_path = origem / AUDITORIA
+    if not auditoria_path.is_file():
+        raise FileNotFoundError(f"auditoria obrigatoria ausente: {AUDITORIA}")
+    auditoria = json.loads(auditoria_path.read_text(encoding="utf-8")).get("modelos", {})
+
     entradas = []
     ausentes = []
     for nome in esperados:
@@ -67,6 +74,19 @@ def empacotar(config_path: Path, origem: Path, destino: Path) -> dict[str, Any]:
             ausentes.append(nome)
             continue
         payload = json.loads(fonte.read_text(encoding="utf-8"))
+        if not isinstance(payload, list):
+            raise ValueError(f"{nome}: JSON deve ser uma lista")
+        modelo = nome.removeprefix("registros_").removesuffix(".json")
+        aud = auditoria.get(modelo)
+        if not isinstance(aud, dict):
+            raise ValueError(f"{nome}: auditoria do modelo ausente")
+        if aud.get("ids_invalidos") != 0:
+            raise ValueError(f"{nome}: auditoria registra IDs invalidos")
+        if aud.get("ids_unicos") != len(payload):
+            raise ValueError(f"{nome}: contagem diverge da auditoria")
+        for registro in payload:
+            if not isinstance(registro, dict) or not set(registro).issubset(CHAVES_PUBLICAS):
+                raise ValueError(f"{nome}: campo nao permitido no JSON publico")
         alvo = destino / nome
         shutil.copyfile(fonte, alvo)
         if _sha256(fonte) != _sha256(alvo):
@@ -76,10 +96,17 @@ def empacotar(config_path: Path, origem: Path, destino: Path) -> dict[str, Any]:
             "sha256": _sha256(alvo),
             "bytes": alvo.stat().st_size,
             "registros": _contagem(payload),
+            "registros_brutos": aud.get("registros_brutos"),
+            "ids_unicos": aud.get("ids_unicos"),
+            "duplicados_descartados": aud.get("duplicados_descartados"),
+            "ids_fora_base_descartados": aud.get("ids_fora_base_descartados"),
+            "ids_invalidos": aud.get("ids_invalidos"),
+            "ids_esperados": aud.get("ids_esperados"),
+            "status": aud.get("status"),
         })
 
     manifesto = {
-        "schema": 1,
+        "schema": 2,
         "escopo": "classificacao_dashboard_sanitizada",
         "origem": "docs/dados/registros_<modelo>.json",
         "contem_id_chamado": False,
