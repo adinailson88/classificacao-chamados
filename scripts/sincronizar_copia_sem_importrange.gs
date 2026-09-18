@@ -1445,10 +1445,10 @@ function copia_resolverDescricaoSincronizacao_(live, existente, fallbackD) {
 
 
 function copia_textoComparavel_(valor) {
+  // Para decidir se houve mudança de conteúdo, whitespace não é semântico.
+  // O valor escrito continua sendo o texto original da fonte, sem normalização.
   return copia_texto_(valor)
-    .replace(/\u00a0/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+    .replace(/[\s\u00a0]+/g, "");
 }
 
 
