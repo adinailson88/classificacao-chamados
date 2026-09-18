@@ -46,6 +46,15 @@ jobs:
         run: python src/exportar_dashboard.py
       - name: Gerar analise Shannon
         run: python src/analise_shannon.py
+      - name: Empacotar classificacao sanitizada
+        run: python src/empacotar_classificacao_dashboard.py
+      - name: Publicar pacote de classificacao da execucao
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-classificacao-${{ github.run_id }}
+          path: artefatos/dashboard/classificacao
+          if-no-files-found: error
+          retention-days: 30
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json
