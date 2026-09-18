@@ -69,17 +69,19 @@ def empacotar(config_path: Path, origem: Path, destino: Path) -> dict[str, Any]:
     entradas = []
     ausentes = []
     for nome in esperados:
+        modelo = nome.removeprefix("registros_").removesuffix(".json")
+        aud = auditoria.get(modelo)
+        if not isinstance(aud, dict):
+            raise ValueError(f"{nome}: auditoria do modelo ausente")
         fonte = origem / nome
         if not fonte.is_file():
+            if aud.get("ids_unicos") != 0 or aud.get("status") != "ausente":
+                raise ValueError(f"{nome}: arquivo ausente diverge da auditoria")
             ausentes.append(nome)
             continue
         payload = json.loads(fonte.read_text(encoding="utf-8"))
         if not isinstance(payload, list):
             raise ValueError(f"{nome}: JSON deve ser uma lista")
-        modelo = nome.removeprefix("registros_").removesuffix(".json")
-        aud = auditoria.get(modelo)
-        if not isinstance(aud, dict):
-            raise ValueError(f"{nome}: auditoria do modelo ausente")
         if aud.get("ids_invalidos") != 0:
             raise ValueError(f"{nome}: auditoria registra IDs invalidos")
         if aud.get("ids_unicos") != len(payload):
