@@ -110,8 +110,8 @@ const COPIA_SYNC_CFG = Object.freeze({
   ]),
 
   // Só afeta candidatos ausentes da COPIA e fora da baseline acima.
-  // Permanece false até a simulação pós-baseline ser validada.
-  allowNewIds: false,
+  // Habilitado após simulação pós-baseline APTA em 2026-09-18.
+  allowNewIds: true,
 
   maxExistingUpdatesPerRun: 1000,
   triggerEveryHours: 2,
