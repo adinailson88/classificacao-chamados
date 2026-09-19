@@ -150,6 +150,12 @@ jobs:
             SEM_MEM="--sem-memoria-validada"
           fi
           python src/classificacao_multimodelo.py --modelos "$MODELOS" --max-turnos "$MAX_TURNOS" $APLICAR $SEM_MEM
+      - name: Renovar artefatos sanitizados do dashboard
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.aplicar == 'true' }}
+        run: python src/exportar_classificacao_dashboard.py
+      - name: Publicar artefatos sanitizados do dashboard
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.aplicar == 'true' }}
+        run: python src/persistir_classificacao_dashboard.py
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json
