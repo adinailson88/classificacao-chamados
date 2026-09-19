@@ -760,7 +760,7 @@ class TestIntegracaoDashboardYml(unittest.TestCase):
             self.assertIn(nome, self.texto)
 
     def test_produtores_de_dados_inalterados(self):
-        self.assertIn("run: python src/exportar_dashboard.py", self.texto)
+        self.assertIn('python src/exportar_dashboard.py --fonte-modelos "$FONTE"', self.texto)
         self.assertIn("run: python src/analise_shannon.py", self.texto)
 
     def test_sem_git_add_dot_ou_dash_a(self):
