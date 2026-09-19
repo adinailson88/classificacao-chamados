@@ -7,6 +7,11 @@ on:
   schedule:
     - cron: "*/30 * * * *"
   workflow_dispatch:
+    inputs:
+      atualizar_modelos:
+        description: "Reler CLASSIF__* e renovar os artefatos"
+        type: boolean
+        default: false
   workflow_run:
     workflows:
       - "Comparar modelos (lote)"
@@ -43,7 +48,14 @@ jobs:
           if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
           printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
       - name: Exportar JSON do dashboard
-        run: python src/exportar_dashboard.py
+        run: |
+          FONTE="auto"
+          if [ "${{ github.event_name }}" = "workflow_run" ] || \
+             { [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%H)" = "03" ]; } || \
+             [ "${{ github.event.inputs.atualizar_modelos }}" = "true" ]; then
+            FONTE="planilha"
+          fi
+          python src/exportar_dashboard.py --fonte-modelos "$FONTE"
       - name: Gerar analise Shannon
         run: python src/analise_shannon.py
       - name: Empacotar classificacao sanitizada
