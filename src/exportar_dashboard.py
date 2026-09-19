@@ -11,6 +11,7 @@ LOG_TURNOS_RECLASSIFICACAO, METRICAS_EXPERIMENTO, EXPERIMENTO_CONFIG.
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -24,6 +25,7 @@ from tipo_manutencao import tipo_manutencao  # noqa: E402,F401
 RAIZ = Path(__file__).resolve().parents[1]
 CONFIG_PADRAO = RAIZ / "config_experimento.json"
 SAIDA = RAIZ / "docs" / "dados"
+CHAVES_REGISTRO_MODELO = {"l", "g", "m", "o", "p", "c", "f", "e", "k", "v"}
 
 # (chave_json, chave_no_config_abas)
 # NÃO exportar EXPERIMENTO_CONFIG: contém spreadsheet_id e outros identificadores
@@ -200,6 +202,38 @@ def deduplicar_registros_modelo(vals, ids_atuais, linha_atual_por_id, valida, mo
                    "valido_completo" if len(rm) == len(ids_atuais) else "parcial"),
     }
     return rm, auditoria
+
+
+def carregar_registros_modelos_de_artefatos(saida: Path, modelos: list[str]):
+    """Valida e reutiliza os JSONs sanitizados, sem consultar CLASSIF__*."""
+    caminho_auditoria = saida / "registros_modelos_auditoria.json"
+    if not caminho_auditoria.is_file():
+        raise FileNotFoundError("registros_modelos_auditoria.json ausente")
+    raiz = json.loads(caminho_auditoria.read_text(encoding="utf-8"))
+    auditoria = raiz.get("modelos", {}) if isinstance(raiz, dict) else {}
+    contagens = {}
+    for modelo in modelos:
+        aud = auditoria.get(modelo)
+        if not isinstance(aud, dict):
+            raise ValueError(f"{modelo}: auditoria ausente")
+        arquivo = saida / f"registros_{modelo}.json"
+        status = aud.get("status")
+        if status == "ausente":
+            if aud.get("ids_unicos") != 0 or arquivo.exists():
+                raise ValueError(f"{modelo}: estado ausente inconsistente")
+            continue
+        if status not in {"valido_completo", "parcial"}:
+            raise ValueError(f"{modelo}: status invalido: {status!r}")
+        if aud.get("ids_invalidos") != 0 or not arquivo.is_file():
+            raise ValueError(f"{modelo}: artefato indisponivel ou com ID invalido")
+        dados = json.loads(arquivo.read_text(encoding="utf-8"))
+        if not isinstance(dados, list) or len(dados) != aud.get("ids_unicos"):
+            raise ValueError(f"{modelo}: contagem do artefato diverge da auditoria")
+        for registro in dados:
+            if not isinstance(registro, dict) or not set(registro).issubset(CHAVES_REGISTRO_MODELO):
+                raise ValueError(f"{modelo}: campo nao permitido no artefato")
+        contagens[modelo] = len(dados)
+    return contagens, auditoria
 
 
 def exportar_reclass_resumo(sh, config):
@@ -404,7 +438,18 @@ def exportar_estabilidade_reclassificacao(sh, config):
     }
 
 
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Exporta os JSONs sanitizados do dashboard.")
+    p.add_argument(
+        "--fonte-modelos", choices=("auto", "artefatos", "planilha"), default="planilha",
+        help=("auto prefere artefatos e usa CLASSIF__* como fallback; "
+              "artefatos falha fechado; planilha renova os arquivos."),
+    )
+    return p.parse_args()
+
+
 def main() -> int:
+    args = parse_args()
     with CONFIG_PADRAO.open(encoding="utf-8") as f:
         config = json.load(f)
     abas_cfg = config["abas_experimento"]
@@ -564,36 +609,53 @@ def main() -> int:
     padrao = mm.get("aba_classificacao", "CLASSIF__{modelo}")
     registros_modelos = {}
     auditoria_modelos = {}
-    for modelo in modelos_mm:
-        nome_aba = padrao.replace("{modelo}", modelo)
+    fonte_modelos_usada = ""
+    if args.fonte_modelos in {"auto", "artefatos"}:
         try:
-            vals = com_retentativa(
-                f"ler {nome_aba}",
-                lambda na=nome_aba: sh.worksheet(na).get_values(
-                    "A:K", value_render_option="UNFORMATTED_VALUE"))
-        except Exception:  # noqa: BLE001
-            vals = []
-        rm, aud = deduplicar_registros_modelo(
-            vals, ids_atuais, linha_atual_por_id, valida, modelo
+            registros_modelos, auditoria_modelos = carregar_registros_modelos_de_artefatos(
+                SAIDA, modelos_mm
+            )
+            fonte_modelos_usada = "artefatos"
+            print(f"registros_modelos: artefatos validados ({len(registros_modelos)} modelos)")
+        except Exception as e:  # noqa: BLE001
+            if args.fonte_modelos == "artefatos":
+                raise
+            print(f"registros_modelos: artefatos recusados ({type(e).__name__}: {e}); "
+                  "fallback para CLASSIF__*", file=sys.stderr)
+
+    if not fonte_modelos_usada:
+        fonte_modelos_usada = "planilha"
+        for modelo in modelos_mm:
+            nome_aba = padrao.replace("{modelo}", modelo)
+            try:
+                vals = com_retentativa(
+                    f"ler {nome_aba}",
+                    lambda na=nome_aba: sh.worksheet(na).get_values(
+                        "A:K", value_render_option="UNFORMATTED_VALUE"))
+            except Exception:  # noqa: BLE001
+                vals = []
+            rm, aud = deduplicar_registros_modelo(
+                vals, ids_atuais, linha_atual_por_id, valida, modelo
+            )
+            auditoria_modelos[modelo] = aud
+            arquivo_modelo = SAIDA / f"registros_{modelo}.json"
+            if rm:
+                arquivo_modelo.write_text(
+                    json.dumps(rm, ensure_ascii=False), encoding="utf-8")
+                registros_modelos[modelo] = len(rm)
+                print(f"registros_{modelo}={len(rm)} "
+                      f"(brutos={aud['registros_brutos']}, "
+                      f"duplicados_descartados={aud['duplicados_descartados']}, "
+                      f"status={aud['status']})")
+            else:
+                arquivo_modelo.unlink(missing_ok=True)
+                print(f"registros_{modelo}=0 (status=ausente; JSON obsoleto removido)")
+        (SAIDA / "registros_modelos_auditoria.json").write_text(
+            json.dumps({"modelos": auditoria_modelos}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
         )
-        auditoria_modelos[modelo] = aud
-        arquivo_modelo = SAIDA / f"registros_{modelo}.json"
-        if rm:
-            arquivo_modelo.write_text(
-                json.dumps(rm, ensure_ascii=False), encoding="utf-8")
-            registros_modelos[modelo] = len(rm)
-            print(f"registros_{modelo}={len(rm)} "
-                  f"(brutos={aud['registros_brutos']}, "
-                  f"duplicados_descartados={aud['duplicados_descartados']}, "
-                  f"status={aud['status']})")
-        else:
-            arquivo_modelo.unlink(missing_ok=True)
-            print(f"registros_{modelo}=0 (status=ausente; JSON obsoleto removido)")
     resumo["registros_modelos"] = registros_modelos
-    (SAIDA / "registros_modelos_auditoria.json").write_text(
-        json.dumps({"modelos": auditoria_modelos}, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    resumo["fonte_registros_modelos"] = fonte_modelos_usada
 
     # Diagnostico de calibracao por IA, usando somente os registros agregados
     # exportados acima. Nao ajusta calibrador nem usa texto de chamado.
