@@ -1,5 +1,5 @@
 {
-  "gerado_em": "20/09/2026 14:49",
+  "gerado_em": "20/09/2026 16:56",
   "schema_version": "1.0",
   "run_id": "EXP_CLASSIFICACAO_CHAMADOS_2026_06_001",
   "script_origem": "src/analise_estatistica.py",
@@ -370,62 +370,6 @@
         null
       ]
     ]
-  },
-  "friedman": {
-    "stat": 44.432,
-    "p": 1.89e-08,
-    "blocos": [
-      "0-1000",
-      "1000-2000",
-      "2000-3000",
-      "3000-4000",
-      "4000-5000",
-      "5000-6000",
-      "6000-7000",
-      "7000-8000",
-      "8000-9000",
-      "9000-10000",
-      "10000-11000",
-      "11000-12000",
-      "12000-13000",
-      "13000-13965"
-    ],
-    "modelos": [
-      "naive_bayes",
-      "regressao_logistica",
-      "linear_svc",
-      "sgd",
-      "extra_trees",
-      "random_forest"
-    ],
-    "rank_medio": [
-      {
-        "modelo": "linear_svc",
-        "rank_medio": 1.679
-      },
-      {
-        "modelo": "extra_trees",
-        "rank_medio": 2.464
-      },
-      {
-        "modelo": "random_forest",
-        "rank_medio": 3.286
-      },
-      {
-        "modelo": "sgd",
-        "rank_medio": 3.357
-      },
-      {
-        "modelo": "regressao_logistica",
-        "rank_medio": 4.286
-      },
-      {
-        "modelo": "naive_bayes",
-        "rank_medio": 5.929
-      }
-    ],
-    "diferenca_critica_nemenyi": 2.015,
-    "nota": "Diferenca de rank_medio > CD => diferenca significativa (Nemenyi, alpha=0,05)."
   },
   "mcnemar_holm": {
     "n_testes": 21,
