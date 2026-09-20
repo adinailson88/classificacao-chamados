@@ -107,13 +107,17 @@ def main() -> int:
           f"categorias={len(cats)} (esperado {CATEGORIAS_ESPERADAS})", file=sys.stderr)
 
     if n != N_ESPERADO or len(cats) != CATEGORIAS_ESPERADAS:
+        contagem = {c: sum(1 for x in chamados if x["categoria"] == c) for c in cats}
         print(
             "FAIL-CLOSED: o corpus canonico reconstruido da planilha viva nao bate com o "
             f"congelado (n={n} vs {N_ESPERADO}; categorias={len(cats)} vs {CATEGORIAS_ESPERADAS}). "
             "A planilha operacional divergiu do ARTIGO_CONGELADO desde o Passo 2/3; "
-            "nao gero o glossario canonico sobre um corpus que nao pode ser provado identico.",
+            "nao gero o glossario canonico sobre um corpus que nao pode ser provado identico.\n"
+            "Categorias encontradas (para diagnostico manual contra a Tabela A2 do artigo):",
             file=sys.stderr,
         )
+        for c in cats:
+            print(f"  n={contagem[c]:4d}  {c}", file=sys.stderr)
         return 3
 
     res = rt.calcular(chamados, args.top_n, args.min_df, args.min_chamados_categoria)
