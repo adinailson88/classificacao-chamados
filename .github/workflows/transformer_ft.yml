@@ -203,7 +203,15 @@ jobs:
           set -o pipefail
           python src/reclassificar_validados.py --modelo transformer_ft --max-turnos 0 --aplicar \
             | tee saida_reclassificacao.txt
-          if grep -q "coluna O pendente" saida_reclassificacao.txt; then
+          codigo=${PIPESTATUS[0]}
+          if [ "$codigo" -eq 3 ]; then
+            # Guarda de qualidade intencional (ganho_vs_g < 0): nao e falha de execucao,
+            # a coluna O nao foi tocada de proposito. Nao marca o job como failure.
+            echo "houve_treino=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Reclassificacao abortada pela guarda de qualidade (pioraria a IA original) — coluna O nao alterada."
+          elif [ "$codigo" -ne 0 ]; then
+            exit "$codigo"
+          elif grep -q "coluna O pendente" saida_reclassificacao.txt; then
             echo "houve_treino=false" >> "$GITHUB_OUTPUT"
             echo "::warning::Nenhum chamado pendente na coluna O — nao houve treino. O estado do BERTimbau NAO sera atualizado."
           else

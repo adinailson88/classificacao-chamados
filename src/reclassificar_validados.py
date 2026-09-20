@@ -224,7 +224,9 @@ def main() -> int:
             "A coluna O nao foi alterada.",
             file=sys.stderr,
         )
-        return 1
+        # Codigo 3 (nao 1): guarda de qualidade intencional, nao falha de execucao —
+        # permite ao workflow distinguir "nada gravado por decisao" de erro real.
+        return 3
 
     mapa_o = {registro["linha"]: registro["cat_o"] for registro in registros}
     for tentativa in range(1, 4):
