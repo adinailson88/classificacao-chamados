@@ -1,0 +1,47 @@
+name: Glossario canonico (diagnostico, apendice do artigo)
+
+# READ-ONLY na planilha. Calcula o glossario log-odds por categoria e o mapa
+# de correlacao restritos ao corpus CANONICO do ARTIGO_CONGELADO (n=13.972,
+# 41 categorias, rotulo = referencia revisada). Fail-closed: se a planilha
+# viva divergiu do corpus congelado, o job falha em vez de publicar numero
+# nao comparavel ao resto do artigo. Nao grava nada na planilha nem no repo;
+# a saida vai so no log do job (bloco ===JSON_INICIO===...===JSON_FIM===).
+
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: glossario-canonico
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  calcular:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements-leves.txt
+      - name: Dependencias
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Calcular glossario canonico
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: credenciais_sa.json
+        run: python src/glossario_canonico.py
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
