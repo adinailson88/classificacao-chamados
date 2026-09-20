@@ -36,12 +36,21 @@ def _tfidf():
                            ngram_range=(1, 2), min_df=1, max_features=30000)
 
 
+def _tfidf_com_glossario():
+    """TF-IDF + bloco de cobertura do glossário por categoria (log-odds), em
+    FeatureUnion: o classificador passa a "consultar" o glossário junto com o
+    texto, como uma coluna adicional -- nao substitui o TF-IDF, soma a ele."""
+    from sklearn.pipeline import FeatureUnion
+    from glossario_features import GlossarioFeaturizer
+    return FeatureUnion([("tfidf", _tfidf()), ("glossario", GlossarioFeaturizer())])
+
+
 class _ModeloProba:
     """Pipeline TF-IDF + classificador com predict_proba (score = prob. máxima)."""
 
-    def __init__(self, clf):
+    def __init__(self, clf, vetorizador=None):
         from sklearn.pipeline import Pipeline
-        self.pipe = Pipeline([("tfidf", _tfidf()), ("clf", clf)])
+        self.pipe = Pipeline([("tfidf", vetorizador or _tfidf()), ("clf", clf)])
         self.classes_ = None
 
     def fit(self, textos, categorias):
@@ -63,9 +72,9 @@ class _ModeloProba:
 class _ModeloMargem:
     """Para LinearSVC (sem proba): score = softmax da decision_function."""
 
-    def __init__(self, clf):
+    def __init__(self, clf, vetorizador=None):
         from sklearn.pipeline import Pipeline
-        self.pipe = Pipeline([("tfidf", _tfidf()), ("clf", clf)])
+        self.pipe = Pipeline([("tfidf", vetorizador or _tfidf()), ("clf", clf)])
         self.classes_ = None
 
     def fit(self, textos, categorias):
@@ -402,6 +411,14 @@ def criar_modelo(nome: str):
         # aleatorio interno na otimizacao por coordenadas; sem semente fixa,
         # a mesma base pode produzir previsoes diferentes entre execucoes.
         return _ModeloMargem(LinearSVC(class_weight="balanced", random_state=42))
+    if nome == "linear_svc_glossario":
+        # EXPERIMENTAL (nao entra em MODELOS_LEVES/MODELOS_TODOS nem no
+        # retreino canonico): mesmo LinearSVC, mas o vetorizador soma ao
+        # TF-IDF um bloco de features de cobertura do glossario por categoria
+        # (termos_relevantes.json). Comparar contra 'linear_svc' via
+        # comparar_modelos.py antes de considerar promover.
+        return _ModeloMargem(LinearSVC(class_weight="balanced", random_state=42),
+                             vetorizador=_tfidf_com_glossario())
     if nome == "sgd":
         return _ModeloProba(SGDClassifier(loss="log_loss", class_weight="balanced", random_state=42))
     if nome == "extra_trees":
