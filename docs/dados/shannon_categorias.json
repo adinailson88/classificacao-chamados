@@ -80,14 +80,14 @@
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "modelos": 8,
       "suporte_max": 1310,
-      "entropia_media_normalizada": 0.5575,
+      "entropia_media_normalizada": 0.5577,
       "maior_risco": "alta_ambiguidade"
     },
     {
       "categoria_historica": "Estrutura Predial > Infiltração",
       "modelos": 8,
       "suporte_max": 226,
-      "entropia_media_normalizada": 0.5198,
+      "entropia_media_normalizada": 0.5209,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -184,8 +184,8 @@
     {
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "modelos": 8,
-      "suporte_max": 1311,
-      "entropia_media_normalizada": 0.2667,
+      "suporte_max": 1312,
+      "entropia_media_normalizada": 0.2673,
       "maior_risco": "ambiguidade_moderada"
     },
     {
@@ -480,16 +480,16 @@
     {
       "modelo": "lstm",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 41,
-      "entropia_previsoes": 4.1888,
-      "entropia_normalizada": 0.7819,
-      "categorias_efetivas": 18.2373,
+      "entropia_previsoes": 4.1897,
+      "entropia_normalizada": 0.782,
+      "categorias_efetivas": 18.2483,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.2177,
+      "top_1_pct": 0.2176,
       "top_2_previsto": "Projetos e Reformas > Reforma",
-      "top_2_pct": 0.0856,
-      "concordancia_historico": 0.2177,
+      "top_2_pct": 0.0855,
+      "concordancia_historico": 0.2176,
       "risco": "alta_ambiguidade"
     },
     {
@@ -810,16 +810,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
+      "suporte": 226,
       "categorias_previstas": 9,
-      "entropia_previsoes": 2.2774,
-      "entropia_normalizada": 0.7184,
-      "categorias_efetivas": 4.848,
+      "entropia_previsoes": 2.2808,
+      "entropia_normalizada": 0.7195,
+      "categorias_efetivas": 4.8595,
       "top_1_previsto": "Estrutura Predial > Infiltração",
-      "top_1_pct": 0.4439,
+      "top_1_pct": 0.4381,
       "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.1883,
-      "concordancia_historico": 0.4439,
+      "top_2_pct": 0.1903,
+      "concordancia_historico": 0.4381,
       "risco": "alta_ambiguidade"
     },
     {
@@ -840,16 +840,16 @@
     {
       "modelo": "regressao_logistica",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 32,
-      "entropia_previsoes": 3.5566,
-      "entropia_normalizada": 0.7113,
-      "categorias_efetivas": 11.7664,
+      "entropia_previsoes": 3.5571,
+      "entropia_normalizada": 0.7114,
+      "categorias_efetivas": 11.7701,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.2452,
+      "top_1_pct": 0.245,
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_2_pct": 0.2223,
-      "concordancia_historico": 0.2452,
+      "top_2_pct": 0.2221,
+      "concordancia_historico": 0.245,
       "risco": "alta_ambiguidade"
     },
     {
@@ -913,6 +913,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "random_forest",
+      "categoria_historica": "Estrutura Predial > Infiltração",
+      "suporte": 226,
+      "categorias_previstas": 7,
+      "entropia_previsoes": 1.975,
+      "entropia_normalizada": 0.7035,
+      "categorias_efetivas": 3.9312,
+      "top_1_previsto": "Estrutura Predial > Infiltração",
+      "top_1_pct": 0.5354,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.177,
+      "concordancia_historico": 0.5354,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "sgd",
       "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
       "suporte": 88,
@@ -928,6 +943,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "sgd",
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "suporte": 1310,
+      "categorias_previstas": 36,
+      "entropia_previsoes": 3.627,
+      "entropia_normalizada": 0.7016,
+      "categorias_efetivas": 12.3551,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.2908,
+      "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "top_2_pct": 0.1656,
+      "concordancia_historico": 0.2908,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Manutenção Preventiva > Hidráulica",
       "suporte": 34,
@@ -940,21 +970,6 @@
       "top_2_previsto": "Manutenção Preventiva > Hidráulica",
       "top_2_pct": 0.3235,
       "concordancia_historico": 0.3235,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
-      "categorias_previstas": 36,
-      "entropia_previsoes": 3.6269,
-      "entropia_normalizada": 0.7015,
-      "categorias_efetivas": 12.3538,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.2911,
-      "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_2_pct": 0.1658,
-      "concordancia_historico": 0.2911,
       "risco": "alta_ambiguidade"
     },
     {
@@ -985,21 +1000,6 @@
       "top_2_previsto": "Climatização > Ar condicionado split",
       "top_2_pct": 0.1477,
       "concordancia_historico": 0.0,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "random_forest",
-      "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
-      "categorias_previstas": 7,
-      "entropia_previsoes": 1.9634,
-      "entropia_normalizada": 0.6994,
-      "categorias_efetivas": 3.8998,
-      "top_1_previsto": "Estrutura Predial > Infiltração",
-      "top_1_pct": 0.5426,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.1794,
-      "concordancia_historico": 0.5426,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1350,16 +1350,16 @@
     {
       "modelo": "linear_svc",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 35,
-      "entropia_previsoes": 3.2094,
-      "entropia_normalizada": 0.6257,
-      "categorias_efetivas": 9.25,
+      "entropia_previsoes": 3.2101,
+      "entropia_normalizada": 0.6258,
+      "categorias_efetivas": 9.2543,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.4232,
+      "top_1_pct": 0.4229,
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_2_pct": 0.107,
-      "concordancia_historico": 0.4232,
+      "top_2_pct": 0.1069,
+      "concordancia_historico": 0.4229,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1425,16 +1425,16 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
+      "suporte": 226,
       "categorias_previstas": 7,
-      "entropia_previsoes": 1.7208,
-      "entropia_normalizada": 0.613,
-      "categorias_efetivas": 3.2961,
+      "entropia_previsoes": 1.7226,
+      "entropia_normalizada": 0.6136,
+      "categorias_efetivas": 3.3002,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.426,
+      "top_1_pct": 0.4248,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.3274,
-      "concordancia_historico": 0.0045,
+      "top_2_pct": 0.323,
+      "concordancia_historico": 0.0044,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1528,6 +1528,21 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "lstm",
+      "categoria_historica": "Estrutura Predial > Infiltração",
+      "suporte": 226,
+      "categorias_previstas": 24,
+      "entropia_previsoes": 2.6815,
+      "entropia_normalizada": 0.5849,
+      "categorias_efetivas": 6.4154,
+      "top_1_previsto": "Estrutura Predial > Infiltração",
+      "top_1_pct": 0.5796,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.0664,
+      "concordancia_historico": 0.5796,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Outros > Erro de chamado",
       "suporte": 248,
@@ -1555,21 +1570,6 @@
       "top_2_previsto": "Hidrossanitária > Hidráulica",
       "top_2_pct": 0.2231,
       "concordancia_historico": 0.0,
-      "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "lstm",
-      "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
-      "categorias_previstas": 24,
-      "entropia_previsoes": 2.6441,
-      "entropia_normalizada": 0.5767,
-      "categorias_efetivas": 6.2509,
-      "top_1_previsto": "Estrutura Predial > Infiltração",
-      "top_1_pct": 0.5874,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.0673,
-      "concordancia_historico": 0.5874,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1875,16 +1875,16 @@
     {
       "modelo": "lstm",
       "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 38,
-      "entropia_previsoes": 2.6263,
-      "entropia_normalizada": 0.5005,
-      "categorias_efetivas": 6.1746,
+      "entropia_previsoes": 2.6293,
+      "entropia_normalizada": 0.501,
+      "categorias_efetivas": 6.1873,
       "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.6142,
+      "top_1_pct": 0.6137,
       "top_2_previsto": "Manutenção Preventiva > Esgoto",
       "top_2_pct": 0.0588,
-      "concordancia_historico": 0.6142,
+      "concordancia_historico": 0.6137,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1905,16 +1905,16 @@
     {
       "modelo": "linear_svc",
       "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
+      "suporte": 226,
       "categorias_previstas": 14,
-      "entropia_previsoes": 1.8787,
-      "entropia_normalizada": 0.4934,
-      "categorias_efetivas": 3.6774,
+      "entropia_previsoes": 1.8839,
+      "entropia_normalizada": 0.4948,
+      "categorias_efetivas": 3.6907,
       "top_1_previsto": "Estrutura Predial > Infiltração",
-      "top_1_pct": 0.6637,
+      "top_1_pct": 0.6593,
       "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.1121,
-      "concordancia_historico": 0.6637,
+      "top_2_pct": 0.1195,
+      "concordancia_historico": 0.6593,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1995,31 +1995,16 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 9,
-      "entropia_previsoes": 1.5275,
-      "entropia_normalizada": 0.4819,
-      "categorias_efetivas": 2.8828,
+      "entropia_previsoes": 1.5289,
+      "entropia_normalizada": 0.4823,
+      "categorias_efetivas": 2.8857,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6982,
+      "top_1_pct": 0.6977,
       "top_2_previsto": "Climatização > Ar condicionado split",
       "top_2_pct": 0.0985,
-      "concordancia_historico": 0.6982,
-      "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
-      "categorias_previstas": 15,
-      "entropia_previsoes": 1.8771,
-      "entropia_normalizada": 0.4805,
-      "categorias_efetivas": 3.6734,
-      "top_1_previsto": "Estrutura Predial > Infiltração",
-      "top_1_pct": 0.6502,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.13,
-      "concordancia_historico": 0.6502,
+      "concordancia_historico": 0.6977,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2035,6 +2020,21 @@
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.0826,
       "concordancia_historico": 0.7025,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "sgd",
+      "categoria_historica": "Estrutura Predial > Infiltração",
+      "suporte": 226,
+      "categorias_previstas": 16,
+      "entropia_previsoes": 1.9089,
+      "entropia_normalizada": 0.4772,
+      "categorias_efetivas": 3.7552,
+      "top_1_previsto": "Estrutura Predial > Infiltração",
+      "top_1_pct": 0.646,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.1327,
+      "concordancia_historico": 0.646,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2098,21 +2098,6 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Estrutura Predial > Infiltração",
-      "suporte": 223,
-      "categorias_previstas": 13,
-      "entropia_previsoes": 1.6896,
-      "entropia_normalizada": 0.4566,
-      "categorias_efetivas": 3.2258,
-      "top_1_previsto": "Estrutura Predial > Infiltração",
-      "top_1_pct": 0.6951,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.1031,
-      "concordancia_historico": 0.6951,
-      "risco": "ambiguidade_moderada"
-    },
-    {
       "modelo": "naive_bayes",
       "categoria_historica": "TI / Dados / Rede > Coleta de dados",
       "suporte": 40,
@@ -2125,6 +2110,21 @@
       "top_2_previsto": "Climatização > Ar condicionado split",
       "top_2_pct": 0.1,
       "concordancia_historico": 0.825,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Estrutura Predial > Infiltração",
+      "suporte": 226,
+      "categorias_previstas": 14,
+      "entropia_previsoes": 1.7249,
+      "entropia_normalizada": 0.453,
+      "categorias_efetivas": 3.3056,
+      "top_1_previsto": "Estrutura Predial > Infiltração",
+      "top_1_pct": 0.6903,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.1062,
+      "concordancia_historico": 0.6903,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2248,6 +2248,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "random_forest",
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "suporte": 1310,
+      "categorias_previstas": 26,
+      "entropia_previsoes": 2.0117,
+      "entropia_normalizada": 0.428,
+      "categorias_efetivas": 4.0325,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.6733,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.0847,
+      "concordancia_historico": 0.6733,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Estrutura Predial > Forro",
       "suporte": 153,
@@ -2261,21 +2276,6 @@
       "top_2_pct": 0.0719,
       "concordancia_historico": 0.7451,
       "risco": "estavel"
-    },
-    {
-      "modelo": "random_forest",
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
-      "categorias_previstas": 26,
-      "entropia_previsoes": 2.0105,
-      "entropia_normalizada": 0.4277,
-      "categorias_efetivas": 4.0292,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6738,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.084,
-      "concordancia_historico": 0.6738,
-      "risco": "ambiguidade_moderada"
     },
     {
       "modelo": "linear_svc",
@@ -2310,16 +2310,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 24,
-      "entropia_previsoes": 1.9444,
-      "entropia_normalizada": 0.4241,
-      "categorias_efetivas": 3.8487,
+      "entropia_previsoes": 1.9457,
+      "entropia_normalizada": 0.4244,
+      "categorias_efetivas": 3.8523,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6868,
+      "top_1_pct": 0.6863,
       "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.0764,
-      "concordancia_historico": 0.6868,
+      "top_2_pct": 0.0771,
+      "concordancia_historico": 0.6863,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2610,16 +2610,16 @@
     {
       "modelo": "regressao_logistica",
       "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1309,
+      "suporte": 1310,
       "categorias_previstas": 29,
-      "entropia_previsoes": 1.6153,
-      "entropia_normalizada": 0.3325,
-      "categorias_efetivas": 3.0638,
+      "entropia_previsoes": 1.6191,
+      "entropia_normalizada": 0.3333,
+      "categorias_efetivas": 3.0719,
       "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.7769,
+      "top_1_pct": 0.7763,
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
-      "top_2_pct": 0.0558,
-      "concordancia_historico": 0.7769,
+      "top_2_pct": 0.0557,
+      "concordancia_historico": 0.7763,
       "risco": "estavel"
     },
     {
@@ -2715,16 +2715,16 @@
     {
       "modelo": "sgd",
       "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1311,
+      "suporte": 1312,
       "categorias_previstas": 30,
-      "entropia_previsoes": 1.5061,
-      "entropia_normalizada": 0.3069,
-      "categorias_efetivas": 2.8404,
+      "entropia_previsoes": 1.5052,
+      "entropia_normalizada": 0.3067,
+      "categorias_efetivas": 2.8386,
       "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.7956,
+      "top_1_pct": 0.7957,
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
-      "top_2_pct": 0.0557,
-      "concordancia_historico": 0.7956,
+      "top_2_pct": 0.0556,
+      "concordancia_historico": 0.7957,
       "risco": "estavel"
     },
     {
@@ -3000,16 +3000,16 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1311,
+      "suporte": 1312,
       "categorias_previstas": 9,
-      "entropia_previsoes": 0.8462,
-      "entropia_normalizada": 0.2669,
-      "categorias_efetivas": 1.7977,
+      "entropia_previsoes": 0.8492,
+      "entropia_normalizada": 0.2679,
+      "categorias_efetivas": 1.8015,
       "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.8589,
+      "top_1_pct": 0.8582,
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
-      "top_2_pct": 0.0557,
-      "concordancia_historico": 0.8589,
+      "top_2_pct": 0.0556,
+      "concordancia_historico": 0.8582,
       "risco": "estavel"
     },
     {
@@ -3343,6 +3343,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "random_forest",
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "suporte": 1312,
+      "categorias_previstas": 14,
+      "entropia_previsoes": 0.7486,
+      "entropia_normalizada": 0.1966,
+      "categorias_efetivas": 1.6802,
+      "top_1_previsto": "Hidrossanitária > Hidráulica",
+      "top_1_pct": 0.8826,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0808,
+      "concordancia_historico": 0.8826,
+      "risco": "estavel"
+    },
+    {
       "modelo": "linear_svc",
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "suporte": 994,
@@ -3354,21 +3369,6 @@
       "top_1_pct": 0.8833,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.0443,
-      "concordancia_historico": 0.8833,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "random_forest",
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1311,
-      "categorias_previstas": 14,
-      "entropia_previsoes": 0.7464,
-      "entropia_normalizada": 0.196,
-      "categorias_efetivas": 1.6776,
-      "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.8833,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0801,
       "concordancia_historico": 0.8833,
       "risco": "estavel"
     },
@@ -3419,6 +3419,21 @@
     },
     {
       "modelo": "linear_svc",
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "suporte": 1310,
+      "categorias_previstas": 27,
+      "entropia_previsoes": 0.8849,
+      "entropia_normalizada": 0.1861,
+      "categorias_efetivas": 1.8466,
+      "top_1_previsto": "Hidrossanitária > Hidráulica",
+      "top_1_pct": 0.8969,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0252,
+      "concordancia_historico": 0.8969,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "linear_svc",
       "categoria_historica": "Climatização > Ar condicionado split",
       "suporte": 1666,
       "categorias_previstas": 23,
@@ -3430,21 +3445,6 @@
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.1116,
       "concordancia_historico": 0.8553,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "linear_svc",
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1309,
-      "categorias_previstas": 27,
-      "entropia_previsoes": 0.8799,
-      "entropia_normalizada": 0.185,
-      "categorias_efetivas": 1.8402,
-      "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.8976,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0252,
-      "concordancia_historico": 0.8976,
       "risco": "estavel"
     },
     {
@@ -3615,16 +3615,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1311,
+      "suporte": 1312,
       "categorias_previstas": 15,
-      "entropia_previsoes": 0.6655,
-      "entropia_normalizada": 0.1703,
-      "categorias_efetivas": 1.5861,
+      "entropia_previsoes": 0.6678,
+      "entropia_normalizada": 0.1709,
+      "categorias_efetivas": 1.5887,
       "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.8978,
+      "top_1_pct": 0.8971,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0725,
-      "concordancia_historico": 0.8978,
+      "top_2_pct": 0.0732,
+      "concordancia_historico": 0.8971,
       "risco": "estavel"
     },
     {
