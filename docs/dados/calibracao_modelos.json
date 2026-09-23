@@ -1,5 +1,5 @@
 {
-  "gerado_em": "23/09/2026 06:35",
+  "gerado_em": "23/09/2026 12:03",
   "fonte": "docs/dados/registros_<modelo>.json",
   "alvo": "categoria historica; validacao humana ainda nao iniciada",
   "calibrador_ajustado": false,
@@ -8,15 +8,15 @@
   "modelos": [
     {
       "modelo": "naive_bayes",
-      "total": 14354,
+      "total": 14356,
       "acerto_historico": 0.6952,
       "confianca_media": 0.7252,
       "brier": 0.1393,
-      "ece": 0.0367,
+      "ece": 0.0366,
       "mce": 0.0596,
       "faixa_95": {
         "faixa": ">=95%",
-        "n": 5982,
+        "n": 5984,
         "acerto_historico": 0.936,
         "confianca_media": 0.9956,
         "gap": 0.0596,
@@ -65,7 +65,7 @@
         },
         {
           "faixa": ">=95%",
-          "n": 5982,
+          "n": 5984,
           "acerto_historico": 0.936,
           "confianca_media": 0.9956,
           "gap": 0.0596,
@@ -77,15 +77,15 @@
     },
     {
       "modelo": "regressao_logistica",
-      "total": 14354,
+      "total": 14356,
       "acerto_historico": 0.7684,
-      "confianca_media": 0.5193,
+      "confianca_media": 0.5194,
       "brier": 0.2231,
       "ece": 0.249,
       "mce": 0.3852,
       "faixa_95": {
         "faixa": ">=95%",
-        "n": 1566,
+        "n": 1567,
         "acerto_historico": 0.9968,
         "confianca_media": 0.9613,
         "gap": -0.0355,
@@ -102,11 +102,11 @@
         },
         {
           "faixa": "50-70%",
-          "n": 1448,
-          "acerto_historico": 0.8729,
+          "n": 1449,
+          "acerto_historico": 0.873,
           "confianca_media": 0.5986,
-          "gap": -0.2743,
-          "brier": 0.1896
+          "gap": -0.2744,
+          "brier": 0.1895
         },
         {
           "faixa": "70-80%",
@@ -134,7 +134,7 @@
         },
         {
           "faixa": ">=95%",
-          "n": 1566,
+          "n": 1567,
           "acerto_historico": 0.9968,
           "confianca_media": 0.9613,
           "gap": -0.0355,
@@ -146,12 +146,12 @@
     },
     {
       "modelo": "linear_svc",
-      "total": 14354,
+      "total": 14356,
       "acerto_historico": 0.8019,
       "confianca_media": 0.0976,
       "brier": 0.6394,
-      "ece": 0.7042,
-      "mce": 0.7043,
+      "ece": 0.7043,
+      "mce": 0.7044,
       "faixa_95": {
         "faixa": ">=95%",
         "n": 0,
@@ -163,10 +163,10 @@
       "por_faixa": [
         {
           "faixa": "<50%",
-          "n": 14350,
+          "n": 14352,
           "acerto_historico": 0.8018,
           "confianca_media": 0.0975,
-          "gap": -0.7043,
+          "gap": -0.7044,
           "brier": 0.6396
         },
         {
@@ -215,7 +215,7 @@
     },
     {
       "modelo": "sgd",
-      "total": 14354,
+      "total": 14356,
       "acerto_historico": 0.7756,
       "confianca_media": 0.462,
       "brier": 0.2509,
@@ -240,10 +240,10 @@
         },
         {
           "faixa": "50-70%",
-          "n": 1793,
-          "acerto_historico": 0.9191,
+          "n": 1795,
+          "acerto_historico": 0.9192,
           "confianca_media": 0.5958,
-          "gap": -0.3233,
+          "gap": -0.3234,
           "brier": 0.1784
         },
         {
@@ -284,7 +284,7 @@
     },
     {
       "modelo": "extra_trees",
-      "total": 14354,
+      "total": 14356,
       "acerto_historico": 0.7844,
       "confianca_media": 0.7077,
       "brier": 0.1282,
@@ -292,7 +292,7 @@
       "mce": 0.1799,
       "faixa_95": {
         "faixa": ">=95%",
-        "n": 4806,
+        "n": 4807,
         "acerto_historico": 0.994,
         "confianca_media": 0.9959,
         "gap": 0.0019,
@@ -333,15 +333,15 @@
         },
         {
           "faixa": "90-95%",
-          "n": 614,
-          "acerto_historico": 0.9739,
+          "n": 615,
+          "acerto_historico": 0.974,
           "confianca_media": 0.9238,
-          "gap": -0.0501,
-          "brier": 0.0277
+          "gap": -0.0502,
+          "brier": 0.0276
         },
         {
           "faixa": ">=95%",
-          "n": 4806,
+          "n": 4807,
           "acerto_historico": 0.994,
           "confianca_media": 0.9959,
           "gap": 0.0019,
@@ -353,7 +353,7 @@
     },
     {
       "modelo": "random_forest",
-      "total": 14354,
+      "total": 14356,
       "acerto_historico": 0.7752,
       "confianca_media": 0.6974,
       "brier": 0.1279,
@@ -402,11 +402,11 @@
         },
         {
           "faixa": "90-95%",
-          "n": 662,
-          "acerto_historico": 0.9592,
+          "n": 664,
+          "acerto_historico": 0.9593,
           "confianca_media": 0.9224,
-          "gap": -0.0368,
-          "brier": 0.0401
+          "gap": -0.0369,
+          "brier": 0.04
         },
         {
           "faixa": ">=95%",
@@ -422,11 +422,11 @@
     },
     {
       "modelo": "lstm",
-      "total": 14354,
-      "acerto_historico": 0.6869,
+      "total": 14356,
+      "acerto_historico": 0.687,
       "confianca_media": 0.7137,
-      "brier": 0.1307,
-      "ece": 0.0268,
+      "brier": 0.1308,
+      "ece": 0.0267,
       "mce": 0.0459,
       "faixa_95": {
         "faixa": ">=95%",
@@ -439,18 +439,18 @@
       "por_faixa": [
         {
           "faixa": "<50%",
-          "n": 4182,
-          "acerto_historico": 0.2872,
+          "n": 4183,
+          "acerto_historico": 0.2874,
           "confianca_media": 0.3231,
-          "gap": 0.0359,
+          "gap": 0.0358,
           "brier": 0.1968
         },
         {
           "faixa": "50-70%",
-          "n": 1590,
-          "acerto_historico": 0.5591,
-          "confianca_media": 0.5982,
-          "gap": 0.039,
+          "n": 1591,
+          "acerto_historico": 0.5594,
+          "confianca_media": 0.5981,
+          "gap": 0.0387,
           "brier": 0.2429
         },
         {
