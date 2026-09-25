@@ -201,8 +201,12 @@ jobs:
           # que o script imprime e propaga a informacao para nao persistir estado
           # operacional sem treino real.
           set -o pipefail
+          # "|| true" neutraliza o -e (padrao do shell de steps run:) so nesta linha:
+          # sem isso, o proprio -e aborta o script na pipeline quando ela retorna codigo 3
+          # (guarda de qualidade), antes do if/elif abaixo poder tratar esse caso como
+          # sucesso intencional -- o job falhava mesmo com a guarda funcionando certo.
           python src/reclassificar_validados.py --modelo transformer_ft --max-turnos 0 --aplicar \
-            | tee saida_reclassificacao.txt
+            | tee saida_reclassificacao.txt || true
           codigo=${PIPESTATUS[0]}
           if [ "$codigo" -eq 3 ]; then
             # Guarda de qualidade intencional (ganho_vs_g < 0): nao e falha de execucao,
