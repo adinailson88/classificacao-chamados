@@ -83,13 +83,17 @@ class TestEstatisticaGatilhos(unittest.TestCase):
             upstreams,
             [
                 "Comparar modelos (lote)",
-                "Transformer fine-tuning (BERTimbau)",
             ],
         )
 
     def test_upstream_removido_nao_aparece(self):
         upstreams = self.on["workflow_run"]["workflows"]
         self.assertNotIn("Multimodelo - classificacao completa", upstreams)
+        # Removido para eliminar a corrida com o cron de 6h: os dois disparos
+        # legitimos calculavam docs/dados/estatistica.json quase ao mesmo
+        # tempo a partir de estados diferentes, gerando conflito de push que
+        # o commit estatistica.yml nao pode resolver automaticamente.
+        self.assertNotIn("Transformer fine-tuning (BERTimbau)", upstreams)
 
     def test_concurrency_inalterada(self):
         self.assertEqual(self.doc["concurrency"]["group"], "escrita-planilha")

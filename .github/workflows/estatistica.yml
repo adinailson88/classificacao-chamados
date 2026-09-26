@@ -4,15 +4,26 @@ name: Estatistica multimodelo
 # docs/dados/estatistica.json. Nao exporta texto de chamado.
 
 on:
-  # Agendamento periodico (a cada 6h) para manter a estatistica fresca, alem dos
-  # gatilhos por workflow_run apos os fluxos que alteram dados.
+  # Agendamento periodico (a cada 6h) para manter a estatistica fresca, alem do
+  # gatilho por workflow_run apos "Comparar modelos (lote)".
+  #
+  # O gatilho por workflow_run do "Transformer fine-tuning (BERTimbau)" foi
+  # removido: esse workflow ja roda 1x/dia (noturno) e, quando termina perto
+  # do cron de 6h em 6h, os dois disparos legitimos calculam
+  # docs/dados/estatistica.json a partir de estados diferentes quase ao mesmo
+  # tempo. O concurrency group 'escrita-planilha' so serializa a ORDEM dos
+  # jobs, nao evita que o segundo calcule sobre dado mais novo que o commit
+  # local do primeiro -- resultando em conflito de conteudo real no mesmo
+  # arquivo. O commit estatistica.yml NAO pode resolver isso automaticamente
+  # (ver tests/test_governanca_writers_git.py: nada de -X theirs/ours nem
+  # reset --hard), entao a mitigacao e' eliminar o gatilho redundante em vez
+  # de tentar autorresolver o conflito.
   schedule:
     - cron: "30 */6 * * *"
   workflow_dispatch:
   workflow_run:
     workflows:
       - "Comparar modelos (lote)"
-      - "Transformer fine-tuning (BERTimbau)"
     types:
       - completed
 
