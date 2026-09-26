@@ -236,6 +236,63 @@ def carregar_registros_modelos_de_artefatos(saida: Path, modelos: list[str]):
     return contagens, auditoria
 
 
+def exportar_registros_modelos_da_planilha(sh, config: dict, saida: Path):
+    """Renova somente os artefatos sanitizados derivados de ``CLASSIF__*``."""
+    valida = {}
+    try:
+        conferencias = pl.ler_conferencias(sh, config["aba_principal"])
+        valida = {ln: (d.get("ia") or "") for ln, d in conferencias.items()}
+    except Exception:  # noqa: BLE001
+        pass
+
+    ids_atuais: set[str] = set()
+    linha_atual_por_id: dict[str, int] = {}
+    bloco_principal = com_retentativa(
+        "ler ids da aba principal",
+        lambda: sh.worksheet(config["aba_principal"]).get_values(
+            "A:A", value_render_option="UNFORMATTED_VALUE"),
+    )
+    for linha_atual, rr in enumerate(bloco_principal[1:], start=2):
+        idc = normalizar_id(rr[0] if rr else "")
+        if idc:
+            ids_atuais.add(idc)
+            linha_atual_por_id[idc] = linha_atual
+    if not ids_atuais:
+        raise RuntimeError("IDs atuais indisponiveis; publicacao por modelo bloqueada")
+
+    mm = config.get("multimodelo", {}) or {}
+    modelos = list(mm.get("modelos_leves", [])) + list(mm.get("modelos_pesados", []))
+    padrao = mm.get("aba_classificacao", "CLASSIF__{modelo}")
+    contagens = {}
+    auditoria = {}
+    saida.mkdir(parents=True, exist_ok=True)
+    for modelo in modelos:
+        nome_aba = padrao.replace("{modelo}", modelo)
+        try:
+            vals = com_retentativa(
+                f"ler {nome_aba}",
+                lambda na=nome_aba: sh.worksheet(na).get_values(
+                    "A:K", value_render_option="UNFORMATTED_VALUE"),
+            )
+        except Exception:  # noqa: BLE001
+            vals = []
+        registros, aud = deduplicar_registros_modelo(
+            vals, ids_atuais, linha_atual_por_id, valida, modelo
+        )
+        auditoria[modelo] = aud
+        arquivo = saida / f"registros_{modelo}.json"
+        if registros:
+            arquivo.write_text(json.dumps(registros, ensure_ascii=False), encoding="utf-8")
+            contagens[modelo] = len(registros)
+        else:
+            arquivo.unlink(missing_ok=True)
+    (saida / "registros_modelos_auditoria.json").write_text(
+        json.dumps({"modelos": auditoria}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    return contagens, auditoria
+
+
 def exportar_reclass_resumo(sh, config):
     """Agrega as abas RECLASS__<modelo> em contagens seguras (sem texto/ID).
 
