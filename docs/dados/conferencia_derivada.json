@@ -1,16 +1,16 @@
 {
- "total_chamados": 14370,
+ "total_chamados": 14372,
  "com_conferencia_glpi": 14335,
  "verdade_glpi": 13764,
  "verdade_manual": 571,
  "pendente_glpi_errado_sem_q": 0,
- "sem_conferencia": 35,
+ "sem_conferencia": 37,
  "correto_com_q_preenchida": 1,
  "errado_com_q_igual_a_c": 2,
  "por_modelo": {
   "naive_bayes": {
-   "correto": 10123,
-   "errado": 4212,
+   "correto": 10124,
+   "errado": 4211,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
@@ -25,12 +25,12 @@
    "acuracia": 0.7914
   },
   "linear_svc": {
-   "correto": 11700,
-   "errado": 2635,
+   "correto": 11701,
+   "errado": 2634,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.8162
+   "acuracia": 0.8163
   },
   "sgd": {
    "correto": 11433,
@@ -107,7 +107,7 @@
   "2026080316",
   "2026090165"
  ],
- "gerado_em": "28/09/2026 02:39",
+ "gerado_em": "28/09/2026 11:16",
  "aba": "CONFERENCIA_MULTIMODELO",
  "regra": "M='Correto' -> verdade = C; M='Errado' + Q preenchida -> verdade = Q; M='Errado' sem Q -> pendente; M vazio -> ignorado"
 }
