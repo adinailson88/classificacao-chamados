@@ -1,36 +1,36 @@
 {
-  "gerado_em": "29/09/2026 10:09",
+  "gerado_em": "29/09/2026 12:53",
   "run_id": "EXP_CLASSIFICACAO_CHAMADOS_2026_06_001",
   "abas": {
-    "log_turnos_classificacao": 3836,
+    "log_turnos_classificacao": 3837,
     "metricas_por_categoria": 73,
     "log_turnos_reclassificacao": 0,
-    "metricas_experimento": 7,
+    "metricas_experimento": 9,
     "comparacao_modelos": 72,
     "comparacao_categoria": 1728,
     "comparacao_previsoes": 16000,
-    "multimodelo_turnos": 11868,
+    "multimodelo_turnos": 11875,
     "multimodelo_metricas": 8,
     "multimodelo_reclass_turnos": 8265,
     "reclass_resumo": 7,
     "estabilidade_reclassificacao": 0
   },
   "calibracao": {
-    "total": 14375,
-    "ece_historico": 0.0306,
+    "total": 14377,
+    "ece_historico": 0.0307,
     "validados": 14335
   },
-  "registros": 14375,
+  "registros": 14377,
   "registros_modelos": {
-    "naive_bayes": 14375,
-    "regressao_logistica": 14375,
-    "linear_svc": 14375,
-    "sgd": 14375,
-    "extra_trees": 14375,
-    "random_forest": 14375,
-    "lstm": 14375
+    "naive_bayes": 14377,
+    "regressao_logistica": 14377,
+    "linear_svc": 14377,
+    "sgd": 14377,
+    "extra_trees": 14377,
+    "random_forest": 14377,
+    "lstm": 14377
   },
-  "fonte_registros_modelos": "artefatos",
+  "fonte_registros_modelos": "planilha",
   "calibracao_modelos": {
     "modelos": 7,
     "melhor_ece": "lstm",
@@ -39,7 +39,7 @@
   },
   "calibracao_ajustada_modelos": {
     "modelos": 7,
-    "melhor_ece_ajustado": "linear_svc",
+    "melhor_ece_ajustado": "random_forest",
     "alvo": "categoria historica; validacao humana ainda nao iniciada"
   }
 }
