@@ -93,8 +93,8 @@
     {
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "modelos": 8,
-      "suporte_max": 331,
-      "entropia_media_normalizada": 0.4933,
+      "suporte_max": 334,
+      "entropia_media_normalizada": 0.494,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -107,8 +107,8 @@
     {
       "categoria_historica": "Elétrica > Instalações elétricas",
       "modelos": 8,
-      "suporte_max": 965,
-      "entropia_media_normalizada": 0.4606,
+      "suporte_max": 966,
+      "entropia_media_normalizada": 0.4607,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -177,8 +177,8 @@
     {
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "modelos": 8,
-      "suporte_max": 1316,
-      "entropia_media_normalizada": 0.2676,
+      "suporte_max": 1317,
+      "entropia_media_normalizada": 0.2678,
       "maior_risco": "ambiguidade_moderada"
     },
     {
@@ -3163,6 +3163,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "etapa1_oficial",
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "suporte": 334,
+      "categorias_previstas": 8,
+      "entropia_previsoes": 0.6805,
+      "entropia_normalizada": 0.2268,
+      "categorias_efetivas": 1.6027,
+      "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "top_1_pct": 0.8922,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0719,
+      "concordancia_historico": 0.8922,
+      "risco": "estavel"
+    },
+    {
       "modelo": "lstm",
       "categoria_historica": "Manutenção Preventiva > Iluminação",
       "suporte": 135,
@@ -3190,21 +3205,6 @@
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.1108,
       "concordancia_historico": 0.8382,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "etapa1_oficial",
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 331,
-      "categorias_previstas": 8,
-      "entropia_previsoes": 0.6629,
-      "entropia_normalizada": 0.221,
-      "categorias_efetivas": 1.5833,
-      "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_1_pct": 0.8973,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0665,
-      "concordancia_historico": 0.8973,
       "risco": "estavel"
     },
     {
@@ -3510,31 +3510,31 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Elétrica > Instalações elétricas",
-      "suporte": 965,
+      "suporte": 966,
       "categorias_previstas": 17,
-      "entropia_previsoes": 0.7382,
-      "entropia_normalizada": 0.1806,
-      "categorias_efetivas": 1.6681,
+      "entropia_previsoes": 0.7439,
+      "entropia_normalizada": 0.182,
+      "categorias_efetivas": 1.6747,
       "top_1_previsto": "Elétrica > Instalações elétricas",
-      "top_1_pct": 0.9047,
+      "top_1_pct": 0.9037,
       "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_2_pct": 0.0269,
-      "concordancia_historico": 0.9047,
+      "concordancia_historico": 0.9037,
       "risco": "estavel"
     },
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1315,
+      "suporte": 1317,
       "categorias_previstas": 22,
-      "entropia_previsoes": 0.7887,
-      "entropia_normalizada": 0.1769,
-      "categorias_efetivas": 1.7275,
+      "entropia_previsoes": 0.795,
+      "entropia_normalizada": 0.1783,
+      "categorias_efetivas": 1.7351,
       "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.8951,
+      "top_1_pct": 0.8945,
       "top_2_previsto": "Manutenção Preventiva > Reservatório",
-      "top_2_pct": 0.051,
-      "concordancia_historico": 0.8951,
+      "top_2_pct": 0.0509,
+      "concordancia_historico": 0.8945,
       "risco": "estavel"
     },
     {
@@ -3600,16 +3600,16 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1669,
+      "suporte": 1670,
       "categorias_previstas": 15,
-      "entropia_previsoes": 0.6802,
-      "entropia_normalizada": 0.1741,
-      "categorias_efetivas": 1.6024,
+      "entropia_previsoes": 0.68,
+      "entropia_normalizada": 0.174,
+      "categorias_efetivas": 1.6021,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8694,
+      "top_1_pct": 0.8695,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.115,
-      "concordancia_historico": 0.8694,
+      "concordancia_historico": 0.8695,
       "risco": "estavel"
     },
     {
