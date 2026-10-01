@@ -1,8 +1,8 @@
 {
  "total_chamados": 14389,
  "com_conferencia_glpi": 14335,
- "verdade_glpi": 13764,
- "verdade_manual": 571,
+ "verdade_glpi": 13766,
+ "verdade_manual": 569,
  "pendente_glpi_errado_sem_q": 0,
  "sem_conferencia": 54,
  "correto_com_q_preenchida": 1,
@@ -17,24 +17,24 @@
    "acuracia": 0.7062
   },
   "regressao_logistica": {
-   "correto": 11345,
-   "errado": 2990,
+   "correto": 11347,
+   "errado": 2988,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7914
+   "acuracia": 0.7916
   },
   "linear_svc": {
-   "correto": 11701,
-   "errado": 2634,
+   "correto": 11663,
+   "errado": 2672,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.8163
+   "acuracia": 0.8136
   },
   "sgd": {
-   "correto": 11433,
-   "errado": 2902,
+   "correto": 11434,
+   "errado": 2901,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
@@ -57,12 +57,12 @@
    "acuracia": 0.7858
   },
   "lstm": {
-   "correto": 10103,
-   "errado": 4232,
+   "correto": 10105,
+   "errado": 4230,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7048
+   "acuracia": 0.7049
   },
   "transformer_ft": {
    "correto": 5739,
@@ -76,7 +76,7 @@
  "distribuicao_q": {
   "Manutenção Preventiva > Ar condicionado split": 188,
   "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)": 105,
-  "Outros > Erro de chamado": 45,
+  "Outros > Erro de chamado": 43,
   "Manutenção Preventiva > Reservatório": 36,
   "Estrutura Predial > Esquadrias, porta, portão e janelas": 31,
   "Elétrica > Nobreak": 22,
@@ -107,7 +107,7 @@
   "2026080316",
   "2026090165"
  ],
- "gerado_em": "01/10/2026 10:39",
+ "gerado_em": "01/10/2026 19:49",
  "aba": "CONFERENCIA_MULTIMODELO",
  "regra": "M='Correto' -> verdade = C; M='Errado' + Q preenchida -> verdade = Q; M='Errado' sem Q -> pendente; M vazio -> ignorado"
 }
