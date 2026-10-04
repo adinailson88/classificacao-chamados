@@ -1,5 +1,5 @@
 {
-  "gerado_em": "03/10/2026 12:07",
+  "gerado_em": "04/10/2026 08:01",
   "fonte": "docs/dados/registros_<modelo>.json",
   "alvo": "categoria historica; validacao humana ainda nao iniciada",
   "calibrador_ajustado": false,
@@ -419,9 +419,78 @@
       ],
       "calibrador_ajustado": false,
       "tipo_confianca": "bruta; diagnostico contra historico"
+    },
+    {
+      "modelo": "lstm",
+      "total": 14389,
+      "acerto_historico": 0.6864,
+      "confianca_media": 0.713,
+      "brier": 0.1308,
+      "ece": 0.0266,
+      "mce": 0.0457,
+      "faixa_95": {
+        "faixa": ">=95%",
+        "n": 4635,
+        "acerto_historico": 0.9761,
+        "confianca_media": 0.9859,
+        "gap": 0.0098,
+        "brier": 0.023
+      },
+      "por_faixa": [
+        {
+          "faixa": "<50%",
+          "n": 4203,
+          "acerto_historico": 0.2872,
+          "confianca_media": 0.3225,
+          "gap": 0.0354,
+          "brier": 0.1968
+        },
+        {
+          "faixa": "50-70%",
+          "n": 1595,
+          "acerto_historico": 0.5586,
+          "confianca_media": 0.5981,
+          "gap": 0.0395,
+          "brier": 0.243
+        },
+        {
+          "faixa": "70-80%",
+          "n": 913,
+          "acerto_historico": 0.7218,
+          "confianca_media": 0.7528,
+          "gap": 0.0311,
+          "brier": 0.2014
+        },
+        {
+          "faixa": "80-90%",
+          "n": 1780,
+          "acerto_historico": 0.8101,
+          "confianca_media": 0.8558,
+          "gap": 0.0457,
+          "brier": 0.1564
+        },
+        {
+          "faixa": "90-95%",
+          "n": 1263,
+          "acerto_historico": 0.9137,
+          "confianca_media": 0.9267,
+          "gap": 0.013,
+          "brier": 0.0785
+        },
+        {
+          "faixa": ">=95%",
+          "n": 4635,
+          "acerto_historico": 0.9761,
+          "confianca_media": 0.9859,
+          "gap": 0.0098,
+          "brier": 0.023
+        }
+      ],
+      "calibrador_ajustado": false,
+      "tipo_confianca": "bruta; diagnostico contra historico"
     }
   ],
-  "melhor_ece": "naive_bayes",
+  "melhor_ece": "lstm",
   "melhor_faixa_95": "random_forest",
   "observacao": "Diagnostico preliminar. LinearSVC/SGD usam margem normalizada, LSTM usa softmax, arvores usam voto e modelos probabilisticos usam predict_proba. Nenhuma dessas saidas deve ser tratada como confianca calibrada sem ajuste posterior."
 }
