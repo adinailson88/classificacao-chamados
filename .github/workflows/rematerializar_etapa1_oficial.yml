@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   rematerializar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
     steps:

@@ -41,7 +41,7 @@ permissions:
 
 jobs:
   comparar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}

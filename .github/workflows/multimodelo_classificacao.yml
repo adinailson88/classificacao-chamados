@@ -82,7 +82,7 @@ permissions:
 
 jobs:
   guard:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       executar: ${{ steps.g.outputs.executar }}
       valor_atual: ${{ steps.g.outputs.valor_atual }}
@@ -100,7 +100,7 @@ jobs:
     # Roda no cron diario (acompanha a Etapa 1), no disparo manual, ou quando a guarda
     # de avanco aprovar. O custo e barato quando nao ha pendentes (no-op no script).
     if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || needs.guard.outputs.executar == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 90
     permissions:
       contents: write
