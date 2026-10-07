@@ -47,9 +47,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/artigo_classificacao_chamados.pdf
-          if git diff --cached --quiet; then
-            echo "PDF sem mudancas, nada a commitar."
-          else
-            git commit -m "pdf do artigo gerado automaticamente [skip ci]"
-            git push
-          fi
+          git diff --cached --quiet && { echo "PDF sem mudancas, nada a commitar."; exit 0; }
+          git commit -m "pdf do artigo gerado automaticamente [skip ci]"
+          for i in 1 2 3 4 5; do
+            # Falha explicita em conflito real: sem -X theirs, um conflito verdadeiro
+            # em docs/artigo_classificacao_chamados.pdf aborta o rebase (linha abaixo)
+            # em vez de escolher uma versao silenciosamente.
+            git pull --rebase --autostash origin main && git push && exit 0
+            # aborta rebase preso para a proxima tentativa nao herdar 'unmerged files'.
+            git rebase --abort 2>/dev/null || true
+            echo "push rejeitado (tentativa $i/5); novo rebase em 5s"; sleep 5
+          done
+          echo "push falhou apos 5 tentativas" >&2; exit 1
