@@ -37,11 +37,24 @@ Os artefatos são renovados diretamente das abas nas seguintes situações:
 Essa etapa reduz as leituras repetidas das abas de modelos, mas ainda não
 interrompe sua atualização nem autoriza sua remoção.
 
+## Fase 3 — publicação pelo produtor
+
+Depois de uma classificação aplicada, o próprio workflow multimodelo renova e
+publica os JSONs sanitizados. A publicação usa um worktree isolado baseado no
+`main` remoto mais recente, limita o commit aos arquivos `registros_<modelo>.json`
+e à auditoria e repete a tentativa se outro workflow avançar o repositório.
+
+As abas `CLASSIF__*` continuam sendo escritas nesta fase porque ainda existem
+consumidores científicos e operacionais que não foram migrados. O produtor passa
+a alimentar os artefatos diretamente, mas a retirada das abas permanece proibida
+até que esses consumidores sejam inventariados e substituídos.
+
 ## Próximas fases
 
-1. Fazer o produtor dos modelos alimentar diretamente o pacote sanitizado.
-2. Observar uma execução completa sem divergências.
-3. Só então interromper a escrita em `CLASSIF__*`.
-4. Repetir o processo para `RECLASS__*`, snapshot e logs detalhados.
+1. Observar uma execução aplicada completa sem divergências.
+2. Migrar, individualmente, os consumidores operacionais de `CLASSIF__*`.
+3. Manter as rotinas científicas congeladas separadas dos artefatos operacionais.
+4. Só então interromper a escrita e avaliar a remoção de `CLASSIF__*`.
+5. Repetir o processo para `RECLASS__*`, snapshot e logs detalhados.
 
 Nenhuma exclusão de aba faz parte desta alteração.
