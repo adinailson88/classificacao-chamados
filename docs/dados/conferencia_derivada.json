@@ -1,12 +1,12 @@
 {
- "total_chamados": 14389,
+ "total_chamados": 14559,
  "com_conferencia_glpi": 14335,
  "verdade_glpi": 13766,
  "verdade_manual": 569,
  "pendente_glpi_errado_sem_q": 0,
- "sem_conferencia": 54,
+ "sem_conferencia": 224,
  "correto_com_q_preenchida": 1,
- "errado_com_q_igual_a_c": 2,
+ "errado_com_q_igual_a_c": 6,
  "por_modelo": {
   "naive_bayes": {
    "correto": 10179,
@@ -17,60 +17,60 @@
    "acuracia": 0.7101
   },
   "regressao_logistica": {
-   "correto": 11347,
-   "errado": 2988,
+   "correto": 11350,
+   "errado": 2985,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7916
+   "acuracia": 0.7918
   },
   "linear_svc": {
-   "correto": 11663,
-   "errado": 2672,
+   "correto": 11668,
+   "errado": 2667,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.8136
+   "acuracia": 0.814
   },
   "sgd": {
-   "correto": 11434,
-   "errado": 2901,
+   "correto": 11437,
+   "errado": 2898,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7976
+   "acuracia": 0.7978
   },
   "extra_trees": {
-   "correto": 11391,
-   "errado": 2944,
+   "correto": 11394,
+   "errado": 2941,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7946
+   "acuracia": 0.7948
   },
   "random_forest": {
-   "correto": 11265,
-   "errado": 3070,
+   "correto": 11268,
+   "errado": 3067,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7858
+   "acuracia": 0.786
   },
   "lstm": {
-   "correto": 10105,
-   "errado": 4230,
+   "correto": 10108,
+   "errado": 4227,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14335,
-   "acuracia": 0.7049
+   "acuracia": 0.7051
   },
   "transformer_ft": {
-   "correto": 5739,
-   "errado": 3768,
+   "correto": 5738,
+   "errado": 3769,
    "pendente": 0,
    "sem_predicao": 4828,
    "avaliados": 9507,
-   "acuracia": 0.6037
+   "acuracia": 0.6036
   }
  },
  "distribuicao_q": {
@@ -104,10 +104,14 @@
   "2026080529"
  ],
  "ids_errado_com_q_igual_a_c": [
+  "1800",
+  "3360",
   "2026080316",
-  "2026090165"
+  "2026090165",
+  "2026090262",
+  "2026090267"
  ],
- "gerado_em": "22/10/2026 09:12",
+ "gerado_em": "22/10/2026 14:26",
  "aba": "CONFERENCIA_MULTIMODELO",
  "regra": "M='Correto' -> verdade = C; M='Errado' + Q preenchida -> verdade = Q; M='Errado' sem Q -> pendente; M vazio -> ignorado"
 }
