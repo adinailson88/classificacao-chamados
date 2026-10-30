@@ -19,7 +19,7 @@ on:
         description: "Etapa"
         type: choice
         default: particoes
-        options: [particoes, retreino, temporal]
+        options: [particoes, retreino, temporal, calibracao, analise]
       modelos:
         description: "Modelos separados por virgula"
         default: "naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm"
@@ -62,7 +62,7 @@ jobs:
           if [ -z "$ETAPA" ]; then
             ETAPA="$(printf '%s' "$MENSAGEM" | grep -o '\[trilha-b:[a-z]*\]' | head -1 | sed -E 's/\[trilha-b:([a-z]*)\]/\1/')"
           fi
-          case "$ETAPA" in particoes|retreino|temporal) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
+          case "$ETAPA" in particoes|retreino|temporal|calibracao|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
           MODELOS="${MODELOS_INPUT:-naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm}"
           echo "etapa=$ETAPA" >> "$GITHUB_OUTPUT"
           echo "modelos=$MODELOS" >> "$GITHUB_OUTPUT"
@@ -77,7 +77,26 @@ jobs:
         continue-on-error: true
         env:
           GOOGLE_APPLICATION_CREDENTIALS: credenciais_sa.json
-        run: python src/trilha_b.py "${{ steps.cfg.outputs.etapa }}" --modelos "${{ steps.cfg.outputs.modelos }}"
+        run: |
+          set -e
+          D=docs/dados/trilha_b
+          if [ "${{ steps.cfg.outputs.etapa }}" = "analise" ]; then
+            # Inferencia sobre as predicoes out-of-fold, sem acesso a planilha.
+            # Saidas explicitas em trilha_b: os padroes apontam para o artigo congelado.
+            mkdir -p docs/trilha_b
+            python src/inferencia_canonica.py --predicoes $D/retreino_predicoes.csv \
+              --grupos $D/grupos_textuais_mapa.csv --particoes $D/particoes_mapa.csv \
+              --manifesto $D/rodada_b.json --json $D/inferencia.json \
+              --markdown docs/trilha_b/INFERENCIA.md
+            python src/inferencia_agrupada.py --predicoes $D/retreino_predicoes.csv \
+              --grupos $D/grupos_textuais_mapa.csv --manifesto $D/rodada_b.json \
+              --json $D/inferencia_agrupada.json --markdown docs/trilha_b/INFERENCIA_AGRUPADA.md
+            python src/recortes_canonicos.py --predicoes $D/retreino_predicoes.csv \
+              --manifesto $D/rodada_b.json --json $D/recortes.json \
+              --markdown docs/trilha_b/RECORTES.md
+          else
+            python src/trilha_b.py "${{ steps.cfg.outputs.etapa }}" --modelos "${{ steps.cfg.outputs.modelos }}"
+          fi
       - name: Remover credenciais
         if: always()
         run: rm -f credenciais_sa.json
@@ -86,7 +105,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trilha-b-${{ steps.cfg.outputs.etapa }}
-          path: docs/dados/trilha_b/
+          path: |
+            docs/dados/trilha_b/
+            docs/trilha_b/
           if-no-files-found: ignore
           retention-days: 30
       - name: Aplicar criterio de aceite
@@ -94,4 +115,3 @@ jobs:
         run: |
           echo "A etapa falhou; consulte o log do passo anterior." >&2
           exit 1
-# temporal: treino no passado, teste no futuro

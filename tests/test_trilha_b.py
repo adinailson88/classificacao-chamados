@@ -151,6 +151,24 @@ class TestTrilhaB(unittest.TestCase):
             self.assertEqual(caminho.parent, tb.DADOS_B)
             cb.garantir_fora_do_congelado(caminho)
 
+    def test_calibracao_usa_as_predicoes_do_retreino_sem_vazar_a_dobra_externa(self):
+        _regs, _r, corpus = self._corpus()
+        with tempfile.TemporaryDirectory() as d:
+            saidas = {k: Path(d) / v.name for k, v in tb.SAIDAS.items()}
+            rel = tb.etapa_retreino(corpus, ["naive_bayes"], registrar=lambda m: None)
+            tb.gravar_retreino(rel, corpus, {"hash_corte": "x"}, "agora", saidas)
+            cal = tb.etapa_calibracao(corpus, ["naive_bayes"],
+                                      saidas["retreino_pred"], registrar=lambda m: None)
+            with self.assertRaises(RuntimeError):
+                tb.etapa_calibracao(corpus, ["linear_svc"], saidas["retreino_pred"],
+                                    registrar=lambda m: None)
+            tb.gravar_calibracao(cal, {"hash_corte": "x"}, "agora", saidas)
+            gravado = json.loads(saidas["calibracao_json"].read_text(encoding="utf-8"))
+        self.assertEqual(cal["trilha"], "B")
+        self.assertEqual(cal["corpus"]["registros"], len(corpus["chaves"]))
+        self.assertEqual(gravado["hash_corte"], "x")
+        self.assertEqual(len(cal["modelos"]), 1)
+
     def test_lstm_deterministico_restaura_a_fabrica(self):
         original = tb.rmc.zoo.criar_modelo
         with tb.lstm_deterministico(42):

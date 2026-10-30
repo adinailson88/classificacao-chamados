@@ -30,6 +30,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import calibrar_confianca as cc  # noqa: E402
 import conferencia_derivada as cd  # noqa: E402
 import construir_grupos_textuais as cgt  # noqa: E402
 import corte_b as cb  # noqa: E402
@@ -51,6 +52,7 @@ SAIDAS = {
     "retreino_json": DADOS_B / "retreino.json",
     "retreino_pred": DADOS_B / "retreino_predicoes.csv",
     "temporal_json": DADOS_B / "avaliacao_temporal.json",
+    "calibracao_json": DADOS_B / "calibracao.json",
 }
 K_PADRAO = 5
 SEMENTE_PADRAO = 42
@@ -320,11 +322,42 @@ def gravar_temporal(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+# -------------------------------------------------------------- calibracao --
+
+def etapa_calibracao(corpus: dict[str, Any], modelos: list[str],
+                     predicoes: Path = SAIDAS["retreino_pred"],
+                     registrar=rmc._log) -> dict[str, Any]:
+    """ECE, Brier e automacao seletiva por limiar, com dobra interna de calibracao.
+
+    Usa as predicoes *out-of-fold* da etapa `retreino` como dobra externa e
+    reajusta o modelo nas dobras restantes apenas para obter os escores da dobra
+    interna, de modo que nenhum registro da externa toca calibrador ou limiar.
+    """
+    externas = cc.carregar_predicoes(predicoes)["por_modelo"]
+    ausentes = [m for m in modelos if m not in externas]
+    if ausentes:
+        raise RuntimeError(f"Modelos sem predicoes no retreino: {ausentes}")
+    with lstm_deterministico(SEMENTE_PADRAO):
+        relatorio = cc.montar_relatorio(corpus, externas, modelos, registrar=registrar)
+    relatorio["trilha"] = "B"
+    return relatorio
+
+
+def gravar_calibracao(relatorio: dict[str, Any], digitais: dict[str, str],
+                      quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["calibracao_json"])
+    saidas["calibracao_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["calibracao_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+
+
 # --------------------------------------------------------------------- cli --
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("etapa", choices=["particoes", "retreino", "temporal"])
+    p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao"])
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--aba", default="", help="aba de snapshot (padrao: a do manifesto)")
@@ -363,6 +396,12 @@ def main() -> int:
         print(json.dumps([{k: m[k] for k in ("modelo", "acuracia", "macro_f1")}
                           for m in rel["modelos"]], ensure_ascii=False, indent=2))
         return 0 if rel["status"] == "apto_para_regras" else 2
+    if args.etapa == "calibracao":
+        rel = etapa_calibracao(corpus, modelos)
+        gravar_calibracao(rel, digitais, quando)
+        for m in rel["modelos"]:
+            print(m["modelo"], "ECE", m["bruta"]["ece"], "->", m["calibrada"]["ece"])
+        return 0
     rel = etapa_temporal(corpus, modelos, semente=args.semente)
     gravar_temporal(rel, digitais, quando)
     for c in rel["cenarios"]:
