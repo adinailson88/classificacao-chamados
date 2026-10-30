@@ -1,0 +1,161 @@
+{
+  "ufrn_na_nossa_taxonomia": {
+    "todos": {
+      "n": 1500,
+      "ambas_corretas": {
+        "k": 995,
+        "p": 0.6633,
+        "ic95": [
+          0.639,
+          0.6868
+        ]
+      },
+      "por_modelo": {
+        "tfidf_embedding": {
+          "k": 1054,
+          "p": 0.7027,
+          "ic95": [
+            0.679,
+            0.7253
+          ]
+        },
+        "linear_svc": {
+          "k": 1073,
+          "p": 0.7153,
+          "ic95": [
+            0.692,
+            0.7376
+          ]
+        }
+      },
+      "categoria_humana_adequada": {
+        "k": 1408,
+        "p": 0.9387,
+        "ic95": [
+          0.9254,
+          0.9497
+        ]
+      }
+    },
+    "sem_ambiguas": {
+      "n": 1200,
+      "ambas_corretas": {
+        "k": 918,
+        "p": 0.765,
+        "ic95": [
+          0.7402,
+          0.7881
+        ]
+      },
+      "por_modelo": {
+        "tfidf_embedding": {
+          "k": 965,
+          "p": 0.8042,
+          "ic95": [
+            0.7808,
+            0.8256
+          ]
+        },
+        "linear_svc": {
+          "k": 972,
+          "p": 0.81,
+          "ic95": [
+            0.7868,
+            0.8312
+          ]
+        }
+      },
+      "categoria_humana_adequada": {
+        "k": 1147,
+        "p": 0.9558,
+        "ic95": [
+          0.9427,
+          0.9661
+        ]
+      }
+    },
+    "divisao_humana_errada_por_divisao": {
+      "Ar condicionado": 68,
+      "Instalações Elétricas e Telecomunicações": 6,
+      "Instalações Hidráulicas e Sanitárias": 3,
+      "Viário": 15
+    }
+  },
+  "nossa_base_na_taxonomia_ufrn": {
+    "todos": {
+      "n": 1298,
+      "ambas_corretas": {
+        "k": 756,
+        "p": 0.5824,
+        "ic95": [
+          0.5554,
+          0.609
+        ]
+      },
+      "por_modelo": {
+        "linear_svc": {
+          "k": 787,
+          "p": 0.6063,
+          "ic95": [
+            0.5795,
+            0.6325
+          ]
+        },
+        "tfidf_caracteres": {
+          "k": 836,
+          "p": 0.6441,
+          "ic95": [
+            0.6176,
+            0.6697
+          ]
+        }
+      },
+      "categoria_humana_adequada": {
+        "k": 985,
+        "p": 0.7589,
+        "ic95": [
+          0.7348,
+          0.7813
+        ]
+      }
+    },
+    "sem_ambiguas": {
+      "n": 1098,
+      "ambas_corretas": {
+        "k": 686,
+        "p": 0.6248,
+        "ic95": [
+          0.5957,
+          0.6529
+        ]
+      },
+      "por_modelo": {
+        "linear_svc": {
+          "k": 708,
+          "p": 0.6448,
+          "ic95": [
+            0.616,
+            0.6726
+          ]
+        },
+        "tfidf_caracteres": {
+          "k": 754,
+          "p": 0.6867,
+          "ic95": [
+            0.6587,
+            0.7134
+          ]
+        }
+      },
+      "categoria_humana_adequada": {
+        "k": 854,
+        "p": 0.7778,
+        "ic95": [
+          0.7522,
+          0.8014
+        ]
+      }
+    },
+    "fora_do_escopo": 92
+  }
+}
