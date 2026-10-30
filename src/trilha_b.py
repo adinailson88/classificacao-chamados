@@ -80,7 +80,19 @@ ANOS_TESTE_PADRAO = (2022, 2023, 2024, 2025, 2026)
 
 def ler_snapshot(sh, aba: str) -> list[dict[str, str]]:
     """Le a aba de snapshot e devolve as linhas como dicts do cabecalho."""
-    valores = sh.worksheet(aba).get_all_values()
+    return linhas_do_snapshot(sh.worksheet(aba).get_all_values(), aba)
+
+
+def ler_snapshot_json(caminho: Path) -> list[dict[str, str]]:
+    """Le uma copia local do snapshot (JSON `{"values": [[...]]}` do conector de planilhas).
+
+    A verificacao contra o manifesto continua valendo: copia divergente e recusada.
+    """
+    valores = json.loads(Path(caminho).read_text(encoding="utf-8"))["values"]
+    return linhas_do_snapshot(valores, str(caminho))
+
+
+def linhas_do_snapshot(valores: list[list[str]], aba: str) -> list[dict[str, str]]:
     cab = valores[0]
     if cab != cb.CABECALHO_SNAPSHOT:
         raise RuntimeError(f"Cabecalho inesperado em {aba}: {cab}")
@@ -412,7 +424,8 @@ def gravar_ufrn(resultado: dict[str, Any], digitais: dict[str, str], quando: str
     saidas["ufrn_resumo_json"].parent.mkdir(parents=True, exist_ok=True)
     saidas["ufrn_resumo_json"].write_text(json.dumps(
         {**resultado["resumo"], "hash_corte": digitais["hash_corte"], "gerado_em": quando,
-         "fonte": vu.URL_PADRAO, "script_origem": "src/trilha_b.py"},
+         "fonte": vu.URL_PADRAO, "fonte_sha256": digitais.get("fonte_ufrn_sha256", ""),
+         "script_origem": "src/trilha_b.py"},
         ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     nomes = list(resultado["previsoes"])[:COLUNAS_PLANILHA_UFRN]
     principal = nomes[0]
@@ -504,7 +517,7 @@ def etapa_ufrn_reverso(corpus: dict[str, Any], linhas_ufrn: list[dict[str, str]]
     resultados: dict[str, Any] = {}
     previsoes_n: dict[str, list[str]] = {}
     confiancas_n: dict[str, list[float]] = {}
-    with lstm_deterministico(semente):
+    with lstm_deterministico(semente), modelos_alternativos_ativos({}):
         for nome in nomes:
             registrar(f"[reverso] {nome}: treino {len(x_tr)} (UFRN), teste UFRN {len(x_te)}, "
                       f"nossa base {len(corpus['textos'])}")
@@ -561,7 +574,8 @@ def gravar_ufrn_reverso(res: dict[str, Any], corpus: dict[str, Any], digitais: d
     publico = {k: v for k, v in res.items() if not k.startswith("_")}
     saidas["ufrn_reverso_json"].write_text(json.dumps(
         {**publico, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
-         "fonte": vu.URL_PADRAO, "script_origem": "src/trilha_b.py"},
+         "fonte": vu.URL_PADRAO, "fonte_sha256": digitais.get("fonte_ufrn_sha256", ""),
+         "script_origem": "src/trilha_b.py"},
         ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     nomes = res["modelos"]
     campos = ["id_sha256", "campus", "referencia_primeiro_nivel", "divisao_equivalente"]
@@ -864,6 +878,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--aba", default="", help="aba de snapshot (padrao: a do manifesto)")
+    p.add_argument("--snapshot-json", type=Path, default=None,
+                   help="copia local do snapshot, em vez de ler a planilha")
     p.add_argument("--modelos", default=",".join(rmc.MODELOS_PADRAO))
     p.add_argument("--semente", type=int, default=SEMENTE_PADRAO)
     return p.parse_args()
@@ -874,8 +890,11 @@ def main() -> int:
     manifesto = json.loads(MANIFESTO_B.read_text(encoding="utf-8"))
     aba = args.aba or manifesto["aba_snapshot"]
     config = json.loads(args.config.read_text(encoding="utf-8"))
-    sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
-    linhas = ler_snapshot(sh, aba)
+    if args.snapshot_json:
+        linhas = ler_snapshot_json(args.snapshot_json)
+    else:
+        sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
+        linhas = ler_snapshot(sh, aba)
     digitais = verificar_snapshot(linhas, manifesto)
     registros = registros_do_snapshot(linhas)
     quando = agora_bahia()
@@ -907,6 +926,9 @@ def main() -> int:
         for c in res["temporal"]["cenarios"]:
             print(c["cenario"], {m["modelo"]: m["acuracia"] for m in c["modelos"]})
         return 0
+    if args.etapa in ("reverso", "ufrn") and Path(args.ufrn_fonte).is_file():
+        digitais = {**digitais, "fonte_ufrn_sha256": hashlib.sha256(
+            Path(args.ufrn_fonte).read_bytes()).hexdigest()}
     if args.etapa == "reverso":
         res = etapa_ufrn_reverso(corpus, vu.ler_ufrn(args.ufrn_fonte),
                                  por_divisao=args.por_divisao_treino, semente=args.semente)

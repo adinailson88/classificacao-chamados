@@ -19,7 +19,7 @@ on:
         description: "Etapa"
         type: choice
         default: particoes
-        options: [particoes, retreino, temporal, calibracao, regras, kfold, alternativas, campi, candidatos, ufrn, reverso, analise]
+        options: [particoes, retreino, temporal, calibracao, regras, kfold, alternativas, campi, candidatos, analise]
       modelos:
         description: "Modelos separados por virgula"
         default: "naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm"
@@ -62,7 +62,7 @@ jobs:
           if [ -z "$ETAPA" ]; then
             ETAPA="$(printf '%s' "$MENSAGEM" | grep -o '\[trilha-b:[a-z]*\]' | head -1 | sed -E 's/\[trilha-b:([a-z]*)\]/\1/')"
           fi
-          case "$ETAPA" in particoes|retreino|temporal|calibracao|regras|kfold|alternativas|campi|candidatos|ufrn|reverso|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
+          case "$ETAPA" in particoes|retreino|temporal|calibracao|regras|kfold|alternativas|campi|candidatos|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
           MODELOS="${MODELOS_INPUT:-naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm}"
           echo "etapa=$ETAPA" >> "$GITHUB_OUTPUT"
           echo "modelos=$MODELOS" >> "$GITHUB_OUTPUT"
@@ -70,12 +70,12 @@ jobs:
         if: ${{ steps.cfg.outputs.etapa == 'analise' }}
         run: python -m pip install --retries 5 --timeout 120 -r requirements-estatistica.txt "pandas<3"
       - name: Encoder de embeddings (alternativas)
-        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos' || steps.cfg.outputs.etapa == 'ufrn') }}
+        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos') }}
         run: |
           python -m pip install --retries 5 --timeout 600 -r requirements-transformer.txt
           python -m pip install --retries 5 --timeout 120 -r requirements-estatistica.txt "pandas<3"
       - name: Cache do Hugging Face
-        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos' || steps.cfg.outputs.etapa == 'ufrn') }}
+        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos') }}
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
@@ -115,10 +115,6 @@ jobs:
               --grupos $D/grupos_textuais_mapa.csv --manifesto $D/rodada_b.json \
               --permutacoes 5000 --permutacoes-globais 1000 --reamostragens 1000 \
               --json $D/inferencia_alternativas.json --markdown docs/trilha_b/INFERENCIA_ALTERNATIVAS.md
-          elif [ "${{ steps.cfg.outputs.etapa }}" = "ufrn" ]; then
-            # Nossa taxonomia sobre a UFRN e, em seguida, a taxonomia da UFRN sobre a nossa base.
-            python src/trilha_b.py ufrn
-            python src/trilha_b.py reverso
           else
             python src/trilha_b.py "${{ steps.cfg.outputs.etapa }}" --modelos "${{ steps.cfg.outputs.modelos }}"
           fi
@@ -135,14 +131,6 @@ jobs:
             docs/trilha_b/
           if-no-files-found: ignore
           retention-days: 30
-      - name: Publicar avaliacao privada da UFRN (texto de outra instituicao)
-        if: ${{ steps.cfg.outputs.etapa == 'ufrn' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: trilha-b-ufrn-avaliacao
-          path: saidas_privadas/
-          if-no-files-found: error
-          retention-days: 7
       - name: Aplicar criterio de aceite
         if: steps.etapa.outcome == 'failure'
         run: |
@@ -151,3 +139,5 @@ jobs:
 # calibracao: dobra interna de calibracao
 # analise: inferencia por grupo e recortes
 # analise (tentativa 3): pandas<3
+# ufrn e reverso (validacao em outra IFES): rodam localmente, porque o runner do GitHub
+# nao alcanca dados.ufrn.br (timeout de conexao). Use --snapshot-json e --ufrn-fonte.
