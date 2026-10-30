@@ -1,0 +1,73 @@
+name: Corte B - congelar novo corte cientifico
+
+on:
+  workflow_dispatch:
+    inputs:
+      aplicar:
+        description: "Cria a aba imutavel CORTE_B_<data> na planilha (sem isto e dry-run)"
+        type: boolean
+        default: false
+      corte_temporal:
+        description: "Ultimo dia do periodo historico (aaaa-mm-dd)"
+        default: "2026-07-31"
+
+permissions:
+  contents: read
+
+jobs:
+  congelar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      # Id da planilha-fonte do GLPI (aba CHAMADOS), ja versionado em docs/CODEX_PROXIMA_SESSAO.md.
+      # Um secret de mesmo nome tem precedencia, se for criado depois.
+      FONTE_GLPI_SPREADSHEET_ID: ${{ secrets.FONTE_GLPI_SPREADSHEET_ID || '1VgHY6NmCQLtA3lcfQAzGIRqJFZGHwcGhZ4zaXkqOmz4' }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-leves.txt
+      - name: Dependencias
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Testes do corte
+        run: python -m unittest discover -s tests -p "test_corte_b.py" -t tests
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Congelar o corte (dry-run, a menos que aplicar=true)
+        id: corte
+        continue-on-error: true
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: credenciais_sa.json
+          APLICAR: ${{ inputs.aplicar }}
+          CORTE_TEMPORAL: ${{ inputs.corte_temporal }}
+        run: |
+          if [ "$APLICAR" = "true" ]; then
+            python src/corte_b.py --corte-temporal "$CORTE_TEMPORAL" --aplicar
+          else
+            python src/corte_b.py --corte-temporal "$CORTE_TEMPORAL"
+          fi
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
+      - name: Publicar relatorio como artefato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: corte-b
+          path: |
+            docs/dados/trilha_b/corte_b.json
+            docs/trilha_b/CORTE_B.md
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Aplicar criterio de aceite
+        if: steps.corte.outcome == 'failure'
+        run: |
+          echo "O corte nao foi congelado; consulte o log do passo anterior." >&2
+          exit 1
