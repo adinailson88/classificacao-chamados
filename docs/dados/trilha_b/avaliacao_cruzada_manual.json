@@ -459,5 +459,50 @@
       }
     },
     "fora_do_escopo": 193
+  },
+  "segunda_avaliacao_cega": {
+    "n_por_base": 200,
+    "semente": 20261031,
+    "veredito_categoria_humana": {
+      "nossa_base": {
+        "concordancia": 0.925,
+        "kappa": 0.702,
+        "ic95_bootstrap": [
+          0.543,
+          0.831
+        ],
+        "tabela": {
+          "C_C": 163,
+          "C_E": 8,
+          "E_E": 22,
+          "E_C": 7
+        }
+      },
+      "ufrn": {
+        "concordancia": 0.95,
+        "kappa": 0.519,
+        "ic95_bootstrap": [
+          0.219,
+          0.769
+        ],
+        "tabela": {
+          "C_C": 184,
+          "C_E": 6,
+          "E_E": 6,
+          "E_C": 4
+        }
+      }
+    },
+    "marca_ambigua": {
+      "nossa_base": {
+        "concordancia": 0.81,
+        "kappa": 0.397
+      },
+      "ufrn": {
+        "concordancia": 0.8,
+        "kappa": 0.368
+      }
+    },
+    "nota": "Tabela: (primeiro avaliador, segundo avaliador). Kappa de Cohen sobre Correto/Errado; IC por bootstrap de linhas (2000)."
   }
 }
