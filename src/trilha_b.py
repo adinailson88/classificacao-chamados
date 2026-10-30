@@ -24,6 +24,7 @@ import contextlib
 import csv
 import hashlib
 import json
+import random
 import sys
 from pathlib import Path
 from typing import Any
@@ -34,6 +35,7 @@ import calibrar_confianca as cc  # noqa: E402
 import modelos_alternativos as ma  # noqa: E402
 import comparacao_kfold_groupkfold as ckg  # noqa: E402
 import comparacao_historica as ch  # noqa: E402
+import controle_risco as cr  # noqa: E402
 import comparar_regras_modelos as crm  # noqa: E402
 import conferencia_derivada as cd  # noqa: E402
 import construir_grupos_textuais as cgt  # noqa: E402
@@ -60,6 +62,8 @@ SAIDAS = {
     "calibracao_json": DADOS_B / "calibracao.json",
     "regras_json": DADOS_B / "regras_versus_modelos.json",
     "historica_json": DADOS_B / "comparacao_historica.json",
+    "risco_json": DADOS_B / "controle_risco.json",
+    "risco_pred": RAIZ / "saidas_privadas" / "risco_predicoes.csv",
     "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
     "campi_json": DADOS_B / "avaliacao_campi.json",
     "calibracao_candidatos_json": DADOS_B / "calibracao_candidatos.json",
@@ -899,13 +903,175 @@ def gravar_historica(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+# ------------------------------------------------------------------- risco --
+
+ALFAS_RISCO = (0.05, 0.10)
+DELTA_RISCO = 0.05
+FRACAO_CALIBRACAO = 0.2
+REAMOSTRAGENS_RISCO = 200
+
+
+def _dividir_por_grupo(indices: list[int], grupos: list[str], fracao: float,
+                       semente: int) -> tuple[list[int], list[int]]:
+    """Separa grupos textuais inteiros: (treino proprio, calibracao)."""
+    ids = sorted({grupos[i] for i in indices})
+    cal = set(random.Random(semente).sample(ids, round(len(ids) * fracao)))
+    return ([i for i in indices if grupos[i] not in cal],
+            [i for i in indices if grupos[i] in cal])
+
+
+def analisar_cenario_risco(cal: list[tuple[float, bool, str]], teste: list[tuple[float, bool, str]],
+                           alfas: tuple[float, ...] = ALFAS_RISCO, delta: float = DELTA_RISCO,
+                           reamostragens: int = REAMOSTRAGENS_RISCO,
+                           semente: int = SEMENTE_PADRAO) -> dict[str, Any]:
+    """Limiar com garantia e limiar ingenuo, calibrados em ``cal`` e avaliados em ``teste``.
+
+    Cada elemento e (escore, acerto, grupo). A calibracao usa um representante por grupo.
+    As reamostragens sorteiam metade dos grupos de calibracao para estimar a taxa de
+    violacao (erro no teste acima de alfa) sem novo ajuste do modelo.
+    """
+    rep = [cal[i] for i in cr.um_por_grupo([c[2] for c in cal])]
+    e_t, a_t = [t[0] for t in teste], [t[1] for t in teste]
+    saida: dict[str, Any] = {"n_calibracao_grupos": len(rep), "n_teste": len(teste),
+                             "acuracia_teste": round(sum(a_t) / len(a_t), 4) if a_t else None,
+                             "acuracia_calibracao": round(sum(c[1] for c in rep) / len(rep), 4)
+                             if rep else None,
+                             "alvos": {}}
+    rng = random.Random(semente)
+    for alfa in alfas:
+        item: dict[str, Any] = {}
+        metodos = (("controlado", lambda e, a, al=alfa: cr.escolher_limiar(e, a, al, delta)),
+                   ("ingenuo", lambda e, a, al=alfa: cr.limiar_ingenuo(e, a, al)))
+        for nome, escolher in metodos:
+            t = escolher([c[0] for c in rep], [c[1] for c in rep])
+            r = cr.risco_e_cobertura(e_t, a_t, t)
+            viol = sem = 0
+            erros: list[float] = []
+            for _ in range(reamostragens):
+                amostra = rng.sample(rep, len(rep) // 2)
+                tt = escolher([c[0] for c in amostra], [c[1] for c in amostra])
+                rr = cr.risco_e_cobertura(e_t, a_t, tt)
+                if tt is None or rr["erro"] is None:
+                    sem += 1
+                    continue
+                erros.append(rr["erro"])
+                viol += rr["erro"] > alfa
+            item[nome] = {"limiar": None if t is None else round(float(t), 6), **r,
+                          "violacoes_nas_reamostragens": viol,
+                          "reamostragens_com_limiar": reamostragens - sem,
+                          "taxa_de_violacao": round(viol / (reamostragens - sem), 4)
+                          if reamostragens - sem else None,
+                          "erro_maximo_nas_reamostragens": round(max(erros), 4) if erros else None}
+            if r.get("erro") is not None:
+                item[nome]["erro_limite_superior_cp95"] = round(
+                    cr.limite_superior_clopper_pearson(r["erros"], r["automatizados"]), 4)
+        saida["alvos"][str(alfa)] = item
+    return saida
+
+
+def _cenarios_risco(corpus: dict[str, Any], origem: str = CAMPUS_ORIGEM_PADRAO,
+                    minimo_teste: int = MINIMO_TESTE_CAMPUS,
+                    semente: int = SEMENTE_PADRAO) -> list[dict[str, Any]]:
+    """Cenarios iid, temporais e entre campi, com (treino, calibracao, teste) em indices."""
+    n = len(corpus["textos"])
+    g = corpus["grupos"]
+    todos = list(range(n))
+    treino_iid, resto = _dividir_por_grupo(todos, g, 0.4, semente)
+    cal_iid, teste_iid = _dividir_por_grupo(resto, g, 0.5, semente + 1)
+    cen = [{"nome": "iid_grupos", "tipo": "iid", "treino": treino_iid,
+            "calibracao": cal_iid, "teste": teste_iid}]
+    historico = [i for i in todos if corpus["periodos"][i] == cb.PERIODO_HISTORICO]
+    prospectivo = [i for i in todos if corpus["periodos"][i] == cb.PERIODO_PROSPECTIVO]
+    if historico and prospectivo:
+        tr, ca = _dividir_por_grupo(historico, g, FRACAO_CALIBRACAO, semente)
+        cen.append({"nome": "prospectivo", "tipo": "temporal", "treino": tr,
+                    "calibracao": ca, "teste": prospectivo})
+    for ano in ANOS_TESTE_PADRAO:
+        passado = [i for i in todos if corpus["anos"][i] and int(corpus["anos"][i]) < ano]
+        teste = [i for i in todos if corpus["anos"][i] == str(ano)]
+        if passado and teste:
+            tr, ca = _dividir_por_grupo(passado, g, FRACAO_CALIBRACAO, semente)
+            cen.append({"nome": f"origem_rolante_{ano}", "tipo": "temporal", "treino": tr,
+                        "calibracao": ca, "teste": teste})
+    por_campus: dict[str, list[int]] = {}
+    for i in todos:
+        por_campus.setdefault(corpus["campus"][i], []).append(i)
+    alvos = sorted(c for c, idx in por_campus.items() if c != origem and len(idx) >= minimo_teste)
+    for c in alvos:
+        tr, ca = _dividir_por_grupo(por_campus[origem], g, FRACAO_CALIBRACAO, semente)
+        cen.append({"nome": f"origem_para_{c}", "tipo": "entre_campi", "treino": tr,
+                    "calibracao": ca, "teste": por_campus[c]})
+    for c in [origem, *alvos]:
+        resto_c = [i for i in todos if corpus["campus"][i] != c]
+        tr, ca = _dividir_por_grupo(resto_c, g, FRACAO_CALIBRACAO, semente)
+        cen.append({"nome": f"deixa_um_campus_fora_{c}", "tipo": "entre_campi", "treino": tr,
+                    "calibracao": ca, "teste": por_campus[c]})
+    return cen
+
+
+def etapa_risco(corpus: dict[str, Any], nome: str = "tfidf_embedding",
+                gerar_embeddings=ma.calcular_embeddings, semente: int = SEMENTE_PADRAO,
+                registrar=rmc._log, linhas_saida: list | None = None) -> dict[str, Any]:
+    """Controle de risco da automacao seletiva sob mudanca de distribuicao.
+
+    Em cada cenario o modelo e ajustado em 80% do treino, a confianca e calibrada nos 20%
+    restantes (grupos textuais inteiros) e o limiar e avaliado no teste. Um ajuste por
+    cenario. ``linhas_saida`` recebe as predicoes por chamado (so hashes).
+    """
+    tabela: dict[str, Any] = {}
+    if "embedding" in nome:
+        registrar("[risco] calculando embeddings")
+        tabela = gerar_embeddings(sorted(set(corpus["textos"])), registrar=registrar)
+    textos, rotulos, grupos = corpus["textos"], corpus["rotulos"], corpus["grupos"]
+    resultados = []
+    with modelos_alternativos_ativos(tabela), lstm_deterministico(semente):
+        for cen in _cenarios_risco(corpus, semente=semente):
+            registrar(f"[risco] {cen['nome']}: ajustando {nome}")
+            modelo = rmc.zoo.criar_modelo(nome)
+            modelo.fit([textos[i] for i in cen["treino"]], [rotulos[i] for i in cen["treino"]])
+            pontos: dict[str, list[tuple[float, bool, str]]] = {}
+            for papel in ("calibracao", "teste"):
+                idx = cen[papel]
+                previsto, escore = modelo.predict_score([textos[i] for i in idx])
+                pontos[papel] = [(float(s), str(p) == rotulos[i], grupos[i])
+                                 for i, p, s in zip(idx, previsto, escore)]
+                if linhas_saida is not None:
+                    for i, p, s in zip(idx, previsto, escore):
+                        linhas_saida.append([cen["nome"], corpus["chaves"][i], papel, str(p),
+                                             f"{float(s):.6f}", int(str(p) == rotulos[i])])
+            resultados.append({"cenario": cen["nome"], "tipo": cen["tipo"],
+                               "treino": len(cen["treino"]), "calibracao": len(cen["calibracao"]),
+                               "teste": len(cen["teste"]),
+                               **analisar_cenario_risco(pontos["calibracao"], pontos["teste"],
+                                                        semente=semente)})
+    return {"schema_version": 1, "trilha": "B", "modelo": nome, "semente": semente,
+            "alfas": list(ALFAS_RISCO), "delta": DELTA_RISCO,
+            "fracao_calibracao": FRACAO_CALIBRACAO, "reamostragens": REAMOSTRAGENS_RISCO,
+            "metodo": "Learn-then-Test com Bonferroni (grade de 20 niveis de cobertura) e teste "
+                      "binomial exato; calibracao com um representante por grupo textual",
+            "cenarios": resultados}
+
+
+def gravar_risco(relatorio: dict[str, Any], linhas: list, digitais: dict[str, str],
+                 quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["risco_json"])
+    saidas["risco_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["risco_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+    saidas["risco_pred"].parent.mkdir(parents=True, exist_ok=True)
+    campos = ["cenario", "id_sha256", "papel", "previsto", "confianca", "acerto"]
+    _escrever_csv(saidas["risco_pred"], campos, [dict(zip(campos, l)) for l in linhas])
+
+
 # --------------------------------------------------------------------- cli --
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
                                      "regras", "historica", "kfold", "alternativas", "campi",
-                                     "candidatos", "ufrn", "reverso", "completa"])
+                                     "candidatos", "ufrn", "reverso", "completa", "risco"])
     p.add_argument("--ufrn-fonte", default=vu.URL_PADRAO,
                    help="URL ou arquivo CSV da base da UFRN (etapa ufrn)")
     p.add_argument("--por-divisao", type=int, default=300)
@@ -1021,6 +1187,17 @@ def main() -> int:
         gravar_kfold(rel, digitais, quando)
         for r in rel["resultados"]:
             print(r["modelo"], r["kfold"]["acuracia"], r["groupkfold"]["acuracia"])
+        return 0
+    if args.etapa == "risco":
+        linhas: list = []
+        rel = etapa_risco(corpus, (modelos or ["tfidf_embedding"])[0], semente=args.semente,
+                          linhas_saida=linhas)
+        gravar_risco(rel, linhas, digitais, quando)
+        for c in rel["cenarios"]:
+            a = c["alvos"]["0.05"]
+            print(c["cenario"], "controlado", a["controlado"].get("cobertura"),
+                  a["controlado"].get("erro"), "ingenuo", a["ingenuo"].get("cobertura"),
+                  a["ingenuo"].get("erro"))
         return 0
     if args.etapa == "historica":
         rel = etapa_historica(corpus)
