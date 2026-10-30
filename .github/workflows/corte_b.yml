@@ -1,6 +1,14 @@
 name: Corte B - congelar novo corte cientifico
 
 on:
+  # O push so existe para permitir a execucao enquanto o arquivo nao esta na branch
+  # padrao (workflow_dispatch exige isso). Dry-run, a menos que a mensagem do commit
+  # contenha o marcador explicito [corte-b-aplicar].
+  push:
+    branches: [claude/xenodochial-nightingale-81823d]
+    paths:
+      - ".github/workflows/corte_b.yml"
+      - "src/corte_b.py"
   workflow_dispatch:
     inputs:
       aplicar:
@@ -45,8 +53,8 @@ jobs:
         continue-on-error: true
         env:
           GOOGLE_APPLICATION_CREDENTIALS: credenciais_sa.json
-          APLICAR: ${{ inputs.aplicar }}
-          CORTE_TEMPORAL: ${{ inputs.corte_temporal }}
+          APLICAR: ${{ (inputs.aplicar == true || contains(github.event.head_commit.message, '[corte-b-aplicar]')) && 'true' || 'false' }}
+          CORTE_TEMPORAL: ${{ inputs.corte_temporal || '2026-07-31' }}
         run: |
           if [ "$APLICAR" = "true" ]; then
             python src/corte_b.py --corte-temporal "$CORTE_TEMPORAL" --aplicar
