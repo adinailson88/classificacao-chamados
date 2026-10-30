@@ -68,7 +68,7 @@ jobs:
           echo "modelos=$MODELOS" >> "$GITHUB_OUTPUT"
       - name: Dependencias estatisticas (analise)
         if: ${{ steps.cfg.outputs.etapa == 'analise' }}
-        run: python -m pip install --retries 5 --timeout 120 -r requirements-estatistica.txt
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-estatistica.txt "pandas<3"
       - name: Recriar chave da conta de servico
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -120,4 +120,4 @@ jobs:
           exit 1
 # calibracao: dobra interna de calibracao
 # analise: inferencia por grupo e recortes
-# analise (tentativa 2): statsmodels
+# analise (tentativa 3): pandas<3
