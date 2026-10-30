@@ -19,7 +19,7 @@ on:
         description: "Etapa"
         type: choice
         default: particoes
-        options: [particoes, retreino, temporal, calibracao, analise]
+        options: [particoes, retreino, temporal, calibracao, regras, analise]
       modelos:
         description: "Modelos separados por virgula"
         default: "naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm"
@@ -62,7 +62,7 @@ jobs:
           if [ -z "$ETAPA" ]; then
             ETAPA="$(printf '%s' "$MENSAGEM" | grep -o '\[trilha-b:[a-z]*\]' | head -1 | sed -E 's/\[trilha-b:([a-z]*)\]/\1/')"
           fi
-          case "$ETAPA" in particoes|retreino|temporal|calibracao|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
+          case "$ETAPA" in particoes|retreino|temporal|calibracao|regras|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
           MODELOS="${MODELOS_INPUT:-naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm}"
           echo "etapa=$ETAPA" >> "$GITHUB_OUTPUT"
           echo "modelos=$MODELOS" >> "$GITHUB_OUTPUT"

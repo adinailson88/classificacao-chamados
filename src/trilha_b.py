@@ -31,6 +31,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import calibrar_confianca as cc  # noqa: E402
+import comparar_regras_modelos as crm  # noqa: E402
 import conferencia_derivada as cd  # noqa: E402
 import construir_grupos_textuais as cgt  # noqa: E402
 import corte_b as cb  # noqa: E402
@@ -53,6 +54,7 @@ SAIDAS = {
     "retreino_pred": DADOS_B / "retreino_predicoes.csv",
     "temporal_json": DADOS_B / "avaliacao_temporal.json",
     "calibracao_json": DADOS_B / "calibracao.json",
+    "regras_json": DADOS_B / "regras_versus_modelos.json",
 }
 K_PADRAO = 5
 SEMENTE_PADRAO = 42
@@ -353,11 +355,43 @@ def gravar_calibracao(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+# ------------------------------------------------------------------ regras --
+
+def etapa_regras(corpus: dict[str, Any],
+                 predicoes: Path = SAIDAS["retreino_pred"]) -> dict[str, Any]:
+    """Camada de regras de periodicidade contra os modelos puros.
+
+    Aplica a regra sobre as predicoes *out-of-fold* da etapa `retreino`, nos
+    mesmos registros e particoes. A referencia humana nao e alterada.
+    """
+    dados = crm.carregar_predicoes(predicoes)
+    textos = dict(zip(corpus["chaves"], corpus["textos"]))
+    chaves = sorted(dados["referencia"])
+    faltam = [c for c in chaves if c not in textos]
+    if faltam:
+        raise RuntimeError(f"{len(faltam)} registros das predicoes sem texto no corpus")
+    relatorio = crm.montar_relatorio(chaves, dados["referencia"], textos,
+                                     dados["por_modelo"])
+    relatorio["trilha"] = "B"
+    return relatorio
+
+
+def gravar_regras(relatorio: dict[str, Any], digitais: dict[str, str],
+                  quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["regras_json"])
+    saidas["regras_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["regras_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+
+
 # --------------------------------------------------------------------- cli --
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao"])
+    p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
+                                     "regras"])
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--aba", default="", help="aba de snapshot (padrao: a do manifesto)")
@@ -396,6 +430,11 @@ def main() -> int:
         print(json.dumps([{k: m[k] for k in ("modelo", "acuracia", "macro_f1")}
                           for m in rel["modelos"]], ensure_ascii=False, indent=2))
         return 0 if rel["status"] == "apto_para_regras" else 2
+    if args.etapa == "regras":
+        rel = etapa_regras(corpus)
+        gravar_regras(rel, digitais, quando)
+        print(json.dumps(rel["modelos_com_ganho_de_macro_f1"], ensure_ascii=False))
+        return 0
     if args.etapa == "calibracao":
         rel = etapa_calibracao(corpus, modelos)
         gravar_calibracao(rel, digitais, quando)

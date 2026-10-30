@@ -169,6 +169,20 @@ class TestTrilhaB(unittest.TestCase):
         self.assertEqual(gravado["hash_corte"], "x")
         self.assertEqual(len(cal["modelos"]), 1)
 
+    def test_regras_comparam_modelo_puro_e_hibrido_nos_mesmos_registros(self):
+        _regs, _r, corpus = self._corpus()
+        with tempfile.TemporaryDirectory() as d:
+            saidas = {k: Path(d) / v.name for k, v in tb.SAIDAS.items()}
+            rel = tb.etapa_retreino(corpus, ["naive_bayes"], registrar=lambda m: None)
+            tb.gravar_retreino(rel, corpus, {"hash_corte": "x"}, "agora", saidas)
+            regras = tb.etapa_regras(corpus, saidas["retreino_pred"])
+            tb.gravar_regras(regras, {"hash_corte": "x"}, "agora", saidas)
+            gravado = json.loads(saidas["regras_json"].read_text(encoding="utf-8"))
+        self.assertEqual(regras["trilha"], "B")
+        self.assertEqual(regras["corpus"]["registros"], len(corpus["chaves"]))
+        self.assertEqual(list(regras["modelos"]), ["naive_bayes"])
+        self.assertEqual(gravado["hash_corte"], "x")
+
     def test_lstm_deterministico_restaura_a_fabrica(self):
         original = tb.rmc.zoo.criar_modelo
         with tb.lstm_deterministico(42):
