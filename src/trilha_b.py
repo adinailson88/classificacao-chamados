@@ -40,6 +40,7 @@ import corte_b as cb  # noqa: E402
 import gerar_particoes_canonicas as gpc  # noqa: E402
 import planilha as pl  # noqa: E402
 import retreinar_modelos_canonicos as rmc  # noqa: E402
+import validacao_ufrn as vu  # noqa: E402
 from tempo import agora_bahia  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -60,6 +61,9 @@ SAIDAS = {
     "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
     "campi_json": DADOS_B / "avaliacao_campi.json",
     "calibracao_candidatos_json": DADOS_B / "calibracao_candidatos.json",
+    "ufrn_resumo_json": DADOS_B / "ufrn_resumo.json",
+    # Texto de chamados de OUTRA instituicao: fica fora da arvore versionada.
+    "ufrn_avaliacao_csv": RAIZ / "saidas_privadas" / "ufrn_amostra_avaliacao.csv",
     "alternativas_json": DADOS_B / "alternativas.json",
     "alternativas_pred": DADOS_B / "alternativas_predicoes.csv",
     "predicoes_todas": DADOS_B / "predicoes_com_alternativas.csv",
@@ -362,7 +366,73 @@ def gravar_temporal(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
-# ------------------------------------------------------------------ campi --
+# -------------------------------------------------------------------- ufrn --
+
+MODELOS_UFRN_PADRAO = ("tfidf_embedding", "linear_svc")
+
+
+def etapa_ufrn(corpus: dict[str, Any], amostra: list[dict[str, str]],
+               nomes: tuple[str, ...] = MODELOS_UFRN_PADRAO,
+               gerar_embeddings=ma.calcular_embeddings, semente: int = SEMENTE_PADRAO,
+               registrar=rmc._log) -> dict[str, Any]:
+    """Treina no corpus inteiro da Trilha B e preve a amostra da UFRN.
+
+    Sem dobras: nao ha rotulo da Trilha B nos chamados da UFRN, o treino usa todo o
+    corpus avaliado e a amostra e so de teste. A confianca e o escore bruto do
+    modelo, sem calibracao.
+    """
+    textos = [rmc.montar_texto({"descricao_glpi": a["descricao"]}) for a in amostra]
+    tabela: dict[str, Any] = {}
+    if any("embedding" in n for n in nomes):
+        registrar("[ufrn] calculando embeddings")
+        tabela = gerar_embeddings(sorted(set(corpus["textos"]) | set(textos)),
+                                  registrar=registrar)
+    previsoes: dict[str, list[str]] = {}
+    confiancas: dict[str, list[float]] = {}
+    with lstm_deterministico(semente), modelos_alternativos_ativos(tabela):
+        for nome in nomes:
+            registrar(f"[ufrn] ajustando {nome} em {len(corpus['textos'])} chamados")
+            modelo = rmc.zoo.criar_modelo(nome)
+            modelo.fit(corpus["textos"], corpus["rotulos"])
+            prev, conf = modelo.predict_score(textos)
+            previsoes[nome] = [str(p) for p in prev]
+            confiancas[nome] = [round(float(c), 4) for c in conf]
+    return {"amostra": amostra, "previsoes": previsoes, "confiancas": confiancas,
+            "resumo": vu.resumir(amostra, previsoes)}
+
+
+def gravar_ufrn(resultado: dict[str, Any], digitais: dict[str, str], quando: str,
+                saidas: dict[str, Path] = SAIDAS) -> None:
+    """Resumo agregado (versionavel) e planilha de avaliacao (privada, com texto)."""
+    cb.garantir_fora_do_congelado(saidas["ufrn_resumo_json"])
+    saidas["ufrn_resumo_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["ufrn_resumo_json"].write_text(json.dumps(
+        {**resultado["resumo"], "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "fonte": vu.URL_PADRAO, "script_origem": "src/trilha_b.py"},
+        ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    nomes = list(resultado["previsoes"])
+    principal = nomes[0]
+    campos = ["id_ufrn", "ano", "divisao_ufrn", "descricao", "local"]
+    for n in nomes:
+        campos += [f"previsao_{n}", f"confianca_{n}"]
+    campos += [f"concorda_{principal}_com_divisao", "avaliacao_do_modelo",
+               "categoria_correta_manual", "observacao"]
+    saidas["ufrn_avaliacao_csv"].parent.mkdir(parents=True, exist_ok=True)
+    with saidas["ufrn_avaliacao_csv"].open("w", encoding="utf-8-sig", newline="") as f:
+        escritor = csv.DictWriter(f, fieldnames=campos)
+        escritor.writeheader()
+        for i, a in enumerate(resultado["amostra"]):
+            linha = {"id_ufrn": a["id_ufrn"], "ano": a["ano"], "divisao_ufrn": a["divisao"],
+                     "descricao": a["descricao"], "local": a["local"]}
+            for n in nomes:
+                linha[f"previsao_{n}"] = resultado["previsoes"][n][i]
+                linha[f"confianca_{n}"] = resultado["confiancas"][n][i]
+            linha[f"concorda_{principal}_com_divisao"] = vu.concorda(
+                resultado["previsoes"][principal][i], a["divisao"])
+            escritor.writerow(linha)
+
+
+# ------------------------------------------------------------------- campi --
 
 CAMPUS_ORIGEM_PADRAO = "Reitoria"
 MINIMO_TESTE_CAMPUS = 30
@@ -633,7 +703,11 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
                                      "regras", "kfold", "alternativas", "campi",
-                                     "candidatos"])
+                                     "candidatos", "ufrn"])
+    p.add_argument("--ufrn-fonte", default=vu.URL_PADRAO,
+                   help="URL ou arquivo CSV da base da UFRN (etapa ufrn)")
+    p.add_argument("--por-divisao", type=int, default=300)
+    p.add_argument("--ano-minimo", type=int, default=2022)
     p.add_argument("--origem", default=CAMPUS_ORIGEM_PADRAO,
                    help="campus que treina na etapa campi")
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
@@ -681,6 +755,15 @@ def main() -> int:
             print(m["modelo"], m["acuracia"], m["macro_f1"])
         for c in res["temporal"]["cenarios"]:
             print(c["cenario"], {m["modelo"]: m["acuracia"] for m in c["modelos"]})
+        return 0
+    if args.etapa == "ufrn":
+        amostra = vu.amostrar(vu.ler_ufrn(args.ufrn_fonte), por_divisao=args.por_divisao,
+                              ano_minimo=args.ano_minimo, semente=args.semente)
+        res = etapa_ufrn(corpus, amostra, semente=args.semente)
+        gravar_ufrn(res, digitais, quando)
+        for nome, m in res["resumo"]["modelos"].items():
+            print(nome, "concordancia com a correspondencia proposta:",
+                  m["concordancia_com_correspondencia"])
         return 0
     if args.etapa == "candidatos":
         rel = etapa_calibracao_candidatos(corpus)

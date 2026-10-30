@@ -19,7 +19,7 @@ on:
         description: "Etapa"
         type: choice
         default: particoes
-        options: [particoes, retreino, temporal, calibracao, regras, kfold, alternativas, campi, candidatos, analise]
+        options: [particoes, retreino, temporal, calibracao, regras, kfold, alternativas, campi, candidatos, ufrn, analise]
       modelos:
         description: "Modelos separados por virgula"
         default: "naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm"
@@ -62,7 +62,7 @@ jobs:
           if [ -z "$ETAPA" ]; then
             ETAPA="$(printf '%s' "$MENSAGEM" | grep -o '\[trilha-b:[a-z]*\]' | head -1 | sed -E 's/\[trilha-b:([a-z]*)\]/\1/')"
           fi
-          case "$ETAPA" in particoes|retreino|temporal|calibracao|regras|kfold|alternativas|campi|candidatos|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
+          case "$ETAPA" in particoes|retreino|temporal|calibracao|regras|kfold|alternativas|campi|candidatos|ufrn|analise) ;; *) echo "Etapa invalida: '$ETAPA'" >&2; exit 1;; esac
           MODELOS="${MODELOS_INPUT:-naive_bayes,regressao_logistica,linear_svc,sgd,extra_trees,random_forest,lstm}"
           echo "etapa=$ETAPA" >> "$GITHUB_OUTPUT"
           echo "modelos=$MODELOS" >> "$GITHUB_OUTPUT"
@@ -70,12 +70,12 @@ jobs:
         if: ${{ steps.cfg.outputs.etapa == 'analise' }}
         run: python -m pip install --retries 5 --timeout 120 -r requirements-estatistica.txt "pandas<3"
       - name: Encoder de embeddings (alternativas)
-        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos') }}
+        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos' || steps.cfg.outputs.etapa == 'ufrn') }}
         run: |
           python -m pip install --retries 5 --timeout 600 -r requirements-transformer.txt
           python -m pip install --retries 5 --timeout 120 -r requirements-estatistica.txt "pandas<3"
       - name: Cache do Hugging Face
-        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos') }}
+        if: ${{ (steps.cfg.outputs.etapa == 'alternativas' || steps.cfg.outputs.etapa == 'candidatos' || steps.cfg.outputs.etapa == 'ufrn') }}
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
@@ -131,6 +131,14 @@ jobs:
             docs/trilha_b/
           if-no-files-found: ignore
           retention-days: 30
+      - name: Publicar avaliacao privada da UFRN (texto de outra instituicao)
+        if: ${{ steps.cfg.outputs.etapa == 'ufrn' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trilha-b-ufrn-avaliacao
+          path: saidas_privadas/
+          if-no-files-found: error
+          retention-days: 7
       - name: Aplicar criterio de aceite
         if: steps.etapa.outcome == 'failure'
         run: |

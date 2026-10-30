@@ -184,8 +184,11 @@ class TestTrilhaB(unittest.TestCase):
                                {"hash_corte": "x"}, "agora", saidas)
 
     def test_saidas_padrao_ficam_no_namespace_da_trilha_b(self):
-        for caminho in tb.SAIDAS.values():
-            self.assertEqual(caminho.parent, tb.DADOS_B)
+        for chave, caminho in tb.SAIDAS.items():
+            if chave == "ufrn_avaliacao_csv":  # texto de outra instituicao, pasta privada
+                self.assertEqual(caminho.parent.name, "saidas_privadas")
+            else:
+                self.assertEqual(caminho.parent, tb.DADOS_B)
             cb.garantir_fora_do_congelado(caminho)
 
     def test_calibracao_usa_as_predicoes_do_retreino_sem_vazar_a_dobra_externa(self):
@@ -290,6 +293,33 @@ class TestTrilhaB(unittest.TestCase):
         self.assertIs(tb.rmc.zoo.criar_modelo, original)
         self.assertEqual([m["modelo"] for m in rel["modelos"]],
                          ["tfidf_caracteres", "tfidf_embedding"])
+
+    def test_ufrn_preve_a_amostra_e_grava_o_texto_so_na_pasta_privada(self):
+        import numpy as np
+        from sklearn.feature_extraction.text import HashingVectorizer
+
+        def embeddings_falsos(textos, registrar=None):
+            hv = HashingVectorizer(n_features=32, alternate_sign=False, norm="l2")
+            m = hv.transform(textos).toarray().astype(np.float32)
+            return {t: v for t, v in zip(textos, m)}
+
+        _regs, _r, corpus = self._corpus()
+        amostra = [{"id_ufrn": f"2025-{i}", "ano": "2025", "divisao": "Serviços Gerais",
+                    "descricao": f"ar condicionado split vazando agua {i}", "local": "sala"}
+                   for i in range(4)]
+        res = tb.etapa_ufrn(corpus, amostra, gerar_embeddings=embeddings_falsos,
+                            registrar=lambda m: None)
+        self.assertEqual(list(res["previsoes"]), list(tb.MODELOS_UFRN_PADRAO))
+        self.assertTrue(all(len(v) == 4 for v in res["previsoes"].values()))
+        with tempfile.TemporaryDirectory() as d:
+            saidas = {k: Path(d) / v.name for k, v in tb.SAIDAS.items()}
+            tb.gravar_ufrn(res, {"hash_corte": "x"}, "agora", saidas)
+            resumo = saidas["ufrn_resumo_json"].read_text(encoding="utf-8")
+            planilha = saidas["ufrn_avaliacao_csv"].read_text(encoding="utf-8-sig")
+        self.assertNotIn("vazando", resumo)
+        self.assertIn("vazando", planilha)
+        self.assertIn("categoria_correta_manual", planilha)
+        self.assertIn("saidas_privadas", str(tb.SAIDAS["ufrn_avaliacao_csv"]))
 
     def test_modelo_alternativo_desconhecido_e_embedding_sem_tabela_falham(self):
         with self.assertRaises(ValueError):
