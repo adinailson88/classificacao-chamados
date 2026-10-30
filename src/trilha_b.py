@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import calibrar_confianca as cc  # noqa: E402
 import modelos_alternativos as ma  # noqa: E402
 import comparacao_kfold_groupkfold as ckg  # noqa: E402
+import comparacao_historica as ch  # noqa: E402
 import comparar_regras_modelos as crm  # noqa: E402
 import conferencia_derivada as cd  # noqa: E402
 import construir_grupos_textuais as cgt  # noqa: E402
@@ -58,6 +59,7 @@ SAIDAS = {
     "temporal_json": DADOS_B / "avaliacao_temporal.json",
     "calibracao_json": DADOS_B / "calibracao.json",
     "regras_json": DADOS_B / "regras_versus_modelos.json",
+    "historica_json": DADOS_B / "comparacao_historica.json",
     "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
     "campi_json": DADOS_B / "avaliacao_campi.json",
     "calibracao_candidatos_json": DADOS_B / "calibracao_candidatos.json",
@@ -838,11 +840,11 @@ def gravar_kfold(relatorio: dict[str, Any], digitais: dict[str, str],
 # ------------------------------------------------------------------ regras --
 
 def etapa_regras(corpus: dict[str, Any],
-                 predicoes: Path = SAIDAS["retreino_pred"]) -> dict[str, Any]:
+                 predicoes: Path = SAIDAS["predicoes_todas"]) -> dict[str, Any]:
     """Camada de regras de periodicidade contra os modelos puros.
 
-    Aplica a regra sobre as predicoes *out-of-fold* da etapa `retreino`, nos
-    mesmos registros e particoes. A referencia humana nao e alterada.
+    Aplica a regra sobre as predicoes *out-of-fold* de todos os modelos
+    (`predicoes_com_alternativas.csv`), nos mesmos registros e particoes. A referencia humana nao e alterada.
     """
     dados = crm.carregar_predicoes(predicoes)
     textos = dict(zip(corpus["chaves"], corpus["textos"]))
@@ -866,12 +868,43 @@ def gravar_regras(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+# --------------------------------------------------------------- historica --
+
+def etapa_historica(corpus: dict[str, Any],
+                    predicoes: Path = SAIDAS["predicoes_todas"]) -> dict[str, Any]:
+    """Concordancia, ganho liquido e dispersao contra a categoria historica (coluna C).
+
+    Usa as predicoes *out-of-fold* de todos os modelos; a referencia humana arbitra
+    quem acerta em cada divergencia. Nao treina nada.
+    """
+    dados = crm.carregar_predicoes(predicoes)
+    chaves = corpus["chaves"]
+    faltam = [c for c in chaves if c not in dados["referencia"]]
+    if faltam:
+        raise RuntimeError(f"{len(faltam)} registros do corpus sem predicao")
+    referencias = [dados["referencia"][c] for c in chaves]
+    por_modelo = {m: [p[c] for c in chaves] for m, p in dados["por_modelo"].items()}
+    relatorio = ch.montar_relatorio(list(corpus["historicas"]), referencias, por_modelo)
+    relatorio["trilha"] = "B"
+    return relatorio
+
+
+def gravar_historica(relatorio: dict[str, Any], digitais: dict[str, str],
+                     quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["historica_json"])
+    saidas["historica_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["historica_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+
+
 # --------------------------------------------------------------------- cli --
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
-                                     "regras", "kfold", "alternativas", "campi",
+                                     "regras", "historica", "kfold", "alternativas", "campi",
                                      "candidatos", "ufrn", "reverso", "completa"])
     p.add_argument("--ufrn-fonte", default=vu.URL_PADRAO,
                    help="URL ou arquivo CSV da base da UFRN (etapa ufrn)")
@@ -988,6 +1021,12 @@ def main() -> int:
         gravar_kfold(rel, digitais, quando)
         for r in rel["resultados"]:
             print(r["modelo"], r["kfold"]["acuracia"], r["groupkfold"]["acuracia"])
+        return 0
+    if args.etapa == "historica":
+        rel = etapa_historica(corpus)
+        gravar_historica(rel, digitais, quando)
+        for m in rel["modelos"]:
+            print(m["modelo"], m["concordancia"]["acordo_bruto"], m["reclassificacao"]["ganho_liquido"])
         return 0
     if args.etapa == "regras":
         rel = etapa_regras(corpus)

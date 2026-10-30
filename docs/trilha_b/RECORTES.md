@@ -2,7 +2,7 @@
 
 > Relatório sanitizado e somente leitura. Não contém títulos, descrições ou IDs de chamados.
 
-**Gerado em:** 30/10/2026 01:36  
+**Gerado em:** 30/10/2026 19:48  
 **Hash do corpus:** `67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb`
 
 ## Critérios
@@ -19,16 +19,22 @@ Verdade e predição projetadas para os três tipos. Responde se o modelo distin
 |---|---:|---:|---:|---:|---:|
 | extra_trees | 0.9533 | 0.8402 | 0.9775 | 0.9626 | 0.5805 |
 | random_forest | 0.9517 | 0.8344 | 0.9766 | 0.9614 | 0.5651 |
+| tfidf_embedding | 0.9482 | 0.836 | 0.9758 | 0.958 | 0.5741 |
+| tfidf_caracteres | 0.9481 | 0.8374 | 0.9756 | 0.9579 | 0.5786 |
 | linear_svc | 0.9459 | 0.833 | 0.9748 | 0.9563 | 0.568 |
 | sgd | 0.9396 | 0.8335 | 0.971 | 0.9507 | 0.5788 |
 | regressao_logistica | 0.9391 | 0.8325 | 0.9716 | 0.9503 | 0.5757 |
 | naive_bayes | 0.9381 | 0.8006 | 0.9627 | 0.9511 | 0.4881 |
+| embedding_e5 | 0.9027 | 0.7901 | 0.9432 | 0.9181 | 0.5091 |
 | lstm | 0.8859 | 0.7286 | 0.9511 | 0.9057 | 0.3292 |
 
 ## Recorte por tipo, na tarefa de categoria
 
 | Modelo | Tipo | Categorias | Chamados | Acurácia | Macro-F1 |
 |---|---|---:|---:|---:|---:|
+| embedding_e5 | Preventiva | 12 | 4954 | 0.9596 | 0.7612 |
+| embedding_e5 | Corretiva | 21 | 8787 | 0.654 | 0.5865 |
+| embedding_e5 | Não manutenção | 6 | 616 | 0.5584 | 0.3397 |
 | extra_trees | Preventiva | 12 | 4954 | 0.9635 | 0.7797 |
 | extra_trees | Corretiva | 21 | 8787 | 0.7386 | 0.635 |
 | extra_trees | Não manutenção | 6 | 616 | 0.487 | 0.3848 |
@@ -50,11 +56,20 @@ Verdade e predição projetadas para os três tipos. Responde se o modelo distin
 | sgd | Preventiva | 12 | 4954 | 0.9651 | 0.7855 |
 | sgd | Corretiva | 21 | 8787 | 0.7387 | 0.6768 |
 | sgd | Não manutenção | 6 | 616 | 0.5698 | 0.3884 |
+| tfidf_caracteres | Preventiva | 12 | 4954 | 0.9709 | 0.8081 |
+| tfidf_caracteres | Corretiva | 21 | 8787 | 0.7684 | 0.7081 |
+| tfidf_caracteres | Não manutenção | 6 | 616 | 0.5292 | 0.4162 |
+| tfidf_embedding | Preventiva | 12 | 4954 | 0.9707 | 0.8073 |
+| tfidf_embedding | Corretiva | 21 | 8787 | 0.7731 | 0.7056 |
+| tfidf_embedding | Não manutenção | 6 | 616 | 0.526 | 0.4095 |
 
 ## Curva ABC global
 
 | Modelo | Classe | Categorias | Chamados | % do volume | Acurácia | Macro-F1 |
 |---|---|---:|---:|---:|---:|---:|
+| embedding_e5 | A | 12 | 11753 | 0.8186 | 0.7643 | 0.7514 |
+| embedding_e5 | B | 11 | 1955 | 0.1362 | 0.7238 | 0.6894 |
+| embedding_e5 | C | 16 | 649 | 0.0452 | 0.6888 | 0.4305 |
 | extra_trees | A | 12 | 11753 | 0.8186 | 0.8428 | 0.7943 |
 | extra_trees | B | 11 | 1955 | 0.1362 | 0.6987 | 0.7412 |
 | extra_trees | C | 16 | 649 | 0.0452 | 0.4499 | 0.4573 |
@@ -76,6 +91,12 @@ Verdade e predição projetadas para os três tipos. Responde se o modelo distin
 | sgd | A | 12 | 11753 | 0.8186 | 0.8275 | 0.8055 |
 | sgd | B | 11 | 1955 | 0.1362 | 0.7652 | 0.7502 |
 | sgd | C | 16 | 649 | 0.0452 | 0.6179 | 0.5032 |
+| tfidf_caracteres | A | 12 | 11753 | 0.8186 | 0.8544 | 0.8209 |
+| tfidf_caracteres | B | 11 | 1955 | 0.1362 | 0.7514 | 0.7536 |
+| tfidf_caracteres | C | 16 | 649 | 0.0452 | 0.5809 | 0.5577 |
+| tfidf_embedding | A | 12 | 11753 | 0.8186 | 0.8579 | 0.8243 |
+| tfidf_embedding | B | 11 | 1955 | 0.1362 | 0.7535 | 0.7562 |
+| tfidf_embedding | C | 16 | 649 | 0.0452 | 0.5701 | 0.5471 |
 
 ## Proveniência
 

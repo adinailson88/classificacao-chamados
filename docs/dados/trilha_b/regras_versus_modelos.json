@@ -18,6 +18,48 @@
     "modulo": "src/regras_preventivas.py"
   },
   "modelos": {
+    "embedding_e5": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.7554,
+          "macro_f1": 0.6023,
+          "balanced_accuracy": 0.7135
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.7563,
+          "macro_f1": 0.602,
+          "balanced_accuracy": 0.7095
+        },
+        "delta_acuracia": 0.0009,
+        "delta_macro_f1": -0.0003
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9596,
+          "macro_f1": 0.2633,
+          "balanced_accuracy": 0.8169
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9647,
+          "macro_f1": 0.2631,
+          "balanced_accuracy": 0.8178
+        },
+        "delta_acuracia": 0.0051,
+        "delta_macro_f1": -0.0002
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 51,
+        "conflitos_em_que_a_regra_acerta": 28,
+        "conflitos_em_que_o_modelo_acerta": 15,
+        "conflitos_em_que_ambos_erram": 8
+      }
+    },
     "extra_trees": {
       "global": {
         "modelo_puro": {
@@ -311,6 +353,90 @@
         "conflitos_em_que_o_modelo_acerta": 14,
         "conflitos_em_que_ambos_erram": 7
       }
+    },
+    "tfidf_caracteres": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.828,
+          "macro_f1": 0.6939,
+          "balanced_accuracy": 0.7008
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8273,
+          "macro_f1": 0.686,
+          "balanced_accuracy": 0.6926
+        },
+        "delta_acuracia": -0.0007,
+        "delta_macro_f1": -0.0079
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9709,
+          "macro_f1": 0.2586,
+          "balanced_accuracy": 0.8008
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9715,
+          "macro_f1": 0.2518,
+          "balanced_accuracy": 0.7883
+        },
+        "delta_acuracia": 0.0006,
+        "delta_macro_f1": -0.0068
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 39,
+        "conflitos_em_que_a_regra_acerta": 11,
+        "conflitos_em_que_o_modelo_acerta": 22,
+        "conflitos_em_que_ambos_erram": 6
+      }
+    },
+    "tfidf_embedding": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.8307,
+          "macro_f1": 0.6913,
+          "balanced_accuracy": 0.6965
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8298,
+          "macro_f1": 0.6828,
+          "balanced_accuracy": 0.6883
+        },
+        "delta_acuracia": -0.0009,
+        "delta_macro_f1": -0.0085
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9707,
+          "macro_f1": 0.258,
+          "balanced_accuracy": 0.7992
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9715,
+          "macro_f1": 0.2512,
+          "balanced_accuracy": 0.7868
+        },
+        "delta_acuracia": 0.0008,
+        "delta_macro_f1": -0.0068
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 41,
+        "conflitos_em_que_a_regra_acerta": 12,
+        "conflitos_em_que_o_modelo_acerta": 24,
+        "conflitos_em_que_ambos_erram": 5
+      }
     }
   },
   "modelos_com_ganho_de_macro_f1": [
@@ -321,10 +447,10 @@
   ],
   "problemas": {
     "registros_sem_texto": 0,
-    "modelos_comparados": 7
+    "modelos_comparados": 10
   },
   "trilha": "B",
   "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
-  "gerado_em": "30/10/2026 01:30",
+  "gerado_em": "30/10/2026 19:45",
   "script_origem": "src/trilha_b.py"
 }
