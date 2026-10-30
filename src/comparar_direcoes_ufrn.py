@@ -58,7 +58,7 @@ def spearman(a: dict[str, float], b: dict[str, float]) -> float | None:
 def reunir(retreino: dict[str, Any], alternativas: dict[str, Any] | None,
            direto: dict[str, Any], reverso: dict[str, Any]) -> dict[str, Any]:
     cond: dict[str, dict[str, float]] = {
-        "nossa_para_nossa": {}, "nossa_para_ufrn": {},
+        "nossa_para_nossa": {}, "nossa_para_ufrn": {}, "nossa_para_ufrn_sem_viario": {},
         "ufrn_para_ufrn": {}, "ufrn_para_nossa": {}}
     for m in retreino["modelos"]:
         cond["nossa_para_nossa"][m["modelo"]] = m["acuracia"]
@@ -68,6 +68,14 @@ def reunir(retreino: dict[str, Any], alternativas: dict[str, Any] | None,
     for nome, m in direto["modelos"].items():
         if m["concordancia_com_correspondencia"] is not None:
             cond["nossa_para_ufrn"][nome] = m["concordancia_com_correspondencia"]
+        # "Viario" nao tem equivalente claro na nossa taxonomia; a coluna sem ele mede
+        # as quatro divisoes que tem correspondencia plausivel.
+        itens = [(v["n"], v["concordancia"]) for k, v in m.get("por_divisao", {}).items()
+                 if k != "viario" and v.get("concordancia") is not None]
+        total = sum(n for n, _ in itens)
+        if total:
+            cond["nossa_para_ufrn_sem_viario"][nome] = round(
+                sum(n * c for n, c in itens) / total, 4)
     for nome, m in reverso["resultados"].items():
         cond["ufrn_para_ufrn"][nome] = m["ufrn_teste"]["acuracia"]
         cond["ufrn_para_nossa"][nome] = m["nossa_base"]["acuracia"]
@@ -87,6 +95,7 @@ def renderizar(res: dict[str, Any]) -> str:
                      key=lambda m: -(cond["nossa_para_nossa"].get(m) or 0))
     rotulo = {"nossa_para_nossa": "Nossa para nossa (OOF, 41 categorias)",
               "nossa_para_ufrn": "Nossa para UFRN (concordância com `divisao`)",
+              "nossa_para_ufrn_sem_viario": "Nossa para UFRN, sem Viário (4 divisões)",
               "ufrn_para_ufrn": "UFRN para UFRN (teste 2025+, 6 divisões)",
               "ufrn_para_nossa": "UFRN para nossa (6 divisões, correspondência proposta)"}
     linhas = ["# Os mesmos modelos em quatro condições", "",
