@@ -260,6 +260,37 @@ class TestTrilhaB(unittest.TestCase):
         modelos = {linha.split(",")[3] for linha in todas.splitlines()[1:]}
         self.assertEqual(modelos, {"naive_bayes", *tb.ma.NOMES})
 
+    def test_calibracao_dos_candidatos_usa_as_predicoes_das_alternativas(self):
+        import numpy as np
+        from sklearn.feature_extraction.text import HashingVectorizer
+
+        def embeddings_falsos(textos, registrar=None):
+            hv = HashingVectorizer(n_features=32, alternate_sign=False, norm="l2")
+            m = hv.transform(textos).toarray().astype(np.float32)
+            return {t: v for t, v in zip(textos, m)}
+
+        _regs, _r, corpus = self._corpus()
+        res = tb.etapa_alternativas(corpus, nomes=("tfidf_caracteres", "tfidf_embedding"),
+                                    gerar_embeddings=embeddings_falsos,
+                                    registrar=lambda m: None)
+        original = tb.rmc.zoo.criar_modelo
+        with tempfile.TemporaryDirectory() as d:
+            saidas = {k: Path(d) / v.name for k, v in tb.SAIDAS.items()}
+            tb.gravar_alternativas(res, corpus, {"hash_corte": "x"}, "agora", saidas)
+            rel = tb.etapa_calibracao_candidatos(
+                corpus, nomes=("tfidf_caracteres", "tfidf_embedding"),
+                predicoes=saidas["alternativas_pred"],
+                gerar_embeddings=embeddings_falsos, registrar=lambda m: None)
+            tb.gravar_calibracao_candidatos(rel, {"hash_corte": "x"}, "agora", saidas)
+            self.assertTrue(saidas["calibracao_candidatos_json"].exists())
+            with self.assertRaises(RuntimeError):
+                tb.etapa_calibracao_candidatos(
+                    corpus, nomes=("embedding_e5",), predicoes=saidas["alternativas_pred"],
+                    gerar_embeddings=embeddings_falsos, registrar=lambda m: None)
+        self.assertIs(tb.rmc.zoo.criar_modelo, original)
+        self.assertEqual([m["modelo"] for m in rel["modelos"]],
+                         ["tfidf_caracteres", "tfidf_embedding"])
+
     def test_modelo_alternativo_desconhecido_e_embedding_sem_tabela_falham(self):
         with self.assertRaises(ValueError):
             tb.ma.criar_modelo("inexistente")

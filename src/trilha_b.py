@@ -59,6 +59,7 @@ SAIDAS = {
     "regras_json": DADOS_B / "regras_versus_modelos.json",
     "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
     "campi_json": DADOS_B / "avaliacao_campi.json",
+    "calibracao_candidatos_json": DADOS_B / "calibracao_candidatos.json",
     "alternativas_json": DADOS_B / "alternativas.json",
     "alternativas_pred": DADOS_B / "alternativas_predicoes.csv",
     "predicoes_todas": DADOS_B / "predicoes_com_alternativas.csv",
@@ -457,6 +458,41 @@ def gravar_calibracao(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+def etapa_calibracao_candidatos(corpus: dict[str, Any], nomes: tuple[str, ...] = ma.NOMES,
+                                predicoes: Path = SAIDAS["predicoes_todas"],
+                                gerar_embeddings=ma.calcular_embeddings,
+                                registrar=rmc._log) -> dict[str, Any]:
+    """Calibracao e automacao seletiva dos modelos candidatos, como nos sete base.
+
+    Usa as predicoes fora de dobra de `alternativas` como dobra externa e o mesmo
+    reajuste na dobra interna da etapa `calibracao`.
+    """
+    nomes = list(nomes)
+    externas = cc.carregar_predicoes(predicoes)["por_modelo"]
+    ausentes = [m for m in nomes if m not in externas]
+    if ausentes:
+        raise RuntimeError(f"Modelos sem predicoes das alternativas: {ausentes}")
+    tabela: dict[str, Any] = {}
+    if any("embedding" in n for n in nomes):
+        registrar("[candidatos] calculando embeddings")
+        tabela = gerar_embeddings(sorted(set(corpus["textos"])), registrar=registrar)
+    with modelos_alternativos_ativos(tabela):
+        relatorio = cc.montar_relatorio(corpus, externas, nomes, registrar=registrar)
+    relatorio["trilha"] = "B"
+    relatorio["encoder"] = ma.MODELO_EMBEDDING_PADRAO
+    return relatorio
+
+
+def gravar_calibracao_candidatos(relatorio: dict[str, Any], digitais: dict[str, str],
+                                 quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["calibracao_candidatos_json"])
+    saidas["calibracao_candidatos_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["calibracao_candidatos_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+
+
 # ------------------------------------------------------------- alternativas --
 
 @contextlib.contextmanager
@@ -596,7 +632,8 @@ def gravar_regras(relatorio: dict[str, Any], digitais: dict[str, str],
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
-                                     "regras", "kfold", "alternativas", "campi"])
+                                     "regras", "kfold", "alternativas", "campi",
+                                     "candidatos"])
     p.add_argument("--origem", default=CAMPUS_ORIGEM_PADRAO,
                    help="campus que treina na etapa campi")
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
@@ -644,6 +681,12 @@ def main() -> int:
             print(m["modelo"], m["acuracia"], m["macro_f1"])
         for c in res["temporal"]["cenarios"]:
             print(c["cenario"], {m["modelo"]: m["acuracia"] for m in c["modelos"]})
+        return 0
+    if args.etapa == "candidatos":
+        rel = etapa_calibracao_candidatos(corpus)
+        gravar_calibracao_candidatos(rel, digitais, quando)
+        for m in rel["modelos"]:
+            print(m["modelo"], "ECE", m["bruta"]["ece"], "->", m["calibrada"]["ece"])
         return 0
     if args.etapa == "campi":
         rel = etapa_campi(corpus, modelos, origem=args.origem, semente=args.semente)
