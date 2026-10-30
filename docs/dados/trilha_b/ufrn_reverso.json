@@ -3,6 +3,7 @@
   "trilha": "B",
   "semente": 42,
   "modelos": [
+    "tfidf_embedding",
     "naive_bayes",
     "regressao_logistica",
     "linear_svc",
@@ -41,6 +42,62 @@
     "area externa e ambiental": "viario"
   },
   "concordancia_entre_modelos_na_nossa_base": [
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "naive_bayes"
+      ],
+      "concordancia": 0.5592,
+      "kappa": 0.4004
+    },
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "regressao_logistica"
+      ],
+      "concordancia": 0.813,
+      "kappa": 0.751
+    },
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "linear_svc"
+      ],
+      "concordancia": 0.8461,
+      "kappa": 0.7942
+    },
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "sgd"
+      ],
+      "concordancia": 0.7977,
+      "kappa": 0.73
+    },
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "extra_trees"
+      ],
+      "concordancia": 0.7701,
+      "kappa": 0.6931
+    },
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "random_forest"
+      ],
+      "concordancia": 0.7497,
+      "kappa": 0.6661
+    },
+    {
+      "modelos": [
+        "tfidf_embedding",
+        "tfidf_caracteres"
+      ],
+      "concordancia": 0.8991,
+      "kappa": 0.865
+    },
     {
       "modelos": [
         "naive_bayes",
@@ -211,6 +268,181 @@
     }
   ],
   "resultados": {
+    "tfidf_embedding": {
+      "ufrn_teste": {
+        "n": 13808,
+        "acuracia": 0.9253,
+        "macro_f1": 0.7597,
+        "recall_por_divisao": {
+          "ar condicionado": {
+            "n": 112,
+            "recall": 0.4018
+          },
+          "instalacoes eletricas e telecomunicacoes": {
+            "n": 2773,
+            "recall": 0.9553
+          },
+          "instalacoes hidraulicas e sanitarias": {
+            "n": 3862,
+            "recall": 0.9591
+          },
+          "servicos gerais": {
+            "n": 6770,
+            "recall": 0.9084
+          },
+          "viario": {
+            "n": 291,
+            "recall": 0.7835
+          }
+        }
+      },
+      "nossa_base": {
+        "n_com_correspondencia": 8924,
+        "n_sem_correspondencia": 5433,
+        "acuracia": 0.8347,
+        "macro_f1": 0.7032,
+        "recall_por_divisao": {
+          "ar condicionado": {
+            "n": 1535,
+            "recall": 0.9531
+          },
+          "instalacoes eletricas e telecomunicacoes": {
+            "n": 2331,
+            "recall": 0.9301
+          },
+          "instalacoes hidraulicas e sanitarias": {
+            "n": 1374,
+            "recall": 0.8981
+          },
+          "servicos gerais": {
+            "n": 3568,
+            "recall": 0.7195
+          },
+          "viario": {
+            "n": 116,
+            "recall": 0.1466
+          }
+        },
+        "matriz_referencia_por_previsao": {
+          "ar condicionado": {
+            "ar condicionado": 1463,
+            "instalacoes eletricas e telecomunicacoes": 42,
+            "servicos gerais": 15,
+            "instalacoes hidraulicas e sanitarias": 13,
+            "viario": 2
+          },
+          "instalacoes eletricas e telecomunicacoes": {
+            "instalacoes eletricas e telecomunicacoes": 2168,
+            "servicos gerais": 68,
+            "ar condicionado": 43,
+            "viario": 37,
+            "instalacoes hidraulicas e sanitarias": 15
+          },
+          "instalacoes hidraulicas e sanitarias": {
+            "instalacoes hidraulicas e sanitarias": 1234,
+            "ar condicionado": 76,
+            "servicos gerais": 34,
+            "instalacoes eletricas e telecomunicacoes": 29,
+            "viario": 1
+          },
+          "servicos gerais": {
+            "servicos gerais": 2567,
+            "instalacoes eletricas e telecomunicacoes": 402,
+            "instalacoes hidraulicas e sanitarias": 274,
+            "viario": 168,
+            "ar condicionado": 157
+          },
+          "viario": {
+            "servicos gerais": 49,
+            "ar condicionado": 20,
+            "viario": 17,
+            "instalacoes hidraulicas e sanitarias": 16,
+            "instalacoes eletricas e telecomunicacoes": 14
+          }
+        },
+        "por_primeiro_nivel": [
+          {
+            "grupo": "Climatização",
+            "n": 1535,
+            "acuracia": 0.9531
+          },
+          {
+            "grupo": "Elétrica",
+            "n": 1900,
+            "acuracia": 0.9542
+          },
+          {
+            "grupo": "Estrutura Predial",
+            "n": 2860,
+            "acuracia": 0.7808
+          },
+          {
+            "grupo": "Hidrossanitária",
+            "n": 1374,
+            "acuracia": 0.8981
+          },
+          {
+            "grupo": "Instalação de Acessórios e Mobiliário",
+            "n": 518,
+            "acuracia": 0.5367
+          },
+          {
+            "grupo": "Posto de trabalho",
+            "n": 102,
+            "acuracia": 0.2157
+          },
+          {
+            "grupo": "Projetos e Reformas",
+            "n": 88,
+            "acuracia": 0.3864
+          },
+          {
+            "grupo": "TI / Dados / Rede",
+            "n": 431,
+            "acuracia": 0.8237
+          },
+          {
+            "grupo": "Área Externa e Ambiental",
+            "n": 116,
+            "acuracia": 0.1466
+          }
+        ],
+        "por_campus": [
+          {
+            "grupo": "Campus Jorge Amado",
+            "n": 2818,
+            "acuracia": 0.8282
+          },
+          {
+            "grupo": "Campus Maria Felipa - Jequié",
+            "n": 6,
+            "acuracia": 0.8333
+          },
+          {
+            "grupo": "Campus Paulo Freire",
+            "n": 2148,
+            "acuracia": 0.8259
+          },
+          {
+            "grupo": "Campus Sosígenes Costa",
+            "n": 2171,
+            "acuracia": 0.831
+          },
+          {
+            "grupo": "Reitoria",
+            "n": 1781,
+            "acuracia": 0.8602
+          }
+        ]
+      },
+      "distribuicao_prevista_na_nossa_base": {
+        "instalacoes eletricas e telecomunicacoes": 4792,
+        "ar condicionado": 4118,
+        "servicos gerais": 3024,
+        "instalacoes hidraulicas e sanitarias": 2140,
+        "viario": 283
+      }
+    },
     "naive_bayes": {
       "ufrn_teste": {
         "n": 13808,
@@ -1424,7 +1656,7 @@
     }
   },
   "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
-  "gerado_em": "30/10/2026 13:23",
+  "gerado_em": "30/10/2026 14:28",
   "fonte": "https://dados.ufrn.br/dataset/a163b02e-dd02-4c40-bf2e-79b4858c1c80/resource/1ec4e5c7-d3d4-4741-a58e-d66ce49c04d2/download/requisicaomaterialservico.csv",
   "fonte_sha256": "e12c05e03c0291ec2a79958f9fe9e3a22ee7499687e3b6dea298b648e527da0d",
   "script_origem": "src/trilha_b.py"

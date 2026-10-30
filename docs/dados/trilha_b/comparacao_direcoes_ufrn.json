@@ -33,6 +33,7 @@
       "tfidf_caracteres": 0.8263
     },
     "ufrn_para_ufrn": {
+      "tfidf_embedding": 0.9253,
       "naive_bayes": 0.8964,
       "regressao_logistica": 0.8955,
       "linear_svc": 0.9198,
@@ -42,6 +43,7 @@
       "tfidf_caracteres": 0.9274
     },
     "ufrn_para_nossa": {
+      "tfidf_embedding": 0.8347,
       "naive_bayes": 0.7287,
       "regressao_logistica": 0.8226,
       "linear_svc": 0.8363,
@@ -73,16 +75,16 @@
         "nossa_para_nossa",
         "ufrn_para_ufrn"
       ],
-      "n_modelos": 7,
-      "spearman": 0.6071
+      "n_modelos": 8,
+      "spearman": 0.7143
     },
     {
       "condicoes": [
         "nossa_para_nossa",
         "ufrn_para_nossa"
       ],
-      "n_modelos": 7,
-      "spearman": 0.7143
+      "n_modelos": 8,
+      "spearman": 0.7619
     },
     {
       "condicoes": [
@@ -97,40 +99,40 @@
         "nossa_para_ufrn",
         "ufrn_para_ufrn"
       ],
-      "n_modelos": 7,
-      "spearman": 0.6786
+      "n_modelos": 8,
+      "spearman": 0.7857
     },
     {
       "condicoes": [
         "nossa_para_ufrn",
         "ufrn_para_nossa"
       ],
-      "n_modelos": 7,
-      "spearman": 0.5357
+      "n_modelos": 8,
+      "spearman": 0.5714
     },
     {
       "condicoes": [
         "nossa_para_ufrn_sem_viario",
         "ufrn_para_ufrn"
       ],
-      "n_modelos": 7,
-      "spearman": 0.7857
+      "n_modelos": 8,
+      "spearman": 0.8333
     },
     {
       "condicoes": [
         "nossa_para_ufrn_sem_viario",
         "ufrn_para_nossa"
       ],
-      "n_modelos": 7,
-      "spearman": 0.2857
+      "n_modelos": 8,
+      "spearman": 0.4286
     },
     {
       "condicoes": [
         "ufrn_para_ufrn",
         "ufrn_para_nossa"
       ],
-      "n_modelos": 7,
-      "spearman": 0.4643
+      "n_modelos": 8,
+      "spearman": 0.5238
     }
   ]
 }

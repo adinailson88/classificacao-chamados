@@ -872,7 +872,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
                                      "regras", "kfold", "alternativas", "campi",
-                                     "candidatos", "ufrn", "reverso"])
+                                     "candidatos", "ufrn", "reverso", "completa"])
     p.add_argument("--ufrn-fonte", default=vu.URL_PADRAO,
                    help="URL ou arquivo CSV da base da UFRN (etapa ufrn)")
     p.add_argument("--por-divisao", type=int, default=300)
@@ -937,6 +937,18 @@ def main() -> int:
     if args.etapa in ("reverso", "ufrn") and Path(args.ufrn_fonte).is_file():
         digitais = {**digitais, "fonte_ufrn_sha256": hashlib.sha256(
             Path(args.ufrn_fonte).read_bytes()).hexdigest()}
+    if args.etapa == "completa":
+        todas = [dict(l, id_ufrn=f"{l['ano']}-{l['numero']}") for l in vu.ler_ufrn(args.ufrn_fonte)
+                 if l["divisao"] and l["ano"].isdigit() and int(l["ano"]) >= args.ano_minimo]
+        res = etapa_ufrn(corpus, todas,
+                         nomes=tuple(m for m in args.modelos_ufrn.split(",") if m)
+                         or MODELOS_UFRN_PADRAO, semente=args.semente)
+        gravar_ufrn(res, digitais, quando, {
+            **SAIDAS, "ufrn_resumo_json": DADOS_B / "ufrn_completo_resumo.json",
+            "ufrn_avaliacao_csv": RAIZ / "saidas_privadas" / "ufrn_completa_classificada.csv"})
+        for nome, m in res["resumo"]["modelos"].items():
+            print(nome, len(todas), m["concordancia_com_correspondencia"])
+        return 0
     if args.etapa == "reverso":
         res = etapa_ufrn_reverso(corpus, vu.ler_ufrn(args.ufrn_fonte),
                                  nomes=tuple(m for m in args.modelos_ufrn.split(",") if m)
