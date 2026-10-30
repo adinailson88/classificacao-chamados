@@ -1,161 +1,463 @@
 {
+  "nota": "Estimativas ponderadas pelo tamanho de cada estrato na populacao; IC95% normal com correcao para populacao finita. Sem texto.",
   "ufrn_na_nossa_taxonomia": {
     "todos": {
-      "n": 1500,
+      "n_amostra": 1712,
+      "estratos_sem_caso_nao_ambiguo": [],
       "ambas_corretas": {
-        "k": 995,
-        "p": 0.6633,
+        "p": 0.6854,
         "ic95": [
-          0.639,
-          0.6868
+          0.658,
+          0.7128
         ]
       },
       "por_modelo": {
         "tfidf_embedding": {
-          "k": 1054,
-          "p": 0.7027,
+          "p": 0.7334,
           "ic95": [
-            0.679,
-            0.7253
+            0.7072,
+            0.7596
           ]
         },
         "linear_svc": {
-          "k": 1073,
-          "p": 0.7153,
+          "p": 0.7358,
           "ic95": [
-            0.692,
-            0.7376
+            0.7097,
+            0.7619
           ]
         }
       },
       "categoria_humana_adequada": {
-        "k": 1408,
-        "p": 0.9387,
+        "p": 0.9881,
         "ic95": [
-          0.9254,
-          0.9497
+          0.9836,
+          0.9925
         ]
+      },
+      "sem_ponderar": {
+        "ambas_corretas": 0.6676,
+        "categoria_humana_adequada": 0.9457
+      },
+      "por_estrato_ambas_corretas": {
+        "Instalações Hidráulicas e Sanitárias": {
+          "N": 10092,
+          "n": 371,
+          "p": 0.8005
+        },
+        "Instalações Elétricas e Telecomunicações": {
+          "N": 7120,
+          "n": 365,
+          "p": 0.7178
+        },
+        "Serviços Gerais": {
+          "N": 16598,
+          "n": 376,
+          "p": 0.609
+        },
+        "Ar condicionado": {
+          "N": 631,
+          "n": 300,
+          "p": 0.72
+        },
+        "Viário": {
+          "N": 665,
+          "n": 300,
+          "p": 0.4633
+        }
+      },
+      "por_estrato_modelo": {
+        "tfidf_embedding": {
+          "Instalações Hidráulicas e Sanitárias": {
+            "N": 10092,
+            "n": 371,
+            "p": 0.8383
+          },
+          "Instalações Elétricas e Telecomunicações": {
+            "N": 7120,
+            "n": 365,
+            "p": 0.7726
+          },
+          "Serviços Gerais": {
+            "N": 16598,
+            "n": 376,
+            "p": 0.6622
+          },
+          "Ar condicionado": {
+            "N": 631,
+            "n": 300,
+            "p": 0.7367
+          },
+          "Viário": {
+            "N": 665,
+            "n": 300,
+            "p": 0.4933
+          }
+        },
+        "linear_svc": {
+          "Instalações Hidráulicas e Sanitárias": {
+            "N": 10092,
+            "n": 371,
+            "p": 0.8518
+          },
+          "Instalações Elétricas e Telecomunicações": {
+            "N": 7120,
+            "n": 365,
+            "p": 0.7589
+          },
+          "Serviços Gerais": {
+            "N": 16598,
+            "n": 376,
+            "p": 0.6622
+          },
+          "Ar condicionado": {
+            "N": 631,
+            "n": 300,
+            "p": 0.76
+          },
+          "Viário": {
+            "N": 665,
+            "n": 300,
+            "p": 0.54
+          }
+        }
       }
     },
     "sem_ambiguas": {
-      "n": 1200,
+      "n_amostra": 1375,
+      "estratos_sem_caso_nao_ambiguo": [],
       "ambas_corretas": {
-        "k": 918,
-        "p": 0.765,
+        "p": 0.7695,
         "ic95": [
-          0.7402,
-          0.7881
+          0.7411,
+          0.798
         ]
       },
       "por_modelo": {
         "tfidf_embedding": {
-          "k": 965,
-          "p": 0.8042,
+          "p": 0.8198,
           "ic95": [
-            0.7808,
-            0.8256
+            0.7935,
+            0.846
           ]
         },
         "linear_svc": {
-          "k": 972,
-          "p": 0.81,
+          "p": 0.8128,
           "ic95": [
-            0.7868,
-            0.8312
+            0.7862,
+            0.8395
           ]
         }
       },
       "categoria_humana_adequada": {
-        "k": 1147,
-        "p": 0.9558,
+        "p": 0.9922,
         "ic95": [
-          0.9427,
-          0.9661
+          0.9888,
+          0.9956
         ]
+      },
+      "sem_ponderar": {
+        "ambas_corretas": 0.7695,
+        "categoria_humana_adequada": 0.9615
       }
-    },
-    "divisao_humana_errada_por_divisao": {
-      "Ar condicionado": 68,
-      "Instalações Elétricas e Telecomunicações": 6,
-      "Instalações Hidráulicas e Sanitárias": 3,
-      "Viário": 15
     }
   },
   "nossa_base_na_taxonomia_ufrn": {
     "todos": {
-      "n": 1298,
+      "n_amostra": 2537,
+      "estratos_sem_caso_nao_ambiguo": [],
       "ambas_corretas": {
-        "k": 756,
-        "p": 0.5824,
+        "p": 0.7944,
         "ic95": [
-          0.5554,
-          0.609
+          0.7799,
+          0.8088
         ]
       },
       "por_modelo": {
-        "linear_svc": {
-          "k": 787,
-          "p": 0.6063,
+        "tfidf_embedding": {
+          "p": 0.8402,
           "ic95": [
-            0.5795,
-            0.6325
+            0.8274,
+            0.853
           ]
         },
-        "tfidf_caracteres": {
-          "k": 836,
-          "p": 0.6441,
+        "linear_svc": {
+          "p": 0.8241,
           "ic95": [
-            0.6176,
-            0.6697
+            0.8106,
+            0.8377
           ]
         }
       },
       "categoria_humana_adequada": {
-        "k": 985,
-        "p": 0.7589,
+        "p": 0.8646,
         "ic95": [
-          0.7348,
-          0.7813
+          0.851,
+          0.8783
         ]
+      },
+      "sem_ponderar": {
+        "ambas_corretas": 0.7079,
+        "categoria_humana_adequada": 0.8549
+      },
+      "por_estrato_ambas_corretas": {
+        "Manutenção Preventiva": {
+          "N": 1300,
+          "n": 297,
+          "p": 0.7374
+        },
+        "TI / Dados / Rede": {
+          "N": 431,
+          "n": 204,
+          "p": 0.652
+        },
+        "Hidrossanitária": {
+          "N": 1353,
+          "n": 300,
+          "p": 0.87
+        },
+        "Elétrica": {
+          "N": 1897,
+          "n": 320,
+          "p": 0.9375
+        },
+        "Estrutura Predial": {
+          "N": 2856,
+          "n": 339,
+          "p": 0.7906
+        },
+        "Climatização": {
+          "N": 1532,
+          "n": 308,
+          "p": 0.9351
+        },
+        "Outros": {
+          "N": 331,
+          "n": 179,
+          "p": 0.3128
+        },
+        "Projetos e Reformas": {
+          "N": 88,
+          "n": 72,
+          "p": 0.6111
+        },
+        "Instalação de Acessórios e Mobiliário": {
+          "N": 515,
+          "n": 221,
+          "p": 0.629
+        },
+        "Área Externa e Ambiental": {
+          "N": 116,
+          "n": 90,
+          "p": 0.2111
+        },
+        "Suprimentos / Apoio Técnico": {
+          "N": 92,
+          "n": 75,
+          "p": 0.4533
+        },
+        "Segurança contra Incêndio": {
+          "N": 29,
+          "n": 28,
+          "p": 0.6071
+        },
+        "Posto de trabalho": {
+          "N": 102,
+          "n": 81,
+          "p": 0.1852
+        },
+        "Equipamentos de Transporte": {
+          "N": 24,
+          "n": 23,
+          "p": 0.1304
+        }
+      },
+      "por_estrato_modelo": {
+        "tfidf_embedding": {
+          "Manutenção Preventiva": {
+            "N": 1300,
+            "n": 297,
+            "p": 0.9428
+          },
+          "TI / Dados / Rede": {
+            "N": 431,
+            "n": 204,
+            "p": 0.6716
+          },
+          "Hidrossanitária": {
+            "N": 1353,
+            "n": 300,
+            "p": 0.8967
+          },
+          "Elétrica": {
+            "N": 1897,
+            "n": 320,
+            "p": 0.95
+          },
+          "Estrutura Predial": {
+            "N": 2856,
+            "n": 339,
+            "p": 0.8201
+          },
+          "Climatização": {
+            "N": 1532,
+            "n": 308,
+            "p": 0.9545
+          },
+          "Outros": {
+            "N": 331,
+            "n": 179,
+            "p": 0.3184
+          },
+          "Projetos e Reformas": {
+            "N": 88,
+            "n": 72,
+            "p": 0.625
+          },
+          "Instalação de Acessórios e Mobiliário": {
+            "N": 515,
+            "n": 221,
+            "p": 0.6742
+          },
+          "Área Externa e Ambiental": {
+            "N": 116,
+            "n": 90,
+            "p": 0.2667
+          },
+          "Suprimentos / Apoio Técnico": {
+            "N": 92,
+            "n": 75,
+            "p": 0.52
+          },
+          "Segurança contra Incêndio": {
+            "N": 29,
+            "n": 28,
+            "p": 0.6429
+          },
+          "Posto de trabalho": {
+            "N": 102,
+            "n": 81,
+            "p": 0.1852
+          },
+          "Equipamentos de Transporte": {
+            "N": 24,
+            "n": 23,
+            "p": 0.1304
+          }
+        },
+        "linear_svc": {
+          "Manutenção Preventiva": {
+            "N": 1300,
+            "n": 297,
+            "p": 0.7811
+          },
+          "TI / Dados / Rede": {
+            "N": 431,
+            "n": 204,
+            "p": 0.6716
+          },
+          "Hidrossanitária": {
+            "N": 1353,
+            "n": 300,
+            "p": 0.88
+          },
+          "Elétrica": {
+            "N": 1897,
+            "n": 320,
+            "p": 0.9469
+          },
+          "Estrutura Predial": {
+            "N": 2856,
+            "n": 339,
+            "p": 0.8289
+          },
+          "Climatização": {
+            "N": 1532,
+            "n": 308,
+            "p": 0.9416
+          },
+          "Outros": {
+            "N": 331,
+            "n": 179,
+            "p": 0.3408
+          },
+          "Projetos e Reformas": {
+            "N": 88,
+            "n": 72,
+            "p": 0.625
+          },
+          "Instalação de Acessórios e Mobiliário": {
+            "N": 515,
+            "n": 221,
+            "p": 0.7059
+          },
+          "Área Externa e Ambiental": {
+            "N": 116,
+            "n": 90,
+            "p": 0.3111
+          },
+          "Suprimentos / Apoio Técnico": {
+            "N": 92,
+            "n": 75,
+            "p": 0.5333
+          },
+          "Segurança contra Incêndio": {
+            "N": 29,
+            "n": 28,
+            "p": 0.7857
+          },
+          "Posto de trabalho": {
+            "N": 102,
+            "n": 81,
+            "p": 0.4321
+          },
+          "Equipamentos de Transporte": {
+            "N": 24,
+            "n": 23,
+            "p": 0.2174
+          }
+        }
       }
     },
     "sem_ambiguas": {
-      "n": 1098,
+      "n_amostra": 2075,
+      "estratos_sem_caso_nao_ambiguo": [
+        "Equipamentos de Transporte"
+      ],
       "ambas_corretas": {
-        "k": 686,
-        "p": 0.6248,
+        "p": 0.846,
         "ic95": [
-          0.5957,
-          0.6529
+          0.8323,
+          0.8597
         ]
       },
       "por_modelo": {
-        "linear_svc": {
-          "k": 708,
-          "p": 0.6448,
+        "tfidf_embedding": {
+          "p": 0.8785,
           "ic95": [
-            0.616,
-            0.6726
+            0.8664,
+            0.8905
           ]
         },
-        "tfidf_caracteres": {
-          "k": 754,
-          "p": 0.6867,
+        "linear_svc": {
+          "p": 0.8723,
           "ic95": [
-            0.6587,
-            0.7134
+            0.86,
+            0.8846
           ]
         }
       },
       "categoria_humana_adequada": {
-        "k": 854,
-        "p": 0.7778,
+        "p": 0.8813,
         "ic95": [
-          0.7522,
-          0.8014
+          0.8668,
+          0.8959
         ]
+      },
+      "sem_ponderar": {
+        "ambas_corretas": 0.7812,
+        "categoria_humana_adequada": 0.8747
       }
     },
-    "fora_do_escopo": 92
+    "fora_do_escopo": 193
   }
 }
