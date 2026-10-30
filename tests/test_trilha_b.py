@@ -334,8 +334,18 @@ class TestTrilhaB(unittest.TestCase):
                          "descricao": f"{base} numero {i}", "local": ""})
         corresp = {"cat a": "clima", "cat b": "eletrica", "cat c": "hidraulica"}
         with mock.patch.dict(tb.vu.CORRESPONDENCIA_PROPOSTA, corresp, clear=True):
-            res = tb.etapa_ufrn_reverso(corpus, ufrn, nomes=("naive_bayes", "linear_svc"),
+            import numpy as np
+            from sklearn.feature_extraction.text import HashingVectorizer
+
+            def embeddings_falsos(textos, registrar=None):
+                hv = HashingVectorizer(n_features=32, alternate_sign=False, norm="l2")
+                m = hv.transform(textos).toarray().astype(np.float32)
+                return {t: v for t, v in zip(textos, m)}
+
+            res = tb.etapa_ufrn_reverso(corpus, ufrn,
+                                        nomes=("naive_bayes", "linear_svc", "tfidf_embedding"),
                                         ano_minimo=2019, ano_teste=2025,
+                                        gerar_embeddings=embeddings_falsos,
                                         registrar=lambda m: None)
             with tempfile.TemporaryDirectory() as d:
                 saidas = {k: Path(d) / v.name for k, v in tb.SAIDAS.items()}
@@ -346,7 +356,7 @@ class TestTrilhaB(unittest.TestCase):
         self.assertEqual(m["nossa_base"]["n_com_correspondencia"], len(corpus["textos"]))
         self.assertGreater(m["nossa_base"]["acuracia"], 0.9)
         self.assertEqual(len(linhas) - 1, len(corpus["textos"]))
-        self.assertEqual(len(res["concordancia_entre_modelos_na_nossa_base"]), 1)
+        self.assertEqual(len(res["concordancia_entre_modelos_na_nossa_base"]), 3)
         self.assertNotIn("vazando", texto_json)
         self.assertIn("id_sha256", linhas[0])
 

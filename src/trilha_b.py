@@ -482,6 +482,7 @@ def _acuracia_por(verdade: list[str], previsto: list[str], grupo: list[str]) -> 
 def etapa_ufrn_reverso(corpus: dict[str, Any], linhas_ufrn: list[dict[str, str]],
                        nomes: tuple[str, ...] = MODELOS_REVERSO_PADRAO,
                        por_divisao: int = 5000, ano_minimo: int = 2018, ano_teste: int = 2025,
+                       gerar_embeddings=ma.calcular_embeddings,
                        semente: int = SEMENTE_PADRAO, registrar=rmc._log) -> dict[str, Any]:
     """Treina na base da UFRN e classifica o corpus da Trilha B com a taxonomia dela.
 
@@ -517,7 +518,12 @@ def etapa_ufrn_reverso(corpus: dict[str, Any], linhas_ufrn: list[dict[str, str]]
     resultados: dict[str, Any] = {}
     previsoes_n: dict[str, list[str]] = {}
     confiancas_n: dict[str, list[float]] = {}
-    with lstm_deterministico(semente), modelos_alternativos_ativos({}):
+    tabela: dict[str, Any] = {}
+    if any("embedding" in n for n in nomes):
+        registrar("[reverso] calculando embeddings")
+        tabela = gerar_embeddings(sorted(set(x_tr) | set(x_te) | set(corpus["textos"])),
+                                  registrar=registrar)
+    with lstm_deterministico(semente), modelos_alternativos_ativos(tabela):
         for nome in nomes:
             registrar(f"[reverso] {nome}: treino {len(x_tr)} (UFRN), teste UFRN {len(x_te)}, "
                       f"nossa base {len(corpus['textos'])}")
