@@ -2,7 +2,7 @@
 
 Este documento registra somente a estrutura, os critérios editoriais e o estado atual do artigo/capítulo. O plano operacional vigente, os critérios de aceite e o ponto de continuidade estão em [`PLANO_EXECUCAO_ATUAL.md`](PLANO_EXECUCAO_ATUAL.md). Os dois documentos têm finalidades distintas e não devem acumular versões concorrentes do mesmo estado.
 
-Atualizado em 16/08/2026, no fuso America/Bahia (Rodada 15, consolidação e renumeração contínua do material suplementar — item 13 do parecer).
+Atualizado em 30/10/2026, no fuso America/Bahia (atualização do artigo para a Trilha B).
 
 ## Regra de uso
 
@@ -95,102 +95,11 @@ artigo.
 
 ## Estado desta rodada
 
-**Rodada canônica:** `1e476243` (hash completo
-`1e4762438a7e3627d3e32c1025f6bcb169e786881d8e86207806fdf98846409a`). Os oito
-artefatos derivados e os três do congelamento conferem esse hash,
-verificável por `python src/matriz_proveniencia.py`; a Rodada 14 não
-alterou nenhum artefato de dados, e a matriz seguiu sem divergências.
+**Rodada:** atualização do artigo para a Trilha B (30/10/2026). O texto vigente do manuscrito é o Google Doc `ARTIGO (QUASE PRONTO)` (20/09/2026), na pasta do artigo no Drive; o `04_artigo/artigo_classificacao_chamados_v3.md` (16/08/2026) ficou anterior a ele. O original do Drive não foi alterado: a cópia `ARTIGO (TRILHA B - RASCUNHO 2026-10-30)` recebeu 13 substituições como sugestões, sobre denominadores, referência revisada, grupos textuais, exatidão do LinearSVC e inferência por grupo. O detalhe está em `TRILHA_B/MAPA_ATUALIZACAO_ARTIGO_TRILHA_B.md`, na mesma pasta do Drive.
 
-**Onde está:** os Passos 0 a 10 estão concluídos, o 9 encerrado como não
-aplicável, e os Passos 11 e 12 (redução/reescrita editorial e integração
-do ensemble) estão concluídos. A Rodada 14 (branch
-`docs/correcoes-parecer-artigo-projeto`) tratou exclusivamente os itens 1
-a 12 de um parecer científico confrontado com o projeto de doutorado —
-reconciliação 598/593, decomposição do custo do BERTimbau, definição de
-"neutros", distinção entre curva ABC global e interna ao tipo, otimismo
-da seleção do LinearSVC, redação do alvo de 0,95 no Resumo/Abstract,
-ausência de busca de hiperparâmetros, renderização `p ≤ 0,0005`,
-"biossistema construído" como definição operacional autoral,
-harmonização de Capra/Odum/Grimm com o projeto, meia frase sobre
-o Naive Bayes e a introdução do Apêndice A, e identificação do Ticket-BERT
-como preprint — sem reabrir decisões científicas, sem retreinar modelo
-algum e sem consolidar/renumerar o material suplementar (item 13, fora do
-escopo, tratado na Rodada 15 em PR separada — ver abaixo). Em microcorreção subsequente na mesma
-branch, o bloqueio do item 10 (Odum) foi resolvido a partir do acervo do
-projeto (Eugene P. Odum, *Fundamentos de ecologia*, 6. ed., 1996, em vez
-de Howard T. Odum), com ressalva bibliográfica apenas sobre a confirmação
-do ano na página de créditos do exemplar. Após a terceira microcorreção,
-o PDF final de 21 páginas foi inspecionado integralmente; a divergência de
-contagem no estado atual de `04_artigo/README.md` foi reconciliada para
-8.961 palavras. Detalhe completo em
-`docs/AUDITORIA_PARECER_ARTIGO_PROJETO.md`. Zero fits de modelo-base, zero
-fits de stacking, zero execuções de LSTM ou BERTimbau.
+**Fonte dos números.** Corte B, `hash_corte` `67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb`, artefatos em `docs/dados/trilha_b/` (corte, grupos, partições, retreino, avaliação temporal, calibração, regras, inferência por grupo, recortes, KFold contra GroupKFold). A execução canônica `1e476243` (14.060 e 13.972 linhas) continua congelada e descreve o texto antigo; os dois conjuntos não devem se misturar no mesmo manuscrito.
 
-**Divergência de documentação encontrada e corrigida nesta rodada:** este
-documento e `PLANO_EXECUCAO_ATUAL.md` ainda descreviam, no início da
-Rodada 14, o estado da Rodada 11 (título "Classificação auditável...",
-Subseção 3.6 com declarações institucionais completas), desatualizado
-frente a `main`, que já havia recebido as Rodadas 12 (revisão editorial
-v4: título, Tabela 5, Subseção 3.6, figuras) e 13 (correção bibliográfica
-NBR 6023:2025/NBR 10520:2023). A Rodada 14 trabalhou sobre o artigo real
-em `main` e reconcilia aqui a documentação.
-
-**Estrutura vigente.** Seis figuras e **cinco** tabelas principais no
-corpo (Tabela 5, comparação confirmatória do ensemble, Subseção 4.5);
-apêndice com as Tabelas A1 a A3, floats não divisíveis em `\footnotesize`
-com numeração própria (A1/A2/A3, independente da sequência 1–5 do corpo),
-com parágrafo introdutório do Apêndice A ampliado na Rodada 14 para
-distinguir a base de rótulo de A1 (categoria histórica) da usada em A2/A3
-(referência revisada); material suplementar em sequência contínua S1 a S16 (Rodada 15). Discussão em quatro
-subseções (5.1 a 5.4); Considerações Finais em cinco parágrafos curtos.
-Lista de referências com 44 entradas, todas citadas no corpo, sem
-duplicatas nem citação órfã; nesta rodada, Capra passou a 1997, Grimm
-*et al.* passou de 2008 (*Science*) para 2000 (*BioScience*), Odum passou
-de H. T. Odum (1971) para E. P. Odum, *Fundamentos de ecologia*, 6. ed.,
-Gulbenkian, 1996 (microcorreção posterior, a partir do acervo do
-projeto), e a entrada de Liu; Benge; Jiang (Ticket-BERT) passou a se
-declarar explicitamente como preprint sem publicação revisada por pares
-localizada.
-
-**Título vigente:** "Classificação de chamados de manutenção predial com
-aprendizado de máquina: desempenho e limites da automação" (reformulado na
-Rodada 12); o corpus é descrito como o de uma instituição federal de
-ensino superior (IFES), sem nomear a UFSB fora do bloco de afiliação dos
-autores.
-
-**Corpo científico: 8.961 palavras**, medidas pela mesma rotina única
-(contagem de palavras do Markdown-fonte desde "**1. INTRODUÇÃO**",
-inclusive, até "**REFERÊNCIAS**", exclusive). Partiu de 8.855 (estado de `main` no início
-da Rodada 14), recebeu as adições textuais dos itens 1 a 12 do parecer
-científico, compensadas por cortes locais de redundância nas mesmas
-subseções tocadas, chegando a 8.999; a remoção subsequente da seção
-"Disponibilidade de dados e código" (promessa de disponibilização futura
-sem conteúdo científico) levou o corpo a 8.972 palavras; a substituição da
-formulação defensiva das Considerações Finais levou o corpo a 8.961
-palavras, sem nenhum texto acrescentado para compensar a remoção.
-Permanece dentro da faixa-meta de 8.850 a 9.000.
-
-**Material suplementar: S1 a S16**, sequência contínua desde a Rodada 15
-(branch `docs/consolidacao-material-suplementar`), que resolveu o item 13
-do parecer — renumerou S5–S17 para S4–S16 (sem recriar a antiga tabela
-legada S4, sem alterar conteúdo de nenhum CSV) e consolidou as 16 tabelas
-em `04_artigo/material_suplementar_classificacao_chamados.md`, publicado
-em `docs/material_suplementar_classificacao_chamados.pdf`. Ver
-`docs/AUDITORIA_MATERIAL_SUPLEMENTAR.md` para o detalhamento completo,
-`docs/AUDITORIA_PARECER_ARTIGO_PROJETO.md` para os itens 1 a 12 e
-`docs/AUDITORIA_REFERENCIAS_2025.md` para a auditoria bibliográfica da
-Rodada 13.
-
-O detalhamento rodada a rodada de como o estado anterior a este foi
-alcançado — reestruturação da Discussão, conversão das tabelas em floats,
-correções das duas auditorias independentes da PR #202, auditoria visual e
-paginação da Rodada 9, auditoria final de submissão da Rodada 10,
-integração editorial do ensemble na Rodada 11, revisão editorial v4 na
-Rodada 12, correção bibliográfica ABNT na Rodada 13, consolidação do
-material suplementar na Rodada 15 — está nos commits e nas Pull Requests
-(#202, #203, #209, #210) e não é repetido aqui, conforme a regra de uso
-deste documento. O relatório completo da Rodada 12 está em
-`verificacao/relatorio_revisao_v4.md`.
+**Próximo passo.** Gerar os artefatos que faltam na Trilha B (concordância histórica e ganho líquido, utilidade, sensibilidade às classes raras, custo, tabelas do apêndice, ensemble, curva e ablation da LSTM, decisão do BERTimbau), e só então atualizar Tabelas 2 a 5, Resumo, Abstract, Discussão e Considerações Finais. Decisões do autor pendentes: limitação temporal reescrita como resultado, descrição da conferência dupla, categoria Elevador preventivo fora das partições.
 
 ## Critérios para novo fechamento científico
 
