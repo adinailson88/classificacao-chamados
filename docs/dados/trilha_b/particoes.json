@@ -1,0 +1,135 @@
+{
+  "k": 5,
+  "semente": 42,
+  "algoritmo": "sklearn.model_selection.StratifiedGroupKFold, shuffle=True",
+  "linhas_particionadas": 14357,
+  "grupos_particionados": 10596,
+  "linhas_sem_dobra": 0,
+  "grupos_divididos_entre_dobras": 0,
+  "dobras": [
+    {
+      "dobra": 1,
+      "linhas": 2727,
+      "grupos": 2126,
+      "categorias_com_suporte": 39,
+      "categorias_ausentes": []
+    },
+    {
+      "dobra": 2,
+      "linhas": 2897,
+      "grupos": 2126,
+      "categorias_com_suporte": 39,
+      "categorias_ausentes": []
+    },
+    {
+      "dobra": 3,
+      "linhas": 2631,
+      "grupos": 2116,
+      "categorias_com_suporte": 39,
+      "categorias_ausentes": []
+    },
+    {
+      "dobra": 4,
+      "linhas": 3003,
+      "grupos": 2113,
+      "categorias_com_suporte": 39,
+      "categorias_ausentes": []
+    },
+    {
+      "dobra": 5,
+      "linhas": 3099,
+      "grupos": 2115,
+      "categorias_com_suporte": 39,
+      "categorias_ausentes": []
+    }
+  ],
+  "mapa_sha256": "34e40333ddc0da1f7ad2bf6e15a2e68f15959a88c9ab4f95a2974947d975aa69",
+  "categorias_excluidas_por_sorteio": [
+    {
+      "categoria": "Elétrica > Sistema Fotovoltaico (FV)",
+      "linhas": 7,
+      "rodada": 1
+    },
+    {
+      "categoria": "Estrutura Predial > Instalações Especiais (gás, ar comprimido, etc.)",
+      "linhas": 5,
+      "rodada": 1
+    },
+    {
+      "categoria": "Manutenção Preventiva > Elevador",
+      "linhas": 93,
+      "rodada": 1
+    },
+    {
+      "categoria": "Manutenção Preventiva > Nobreak",
+      "linhas": 10,
+      "rodada": 1
+    },
+    {
+      "categoria": "Suprimentos / Apoio Técnico > Limpeza de equipamentos, ambiente e mobiliário",
+      "linhas": 16,
+      "rodada": 1
+    },
+    {
+      "categoria": "Área Externa e Ambiental > Drenagem",
+      "linhas": 5,
+      "rodada": 1
+    },
+    {
+      "categoria": "Elétrica > Subestação",
+      "linhas": 18,
+      "rodada": 2
+    },
+    {
+      "categoria": "TI / Dados / Rede > Coleta de dados",
+      "linhas": 40,
+      "rodada": 3
+    }
+  ],
+  "rodadas_de_exclusao": 3,
+  "registros_descartados": 0,
+  "base_congelada_aplicada": false,
+  "linhas_da_base_congelada": null,
+  "linhas_vivas_fora_da_base_congelada": 0,
+  "categorias_na_referencia": 50,
+  "categorias_particionadas": 39,
+  "minimo_grupos_por_categoria": 5,
+  "categorias_excluidas_por_suporte": [
+    {
+      "categoria": "Suprimentos / Apoio Técnico > Transporte",
+      "grupos_distintos": 2,
+      "linhas": 2,
+      "dobras_possiveis": 2
+    },
+    {
+      "categoria": "Manutenção Preventiva > Aplicação cupinicida",
+      "grupos_distintos": 3,
+      "linhas": 3,
+      "dobras_possiveis": 3
+    },
+    {
+      "categoria": "Manutenção Preventiva > Bomba",
+      "grupos_distintos": 3,
+      "linhas": 3,
+      "dobras_possiveis": 3
+    }
+  ],
+  "linhas_excluidas_por_suporte": 8,
+  "linhas_excluidas_por_sorteio": 194,
+  "linhas_excluidas_total": 202,
+  "criterio_exclusao": "categoria com menos de 5 grupos textuais distintos nao pode ter suporte nas 5 dobras, porque um grupo inteiro ocupa uma unica dobra; categorias que mesmo assim ficam sem suporte em alguma dobra saem em rodadas seguintes; a exclusao e nominal e nenhuma categoria e fundida com outra",
+  "problemas": {
+    "linhas_sem_dobra": 0,
+    "grupos_divididos_entre_dobras": 0,
+    "registros_descartados": 0,
+    "categorias_sem_suporte_em_alguma_dobra": 0
+  },
+  "bloqueios": [],
+  "categorias_sem_suporte_em_alguma_dobra": [],
+  "status": "apto_para_treinar",
+  "schema_version": 1,
+  "trilha": "B",
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 00:28",
+  "script_origem": "src/trilha_b.py"
+}
