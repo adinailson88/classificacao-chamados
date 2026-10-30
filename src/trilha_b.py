@@ -31,6 +31,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import calibrar_confianca as cc  # noqa: E402
+import comparacao_kfold_groupkfold as ckg  # noqa: E402
 import comparar_regras_modelos as crm  # noqa: E402
 import conferencia_derivada as cd  # noqa: E402
 import construir_grupos_textuais as cgt  # noqa: E402
@@ -55,6 +56,7 @@ SAIDAS = {
     "temporal_json": DADOS_B / "avaliacao_temporal.json",
     "calibracao_json": DADOS_B / "calibracao.json",
     "regras_json": DADOS_B / "regras_versus_modelos.json",
+    "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
 }
 K_PADRAO = 5
 SEMENTE_PADRAO = 42
@@ -355,6 +357,50 @@ def gravar_calibracao(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+# ------------------------------------------------------------------- kfold --
+
+def etapa_kfold(corpus: dict[str, Any], modelos: list[str], k: int = K_PADRAO,
+                registrar=rmc._log) -> dict[str, Any]:
+    """KFold por linha contra GroupKFold por grupo textual, no MESMO corte.
+
+    Mostra quanto a duplicacao textual infla o KFold. O alvo e a referencia
+    humana (a rodada anterior usou a categoria historica, em outra data).
+    """
+    textos, cats, grupos = corpus["textos"], corpus["rotulos"], corpus["grupos"]
+    resultados = []
+    with lstm_deterministico(SEMENTE_PADRAO):
+        for nome in modelos:
+            registrar(f"[kfold] {nome}")
+            r_kf = ckg.avaliar(nome, textos, cats, None, k)
+            r_gk = ckg.avaliar(nome, textos, cats, grupos, k)
+            resultados.append({
+                "modelo": nome, "kfold": r_kf, "groupkfold": r_gk,
+                "delta_acuracia_kfold_menos_groupkfold": round(
+                    r_kf["acuracia"] - r_gk["acuracia"], 4)})
+    ordem_kf = [r["modelo"] for r in sorted(resultados, key=lambda r: -r["kfold"]["acuracia"])]
+    ordem_gk = [r["modelo"] for r in sorted(resultados, key=lambda r: -r["groupkfold"]["acuracia"])]
+    return {
+        "schema_version": 1, "trilha": "B", "k_folds": k,
+        "natureza": "acuracia contra a referencia humana revisada",
+        "duplicatas_textuais": {
+            "n_linhas": len(textos), "n_grupos_textuais": len(set(grupos)),
+            "proporcao_com_duplicata": round(1 - len(set(grupos)) / len(textos), 4)
+            if textos else 0.0},
+        "resultados": resultados, "ranking_kfold": ordem_kf,
+        "ranking_groupkfold": ordem_gk, "ranking_preservado": ordem_kf == ordem_gk,
+    }
+
+
+def gravar_kfold(relatorio: dict[str, Any], digitais: dict[str, str],
+                 quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["kfold_json"])
+    saidas["kfold_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["kfold_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+
+
 # ------------------------------------------------------------------ regras --
 
 def etapa_regras(corpus: dict[str, Any],
@@ -391,7 +437,7 @@ def gravar_regras(relatorio: dict[str, Any], digitais: dict[str, str],
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
-                                     "regras"])
+                                     "regras", "kfold"])
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--aba", default="", help="aba de snapshot (padrao: a do manifesto)")
@@ -430,6 +476,12 @@ def main() -> int:
         print(json.dumps([{k: m[k] for k in ("modelo", "acuracia", "macro_f1")}
                           for m in rel["modelos"]], ensure_ascii=False, indent=2))
         return 0 if rel["status"] == "apto_para_regras" else 2
+    if args.etapa == "kfold":
+        rel = etapa_kfold(corpus, modelos)
+        gravar_kfold(rel, digitais, quando)
+        for r in rel["resultados"]:
+            print(r["modelo"], r["kfold"]["acuracia"], r["groupkfold"]["acuracia"])
+        return 0
     if args.etapa == "regras":
         rel = etapa_regras(corpus)
         gravar_regras(rel, digitais, quando)

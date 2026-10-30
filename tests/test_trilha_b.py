@@ -183,6 +183,15 @@ class TestTrilhaB(unittest.TestCase):
         self.assertEqual(list(regras["modelos"]), ["naive_bayes"])
         self.assertEqual(gravado["hash_corte"], "x")
 
+    def test_kfold_compara_linha_e_grupo_no_mesmo_corte(self):
+        _regs, _r, corpus = self._corpus()
+        rel = tb.etapa_kfold(corpus, ["naive_bayes"], k=3, registrar=lambda m: None)
+        r = rel["resultados"][0]
+        self.assertEqual(rel["trilha"], "B")
+        self.assertEqual(rel["duplicatas_textuais"]["n_linhas"], len(corpus["textos"]))
+        self.assertIn("delta_acuracia_kfold_menos_groupkfold", r)
+        self.assertEqual(rel["ranking_kfold"], ["naive_bayes"])
+
     def test_lstm_deterministico_restaura_a_fabrica(self):
         original = tb.rmc.zoo.criar_modelo
         with tb.lstm_deterministico(42):
