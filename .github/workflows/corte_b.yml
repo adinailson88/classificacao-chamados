@@ -9,7 +9,7 @@ on:
     paths:
       - ".github/workflows/corte_b.yml"
       - "src/corte_b.py"
-  workflow_dispatch:
+  workflow_dispatch:  # disparo manual quando o arquivo estiver na main
     inputs:
       aplicar:
         description: "Cria a aba imutavel CORTE_B_<data> na planilha (sem isto e dry-run)"
