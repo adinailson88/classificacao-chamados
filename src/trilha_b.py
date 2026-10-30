@@ -31,6 +31,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import calibrar_confianca as cc  # noqa: E402
+import modelos_alternativos as ma  # noqa: E402
 import comparacao_kfold_groupkfold as ckg  # noqa: E402
 import comparar_regras_modelos as crm  # noqa: E402
 import conferencia_derivada as cd  # noqa: E402
@@ -57,6 +58,9 @@ SAIDAS = {
     "calibracao_json": DADOS_B / "calibracao.json",
     "regras_json": DADOS_B / "regras_versus_modelos.json",
     "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
+    "alternativas_json": DADOS_B / "alternativas.json",
+    "alternativas_pred": DADOS_B / "alternativas_predicoes.csv",
+    "predicoes_todas": DADOS_B / "predicoes_com_alternativas.csv",
 }
 K_PADRAO = 5
 SEMENTE_PADRAO = 42
@@ -357,6 +361,65 @@ def gravar_calibracao(relatorio: dict[str, Any], digitais: dict[str, str],
         encoding="utf-8")
 
 
+# ------------------------------------------------------------- alternativas --
+
+@contextlib.contextmanager
+def modelos_alternativos_ativos(tabela: dict[str, Any]):
+    """Faz o zoo reconhecer os modelos candidatos, que dividem as mesmas dobras."""
+    original = rmc.zoo.criar_modelo
+
+    def criar(nome: str):
+        if (nome or "").strip().lower() in ma.NOMES:
+            return ma.criar_modelo(nome.strip().lower(), tabela)
+        return original(nome)
+
+    rmc.zoo.criar_modelo = criar
+    try:
+        yield
+    finally:
+        rmc.zoo.criar_modelo = original
+
+
+def etapa_alternativas(corpus: dict[str, Any], nomes: tuple[str, ...] = ma.NOMES,
+                       gerar_embeddings=ma.calcular_embeddings,
+                       semente: int = SEMENTE_PADRAO, registrar=rmc._log) -> dict[str, Any]:
+    """Modelos candidatos nas mesmas dobras (OOF) e nos mesmos cenarios temporais."""
+    nomes = list(nomes)
+    tabela: dict[str, Any] = {}
+    if any("embedding" in n for n in nomes):
+        registrar("[alternativas] calculando embeddings")
+        tabela = gerar_embeddings(sorted(set(corpus["textos"])), registrar=registrar)
+    with modelos_alternativos_ativos(tabela):
+        retreino = etapa_retreino(corpus, nomes, semente, registrar)
+        temporal = etapa_temporal(corpus, nomes, semente=semente, registrar=registrar)
+    return {"retreino": retreino, "temporal": temporal,
+            "encoder": ma.MODELO_EMBEDDING_PADRAO}
+
+
+def gravar_alternativas(resultado: dict[str, Any], corpus: dict[str, Any],
+                        digitais: dict[str, str], quando: str,
+                        saidas: dict[str, Path] = SAIDAS) -> None:
+    """Grava o relatorio e as predicoes; junta as predicoes aos sete modelos base."""
+    for chave in ("alternativas_json", "alternativas_pred", "predicoes_todas"):
+        cb.garantir_fora_do_congelado(saidas[chave])
+    carimbo = {"hash_corte": digitais["hash_corte"], "gerado_em": quando,
+               "script_origem": "src/trilha_b.py"}
+    saidas["alternativas_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["alternativas_json"].write_text(json.dumps({
+        "trilha": "B", "encoder": resultado["encoder"],
+        "retreino": _publicavel(resultado["retreino"]),
+        "temporal": resultado["temporal"], **carimbo},
+        ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    rmc.escrever_predicoes(saidas["alternativas_pred"], corpus,
+                           resultado["retreino"]["_resultados"])
+    base = saidas["retreino_pred"]
+    if base.exists():
+        linhas = base.read_text(encoding="utf-8").splitlines()
+        novas = saidas["alternativas_pred"].read_text(encoding="utf-8").splitlines()[1:]
+        saidas["predicoes_todas"].write_text("\n".join(linhas + novas) + "\n",
+                                             encoding="utf-8")
+
+
 # ------------------------------------------------------------------- kfold --
 
 def etapa_kfold(corpus: dict[str, Any], modelos: list[str], k: int = K_PADRAO,
@@ -437,7 +500,7 @@ def gravar_regras(relatorio: dict[str, Any], digitais: dict[str, str],
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
-                                     "regras", "kfold"])
+                                     "regras", "kfold", "alternativas"])
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--aba", default="", help="aba de snapshot (padrao: a do manifesto)")
@@ -476,6 +539,14 @@ def main() -> int:
         print(json.dumps([{k: m[k] for k in ("modelo", "acuracia", "macro_f1")}
                           for m in rel["modelos"]], ensure_ascii=False, indent=2))
         return 0 if rel["status"] == "apto_para_regras" else 2
+    if args.etapa == "alternativas":
+        res = etapa_alternativas(corpus, semente=args.semente)
+        gravar_alternativas(res, corpus, digitais, quando)
+        for m in res["retreino"]["modelos"]:
+            print(m["modelo"], m["acuracia"], m["macro_f1"])
+        for c in res["temporal"]["cenarios"]:
+            print(c["cenario"], {m["modelo"]: m["acuracia"] for m in c["modelos"]})
+        return 0
     if args.etapa == "kfold":
         rel = etapa_kfold(corpus, modelos)
         gravar_kfold(rel, digitais, quando)

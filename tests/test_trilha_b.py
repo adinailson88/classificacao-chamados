@@ -192,6 +192,43 @@ class TestTrilhaB(unittest.TestCase):
         self.assertIn("delta_acuracia_kfold_menos_groupkfold", r)
         self.assertEqual(rel["ranking_kfold"], ["naive_bayes"])
 
+    def test_alternativas_entram_nas_mesmas_dobras_e_cenarios(self):
+        import numpy as np
+        from sklearn.feature_extraction.text import HashingVectorizer
+
+        def embeddings_falsos(textos, registrar=None):
+            hv = HashingVectorizer(n_features=32, alternate_sign=False, norm="l2")
+            m = hv.transform(textos).toarray().astype(np.float32)
+            return {t: v for t, v in zip(textos, m)}
+
+        _regs, _r, corpus = self._corpus()
+        original = tb.rmc.zoo.criar_modelo
+        res = tb.etapa_alternativas(corpus, gerar_embeddings=embeddings_falsos,
+                                    registrar=lambda m: None)
+        self.assertIs(tb.rmc.zoo.criar_modelo, original)
+        nomes = [m["modelo"] for m in res["retreino"]["modelos"]]
+        self.assertEqual(nomes, list(tb.ma.NOMES))
+        for m in res["retreino"]["modelos"]:
+            self.assertEqual(m["grupos_vazados_para_o_treino"], 0)
+            self.assertEqual(m["registros_sem_predicao"], 0)
+        self.assertEqual(res["retreino"]["corpus"]["linhas_avaliadas"],
+                         len(corpus["textos"]))
+        self.assertEqual(res["temporal"]["cenarios"][0]["cenario"], "prospectivo")
+        with tempfile.TemporaryDirectory() as d:
+            saidas = {k: Path(d) / v.name for k, v in tb.SAIDAS.items()}
+            base = tb.etapa_retreino(corpus, ["naive_bayes"], registrar=lambda m: None)
+            tb.gravar_retreino(base, corpus, {"hash_corte": "x"}, "agora", saidas)
+            tb.gravar_alternativas(res, corpus, {"hash_corte": "x"}, "agora", saidas)
+            todas = saidas["predicoes_todas"].read_text(encoding="utf-8")
+        modelos = {linha.split(",")[3] for linha in todas.splitlines()[1:]}
+        self.assertEqual(modelos, {"naive_bayes", *tb.ma.NOMES})
+
+    def test_modelo_alternativo_desconhecido_e_embedding_sem_tabela_falham(self):
+        with self.assertRaises(ValueError):
+            tb.ma.criar_modelo("inexistente")
+        with self.assertRaises(ValueError):
+            tb.ma.criar_modelo("embedding_e5")
+
     def test_lstm_deterministico_restaura_a_fabrica(self):
         original = tb.rmc.zoo.criar_modelo
         with tb.lstm_deterministico(42):
