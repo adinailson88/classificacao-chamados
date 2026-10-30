@@ -58,6 +58,7 @@ SAIDAS = {
     "calibracao_json": DADOS_B / "calibracao.json",
     "regras_json": DADOS_B / "regras_versus_modelos.json",
     "kfold_json": DADOS_B / "kfold_vs_groupkfold.json",
+    "campi_json": DADOS_B / "avaliacao_campi.json",
     "alternativas_json": DADOS_B / "alternativas.json",
     "alternativas_pred": DADOS_B / "alternativas_predicoes.csv",
     "predicoes_todas": DADOS_B / "predicoes_com_alternativas.csv",
@@ -263,9 +264,29 @@ def _metricas(verdade: list[str], previsto: list[str]) -> dict[str, float]:
     }
 
 
+def ic_acuracia_por_grupo(acertos: list[bool], grupos: list[str], reamostras: int = 1000,
+                          semente: int = SEMENTE_PADRAO) -> list[float]:
+    """IC95% percentil da acuracia, reamostrando grupos textuais (nao linhas)."""
+    import numpy as np
+    rng = np.random.default_rng(semente)
+    ids = {g: k for k, g in enumerate(dict.fromkeys(grupos))}
+    cod = np.array([ids[g] for g in grupos])
+    ok = np.array(acertos, dtype=float)
+    soma = np.bincount(cod, weights=ok, minlength=len(ids))
+    tam = np.bincount(cod, minlength=len(ids)).astype(float)
+    sorteios = rng.integers(0, len(ids), size=(reamostras, len(ids)))
+    acc = soma[sorteios].sum(axis=1) / tam[sorteios].sum(axis=1)
+    return [round(float(np.percentile(acc, 2.5)), 4), round(float(np.percentile(acc, 97.5)), 4)]
+
+
 def avaliar_divisao(nome: str, corpus: dict[str, Any], treino: list[int],
-                    teste: list[int], semente: int) -> dict[str, Any]:
-    """Um ajuste no passado e uma predicao no futuro, com a mesma API dos modelos."""
+                    teste: list[int], semente: int, detalhar: bool = False) -> dict[str, Any]:
+    """Um ajuste no passado e uma predicao no futuro, com a mesma API dos modelos.
+
+    Com ``detalhar``, acrescenta o IC95% por grupo e o desempenho restrito aos
+    chamados cuja categoria de referencia aparece no treino (o teto de uma
+    transferencia entre origens e a cobertura de categorias do treino).
+    """
     textos, rotulos, grupos = corpus["textos"], corpus["rotulos"], corpus["grupos"]
     vistos = {grupos[i] for i in treino}
     novos = [i for i in teste if grupos[i] not in vistos]
@@ -283,6 +304,16 @@ def avaliar_divisao(nome: str, corpus: dict[str, Any], treino: list[int],
             "n": len(novos),
             **_metricas([rotulos[i] for i in novos],
                         [previsto[pos[i]] for i in novos])}
+    if detalhar:
+        saida["ic95_acuracia"] = ic_acuracia_por_grupo(
+            [v == p for v, p in zip(verdade, previsto)], [grupos[i] for i in teste],
+            semente=semente)
+        categorias_treino = {rotulos[i] for i in treino}
+        cobertas = [j for j, v in enumerate(verdade) if v in categorias_treino]
+        saida["categorias_cobertas"] = {
+            "n": len(cobertas), "proporcao": round(len(cobertas) / len(teste), 4),
+            **(_metricas([verdade[j] for j in cobertas], [previsto[j] for j in cobertas])
+               if cobertas else {})}
     return saida
 
 
@@ -325,6 +356,71 @@ def gravar_temporal(relatorio: dict[str, Any], digitais: dict[str, str],
     cb.garantir_fora_do_congelado(saidas["temporal_json"])
     saidas["temporal_json"].parent.mkdir(parents=True, exist_ok=True)
     saidas["temporal_json"].write_text(json.dumps(
+        {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+
+
+# ------------------------------------------------------------------ campi --
+
+CAMPUS_ORIGEM_PADRAO = "Reitoria"
+MINIMO_TESTE_CAMPUS = 30
+
+
+def etapa_campi(corpus: dict[str, Any], modelos: list[str],
+                origem: str = CAMPUS_ORIGEM_PADRAO,
+                minimo_teste: int = MINIMO_TESTE_CAMPUS,
+                semente: int = SEMENTE_PADRAO,
+                registrar=rmc._log) -> dict[str, Any]:
+    """Transferencia entre campi: o campus de origem treina, os demais testam.
+
+    Dois desenhos sobre o mesmo corpus: ``origem_para_<campus>`` (treino so no campus
+    de origem) e ``deixa_um_campus_fora_<campus>`` (treino em todos os outros). O
+    campus e um recorte de analise, nao uma instituicao diferente: taxonomia,
+    sistema de chamados e autoria da referencia sao os mesmos.
+    """
+    n = len(corpus["textos"])
+    por_campus: dict[str, list[int]] = {}
+    for i in range(n):
+        por_campus.setdefault(corpus["campus"][i], []).append(i)
+    if origem not in por_campus:
+        raise RuntimeError(f"campus de origem ausente do corpus: {origem}")
+    alvos = sorted(c for c, idx in por_campus.items()
+                   if c != origem and len(idx) >= minimo_teste)
+    excluidos = sorted((c, len(idx)) for c, idx in por_campus.items()
+                       if c != origem and len(idx) < minimo_teste)
+    cenarios: list[dict[str, Any]] = []
+    for c in alvos:
+        cenarios.append({"nome": f"origem_para_{c}", "tipo": "origem_unica",
+                         "treino": por_campus[origem], "teste": por_campus[c]})
+    for c in [origem, *alvos]:
+        cenarios.append({"nome": f"deixa_um_campus_fora_{c}", "tipo": "deixa_um_fora",
+                         "treino": [i for i in range(n) if corpus["campus"][i] != c],
+                         "teste": por_campus[c]})
+    resultados = []
+    with lstm_deterministico(semente):
+        for cen in cenarios:
+            por_modelo = []
+            for nome in modelos:
+                registrar(f"[campi] {cen['nome']}: {nome}")
+                por_modelo.append(avaliar_divisao(nome, corpus, cen["treino"], cen["teste"],
+                                                  semente, detalhar=True))
+            resultados.append({"cenario": cen["nome"], "tipo": cen["tipo"],
+                               "treino": len(cen["treino"]), "teste": len(cen["teste"]),
+                               "categorias_no_treino": len({corpus["rotulos"][i]
+                                                            for i in cen["treino"]}),
+                               "modelos": por_modelo})
+    return {"schema_version": 1, "trilha": "B", "semente": semente, "origem": origem,
+            "minimo_teste": minimo_teste, "modelos": modelos,
+            "campi_excluidos_por_tamanho": [{"campus": c, "n": k} for c, k in excluidos],
+            "cenarios": resultados}
+
+
+def gravar_campi(relatorio: dict[str, Any], digitais: dict[str, str],
+                 quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    cb.garantir_fora_do_congelado(saidas["campi_json"])
+    saidas["campi_json"].parent.mkdir(parents=True, exist_ok=True)
+    saidas["campi_json"].write_text(json.dumps(
         {**relatorio, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
          "script_origem": "src/trilha_b.py"}, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8")
@@ -500,7 +596,9 @@ def gravar_regras(relatorio: dict[str, Any], digitais: dict[str, str],
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
-                                     "regras", "kfold", "alternativas"])
+                                     "regras", "kfold", "alternativas", "campi"])
+    p.add_argument("--origem", default=CAMPUS_ORIGEM_PADRAO,
+                   help="campus que treina na etapa campi")
     p.add_argument("--config", type=Path, default=CONFIG_PADRAO)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--aba", default="", help="aba de snapshot (padrao: a do manifesto)")
@@ -546,6 +644,13 @@ def main() -> int:
             print(m["modelo"], m["acuracia"], m["macro_f1"])
         for c in res["temporal"]["cenarios"]:
             print(c["cenario"], {m["modelo"]: m["acuracia"] for m in c["modelos"]})
+        return 0
+    if args.etapa == "campi":
+        rel = etapa_campi(corpus, modelos, origem=args.origem, semente=args.semente)
+        gravar_campi(rel, digitais, quando)
+        for c in rel["cenarios"]:
+            print(c["cenario"], c["treino"], c["teste"],
+                  {m["modelo"]: m["acuracia"] for m in c["modelos"]})
         return 0
     if args.etapa == "kfold":
         rel = etapa_kfold(corpus, modelos)

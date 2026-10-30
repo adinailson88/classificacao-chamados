@@ -123,6 +123,43 @@ class TestTrilhaB(unittest.TestCase):
         self.assertEqual(rolante["treino"], sum(
             1 for a in corpus["anos"] if int(a) < 2024))
 
+    def test_campi_origem_unica_e_deixa_um_fora_nao_misturam_treino_e_teste(self):
+        _regs, _r, corpus = self._corpus()
+        rel = tb.etapa_campi(corpus, ["naive_bayes"], origem="Campus X", minimo_teste=5,
+                             registrar=lambda m: None)
+        nomes = [c["cenario"] for c in rel["cenarios"]]
+        self.assertEqual(nomes, ["origem_para_Campus Y", "deixa_um_campus_fora_Campus X",
+                                 "deixa_um_campus_fora_Campus Y"])
+        n_x = sum(1 for c in corpus["campus"] if c == "Campus X")
+        n_y = sum(1 for c in corpus["campus"] if c == "Campus Y")
+        unica, fora_x, _fora_y = rel["cenarios"]
+        self.assertEqual((unica["treino"], unica["teste"]), (n_x, n_y))
+        self.assertEqual((fora_x["treino"], fora_x["teste"]), (n_y, n_x))
+        m = unica["modelos"][0]
+        self.assertEqual(len(m["ic95_acuracia"]), 2)
+        self.assertLessEqual(m["ic95_acuracia"][0], m["acuracia"])
+        self.assertGreaterEqual(m["ic95_acuracia"][1], m["acuracia"])
+        self.assertEqual(m["categorias_cobertas"]["proporcao"], 1.0)
+
+    def test_campi_exclui_campus_pequeno_e_recusa_origem_inexistente(self):
+        _regs, _r, corpus = self._corpus()
+        rel = tb.etapa_campi(corpus, ["naive_bayes"], origem="Campus X",
+                             minimo_teste=10**6, registrar=lambda m: None)
+        self.assertEqual([c["campus"] for c in rel["campi_excluidos_por_tamanho"]],
+                         ["Campus Y"])
+        self.assertEqual([c["tipo"] for c in rel["cenarios"]], ["deixa_um_fora"])
+        with self.assertRaises(RuntimeError):
+            tb.etapa_campi(corpus, ["naive_bayes"], origem="Inexistente",
+                           registrar=lambda m: None)
+
+    def test_ic_por_grupo_cobre_a_acuracia_e_e_deterministico(self):
+        acertos = [True] * 70 + [False] * 30
+        grupos = [f"g{i // 2}" for i in range(100)]
+        a = tb.ic_acuracia_por_grupo(acertos, grupos, reamostras=500)
+        self.assertEqual(a, tb.ic_acuracia_por_grupo(acertos, grupos, reamostras=500))
+        self.assertLess(a[0], 0.70)
+        self.assertGreater(a[1], 0.70)
+
     def test_saidas_nao_publicam_texto_nem_ids(self):
         regs, r, corpus = self._corpus()
         with tempfile.TemporaryDirectory() as d:
