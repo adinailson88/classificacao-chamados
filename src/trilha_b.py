@@ -881,6 +881,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--snapshot-json", type=Path, default=None,
                    help="copia local do snapshot, em vez de ler a planilha")
     p.add_argument("--modelos", default=",".join(rmc.MODELOS_PADRAO))
+    p.add_argument("--modelos-ufrn", default="",
+                   help="modelos das etapas ufrn e reverso (padrao: os constantes do modulo)")
     p.add_argument("--semente", type=int, default=SEMENTE_PADRAO)
     return p.parse_args()
 
@@ -931,6 +933,8 @@ def main() -> int:
             Path(args.ufrn_fonte).read_bytes()).hexdigest()}
     if args.etapa == "reverso":
         res = etapa_ufrn_reverso(corpus, vu.ler_ufrn(args.ufrn_fonte),
+                                 nomes=tuple(m for m in args.modelos_ufrn.split(",") if m)
+                                 or MODELOS_REVERSO_PADRAO,
                                  por_divisao=args.por_divisao_treino, semente=args.semente)
         gravar_ufrn_reverso(res, corpus, digitais, quando)
         for nome, m in res["resultados"].items():
@@ -940,7 +944,9 @@ def main() -> int:
     if args.etapa == "ufrn":
         amostra = vu.amostrar(vu.ler_ufrn(args.ufrn_fonte), por_divisao=args.por_divisao,
                               ano_minimo=args.ano_minimo, semente=args.semente)
-        res = etapa_ufrn(corpus, amostra, semente=args.semente)
+        res = etapa_ufrn(corpus, amostra,
+                         nomes=tuple(m for m in args.modelos_ufrn.split(",") if m)
+                         or MODELOS_UFRN_PADRAO, semente=args.semente)
         gravar_ufrn(res, digitais, quando)
         for nome, m in res["resumo"]["modelos"].items():
             print(nome, "concordancia com a correspondencia proposta:",

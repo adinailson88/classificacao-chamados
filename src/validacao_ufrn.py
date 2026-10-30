@@ -40,10 +40,10 @@ CORRESPONDENCIA_PROPOSTA = {
     "posto de trabalho": "servicos gerais",
     "projetos e reformas": "servicos gerais",
     "area externa e ambiental": "viario",
-    "outros": "outros",
-    "suprimentos / apoio tecnico": "outros",
-    "seguranca contra incendio": "outros",
-    "equipamentos de transporte": "outros",
+    # Sem correspondencia: "Outros", "Suprimentos / Apoio Tecnico", "Seguranca contra
+    # Incendio" e "Equipamentos de Transporte". A divisao "Outros" da UFRN praticamente
+    # deixou de ser usada depois de 2019 (3 a 5 requisicoes por ano em 2018 e 2019, nenhuma
+    # relevante depois), de modo que nao ha o que prever nem o que comparar.
 }
 
 
