@@ -185,7 +185,7 @@ class TestTrilhaB(unittest.TestCase):
 
     def test_saidas_padrao_ficam_no_namespace_da_trilha_b(self):
         for chave, caminho in tb.SAIDAS.items():
-            if chave == "ufrn_avaliacao_csv":  # texto de outra instituicao, pasta privada
+            if chave in ("ufrn_avaliacao_csv", "risco_pred"):  # pasta privada, fora do git
                 self.assertEqual(caminho.parent.name, "saidas_privadas")
             else:
                 self.assertEqual(caminho.parent, tb.DADOS_B)
