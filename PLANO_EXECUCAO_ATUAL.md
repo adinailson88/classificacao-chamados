@@ -453,19 +453,24 @@ Ao retomar:
 
 ## 11. Trilha B (novo corte científico), iniciada em 30/10/2026
 
-A Trilha B refaz toda a análise sobre um único corte de dados, em namespace e hash próprios (`docs/dados/trilha_b/`), sem tocar nos artefatos de `docs/dados/MANIFESTO_ARTIGO_CONGELADO.json`. Motivo: o artigo atual mistura cálculos feitos em datas diferentes (curva de aprendizado da LSTM de 25/07, ablation de 24/07, KFold contra GroupKFold de 01/08, ensemble em trilha própria, BERTimbau extrapolado). Decisão do autor: o estado do artigo atual não é restrição.
+A Trilha B refaz toda a análise sobre um único corte de dados, em namespace e hash próprios (`docs/dados/trilha_b/`, relatórios em `docs/trilha_b/`), sem tocar nos artefatos de `docs/dados/MANIFESTO_ARTIGO_CONGELADO.json`. Motivo: o artigo atual mistura cálculos feitos em datas diferentes (curva de aprendizado da LSTM de 25/07, ablation de 24/07, KFold contra GroupKFold de 01/08, ensemble em trilha própria, BERTimbau extrapolado). Decisão do autor: o estado do artigo atual não é restrição.
+
+Identidade do corte (todos os artefatos abaixo carregam `hash_corte`): `67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb`; entrada dos modelos `365922ce65a46280351ec9e88f0b26d96a9229459d111cd502245cf5494f7489`; referência `decfa068a9e627e0fbea7cc79e053fa833dffeb51ed4413806da56694459258b`. Snapshot imutável: aba `CORTE_B_20261030` da planilha.
 
 | Etapa | Estado | Evidência |
 |---|---|---|
-| Referência humana completa | concluída | 14.559 chamados, M/N/Q revisados pelo autor e por uma pessoa da DINFRA; 594 alterações (4,08%) |
-| Corte B congelado | concluído | `src/corte_b.py`, aba imutável `CORTE_B_20261030`, `docs/dados/trilha_b/corte_b.json`, `hash_corte` `67812136fc08…`, `hash_entrada_modelo` `365922ce65a4…` |
-| Grupos textuais e partições | concluídas | `src/trilha_b.py particoes`: 14.357 linhas, 10.596 grupos, 39 de 50 categorias, 202 linhas fora, zero grupo dividido |
-| Retreino dos sete modelos | em execução | `src/trilha_b.py retreino`, semente do TensorFlow fixada |
-| Avaliação temporal | pendente | `src/trilha_b.py temporal`: treino até 31/07/2026 e teste nos 500 chamados posteriores, mais origem rolante por ano |
-| Calibração, inferência por grupo, recortes ABC e tipo, regras | pendente | scripts da rodada anterior ainda presos ao corte congelado; precisam ser parametrizados |
-| Reexecução do que ficou fora da rodada (LSTM, ablation, KFold×GroupKFold, ensemble) e decisão do BERTimbau | pendente | |
-| Proveniência, painel, artigo | pendente | nesta sequência |
+| Referência humana completa | concluída | 14.559 chamados; M/N/Q revisados pelo autor e por uma pessoa da DINFRA, partindo de pré-triagem por IA em 217 chamados; 594 alterações do rótulo histórico (4,08%) |
+| Corte B congelado | concluída | `src/corte_b.py`, `docs/dados/trilha_b/corte_b.json`; período histórico 14.059 (até 31/07/2026) e prospectivo 500 |
+| Grupos textuais e partições | concluída | `src/trilha_b.py particoes`: 14.357 linhas, 10.596 grupos, 39 de 50 categorias, 202 linhas fora, zero grupo dividido |
+| Retreino dos sete modelos | concluída | `retreino.json`: LinearSVC 0,8241 (macro-F1 0,6859), SGD 0,8096, Regressão Logística 0,8079, Extra Trees 0,8054, Random Forest 0,7923, Naive Bayes 0,7222, LSTM 0,7067; desempenho por campus; semente do TensorFlow fixada |
+| Avaliação temporal | concluída | `avaliacao_temporal.json`: no teste prospectivo (487 chamados) LinearSVC 0,7721, Regressão Logística 0,7741, SGD 0,7659; origem rolante 2022 a 2026 |
+| Calibração e automação seletiva | concluída | `calibracao.json`: ao alvo de 0,95, LinearSVC cobre 67,5% com acurácia seletiva de 0,9483 |
+| Regras de periodicidade | concluída | `regras_versus_modelos.json`: ganho de macro-F1 em 4 dos 7 modelos, perda no LinearSVC (-0,0079) |
+| Inferência por grupo e recortes | concluída | `inferencia.json`, `inferencia_agrupada.json` (Q de Cochran 2.875; 18 dos 21 pares significativos), `recortes.json` |
+| Reexecução do que ficou fora da rodada (curva e ablation da LSTM, KFold por linha contra GroupKFold, ensemble da Fase 2C) | pendente | scripts leem a planilha viva e precisam ser apontados para o snapshot |
+| BERTimbau | pendente | decisão do autor: OOF integral com GPU (Colab) ou manter exploratório, agora com custo medido por inteiro |
+| Matriz de proveniência da Trilha B, painel e artigo | pendente | nesta sequência |
 
-Escopo: data de abertura e campus entram só como recorte de análise (campus) e como eixo temporal; localização e latitude/longitude ficam fora. Os workflows `corte_b.yml` e `trilha_b.yml` rodam por push na branch (a mensagem do commit precisa do marcador `[corte-b-aplicar]` ou `[trilha-b:etapa]`) enquanto não estiverem na `main`.
+Escopo: data de abertura e campus entram só como eixo temporal e recorte de análise (campus); localização e latitude/longitude ficam fora. Os workflows `corte_b.yml` e `trilha_b.yml` rodam por push na branch (a mensagem do commit precisa do marcador `[corte-b-aplicar]` ou `[trilha-b:etapa]`) enquanto não estiverem na `main`.
 
-Pontos a decidir pelo autor: a categoria `Manutenção Preventiva > Elevador` (93 linhas) saiu das partições por sorteio, porque seus textos formam poucos grupos; o suporte mínimo de 5 grupos por categoria excluiu 11 das 50 categorias, contra 9 na rodada anterior.
+Pontos a decidir pelo autor: (1) a categoria `Manutenção Preventiva > Elevador` (93 linhas) saiu das partições por sorteio, porque seus textos formam poucos grupos; (2) o suporte mínimo de 5 grupos excluiu 11 das 50 categorias, contra 9 na rodada anterior; (3) a queda no teste prospectivo (cerca de 5 pontos de acurácia em relação ao *out-of-fold*) muda o argumento de implantação do artigo.
