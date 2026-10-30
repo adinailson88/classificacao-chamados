@@ -60,7 +60,7 @@ env:
 jobs:
   testes:
     name: Testes (suite completa, sempre roda)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
@@ -81,7 +81,7 @@ jobs:
   autorizacao:
     name: Autorizacao (leitura do input `modo` do workflow_dispatch)
     needs: testes
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       autorizado_cientifico: ${{ steps.checar.outputs.autorizado_cientifico }}
@@ -158,7 +158,7 @@ jobs:
     name: Gate Zero (releitura online + validacao de hashes, sem treinar)
     needs: [testes, autorizacao]
     if: needs.autorizacao.outputs.autorizado_cientifico == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
@@ -208,7 +208,7 @@ jobs:
     name: Cross-fitting por outer fold
     needs: [gate_zero, autorizacao]
     if: needs.autorizacao.outputs.autorizado_cientifico == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
       fail-fast: false
@@ -263,7 +263,7 @@ jobs:
     name: Agregacao final + hashes cientificos
     needs: [crossfit_fold, autorizacao]
     if: needs.autorizacao.outputs.autorizado_cientifico == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
@@ -342,7 +342,7 @@ jobs:
     name: Canario - replica A (outer_fold=1)
     needs: [testes, autorizacao]
     if: needs.autorizacao.outputs.autorizado_canario == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
@@ -390,7 +390,7 @@ jobs:
     name: Canario - replica B (outer_fold=1)
     needs: [testes, autorizacao]
     if: needs.autorizacao.outputs.autorizado_canario == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
@@ -438,7 +438,7 @@ jobs:
     name: Canario - comparacao exata replica A x replica B
     needs: [replica_a, replica_b, autorizacao]
     if: needs.autorizacao.outputs.autorizado_canario == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
@@ -503,7 +503,7 @@ jobs:
     # compartilham. crossfit_fold_replay/agregar_replay abaixo dependem
     # exclusivamente de autorizado_replay — o preflight nunca os libera.
     if: needs.autorizacao.outputs.autorizado_replay == 'true' || needs.autorizacao.outputs.autorizado_replay_preflight == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
@@ -553,7 +553,7 @@ jobs:
     name: Cross-fitting REPLAY por outer fold
     needs: [gate_zero_replay, autorizacao]
     if: needs.autorizacao.outputs.autorizado_replay == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
       fail-fast: false
@@ -608,7 +608,7 @@ jobs:
     name: Agregacao REPLAY final + hashes cientificos
     needs: [crossfit_fold_replay, autorizacao]
     if: needs.autorizacao.outputs.autorizado_replay == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
@@ -694,7 +694,7 @@ jobs:
     name: Verificacao do bundle candidato REPLAY (allowlist explicita, ZERO fits)
     needs: [testes, autorizacao]
     if: needs.autorizacao.outputs.autorizado_replay_recover == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6

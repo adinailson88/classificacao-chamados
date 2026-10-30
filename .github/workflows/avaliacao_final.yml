@@ -38,7 +38,7 @@ permissions:
 
 jobs:
   guard:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       executar: ${{ steps.g.outputs.executar }}
       valor_atual: ${{ steps.g.outputs.valor_atual }}
@@ -54,7 +54,7 @@ jobs:
   avaliacao-final:
     needs: guard
     if: ${{ github.event_name == 'workflow_dispatch' || needs.guard.outputs.executar == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
       contents: write

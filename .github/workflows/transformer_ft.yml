@@ -70,7 +70,7 @@ permissions:
 
 jobs:
   preparar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       modo: ${{ steps.modo.outputs.modo }}
       treinar: ${{ steps.decidir.outputs.treinar }}
@@ -125,7 +125,7 @@ jobs:
   smoke:
     needs: preparar
     if: ${{ needs.preparar.outputs.modo == 'smoke' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
@@ -151,7 +151,7 @@ jobs:
   treinar:
     needs: preparar
     if: ${{ needs.preparar.outputs.treinar == 'true' && needs.preparar.outputs.modo != 'smoke' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Abaixo do teto rigido de 6 h do runner GitHub-hosted (acima de 360 nao tem efeito).
     timeout-minutes: 330
     outputs:
@@ -228,7 +228,7 @@ jobs:
   persistir_estado:
     needs: [preparar, treinar]
     if: ${{ always() && needs.treinar.result == 'success' && needs.treinar.outputs.houve_treino == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write
@@ -281,7 +281,7 @@ jobs:
   registrar_skip:
     needs: preparar
     if: ${{ needs.preparar.outputs.treinar != 'true' && needs.preparar.outputs.modo == 'auto' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Preservar o ultimo estado valido quando nao ha dados novos
