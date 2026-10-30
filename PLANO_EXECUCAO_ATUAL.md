@@ -450,3 +450,22 @@ Ao retomar:
 ### Prompt curto de retomada
 
 > No repositório `adinailson88/classificacao-chamados`, leia primeiro `AGENTS.md` e `PLANO_EXECUCAO_ATUAL.md`. Continue a partir do primeiro passo técnico pendente no “Registro de andamento”. Trabalhe em branch e Pull Request, preserve M/N/P/Q, execute os testes exigidos antes de commits de código e atualize o plano com evidências reais. Não reescreva o artigo antes da execução canônica.
+
+## 11. Trilha B (novo corte científico), iniciada em 30/10/2026
+
+A Trilha B refaz toda a análise sobre um único corte de dados, em namespace e hash próprios (`docs/dados/trilha_b/`), sem tocar nos artefatos de `docs/dados/MANIFESTO_ARTIGO_CONGELADO.json`. Motivo: o artigo atual mistura cálculos feitos em datas diferentes (curva de aprendizado da LSTM de 25/07, ablation de 24/07, KFold contra GroupKFold de 01/08, ensemble em trilha própria, BERTimbau extrapolado). Decisão do autor: o estado do artigo atual não é restrição.
+
+| Etapa | Estado | Evidência |
+|---|---|---|
+| Referência humana completa | concluída | 14.559 chamados, M/N/Q revisados pelo autor e por uma pessoa da DINFRA; 594 alterações (4,08%) |
+| Corte B congelado | concluído | `src/corte_b.py`, aba imutável `CORTE_B_20261030`, `docs/dados/trilha_b/corte_b.json`, `hash_corte` `67812136fc08…`, `hash_entrada_modelo` `365922ce65a4…` |
+| Grupos textuais e partições | concluídas | `src/trilha_b.py particoes`: 14.357 linhas, 10.596 grupos, 39 de 50 categorias, 202 linhas fora, zero grupo dividido |
+| Retreino dos sete modelos | em execução | `src/trilha_b.py retreino`, semente do TensorFlow fixada |
+| Avaliação temporal | pendente | `src/trilha_b.py temporal`: treino até 31/07/2026 e teste nos 500 chamados posteriores, mais origem rolante por ano |
+| Calibração, inferência por grupo, recortes ABC e tipo, regras | pendente | scripts da rodada anterior ainda presos ao corte congelado; precisam ser parametrizados |
+| Reexecução do que ficou fora da rodada (LSTM, ablation, KFold×GroupKFold, ensemble) e decisão do BERTimbau | pendente | |
+| Proveniência, painel, artigo | pendente | nesta sequência |
+
+Escopo: data de abertura e campus entram só como recorte de análise (campus) e como eixo temporal; localização e latitude/longitude ficam fora. Os workflows `corte_b.yml` e `trilha_b.yml` rodam por push na branch (a mensagem do commit precisa do marcador `[corte-b-aplicar]` ou `[trilha-b:etapa]`) enquanto não estiverem na `main`.
+
+Pontos a decidir pelo autor: a categoria `Manutenção Preventiva > Elevador` (93 linhas) saiu das partições por sorteio, porque seus textos formam poucos grupos; o suporte mínimo de 5 grupos por categoria excluiu 11 das 50 categorias, contra 9 na rodada anterior.
