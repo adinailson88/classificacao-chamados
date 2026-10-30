@@ -62,6 +62,8 @@ SAIDAS = {
     "campi_json": DADOS_B / "avaliacao_campi.json",
     "calibracao_candidatos_json": DADOS_B / "calibracao_candidatos.json",
     "ufrn_resumo_json": DADOS_B / "ufrn_resumo.json",
+    "ufrn_reverso_json": DADOS_B / "ufrn_reverso.json",
+    "ufrn_reverso_pred": DADOS_B / "ufrn_reverso_predicoes_nossa_base.csv",
     # Texto de chamados de OUTRA instituicao: fica fora da arvore versionada.
     "ufrn_avaliacao_csv": RAIZ / "saidas_privadas" / "ufrn_amostra_avaliacao.csv",
     "alternativas_json": DADOS_B / "alternativas.json",
@@ -368,7 +370,9 @@ def gravar_temporal(relatorio: dict[str, Any], digitais: dict[str, str],
 
 # -------------------------------------------------------------------- ufrn --
 
-MODELOS_UFRN_PADRAO = ("tfidf_embedding", "linear_svc")
+MODELOS_UFRN_PADRAO = ("tfidf_embedding", "linear_svc", "naive_bayes", "regressao_logistica",
+                       "sgd", "extra_trees", "random_forest", "lstm", "tfidf_caracteres")
+COLUNAS_PLANILHA_UFRN = 2  # a planilha de avaliacao traz so os dois primeiros modelos
 
 
 def etapa_ufrn(corpus: dict[str, Any], amostra: list[dict[str, str]],
@@ -410,7 +414,7 @@ def gravar_ufrn(resultado: dict[str, Any], digitais: dict[str, str], quando: str
         {**resultado["resumo"], "hash_corte": digitais["hash_corte"], "gerado_em": quando,
          "fonte": vu.URL_PADRAO, "script_origem": "src/trilha_b.py"},
         ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    nomes = list(resultado["previsoes"])
+    nomes = list(resultado["previsoes"])[:COLUNAS_PLANILHA_UFRN]
     principal = nomes[0]
     campos = ["id_ufrn", "ano", "divisao_ufrn", "descricao", "local"]
     for n in nomes:
@@ -430,6 +434,151 @@ def gravar_ufrn(resultado: dict[str, Any], digitais: dict[str, str], quando: str
             linha[f"concorda_{principal}_com_divisao"] = vu.concorda(
                 resultado["previsoes"][principal][i], a["divisao"])
             escritor.writerow(linha)
+
+
+MODELOS_REVERSO_PADRAO = ("naive_bayes", "regressao_logistica", "linear_svc", "sgd",
+                          "extra_trees", "random_forest", "lstm", "tfidf_caracteres")
+
+
+def _recall_por_classe(verdade: list[str], previsto: list[str]) -> dict[str, dict[str, Any]]:
+    total: dict[str, int] = {}
+    acerto: dict[str, int] = {}
+    for v, p in zip(verdade, previsto):
+        total[v] = total.get(v, 0) + 1
+        acerto[v] = acerto.get(v, 0) + (v == p)
+    return {c: {"n": total[c], "recall": round(acerto[c] / total[c], 4)} for c in sorted(total)}
+
+
+def _matriz(verdade: list[str], previsto: list[str]) -> dict[str, dict[str, int]]:
+    m: dict[str, dict[str, int]] = {}
+    for v, p in zip(verdade, previsto):
+        m.setdefault(v, {})
+        m[v][p] = m[v].get(p, 0) + 1
+    return {v: dict(sorted(d.items(), key=lambda kv: -kv[1])) for v, d in sorted(m.items())}
+
+
+def _acuracia_por(verdade: list[str], previsto: list[str], grupo: list[str]) -> list[dict[str, Any]]:
+    n: dict[str, int] = {}
+    ok: dict[str, int] = {}
+    for v, p, g in zip(verdade, previsto, grupo):
+        n[g] = n.get(g, 0) + 1
+        ok[g] = ok.get(g, 0) + (v == p)
+    return [{"grupo": g, "n": n[g], "acuracia": round(ok[g] / n[g], 4)} for g in sorted(n)]
+
+
+def etapa_ufrn_reverso(corpus: dict[str, Any], linhas_ufrn: list[dict[str, str]],
+                       nomes: tuple[str, ...] = MODELOS_REVERSO_PADRAO,
+                       por_divisao: int = 5000, ano_minimo: int = 2018, ano_teste: int = 2025,
+                       semente: int = SEMENTE_PADRAO, registrar=rmc._log) -> dict[str, Any]:
+    """Treina na base da UFRN e classifica o corpus da Trilha B com a taxonomia dela.
+
+    O treino usa as requisicoes da UFRN de ``ano_minimo`` ate o ano anterior a
+    ``ano_teste`` (no maximo ``por_divisao`` por divisao); as de ``ano_teste`` em
+    diante sao o teste dentro da propria UFRN. O mesmo modelo ajustado classifica
+    todos os chamados do corpus. A concordancia com a nossa referencia so vale nos
+    chamados cujo primeiro nivel tem correspondencia proposta com uma `divisao`.
+    """
+    import random
+    from sklearn.metrics import cohen_kappa_score
+
+    pool = vu.elegiveis(linhas_ufrn, ano_minimo)
+    treino_pool = [l for l in pool if int(l["ano"]) < ano_teste]
+    teste_u = [l for l in pool if int(l["ano"]) >= ano_teste]
+    rng = random.Random(semente)
+    por_classe: dict[str, list[dict[str, str]]] = {}
+    for l in treino_pool:
+        por_classe.setdefault(l["divisao"], []).append(l)
+    treino: list[dict[str, str]] = []
+    for classe in sorted(por_classe):
+        itens = por_classe[classe]
+        treino.extend(rng.sample(itens, min(por_divisao, len(itens))))
+    if not treino or not teste_u:
+        raise RuntimeError("base da UFRN sem treino ou teste para os anos informados")
+    montar = lambda ls: [rmc.montar_texto({"descricao_glpi": l["descricao"]}) for l in ls]  # noqa: E731
+    x_tr, y_tr = montar(treino), [l["divisao"] for l in treino]
+    x_te, y_te = montar(teste_u), [vu.chave(l["divisao"]) for l in teste_u]
+    nivel1 = [str(r).split(">")[0].strip() for r in corpus["rotulos"]]
+    mapeada = [vu.CORRESPONDENCIA_PROPOSTA.get(vu.chave(n)) for n in nivel1]
+    idx = [i for i, m in enumerate(mapeada) if m]
+    verdade_n = [mapeada[i] for i in idx]
+    resultados: dict[str, Any] = {}
+    previsoes_n: dict[str, list[str]] = {}
+    confiancas_n: dict[str, list[float]] = {}
+    with lstm_deterministico(semente):
+        for nome in nomes:
+            registrar(f"[reverso] {nome}: treino {len(x_tr)} (UFRN), teste UFRN {len(x_te)}, "
+                      f"nossa base {len(corpus['textos'])}")
+            modelo = rmc.zoo.criar_modelo(nome)
+            modelo.fit(x_tr, y_tr)
+            prev_u, _ = modelo.predict_score(x_te)
+            prev_u = [vu.chave(p) for p in prev_u]
+            prev_n, conf_n = modelo.predict_score(corpus["textos"])
+            prev_n = [vu.chave(p) for p in prev_n]
+            previsoes_n[nome] = prev_n
+            confiancas_n[nome] = [round(float(c), 4) for c in conf_n]
+            pn = [prev_n[i] for i in idx]
+            resultados[nome] = {
+                "ufrn_teste": {"n": len(y_te), **_metricas(y_te, prev_u),
+                               "recall_por_divisao": _recall_por_classe(y_te, prev_u)},
+                "nossa_base": {"n_com_correspondencia": len(idx),
+                               "n_sem_correspondencia": len(prev_n) - len(idx),
+                               **_metricas(verdade_n, pn),
+                               "recall_por_divisao": _recall_por_classe(verdade_n, pn),
+                               "matriz_referencia_por_previsao": _matriz(verdade_n, pn),
+                               "por_primeiro_nivel": _acuracia_por(
+                                   verdade_n, pn, [nivel1[i] for i in idx]),
+                               "por_campus": _acuracia_por(
+                                   verdade_n, pn, [corpus["campus"][i] for i in idx])},
+                "distribuicao_prevista_na_nossa_base": dict(sorted(
+                    {c: prev_n.count(c) for c in set(prev_n)}.items(), key=lambda kv: -kv[1])),
+            }
+    concordancia = []
+    for i, a in enumerate(nomes):
+        for b in nomes[i + 1:]:
+            pa, pb = previsoes_n[a], previsoes_n[b]
+            concordancia.append({
+                "modelos": [a, b],
+                "concordancia": round(sum(x == y for x, y in zip(pa, pb)) / len(pa), 4),
+                "kappa": round(float(cohen_kappa_score(pa, pb)), 4)})
+    return {"schema_version": 1, "trilha": "B", "semente": semente, "modelos": list(nomes),
+            "treino_ufrn": {"n": len(x_tr), "ano_minimo": ano_minimo,
+                            "ano_ate": ano_teste - 1, "por_divisao_maximo": por_divisao,
+                            "por_divisao": dict(sorted(
+                                {c: y_tr.count(c) for c in set(y_tr)}.items()))},
+            "teste_ufrn": {"n": len(x_te), "ano_de": ano_teste},
+            "correspondencia_proposta": vu.CORRESPONDENCIA_PROPOSTA,
+            "concordancia_entre_modelos_na_nossa_base": concordancia,
+            "resultados": resultados,
+            "_previsoes": previsoes_n, "_confiancas": confiancas_n}
+
+
+def gravar_ufrn_reverso(res: dict[str, Any], corpus: dict[str, Any], digitais: dict[str, str],
+                        quando: str, saidas: dict[str, Path] = SAIDAS) -> None:
+    """JSON agregado e previsoes por id (SHA-256), sem texto de nenhum chamado."""
+    for chave in ("ufrn_reverso_json", "ufrn_reverso_pred"):
+        cb.garantir_fora_do_congelado(saidas[chave])
+    saidas["ufrn_reverso_json"].parent.mkdir(parents=True, exist_ok=True)
+    publico = {k: v for k, v in res.items() if not k.startswith("_")}
+    saidas["ufrn_reverso_json"].write_text(json.dumps(
+        {**publico, "hash_corte": digitais["hash_corte"], "gerado_em": quando,
+         "fonte": vu.URL_PADRAO, "script_origem": "src/trilha_b.py"},
+        ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    nomes = res["modelos"]
+    campos = ["id_sha256", "campus", "referencia_primeiro_nivel", "divisao_equivalente"]
+    for n in nomes:
+        campos += [f"previsao_{n}", f"confianca_{n}"]
+    with saidas["ufrn_reverso_pred"].open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=campos)
+        w.writeheader()
+        for i, h in enumerate(corpus["chaves"]):
+            n1 = str(corpus["rotulos"][i]).split(">")[0].strip()
+            linha = {"id_sha256": h, "campus": corpus["campus"][i],
+                     "referencia_primeiro_nivel": n1,
+                     "divisao_equivalente": vu.CORRESPONDENCIA_PROPOSTA.get(vu.chave(n1), "")}
+            for n in nomes:
+                linha[f"previsao_{n}"] = res["_previsoes"][n][i]
+                linha[f"confianca_{n}"] = res["_confiancas"][n][i]
+            w.writerow(linha)
 
 
 # ------------------------------------------------------------------- campi --
@@ -703,10 +852,12 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("etapa", choices=["particoes", "retreino", "temporal", "calibracao",
                                      "regras", "kfold", "alternativas", "campi",
-                                     "candidatos", "ufrn"])
+                                     "candidatos", "ufrn", "reverso"])
     p.add_argument("--ufrn-fonte", default=vu.URL_PADRAO,
                    help="URL ou arquivo CSV da base da UFRN (etapa ufrn)")
     p.add_argument("--por-divisao", type=int, default=300)
+    p.add_argument("--por-divisao-treino", type=int, default=5000,
+                   help="maximo de requisicoes da UFRN por divisao no treino (etapa reverso)")
     p.add_argument("--ano-minimo", type=int, default=2022)
     p.add_argument("--origem", default=CAMPUS_ORIGEM_PADRAO,
                    help="campus que treina na etapa campi")
@@ -755,6 +906,14 @@ def main() -> int:
             print(m["modelo"], m["acuracia"], m["macro_f1"])
         for c in res["temporal"]["cenarios"]:
             print(c["cenario"], {m["modelo"]: m["acuracia"] for m in c["modelos"]})
+        return 0
+    if args.etapa == "reverso":
+        res = etapa_ufrn_reverso(corpus, vu.ler_ufrn(args.ufrn_fonte),
+                                 por_divisao=args.por_divisao_treino, semente=args.semente)
+        gravar_ufrn_reverso(res, corpus, digitais, quando)
+        for nome, m in res["resultados"].items():
+            print(nome, "UFRN", m["ufrn_teste"]["acuracia"], "nossa base",
+                  m["nossa_base"]["acuracia"])
         return 0
     if args.etapa == "ufrn":
         amostra = vu.amostrar(vu.ler_ufrn(args.ufrn_fonte), por_divisao=args.por_divisao,

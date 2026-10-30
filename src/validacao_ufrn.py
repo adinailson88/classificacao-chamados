@@ -67,11 +67,11 @@ def ler_ufrn(origem: str | Path, tempo_limite: int = 600) -> list[dict[str, str]
     return [{c: (linha.get(c) or "").strip() for c in COLUNAS_USADAS} for linha in leitor]
 
 
-def amostrar(linhas: list[dict[str, str]], por_divisao: int = 300, ano_minimo: int = 2022,
-             palavras_minimas: int = 4, semente: int = 42) -> list[dict[str, str]]:
-    """Amostra estratificada por `divisao`, sem texto repetido e sem descricao curta."""
+def elegiveis(linhas: list[dict[str, str]], ano_minimo: int = 2022,
+              palavras_minimas: int = 4) -> list[dict[str, str]]:
+    """Requisicoes com `divisao`, ano suficiente, descricao nao curta e texto unico."""
     vistos: set[str] = set()
-    por_classe: dict[str, list[dict[str, str]]] = defaultdict(list)
+    saida: list[dict[str, str]] = []
     for linha in sorted(linhas, key=lambda r: (r["ano"], r["numero"])):
         if not linha["divisao"] or not linha["ano"].isdigit() or int(linha["ano"]) < ano_minimo:
             continue
@@ -81,6 +81,15 @@ def amostrar(linhas: list[dict[str, str]], por_divisao: int = 300, ano_minimo: i
         if k in vistos:
             continue
         vistos.add(k)
+        saida.append(linha)
+    return saida
+
+
+def amostrar(linhas: list[dict[str, str]], por_divisao: int = 300, ano_minimo: int = 2022,
+             palavras_minimas: int = 4, semente: int = 42) -> list[dict[str, str]]:
+    """Amostra estratificada por `divisao`, sem texto repetido e sem descricao curta."""
+    por_classe: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for linha in elegiveis(linhas, ano_minimo, palavras_minimas):
         por_classe[linha["divisao"]].append(linha)
     rng = random.Random(semente)
     amostra: list[dict[str, str]] = []
