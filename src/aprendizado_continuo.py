@@ -164,6 +164,8 @@ def main() -> int:
     p.add_argument("--auditoria", type=int, default=100)
     p.add_argument("--revisoes", type=int, default=100)
     p.add_argument("--inicio-ano", type=int, default=2022)
+    p.add_argument("--estrategias", default=",".join(ESTRATEGIAS),
+                   help="lista separada por virgulas (padrao: todas)")
     p.add_argument("--saida", type=Path, default=SAIDA)
     args = p.parse_args()
 
@@ -176,7 +178,9 @@ def main() -> int:
     datas = [data_de[c] for c in corpus["chaves"]]
     res = simular(corpus["textos"], corpus["rotulos"], corpus["grupos"], datas,
                   lambda: zoo.criar_modelo(args.modelo), args.inicio_ano, args.auditoria,
-                  args.revisoes, log=lambda s: print(s, flush=True))
+                  args.revisoes,
+                  estrategias=tuple(e.strip() for e in args.estrategias.split(",")),
+                  log=lambda s: print(s, flush=True))
     saida = {"protocolo": __doc__, "modelo": args.modelo, "meta_de_erro": ALFA,
              "auditoria_por_bloco": args.auditoria, "revisoes_por_bloco": args.revisoes,
              "hash_corte": manifesto.get("impressoes_digitais", {}).get("hash_corte"),
