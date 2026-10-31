@@ -450,3 +450,32 @@ Ao retomar:
 ### Prompt curto de retomada
 
 > No repositório `adinailson88/classificacao-chamados`, leia primeiro `AGENTS.md` e `PLANO_EXECUCAO_ATUAL.md`. Continue a partir do primeiro passo técnico pendente no “Registro de andamento”. Trabalhe em branch e Pull Request, preserve M/N/P/Q, execute os testes exigidos antes de commits de código e atualize o plano com evidências reais. Não reescreva o artigo antes da execução canônica.
+
+## 11. Trilha B (novo corte científico), iniciada em 30/10/2026
+
+A Trilha B refaz toda a análise sobre um único corte de dados, em namespace e hash próprios (`docs/dados/trilha_b/`, relatórios em `docs/trilha_b/`), sem tocar nos artefatos de `docs/dados/MANIFESTO_ARTIGO_CONGELADO.json`. Motivo: o artigo atual mistura cálculos feitos em datas diferentes (curva de aprendizado da LSTM de 25/07, ablation de 24/07, KFold contra GroupKFold de 01/08, ensemble em trilha própria, BERTimbau extrapolado). Decisão do autor: o estado do artigo atual não é restrição.
+
+Identidade do corte (todos os artefatos abaixo carregam `hash_corte`): `67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb`; entrada dos modelos `365922ce65a46280351ec9e88f0b26d96a9229459d111cd502245cf5494f7489`; referência `decfa068a9e627e0fbea7cc79e053fa833dffeb51ed4413806da56694459258b`. Snapshot imutável: aba `CORTE_B_20261030` da planilha.
+
+| Etapa | Estado | Evidência |
+|---|---|---|
+| Referência humana completa | concluída | 14.559 chamados; M/N/Q revisados pelo autor, com segunda avaliação de uma pessoa da DINFRA apenas nos 217 chamados pré-classificados por IA (acordo 94,01%, kappa 0,935); 594 alterações do rótulo histórico (4,08%) |
+| Corte B congelado | concluída | `src/corte_b.py`, `docs/dados/trilha_b/corte_b.json`; período histórico 14.059 (até 31/07/2026) e prospectivo 500 |
+| Grupos textuais e partições | concluída | `src/trilha_b.py particoes`: 14.357 linhas, 10.596 grupos, 39 de 50 categorias, 202 linhas fora, zero grupo dividido |
+| Retreino dos sete modelos | concluída | `retreino.json`: LinearSVC 0,8241 (macro-F1 0,6859), SGD 0,8096, Regressão Logística 0,8079, Extra Trees 0,8054, Random Forest 0,7923, Naive Bayes 0,7222, LSTM 0,7067; desempenho por campus; semente do TensorFlow fixada |
+| Avaliação temporal | concluída | `avaliacao_temporal.json`: no teste prospectivo (487 chamados) LinearSVC 0,7721, Regressão Logística 0,7741, SGD 0,7659; origem rolante 2022 a 2026 |
+| Calibração e automação seletiva | concluída | `calibracao.json`: ao alvo de 0,95, LinearSVC cobre 67,5% com acurácia seletiva de 0,9483 |
+| Regras de periodicidade | concluída | `regras_versus_modelos.json`: ganho de macro-F1 em 4 dos 7 modelos, perda no LinearSVC (-0,0079) |
+| Inferência por grupo e recortes | concluída | `inferencia.json`, `inferencia_agrupada.json` (Q de Cochran 2.875; 18 dos 21 pares significativos), `recortes.json` |
+| Modelos candidatos (n-gramas de caracteres, embeddings e5) | concluída | `alternativas.json`, `inferencia_alternativas.json`, `calibracao_candidatos.json`: tfidf_embedding 0,8307 contra 0,8241 do LinearSVC (+0,65 pp, p ajustado 0,009); prospectivo 0,7680 contra 0,7721 |
+| Transferência entre campi | concluída | `avaliacao_campi.json`: Reitoria treina e demais testam (LinearSVC 0,755 a 0,780); deixa um campus fora (0,792 a 0,807) |
+| Validação em outra IFES (UFRN, base pública) | concluída, aguarda avaliação do autor | `ufrn_resumo.json`, `ufrn_reverso.json`, `comparacao_direcoes_ufrn.json`; execução local (`--snapshot-json`, `--ufrn-fonte`), pois o runner do GitHub não alcança `dados.ufrn.br`; planilhas de avaliação no Drive |
+| Reexecução do que ficou fora da rodada (curva e ablation da LSTM, KFold por linha contra GroupKFold, ensemble da Fase 2C) | pendente | scripts leem a planilha viva e precisam ser apontados para o snapshot |
+| BERTimbau | pendente | decisão do autor: OOF integral com GPU (Colab) ou manter exploratório, agora com custo medido por inteiro |
+| Matriz de proveniência da Trilha B, painel e artigo | pendente | nesta sequência |
+
+Escopo: data de abertura e campus entram só como eixo temporal e recorte de análise (campus); localização e latitude/longitude ficam fora. Os workflows `corte_b.yml` e `trilha_b.yml` rodam por push na branch (a mensagem do commit precisa do marcador `[corte-b-aplicar]` ou `[trilha-b:etapa]`) enquanto não estiverem na `main`.
+
+Pontos a decidir pelo autor: (1) a categoria `Manutenção Preventiva > Elevador` (93 linhas) saiu das partições por sorteio, porque seus textos formam poucos grupos; (2) o suporte mínimo de 5 grupos excluiu 11 das 50 categorias, contra 9 na rodada anterior; (3) a queda no teste prospectivo (cerca de 5 pontos de acurácia em relação ao *out-of-fold*) muda o argumento de implantação do artigo.
+
+(4) Modelo principal: o tfidf_embedding é melhor no *out-of-fold* e na cobertura da automação seletiva, mas não no teste prospectivo e exige `torch`; regras de periodicidade, utilidade e recortes ainda não foram calculados para ele.

@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "status": "apto_para_regras",
+  "protocolo": "predicoes out-of-fold sobre as particoes canonicas do Passo 3; rotulo e a referencia humana revisada; nenhum modelo treina no grupo textual que preve",
+  "semente": 42,
+  "corpus": {
+    "linhas_avaliadas": 14357,
+    "grupos_textuais": 10596,
+    "categorias": 39,
+    "dobras": 5,
+    "linhas_fora_das_particoes": 202,
+    "linhas_sem_rotulo": 0,
+    "linhas_com_texto_alterado_apos_o_congelamento": 0
+  },
+  "ambiente": {
+    "python": "3.11.17",
+    "plataforma": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.43",
+    "dependencias": {
+      "numpy": "1.26.4",
+      "sklearn": "1.5.2",
+      "tensorflow": "2.17.0"
+    }
+  },
+  "modelos": [
+    {
+      "modelo": "naive_bayes",
+      "acuracia": 0.7222,
+      "macro_f1": 0.3618,
+      "balanced_accuracy": 0.3595,
+      "tempo_treino_s": 20.82,
+      "tempo_inferencia_s": 7.5,
+      "pico_memoria_mb": 71.4,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.6978,
+          "macro_f1": 0.354
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.1818,
+          "macro_f1": 0.1905
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.7488,
+          "macro_f1": 0.332
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.7409,
+          "macro_f1": 0.357
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.6881,
+          "macro_f1": 0.3621
+        }
+      ]
+    },
+    {
+      "modelo": "regressao_logistica",
+      "acuracia": 0.8079,
+      "macro_f1": 0.6743,
+      "balanced_accuracy": 0.7102,
+      "tempo_treino_s": 62.83,
+      "tempo_inferencia_s": 7.6,
+      "pico_memoria_mb": 389.6,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.7987,
+          "macro_f1": 0.6474
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.6364,
+          "macro_f1": 0.4848
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.805,
+          "macro_f1": 0.5868
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.8309,
+          "macro_f1": 0.6619
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.7875,
+          "macro_f1": 0.6608
+        }
+      ]
+    },
+    {
+      "modelo": "linear_svc",
+      "acuracia": 0.8241,
+      "macro_f1": 0.6859,
+      "balanced_accuracy": 0.7003,
+      "tempo_treino_s": 26.85,
+      "tempo_inferencia_s": 7.83,
+      "pico_memoria_mb": 49.4,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.8128,
+          "macro_f1": 0.6483
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.7273,
+          "macro_f1": 0.5905
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.8233,
+          "macro_f1": 0.6309
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.8453,
+          "macro_f1": 0.6623
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.8066,
+          "macro_f1": 0.6785
+        }
+      ]
+    },
+    {
+      "modelo": "sgd",
+      "acuracia": 0.8096,
+      "macro_f1": 0.6659,
+      "balanced_accuracy": 0.7034,
+      "tempo_treino_s": 27.14,
+      "tempo_inferencia_s": 7.57,
+      "pico_memoria_mb": 49.4,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.7995,
+          "macro_f1": 0.641
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.5455,
+          "macro_f1": 0.3333
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.8081,
+          "macro_f1": 0.5814
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.8318,
+          "macro_f1": 0.6602
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.7901,
+          "macro_f1": 0.6508
+        }
+      ]
+    },
+    {
+      "modelo": "extra_trees",
+      "acuracia": 0.8054,
+      "macro_f1": 0.6411,
+      "balanced_accuracy": 0.6189,
+      "tempo_treino_s": 95.17,
+      "tempo_inferencia_s": 8.19,
+      "pico_memoria_mb": 55.7,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.791,
+          "macro_f1": 0.6236
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.1818,
+          "macro_f1": 0.1667
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.8166,
+          "macro_f1": 0.5903
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.8216,
+          "macro_f1": 0.6162
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.7845,
+          "macro_f1": 0.63
+        }
+      ]
+    },
+    {
+      "modelo": "random_forest",
+      "acuracia": 0.7923,
+      "macro_f1": 0.6189,
+      "balanced_accuracy": 0.597,
+      "tempo_treino_s": 81.57,
+      "tempo_inferencia_s": 8.02,
+      "pico_memoria_mb": 55.6,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.781,
+          "macro_f1": 0.6135
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.1818,
+          "macro_f1": 0.1667
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.8003,
+          "macro_f1": 0.5432
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.8072,
+          "macro_f1": 0.5879
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.7739,
+          "macro_f1": 0.6097
+        }
+      ]
+    },
+    {
+      "modelo": "lstm",
+      "acuracia": 0.7067,
+      "macro_f1": 0.5173,
+      "balanced_accuracy": 0.5737,
+      "tempo_treino_s": 766.55,
+      "tempo_inferencia_s": 16.57,
+      "pico_memoria_mb": 156.4,
+      "registros_sem_predicao": 0,
+      "grupos_vazados_para_o_treino": 0,
+      "por_campus": [
+        {
+          "campus": "Campus Jorge Amado",
+          "n": 3905,
+          "acuracia": 0.6809,
+          "macro_f1": 0.507
+        },
+        {
+          "campus": "Campus Maria Felipa - Jequié",
+          "n": 11,
+          "acuracia": 0.5455,
+          "macro_f1": 0.7143
+        },
+        {
+          "campus": "Campus Paulo Freire",
+          "n": 3866,
+          "acuracia": 0.7155,
+          "macro_f1": 0.4403
+        },
+        {
+          "campus": "Campus Sosígenes Costa",
+          "n": 4222,
+          "acuracia": 0.7392,
+          "macro_f1": 0.5044
+        },
+        {
+          "campus": "Reitoria",
+          "n": 2353,
+          "acuracia": 0.6774,
+          "macro_f1": 0.5127
+        }
+      ]
+    }
+  ],
+  "melhor_por_macro_f1": "linear_svc",
+  "problemas": {
+    "modelos_com_vazamento_de_grupo": 0,
+    "modelos_com_registro_sem_predicao": 0,
+    "linhas_do_corpus_sem_rotulo": 0
+  },
+  "bloqueios": [],
+  "trilha": "B",
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 00:30",
+  "script_origem": "src/trilha_b.py"
+}
