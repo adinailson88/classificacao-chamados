@@ -61,12 +61,12 @@ def desenhar(paineis: list[dict], saida: Path, colunas: int = 2, linhas: int = 3
         ax.set_yticks(ys)
         ax.set_yticklabels([t for t, _, _ in itens], fontsize=7.5)
         for y, (_, v, _) in zip(ys, itens):
-            ax.text(v + (0.04 if v >= 0 else -0.04), y, numero(v), va="center",
-                    ha="left" if v >= 0 else "right", fontsize=7)
+            ax.text(max(v, 0) + 0.04, y, numero(v), va="center", ha="left", fontsize=7)
         ax.axvline(0, color="#444444", lw=0.6)
         ax.set_xlim(-1.3, 2.6)
-        titulo = "\n".join(textwrap.wrap(f"{p['titulo']} (n = {p['n']:,})".replace(",", "."), 46))
-        ax.set_title(titulo, fontsize=8, loc="left")
+        milhar = f"{p['n']:,}".replace(",", ".")
+        titulo = "\n".join(textwrap.wrap(f"{p['titulo']} (n = {milhar})", 34))
+        ax.set_title(titulo, fontsize=8, loc="left", x=-0.62)
         ax.tick_params(axis="x", labelsize=7)
     fig.supxlabel("peso no LinearSVC (positivo empurra o chamado para a categoria)", fontsize=8)
     fig.tight_layout()
