@@ -110,6 +110,16 @@ def escolher_endpoint(token: str) -> tuple[str, str]:
     raise RuntimeError("Nenhum endpoint respondeu: " + " | ".join(erros))
 
 
+def chamar_ollama(modelo: str, mensagens: list[dict[str, str]], base: str = "http://localhost:11434") -> str:
+    corpo = json.dumps({"model": modelo, "messages": mensagens, "stream": False,
+                        "format": "json", "keep_alive": "30m",
+                        "options": {"temperature": 0, "num_predict": 60, "num_ctx": 2048}}).encode("utf-8")
+    req = urllib.request.Request(base + "/api/chat", data=corpo,
+                                 headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=600) as r:
+        return json.load(r)["message"]["content"]
+
+
 def chamar(token: str, url: str, modelo: str, mensagens: list[dict[str, str]]) -> str:
     corpo = json.dumps({"model": modelo, "messages": mensagens, "max_tokens": 80,
                         "temperature": 0}).encode("utf-8")
@@ -135,20 +145,27 @@ def chamar(token: str, url: str, modelo: str, mensagens: list[dict[str, str]]) -
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--config", type=Path, required=True)
+    p.add_argument("--config", type=Path, default=None)
+    p.add_argument("--snapshot-json", type=Path, default=None,
+                   help="copia local do snapshot (JSON do conector), em vez da planilha")
+    p.add_argument("--ollama", default="", help="modelo local do Ollama (nada sai da maquina)")
+    p.add_argument("--saida", type=Path, default=SAIDA)
     p.add_argument("--credenciais", default=None)
     p.add_argument("--modelo", default=MODELO_PADRAO)
     p.add_argument("--limite", type=int, default=0, help="processa so os N primeiros (0 = todos)")
     args = p.parse_args()
     token = os.environ.get("GITHUB_TOKEN", "")
-    if not token:
+    if not token and not args.ollama:
         print("GITHUB_TOKEN ausente.", file=sys.stderr)
         return 1
     amostra = json.loads(AMOSTRA.read_text(encoding="utf-8"))
     manifesto = json.loads(cb.SAIDA_JSON_PADRAO.read_text(encoding="utf-8"))
-    config = json.loads(args.config.read_text(encoding="utf-8"))
-    sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
-    valores = sh.worksheet(manifesto["aba_snapshot"]).get_all_values()
+    if args.snapshot_json:
+        valores = json.loads(args.snapshot_json.read_text(encoding="utf-8"))["values"]
+    else:
+        config = json.loads(args.config.read_text(encoding="utf-8"))
+        sh = pl.abrir_planilha(pl.id_planilha(config), args.credenciais)
+        valores = sh.worksheet(manifesto["aba_snapshot"]).get_all_values()
     cab = valores[0]
     if cab != cb.CABECALHO_SNAPSHOT:
         raise RuntimeError("Cabecalho inesperado no snapshot.")
@@ -163,25 +180,31 @@ def main() -> int:
     if faltando:
         raise RuntimeError(f"{len(faltando)} ids da amostra ausentes do snapshot.")
     cats = amostra["categorias"]
-    url, modelo = escolher_endpoint(token)
-    if args.modelo:
-        modelo = args.modelo
+    if args.ollama:
+        url, modelo = "ollama-local", args.ollama
+        chamada = lambda msgs: chamar_ollama(modelo, msgs)  # noqa: E731
+    else:
+        url, modelo = escolher_endpoint(token)
+        if args.modelo:
+            modelo = args.modelo
+        chamada = lambda msgs: chamar(token, url, modelo, msgs)  # noqa: E731
     print(f"endpoint={url} modelo={modelo}", flush=True)
     itens = []
     for k, it in enumerate(itens_in, 1):
         texto = texto_do_chamado(por_hash[it["id_sha256"]])
-        bruta = chamar(token, url, modelo, montar_prompt(texto, cats))
+        bruta = chamada(montar_prompt(texto, cats))
         itens.append({"id_sha256": it["id_sha256"], "previsto": it["previsto"],
                       "referencia_humana": it["referencia_humana"],
                       "llm": interpretar_resposta(bruta, cats)})
-        if k % 50 == 0:
+        if k % 10 == 0:
             print(f"{k}/{len(itens_in)}", flush=True)
-        time.sleep(1.0)
+        if not args.ollama:
+            time.sleep(1.0)
     saida = {"protocolo": amostra["protocolo"], "modelo_llm": modelo,
              "texto_enviado": "titulo e descricao GLPI mascarados (e-mail, url, documento, "
                               f"telefone, numeros longos), ate {LIMITE_TEXTO} caracteres",
              "resumo": resumir(itens), "itens": itens}
-    SAIDA.write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
+    args.saida.write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(saida["resumo"], ensure_ascii=False))
     return 0
 
