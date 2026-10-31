@@ -115,8 +115,13 @@ def cmd_amostra(args) -> int:
         ref[tb._digest(l["id_chamado"])] = l["referencia_humana"]
     corpus = tb.preparar_corpus(registros, tb.carregar_particoes_b())
     por_digest = {tb._digest(r["id"]): r for r in registros}
+    excluir: set[str] = set()
+    if args.excluir:
+        excluir = {tb._digest(r["id_chamado"]) for r in csv.DictReader(open(args.excluir, encoding="utf-8"))}
     cand = {e: [] for e in ESTRATOS}
     for ch, grupo in zip(corpus["chaves"], corpus["grupos"]):
+        if ch in excluir:
+            continue
         r = por_digest[ch]
         est = estrato(r["categoria_historica"], ref[ch], prev[ch])
         cand[est].append({"chave": ch, "grupo": grupo, "reg": r, "referencia": ref[ch], "previsto": prev[ch]})
@@ -167,6 +172,8 @@ def main() -> int:
     a.add_argument("--predicoes", type=Path, default=Path(__file__).resolve().parents[1] / "docs" / "dados" / "trilha_b" / "predicoes_com_alternativas.csv")
     a.add_argument("--saida", type=Path, required=True)
     a.add_argument("--por-estrato", type=int, default=POR_ESTRATO)
+    a.add_argument("--excluir", type=Path, default=None,
+                   help="CSV com coluna id_chamado a excluir (ex.: os pre-triados, ancorados no modelo)")
     z = sub.add_parser("analisar")
     z.add_argument("--avaliacao", type=Path, required=True)
     z.add_argument("--chave", type=Path, required=True)
