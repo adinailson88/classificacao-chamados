@@ -32,8 +32,10 @@ RAIZ = Path(__file__).resolve().parents[1]
 DADOS = RAIZ / "docs" / "dados" / "trilha_b"
 AMOSTRA = DADOS / "cascata_amostra.json"
 SAIDA = DADOS / "cascata_llm.json"
-URL_MODELOS = "https://models.github.ai/inference/chat/completions"
-MODELO_PADRAO = "openai/gpt-4.1-mini"
+# Pares (url, nome do modelo): o endpoint atual e o legado do GitHub Models.
+ENDPOINTS = [("https://models.github.ai/inference/chat/completions", "openai/gpt-4.1-mini"),
+             ("https://models.inference.ai.azure.com/chat/completions", "gpt-4o-mini")]
+MODELO_PADRAO = ""
 LIMITE_TEXTO = 700
 
 _PADROES = [
@@ -96,11 +98,23 @@ def resumir(itens: list[dict[str, Any]]) -> dict[str, Any]:
                 sum(i["llm"] == i["previsto"] for i in validos) / max(1, len(validos)), 4)}
 
 
-def chamar(token: str, modelo: str, mensagens: list[dict[str, str]]) -> str:
+def escolher_endpoint(token: str) -> tuple[str, str]:
+    """Testa cada endpoint com um prompt sem dados e devolve o primeiro que responde JSON."""
+    erros = []
+    for url, modelo in ENDPOINTS:
+        try:
+            chamar(token, url, modelo, [{"role": "user", "content": "Responda apenas: ok"}])
+            return url, modelo
+        except Exception as e:  # noqa: BLE001
+            erros.append(f"{url}: {e}")
+    raise RuntimeError("Nenhum endpoint respondeu: " + " | ".join(erros))
+
+
+def chamar(token: str, url: str, modelo: str, mensagens: list[dict[str, str]]) -> str:
     corpo = json.dumps({"model": modelo, "messages": mensagens, "max_tokens": 80,
                         "temperature": 0}).encode("utf-8")
     for tentativa in range(6):
-        req = urllib.request.Request(URL_MODELOS, data=corpo, headers={
+        req = urllib.request.Request(url, data=corpo, headers={
             "Authorization": f"Bearer {token}", "Content-Type": "application/json",
             "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"})
         try:
@@ -149,17 +163,21 @@ def main() -> int:
     if faltando:
         raise RuntimeError(f"{len(faltando)} ids da amostra ausentes do snapshot.")
     cats = amostra["categorias"]
+    url, modelo = escolher_endpoint(token)
+    if args.modelo:
+        modelo = args.modelo
+    print(f"endpoint={url} modelo={modelo}", flush=True)
     itens = []
     for k, it in enumerate(itens_in, 1):
         texto = texto_do_chamado(por_hash[it["id_sha256"]])
-        bruta = chamar(token, args.modelo, montar_prompt(texto, cats))
+        bruta = chamar(token, url, modelo, montar_prompt(texto, cats))
         itens.append({"id_sha256": it["id_sha256"], "previsto": it["previsto"],
                       "referencia_humana": it["referencia_humana"],
                       "llm": interpretar_resposta(bruta, cats)})
         if k % 50 == 0:
             print(f"{k}/{len(itens_in)}", flush=True)
         time.sleep(1.0)
-    saida = {"protocolo": amostra["protocolo"], "modelo_llm": args.modelo,
+    saida = {"protocolo": amostra["protocolo"], "modelo_llm": modelo,
              "texto_enviado": "titulo e descricao GLPI mascarados (e-mail, url, documento, "
                               f"telefone, numeros longos), ate {LIMITE_TEXTO} caracteres",
              "resumo": resumir(itens), "itens": itens}
