@@ -105,7 +105,7 @@ artigo.
 
 **Números-chave de B:** controle de risco (`controle_risco.json`): meta 10% sem violação em 14 cenários, cobertura 42 a 68%; limiar ingênuo excede em 2024 e 2026. Meta 5%: certificado em 3 de 14. UFRN (`avaliacao_cruzada_manual.json`): 73,3% e 84,0% (modelo principal), segunda avaliação kappa 0,70 e 0,52. LAI: pedidos de 30/10/2026, prazo 23/11/2026 (Ifes, UFPB, UFRB, UFERSA, UFS).
 
-**Próximo passo.** (0) Incorporar o BERTimbau (Tabela 2, Seções 2.4, 4.1 e 5.1) quando terminar e a segunda avaliação cega (3.1, 5.3, resumo) quando for preenchida e analisada com `python src/segunda_avaliacao.py analisar`. (1) Decidir as figuras de pesos e os esquemas restantes. (2) Testar auditorias menores que 100 por trimestre e repetir a simulação com o tfidf_embedding; estimar a correção por erro de rótulo; repetir o controle de risco com o linear_svc e a transferência entre campi com o tfidf_embedding. (3) Ablação experimental do protocolo, se a revista exigir. (4) Avaliar as bases que chegarem por LAI (prazo 23/11/2026) com o mesmo protocolo da UFRN. (5) Revisão estilística, referências, Abstract e tradução. Decisões do autor pendentes: revista-alvo com rota gratuita (Journal of Facilities Management, Automation in Construction, Advanced Engineering Informatics ou Journal of Building Engineering), categoria Elevador preventivo fora das partições.
+**Próximo passo.** (0) Incorporar o BERTimbau (Tabela 2, Seções 2.4, 4.1 e 5.1) quando terminar (a segunda avaliação cega já está no Doc: 3.1, 4.2, 5.3, 5.5 e resumo; concordância ponderada com a referência 81,7%, com o histórico 78,9%, kappa 0,64 na amostra estratificada; resultado em `segunda_avaliacao.json`; avaliador da mesma unidade, ressalva declarada). (1) Decidir as figuras de pesos e os esquemas restantes. (2) Testar auditorias menores que 100 por trimestre e repetir a simulação com o tfidf_embedding; estimar a correção por erro de rótulo; repetir o controle de risco com o linear_svc e a transferência entre campi com o tfidf_embedding. (3) Ablação experimental do protocolo, se a revista exigir. (4) Avaliar as bases que chegarem por LAI (prazo 23/11/2026) com o mesmo protocolo da UFRN. (5) Revisão estilística, referências, Abstract e tradução. Decisões do autor pendentes: revista-alvo com rota gratuita (Journal of Facilities Management, Automation in Construction, Advanced Engineering Informatics ou Journal of Building Engineering), categoria Elevador preventivo fora das partições.
 
 ## Critérios para novo fechamento científico
 
@@ -117,7 +117,7 @@ A nova rodada científica somente poderá ser considerada fechada quando:
 4. a camada de regras preventivas tiver comparação pareada com os modelos puros;
 5. o BERTimbau estiver no mesmo protocolo ou explicitamente classificado como exploratório;
 6. calibração, intervalos e testes estatísticos derivarem da mesma execução;
-7. a segunda avaliação, restrita aos 217 chamados pré-classificados, e a ausência dela no restante do corpus estiverem declaradas no texto, com a limitação correspondente;
+7. a segunda avaliação (217 pré-triados ancorados e 300 chamados cegos estratificados) e a ausência dela no restante do corpus estiverem declaradas no texto, com a limitação correspondente;
 8. cada número, tabela e figura tiver proveniência rastreável;
 9. Resumo, Abstract, tabelas, figuras, discussão e conclusões estiverem coerentes;
 10. o PDF final tiver sido gerado e revisado visualmente;
