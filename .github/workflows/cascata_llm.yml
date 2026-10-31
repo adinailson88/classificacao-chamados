@@ -1,13 +1,7 @@
 name: Cascata LLM - teste de viabilidade (Trilha B)
 
 on:
-  # O push so existe para permitir a execucao enquanto o arquivo nao esta na branch padrao.
-  push:
-    branches: [claude/xenodochial-nightingale-81823d]
-    paths:
-      - ".github/workflows/cascata_llm.yml"
-      - "src/cascata_llm.py"
-      - "docs/dados/trilha_b/cascata_amostra.json"
+  # Push desativado: o GitHub Models nao respondeu a partir do runner (ver PLANO). Disparo manual apenas.
   workflow_dispatch:
 
 permissions:
