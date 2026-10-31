@@ -101,10 +101,16 @@ def chamar(token: str, modelo: str, mensagens: list[dict[str, str]]) -> str:
                         "temperature": 0}).encode("utf-8")
     for tentativa in range(6):
         req = urllib.request.Request(URL_MODELOS, data=corpo, headers={
-            "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
+            "Authorization": f"Bearer {token}", "Content-Type": "application/json",
+            "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"})
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
-                return json.load(r)["choices"][0]["message"]["content"]
+                bruto = r.read().decode("utf-8", "replace")
+                try:
+                    return json.loads(bruto)["choices"][0]["message"]["content"]
+                except (json.JSONDecodeError, KeyError, IndexError):
+                    raise RuntimeError(f"Resposta inesperada: HTTP {r.status}, "
+                                       f"{r.headers.get('Content-Type')}, inicio={bruto[:150]!r}") from None
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503) and tentativa < 5:
                 time.sleep(min(60, 5 * 2 ** tentativa))
