@@ -5,7 +5,8 @@ Padrão de nome na pasta REFERÊNCIAS do Drive: `ART_AUTOR_ANO_Titulo-Curto.pdf`
 ## Já baixadas e conferidas contra o texto
 Alon-Barkat e Busuioc (2023); Angelopoulos et al. (2021); Bovens (2007); Bovens e Zouridis (2002); Busch e Henriksen (2018); Connelly et al. (2016); El-Yaniv e Wiener (2010); Hand (2018); Kejriwal et al. (2024); Northcutt et al. (2021); Ribeiro e Segatto (2025); Wieringa (2020); Zhang et al. (2025).
 
-## A baixar (acesso aberto, conferidas só pelo resumo na página do SciELO)
+## Baixadas e conferidas em 02/11/2026 (PDFs em REFERÊNCIAS)
+Cavalcante 2025, Koga 2021, Medeiros 2014, Silva 2026, Ferreira e Souza 2021 e Saldanha e Silva 2020 foram conferidas no PDF; as frases do artigo foram ajustadas ao que cada uma afirma (Koga: informação de caráter endógeno; Ferreira: falta de TI específica e de conhecimento informatizado das edificações; Saldanha: menor adesão plena na dimensão de responsabilização, 25%). Lista original:
 1. Cavalcante, Vilela, Ferreira e Souza Junior (2025). Transformação digital no setor público: resistência do usuário ao sistema de contratações federais. Revista de Administração Pública, 59(4). DOI 10.1590/0034-761220250062
 2. Koga, Palotti, Couto, Lins e Nascimento (2021). O uso de múltiplas fontes de informação nas políticas públicas: um olhar sobre a burocracia federal brasileira. Revista de Administração Pública, 55(5). DOI 10.1590/0034-761220200871
 3. Medeiros, Albuquerque, Diniz, Alencar e Tavares (2014). Bases de dados orçamentários e qualidade da informação: uma avaliação do Finbra e do Siops. Revista de Administração Pública, 48(5). DOI 10.1590/0034-76121483
