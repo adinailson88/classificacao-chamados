@@ -31,3 +31,9 @@ Cavalcante 2025, Koga 2021, Medeiros 2014, Silva 2026, Ferreira e Souza 2021 e S
 - Seção 3.1: o sistema de atendimento é o GLPI, há ordens de serviço de manutenção, a taxonomia tem 14 categorias de primeiro nível e 50 de referência, e a base cobre cinco unidades de junho de 2015 a outubro de 2026.
 - Declaração de uso de IA generativa e de conflito de interesses, se a revista exigir (há um modelo em Declaração-IA-generativa.docx na pasta DOUTORADO).
 - Anonimização do arquivo antes da submissão.
+
+## Novas em 02/11/2026 (referencial brasileiro; conferidas só pelo resumo no SciELO, a baixar)
+1. Oliveira, A. (2012). Burocratas da linha de frente: executores e fazedores das políticas públicas. Revista de Administração Pública, 46(6). DOI 10.1590/S0034-76122012000600007
+2. Silva, M. R. da, Vieira, D. P., Lotta, G., & Rocha Neto, J. M. (2024). Comportamento e desempenho de burocratas de nível de rua: um estudo na Polícia Rodoviária Federal. Revista de Administração Pública, 58(3). DOI 10.1590/0034-761220230210
+3. Thomazinho, G., Miranda, J. R., Magri, G., & Lotta, G. (2025). Categorização, estereótipos e estigmas na implementação de políticas públicas: bases conceituais para uma agenda de pesquisa. Revista de Sociologia e Política, 33. DOI 10.1590/1678-98732433e009
+Retiradas do texto: Cameron et al. (2008) e Galke e Scherp (2022).
