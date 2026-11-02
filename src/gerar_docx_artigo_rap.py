@@ -1,4 +1,4 @@
-import re, sys
+import json, re, sys
 from docx import Document
 from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -14,7 +14,7 @@ pop = {"A": 11303, "B": 2275, "C": 560}
 modelo = (0.93 * pop["A"] + 0.47 * pop["B"] + 0.76 * pop["C"]) / sum(pop.values())
 
 TAB = {
-    "TABELA1": ("Tabela 1. Concordância com o histórico, acurácia contra a referência revisada e reclassificação automática, por modelo (n = 14.357)",
+    "TABELA2": ("Tabela 2. Concordância com o histórico, acurácia contra a referência revisada e reclassificação automática, por modelo (n = 14.357)",
                 ["Modelo", "Concordância com o histórico", "Acurácia contra a referência", "Corrigidos", "Prejudicados", "Ganho líquido"],
                 [["tfidf_embedding", "0,8057", "0,8307", "448", "2.294", "−1.846"],
                  ["LinearSVC sobre caracteres", "0,8027", "0,8280", "450", "2.334", "−1.884"],
@@ -22,14 +22,14 @@ TAB = {
                  ["Naive Bayes", "0,7083", "0,7222", "320", "3.723", "−3.403"],
                  ["LSTM bidirecional", "0,6848", "0,7067", "376", "4.002", "−3.626"]],
                 "Fonte: elaboração própria. Corrigidos e prejudicados contam os registros em que a predição diverge do histórico e coincide, respectivamente, com a referência ou com o histórico."),
-    "TABELA2": ("Tabela 2. Automação seletiva com limiar com garantia (Learn-then-Test) e limiar convencional, em 14 cenários de mudança de distribuição",
+    "TABELA3": ("Tabela 3. Automação seletiva com limiar com garantia (Learn-then-Test) e limiar convencional, em 14 cenários de mudança de distribuição",
                 ["Erro-alvo", "Limiar", "Cobertura", "Erro no teste", "Resultado"],
                 [["10%", "Com garantia", "42% a 68%", "1,4% a 9,3%", "Nenhuma violação nos 14 cenários"],
                  ["10%", "Convencional", "61% a 75%", "10,2% e 11,0% nos dois cenários excedidos", "Excedeu o alvo em 2 de 14 cenários"],
                  ["5%", "Com garantia", "25,0% a 35,9%", "1,1% a 2,0%", "Certificado em 3 de 14 cenários"],
                  ["5%", "Convencional", "47% a 58%", "não reportado", "Violou o alvo em até 32,5% das reamostragens"]],
                 "Fonte: elaboração própria."),
-    "TABELA3": ("Tabela 3. Concordância do segundo avaliador cego com a referência revisada, com o histórico e com o modelo principal",
+    "TABELA4": ("Tabela 4. Concordância do segundo avaliador cego com a referência revisada, com o histórico e com o modelo principal",
                 ["Estrato", "Chamados na população", "Amostra", "Com a referência", "Com o histórico", "Com o modelo"],
                 [["A (histórico confirmado, modelo acertou)", "11.303", "100", "93%", "93%", "93%"],
                  ["B (histórico confirmado, modelo errou)", "2.275", "100", "26%", "26%", "47%"],
@@ -37,6 +37,11 @@ TAB = {
                  ["Ponderada pela população", "14.138", "300", "81,7%", "78,9%", ("%.1f%%" % (modelo * 100)).replace(".", ",")]],
                 "Fonte: elaboração própria. Os 217 chamados pré-triados ficaram fora do sorteio."),
 }
+
+TAB["TABELA1"] = ("Tabela 1. Rejeição da categoria histórica pela auditoria, por período de abertura do chamado",
+                  ["Período de abertura", "Chamados", "Categorias rejeitadas", "Taxa de rejeição"],
+                  json.load(open("periodos.json", encoding="utf-8"))["linhas"],
+                  "Fonte: elaboração própria. A rejeição de 2018 coincide com a adoção intensiva do sistema e com ajustes de taxonomia, e a de julho de 2026 em diante, com a mudança de critério da auditoria.")
 
 d = Document()
 sec = d.sections[0]
