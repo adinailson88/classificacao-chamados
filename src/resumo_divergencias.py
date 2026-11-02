@@ -124,7 +124,7 @@ def main():
     ap.add_argument("--predicoes", default="docs/dados/trilha_b/predicoes_com_alternativas.csv")
     ap.add_argument("--saida", required=True)
     ap.add_argument("--topo", type=int, default=30)
-    ap.add_argument("--para", default="destinatarios@exemplo.invalid")
+    ap.add_argument("--para", default="usuario@setor.br")
     a = ap.parse_args()
     os.makedirs(a.saida, exist_ok=True)
     linhas = carregar(a.snapshot, a.predicoes)
