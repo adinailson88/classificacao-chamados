@@ -43,6 +43,14 @@ TAB["TABELA1"] = ("Tabela 1. Rejeição da categoria histórica pela auditoria, 
                   json.load(open("periodos.json", encoding="utf-8"))["linhas"],
                   "Fonte: elaboração própria. A rejeição de 2018 coincide com a adoção intensiva do sistema e com ajustes de taxonomia.")
 
+TAB["QUADRO1"] = ("Quadro 1. Casos ilustrativos de fronteira entre categorias (chamados parafraseados)",
+                  ["Chamado", "Categoria histórica", "Referência revisada", "Fronteira"],
+                  [["Vazamento de água em laboratório", "Estrutura Predial > Infiltração", "Hidrossanitária > Hidráulica", "Sintoma ou sistema afetado"],
+                   ["Limpeza de calhas", "Estrutura Predial > Alvenaria / Pisos / Estrutura", "Manutenção Preventiva > Telhados, calhas, rufos, etc.", "Corretiva ou preventiva"],
+                   ["Limpeza semestral de reservatórios, com texto idêntico em chamados distintos", "Hidrossanitária > Hidráulica ou Manutenção Preventiva > Reservatório", "As duas categorias, conforme o chamado", "Texto idêntico, categorias distintas"],
+                   ["Nova tomada para ar condicionado", "Elétrica > Instalações elétricas, depois Climatização", "Projetos e Reformas > Projeto", "Categoria que muda no ciclo do chamado"]],
+                  "Fonte: elaboração própria. Os três primeiros casos são chamados do corpus, parafraseados, e o último ilustra o fluxo descrito pelo setor.")
+
 d = Document()
 sec = d.sections[0]
 sec.page_width, sec.page_height = Cm(21), Cm(29.7)
