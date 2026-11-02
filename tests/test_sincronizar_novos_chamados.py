@@ -21,6 +21,7 @@ class SelecionarNovosTest(unittest.TestCase):
         novos, resumo = s.selecionar_novos(origem, {"1"}, {"Elétrica > Iluminação"})
         self.assertEqual([r[0] for r in novos], ["2026100001"])
         self.assertEqual(novos[0][3], "Descrição - troca\n\nHistórico / solução - feito")
+        self.assertEqual(s.montar_descricao(" aberto ", ""), "aberto")
         self.assertEqual(novos[0][4:], ["", ""])
         self.assertEqual(resumo, {"ja_existentes": 1, "fora_da_taxonomia": 1, "sem_categoria": 1, "acima_do_limite": 0})
 

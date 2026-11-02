@@ -46,11 +46,11 @@ def normalizar_id(valor: Any) -> str:
 
 
 def montar_descricao(descricao: str, solucao: str) -> str:
-    """Mesmo formato das linhas ja existentes na coluna D."""
-    texto = "Descrição - " + (descricao or "").strip()
-    if (solucao or "").strip():
-        texto += "\n\nHistórico / solução - " + solucao.strip()
-    return texto
+    """Mesmo formato das linhas ja existentes na coluna D: chamado sem solucao leva so a descricao."""
+    descricao = (descricao or "").strip()
+    if not (solucao or "").strip():
+        return descricao
+    return "Descrição - " + descricao + "\n\nHistórico / solução - " + solucao.strip()
 
 
 def selecionar_novos(origem: list[list[Any]], ids_existentes: set[str], taxonomia: set[str],
