@@ -134,6 +134,13 @@ for k, v in blocks:
         par(v)
     elif k in TAB:
         tabela(k)
+    elif k == "FIGURA1":
+        par("Figura 1. Protocolo de auditoria do rótulo, classificação e delegação com limite de erro", bold=True, indent=False, align=WD_ALIGN_PARAGRAPH.LEFT, size=10, spacing=1.15, keep=True)
+        pf = d.add_paragraph()
+        pf.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        pf.paragraph_format.keep_with_next = True
+        pf.add_run().add_picture("figura_protocolo.png", width=Cm(15.5))
+        par("Fonte: elaboração própria.", indent=False, align=WD_ALIGN_PARAGRAPH.LEFT, size=10, spacing=1.15)
     elif k == "REFERENCIAS":
         par("Referências", bold=True, indent=False, align=WD_ALIGN_PARAGRAPH.LEFT, keep=True)
         for line in v.split("\n"):
