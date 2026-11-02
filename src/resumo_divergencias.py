@@ -69,52 +69,63 @@ def pct(x):
     return f"{100 * x:.1f}".replace(".", ",") + "%"
 
 
-def corpo_html(topo, fx, total, n_div):
+def corpo_html(topo, fx, total, n_div, base):
+    destaque = fx[0]
     linhas = "".join(
-        f"<tr><td>{html.escape(str(x['id']))}</td><td>{html.escape(x['titulo'][:70])}</td>"
-        f"<td>{html.escape(x['historica'])}</td><td>{html.escape(x['sugerida'])}</td>"
-        f"<td style='text-align:right'>{str(round(x['confianca'], 2)).replace('.', ',')}</td></tr>"
-        for x in topo)
-    faixas_html = "".join(
-        f"<tr><td>{n}</td><td style='text-align:right'>{t}</td><td style='text-align:right'>{i}</td>"
-        f"<td style='text-align:right'>{pct(p)}</td></tr>" for n, t, i, p in fx)
-    return f"""<html><body style="font-family:Arial,sans-serif;font-size:14px;color:#222">
-<p>Prezados,</p>
-<p>Segue a lista de chamados cuja categoria registrada pode estar inadequada, ordenada pela confiança do modelo.
-Dos {total:,} chamados avaliados, {n_div:,} divergem da categoria registrada, e a lista abaixo traz os {len(topo)} de maior confiança.
-A sugestão do modelo serve apenas para priorizar a conferência, e a decisão de alterar a categoria é do servidor.</p>
-<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;font-size:13px">
-<tr style="background:#eee"><th>ID</th><th>Título</th><th>Categoria registrada</th><th>Categoria sugerida</th><th>Confiança</th></tr>
+        f"<tr style='background:{'#ffffff' if i % 2 == 0 else '#f6f8fa'}'>"
+        f"<td style='padding:6px 8px;color:#555'>{html.escape(str(x['id']))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['titulo'][:60])}</td>"
+        f"<td style='padding:6px 8px;color:#777'>{html.escape(x['historica'].split(' > ')[-1])}</td>"
+        f"<td style='padding:6px 8px;font-weight:bold;color:#0b5394'>{html.escape(x['sugerida'].split(' > ')[-1])}</td>"
+        f"<td style='padding:6px 8px;text-align:right'>{str(round(x['confianca'], 2)).replace('.', ',')}</td></tr>"
+        for i, x in enumerate(topo))
+    barras = "".join(
+        f"<tr><td style='padding:3px 8px'>{n}</td>"
+        f"<td style='padding:3px 8px;width:220px'><div style='background:#0b5394;height:12px;width:{int(200 * p)}px'></div></td>"
+        f"<td style='padding:3px 8px;font-weight:bold'>{pct(p)}</td></tr>" for n, t, i, p in fx)
+    return f"""<html><body style="margin:0;background:#f0f2f5;font-family:Arial,sans-serif;font-size:14px;color:#222">
+<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:16px">
+<table width="640" cellpadding="0" cellspacing="0" style="background:#fff;border:1px solid #d9dde3">
+<tr><td style="background:#0b5394;color:#fff;padding:14px 18px;font-size:17px;font-weight:bold">Chamados para conferir a categoria</td></tr>
+<tr><td style="padding:16px 18px">
+<div style="background:#fff4d6;border-left:5px solid #e69138;padding:12px 14px;font-size:15px">
+<b>Comece pelos {fx[0][1]} primeiros da lista:</b> {pct(destaque[3])} deles tinham categoria inadequada,
+contra {pct(base)} na base inteira.</div>
+<p style="margin:14px 0 8px">Dos {total:,} chamados avaliados, {n_div:,} divergem da categoria registrada. Abaixo, os {len(topo)} de maior confiança.
+A sugestão apenas prioriza a conferência, e a decisão é do servidor.</p>
+<table width="100%" cellspacing="0" style="border-collapse:collapse;font-size:13px">
+<tr style="background:#e8edf3;text-align:left"><th style="padding:6px 8px">ID</th><th style="padding:6px 8px">Título</th><th style="padding:6px 8px">Registrada</th><th style="padding:6px 8px">Sugerida</th><th style="padding:6px 8px;text-align:right">Conf.</th></tr>
 {linhas}</table>
-<p>Referência de desempenho no corte congelado, por posição na lista (ordenada pela confiança), entre as divergências do modelo com o histórico:</p>
-<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;font-size:13px">
-<tr style="background:#eee"><th>Posição na lista</th><th>Divergências</th><th>Registro inadequado pela auditoria</th><th>Proporção</th></tr>
-{faixas_html}</table>
-<p>Para corrigir, abrir o chamado no GLPI e ajustar a categoria. Chamados já conferidos podem ser ignorados.</p>
-<p>Atenciosamente.</p></body></html>"""
+<p style="margin:16px 0 4px"><b>Quanto vale conferir mais adiante na lista</b> (registros inadequados confirmados pela auditoria)</p>
+<table cellspacing="0" style="font-size:13px">{barras}</table>
+<p style="margin:16px 0 0;color:#555">Para corrigir, abra o chamado no GLPI e ajuste a categoria.</p>
+</td></tr></table></td></tr></table></body></html>"""
 
 
-def gerar_pdf(caminho, topo, fx, total, n_div):
+def gerar_pdf(caminho, topo, fx, total, n_div, base):
     st = getSampleStyleSheet()
-    doc = SimpleDocTemplate(caminho, pagesize=A4, leftMargin=1.5 * cm, rightMargin=1.5 * cm, topMargin=1.5 * cm, bottomMargin=1.5 * cm)
-    el = [Paragraph("Chamados com categoria possivelmente inadequada", st["Title"]),
-          Paragraph(f"{n_div} de {total} chamados avaliados divergem da categoria registrada. Lista dos {len(topo)} de maior confianca. "
-                    "A sugestao serve para priorizar a conferencia; a decisao e do servidor.", st["Normal"]), Spacer(1, 0.4 * cm)]
+    doc = SimpleDocTemplate(caminho, pagesize=A4, leftMargin=1.5 * cm, rightMargin=1.5 * cm, topMargin=1.2 * cm, bottomMargin=1.2 * cm)
     cel = st["BodyText"]
     cel.fontSize = 8
-    cel.leading = 10
-    dados = [["ID", "Titulo", "Categoria registrada", "Categoria sugerida", "Conf."]]
+    cel.leading = 9.5
+    caixa = Table([[Paragraph(f"<b>Comece pelos {fx[0][1]} primeiros da lista:</b> {pct(fx[0][3])} tinham categoria inadequada, "
+                              f"contra {pct(base)} na base inteira.", st["BodyText"])]], colWidths=[18 * cm])
+    caixa.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#fff4d6")),
+                               ("LINEBEFORE", (0, 0), (0, -1), 4, colors.HexColor("#e69138")), ("LEFTPADDING", (0, 0), (-1, -1), 10)]))
+    el = [Paragraph("Chamados para conferir a categoria", st["Title"]), caixa, Spacer(1, 0.3 * cm),
+          Paragraph(f"{n_div} de {total} chamados avaliados divergem da categoria registrada. A sugestao apenas prioriza a conferencia; "
+                    "a decisao e do servidor.", cel), Spacer(1, 0.2 * cm)]
+    dados = [["ID", "Titulo", "Registrada", "Sugerida", "Conf."]]
     for x in topo:
-        dados.append([str(x["id"]), Paragraph(html.escape(x["titulo"][:80]), cel), Paragraph(html.escape(x["historica"]), cel),
-                      Paragraph(html.escape(x["sugerida"]), cel), f"{x['confianca']:.2f}"])
-    t = Table(dados, colWidths=[2.4 * cm, 5.2 * cm, 4.1 * cm, 4.1 * cm, 1.2 * cm], repeatRows=1)
-    t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey), ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
-                           ("FONTSIZE", (0, 0), (-1, -1), 8), ("VALIGN", (0, 0), (-1, -1), "TOP")]))
-    el += [t, Spacer(1, 0.5 * cm), Paragraph("Desempenho de referencia por posicao na lista (corte congelado)", st["Heading3"])]
-    d2 = [["Posicao", "Divergencias", "Registro inadequado", "Proporcao"]] + [[n, str(tt), str(i), pct(p)] for n, tt, i, p in fx]
+        dados.append([str(x["id"]), Paragraph(html.escape(x["titulo"][:70]), cel), Paragraph(html.escape(x["historica"].split(" > ")[-1]), cel),
+                      Paragraph("<b>" + html.escape(x["sugerida"].split(" > ")[-1]) + "</b>", cel), f"{x['confianca']:.2f}"])
+    t = Table(dados, colWidths=[2.3 * cm, 7 * cm, 3.6 * cm, 3.6 * cm, 1.5 * cm], repeatRows=1)
+    t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8edf3")), ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f6f8fa")]),
+                           ("FONTSIZE", (0, 0), (-1, -1), 8), ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LINEBELOW", (0, 0), (-1, -1), 0.25, colors.lightgrey)]))
+    d2 = [["Posicao na lista", "Divergencias", "Inadequados", "Proporcao"]] + [[n, str(tt), str(i), pct(p)] for n, tt, i, p in fx]
     t2 = Table(d2, repeatRows=1)
-    t2.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey), ("GRID", (0, 0), (-1, -1), 0.4, colors.grey), ("FONTSIZE", (0, 0), (-1, -1), 8)]))
-    el.append(t2)
+    t2.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8edf3")), ("FONTSIZE", (0, 0), (-1, -1), 8), ("LINEBELOW", (0, 0), (-1, -1), 0.25, colors.lightgrey)]))
+    el += [t, Spacer(1, 0.4 * cm), Paragraph("<b>Quanto vale conferir mais adiante na lista</b>", cel), Spacer(1, 0.1 * cm), t2]
     doc.build(el)
 
 
@@ -123,7 +134,7 @@ def main():
     ap.add_argument("--snapshot", required=True)
     ap.add_argument("--predicoes", default="docs/dados/trilha_b/predicoes_com_alternativas.csv")
     ap.add_argument("--saida", required=True)
-    ap.add_argument("--topo", type=int, default=30)
+    ap.add_argument("--topo", type=int, default=15)
     ap.add_argument("--para", default="usuario@setor.br")
     a = ap.parse_args()
     os.makedirs(a.saida, exist_ok=True)
@@ -131,10 +142,11 @@ def main():
     div = sorted((x for x in linhas if x["sugerida"] != x["historica"]), key=lambda x: -x["confianca"])
     topo = div[: a.topo]
     fx = faixas(div)
-    corpo = corpo_html(topo, fx, len(linhas), len(div))
+    base = sum(1 for x in linhas if x["referencia"] and x["referencia"] != x["historica"]) / len(linhas)
+    corpo = corpo_html(topo, fx, len(linhas), len(div), base)
     open(os.path.join(a.saida, "email_corpo.html"), "w", encoding="utf-8").write(corpo)
     pdf = os.path.join(a.saida, "divergencias.pdf")
-    gerar_pdf(pdf, topo, fx, len(linhas), len(div))
+    gerar_pdf(pdf, topo, fx, len(linhas), len(div), base)
     m = EmailMessage()
     m["Subject"] = "Chamados com categoria possivelmente inadequada para conferência"
     m["To"] = a.para
