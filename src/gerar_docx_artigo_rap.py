@@ -41,7 +41,7 @@ TAB = {
 TAB["TABELA1"] = ("Tabela 1. Rejeição da categoria histórica pela auditoria, por período de abertura do chamado",
                   ["Período de abertura", "Chamados", "Categorias rejeitadas", "Taxa de rejeição"],
                   json.load(open("periodos.json", encoding="utf-8"))["linhas"],
-                  "Fonte: elaboração própria. A rejeição de 2018 coincide com a adoção intensiva do sistema e com ajustes de taxonomia, e a de julho de 2026 em diante, com a mudança de critério da auditoria.")
+                  "Fonte: elaboração própria. A rejeição de 2018 coincide com a adoção intensiva do sistema e com ajustes de taxonomia.")
 
 d = Document()
 sec = d.sections[0]
