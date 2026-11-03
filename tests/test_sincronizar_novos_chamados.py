@@ -31,6 +31,17 @@ class SelecionarNovosTest(unittest.TestCase):
         self.assertEqual([r[0] for r in novos], ["2026100005", "2026100006", "2026100007", "2026100008"])
         self.assertEqual(resumo["acima_do_limite"], 2)
 
+    def test_preenche_titulo_e_descricao_da_os(self):
+        os_linhas = [["OS", "Chamado vinculado", "Resumo", "Local", "Descrição"],
+                     ["1/2026", "2026100001", "Gerador", "x", "Alugar gerador"],
+                     ["2/2026", "2026100001.0", "Revisão", "x", "Revisar quadro"]]
+        os_map = s.os_por_chamado(os_linhas)
+        self.assertEqual(os_map["2026100001"], ("Gerador; Revisão", "Alugar gerador; Revisar quadro"))
+        origem = [CAB, ["2026100001", "t", "C", "d", ""], ["2026100002", "t", "C", "d", ""]]
+        novos, _ = s.selecionar_novos(origem, set(), {"C"}, os_map=os_map)
+        self.assertEqual(novos[0][4:], ["Gerador; Revisão", "Alugar gerador; Revisar quadro"])
+        self.assertEqual(novos[1][4:], ["", ""])
+
     def test_id_numerico_do_sheets(self):
         self.assertEqual(s.normalizar_id("2026100001.0"), "2026100001")
 
