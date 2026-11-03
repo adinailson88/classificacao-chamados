@@ -6,7 +6,7 @@ por um acionador do Apps Script. O log `LOG_COPIA_A_F` mostra que ele deixou de 
 (a ultima insercao foi em 22/10/2026), de modo que a aba principal ficou sem os chamados posteriores.
 
 Regras:
-    - Escreve SOMENTE em A:F de linhas novas, no fim dos dados. Nunca toca em G:Q (conferencias M, N, P e a
+    - Escreve SOMENTE em A:F de linhas novas, no fim dos dados (E:F vem da aba de O.S., unindo com "; " as O.S. vinculadas). Nunca toca em G:Q (conferencias M, N, P e a
       categoria manual Q inclusive) nem em linhas existentes.
     - So entra chamado cujo ID nao esta na aba principal e cuja categoria ja existe na coluna C da aba
       principal. Isso deixa de fora projetos, memoriais e orcamentos, que nao pertencem a taxonomia de
@@ -37,6 +37,9 @@ ABA_ORIGEM = "GLPI"
 ABA_LOG = "LOG_COPIA_A_F"
 CABECALHO_LOG = ["data_hora", "operacao", "id_chamado", "linha_destino", "categoria_antes", "categoria_depois", "detalhe"]
 ORIGEM_LOCAL = RAIZ / "origem_glpi.local"
+ABA_OS = "Ordens de Serviços"
+# planilha de O.S. (mesma lida pelo Apps Script de copia); pode ser sobrescrita por ORIGEM_OS_SPREADSHEET_ID
+OS_SPREADSHEET_ID_PADRAO = "1zTSo5oTFDyo3espWmYl1WjpFU57PwHDeZqnxUkrGQ2Y"
 TAMANHO_LOTE = 200  # trava por execucao, como o limite de atualizacoes do script original
 
 
@@ -53,8 +56,26 @@ def montar_descricao(descricao: str, solucao: str) -> str:
     return "Descrição - " + descricao + "\n\nHistórico / solução - " + solucao.strip()
 
 
+def os_por_chamado(linhas_os: list[list[Any]]) -> dict[str, tuple[str, str]]:
+    """ID do chamado -> (resumos, descricoes) de todas as O.S. vinculadas, unidos por '; ' na ordem da planilha."""
+    if not linhas_os:
+        return {}
+    cab = [str(c).strip().lower() for c in linhas_os[0]]
+    i = {nome: cab.index(nome) for nome in ("chamado vinculado", "resumo", "descrição")}
+    acumulado: dict[str, tuple[list[str], list[str]]] = {}
+    for lin in linhas_os[1:]:
+        lin = list(lin) + [""] * (len(cab) - len(lin))
+        id_ = normalizar_id(lin[i["chamado vinculado"]])
+        if not id_:
+            continue
+        titulos, descricoes = acumulado.setdefault(id_, ([], []))
+        titulos.append(str(lin[i["resumo"]]).strip())
+        descricoes.append(str(lin[i["descrição"]]).strip())
+    return {k: ("; ".join(t), "; ".join(d)) for k, (t, d) in acumulado.items()}
+
+
 def selecionar_novos(origem: list[list[Any]], ids_existentes: set[str], taxonomia: set[str],
-                     limite: int = TAMANHO_LOTE) -> tuple[list[list[str]], dict[str, int]]:
+                     limite: int = TAMANHO_LOTE, os_map: dict[str, tuple[str, str]] | None = None) -> tuple[list[list[str]], dict[str, int]]:
     """Linhas A:F dos chamados novos da origem, em ordem de ID, e a contagem do que ficou de fora."""
     if not origem:
         return [], {"ja_existentes": 0, "fora_da_taxonomia": 0, "sem_categoria": 0, "acima_do_limite": 0}
@@ -79,8 +100,9 @@ def selecionar_novos(origem: list[list[Any]], ids_existentes: set[str], taxonomi
         if categoria not in taxonomia:
             resumo["fora_da_taxonomia"] += 1
             continue
+        titulo_os, descricao_os = (os_map or {}).get(id_, ("", ""))
         novos.append([id_, str(lin[i["titulo"]]).strip(), categoria,
-                      montar_descricao(str(lin[i["descricao"]]), str(lin[i["solucao"]])), "", ""])
+                      montar_descricao(str(lin[i["descricao"]]), str(lin[i["solucao"]])), titulo_os, descricao_os])
     novos.sort(key=lambda r: (len(r[0]), r[0]))
     if len(novos) > limite:
         resumo["acima_do_limite"] = len(novos) - limite
@@ -118,9 +140,17 @@ def main() -> int:
     origem_ws = pl.abrir_planilha(id_origem()).worksheet(ABA_ORIGEM)
     origem = pl._com_retry(lambda: origem_ws.get_all_values(), rotulo="ler_origem")
 
-    novos, resumo = selecionar_novos(origem, ids_existentes, taxonomia)
+    os_map: dict[str, tuple[str, str]] = {}
+    try:
+        id_os = os.getenv("ORIGEM_OS_SPREADSHEET_ID", "").strip() or OS_SPREADSHEET_ID_PADRAO
+        os_ws = pl.abrir_planilha(id_os).worksheet(ABA_OS)
+        os_map = os_por_chamado(pl._com_retry(lambda: os_ws.get_all_values(), rotulo="ler_os"))
+    except Exception as exc:  # sem acesso a planilha de O.S.: insere A:D e deixa E:F para depois
+        print(f"AVISO: planilha de O.S. nao lida ({type(exc).__name__}); E:F ficam vazias.", file=sys.stderr)
+
+    novos, resumo = selecionar_novos(origem, ids_existentes, taxonomia, os_map=os_map)
     print(f"principal: {len(ids_existentes)} chamados, ultima linha com ID = {ultima}; origem: {len(origem) - 1} linhas")
-    print(f"novos a inserir: {len(novos)} | descartados: {resumo}")
+    print(f"novos a inserir: {len(novos)} ({sum(1 for r in novos if r[4])} com O.S.) | descartados: {resumo}")
     for r in novos[:40]:
         print("  ", r[0], "|", r[1][:55], "|", r[2])
     if not novos:
