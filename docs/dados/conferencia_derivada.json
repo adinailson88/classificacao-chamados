@@ -1,74 +1,74 @@
 {
- "total_chamados": 14559,
- "com_conferencia_glpi": 14559,
- "verdade_glpi": 13970,
+ "total_chamados": 14581,
+ "com_conferencia_glpi": 14572,
+ "verdade_glpi": 13983,
  "verdade_manual": 589,
  "pendente_glpi_errado_sem_q": 0,
- "sem_conferencia": 0,
+ "sem_conferencia": 9,
  "correto_com_q_preenchida": 7,
  "errado_com_q_igual_a_c": 1,
  "por_modelo": {
   "naive_bayes": {
-   "correto": 10284,
-   "errado": 4275,
+   "correto": 10286,
+   "errado": 4286,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
-   "acuracia": 0.7064
+   "avaliados": 14572,
+   "acuracia": 0.7059
   },
   "regressao_logistica": {
-   "correto": 11500,
-   "errado": 3059,
+   "correto": 11507,
+   "errado": 3065,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
-   "acuracia": 0.7899
+   "avaliados": 14572,
+   "acuracia": 0.7897
   },
   "linear_svc": {
-   "correto": 11860,
-   "errado": 2699,
+   "correto": 11872,
+   "errado": 2700,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
-   "acuracia": 0.8146
+   "avaliados": 14572,
+   "acuracia": 0.8147
   },
   "sgd": {
-   "correto": 11584,
-   "errado": 2975,
+   "correto": 11591,
+   "errado": 2981,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
-   "acuracia": 0.7957
+   "avaliados": 14572,
+   "acuracia": 0.7954
   },
   "extra_trees": {
-   "correto": 11520,
-   "errado": 3039,
+   "correto": 11531,
+   "errado": 3041,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
+   "avaliados": 14572,
    "acuracia": 0.7913
   },
   "random_forest": {
-   "correto": 11395,
-   "errado": 3164,
+   "correto": 11407,
+   "errado": 3165,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
-   "acuracia": 0.7827
+   "avaliados": 14572,
+   "acuracia": 0.7828
   },
   "lstm": {
-   "correto": 10223,
-   "errado": 4336,
+   "correto": 10227,
+   "errado": 4345,
    "pendente": 0,
    "sem_predicao": 0,
-   "avaliados": 14559,
-   "acuracia": 0.7022
+   "avaliados": 14572,
+   "acuracia": 0.7018
   },
   "transformer_ft": {
    "correto": 5738,
    "errado": 3769,
    "pendente": 0,
-   "sem_predicao": 5052,
+   "sem_predicao": 5065,
    "avaliados": 9507,
    "acuracia": 0.6036
   }
@@ -114,7 +114,7 @@
  "ids_errado_com_q_igual_a_c": [
   "1800"
  ],
- "gerado_em": "02/11/2026 18:51",
+ "gerado_em": "03/11/2026 04:04",
  "aba": "CONFERENCIA_MULTIMODELO",
  "regra": "M='Correto' -> verdade = C; M='Errado' + Q preenchida -> verdade = Q; M='Errado' sem Q -> pendente; M vazio -> ignorado"
 }
