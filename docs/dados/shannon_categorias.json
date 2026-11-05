@@ -72,8 +72,8 @@
     {
       "categoria_historica": "Climatização > Ar condicionado central",
       "modelos": 8,
-      "suporte_max": 40,
-      "entropia_media_normalizada": 0.5641,
+      "suporte_max": 41,
+      "entropia_media_normalizada": 0.5633,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -93,8 +93,8 @@
     {
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "modelos": 8,
-      "suporte_max": 346,
-      "entropia_media_normalizada": 0.4982,
+      "suporte_max": 347,
+      "entropia_media_normalizada": 0.4986,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -128,8 +128,8 @@
     {
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "modelos": 8,
-      "suporte_max": 441,
-      "entropia_media_normalizada": 0.4227,
+      "suporte_max": 442,
+      "entropia_media_normalizada": 0.4226,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -168,17 +168,17 @@
       "maior_risco": "ambiguidade_moderada"
     },
     {
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "modelos": 8,
+      "suporte_max": 1337,
+      "entropia_media_normalizada": 0.2699,
+      "maior_risco": "ambiguidade_moderada"
+    },
+    {
       "categoria_historica": "Manutenção Preventiva > Vistoria em Instalações",
       "modelos": 8,
       "suporte_max": 284,
       "entropia_media_normalizada": 0.2697,
-      "maior_risco": "ambiguidade_moderada"
-    },
-    {
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "modelos": 8,
-      "suporte_max": 1337,
-      "entropia_media_normalizada": 0.2696,
       "maior_risco": "ambiguidade_moderada"
     },
     {
@@ -212,8 +212,8 @@
     {
       "categoria_historica": "Climatização > Ar condicionado split",
       "modelos": 8,
-      "suporte_max": 1695,
-      "entropia_media_normalizada": 0.2102,
+      "suporte_max": 1697,
+      "entropia_media_normalizada": 0.2101,
       "maior_risco": "estavel"
     },
     {
@@ -247,14 +247,14 @@
     {
       "categoria_historica": "Manutenção Preventiva > Ar condicionado central",
       "modelos": 8,
-      "suporte_max": 171,
+      "suporte_max": 173,
       "entropia_media_normalizada": 0.0725,
       "maior_risco": "estavel"
     },
     {
       "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
       "modelos": 8,
-      "suporte_max": 1861,
+      "suporte_max": 1862,
       "entropia_media_normalizada": 0.0647,
       "maior_risco": "estavel"
     },
@@ -2428,21 +2428,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "etapa1_oficial",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 40,
-      "categorias_previstas": 2,
-      "entropia_previsoes": 0.3843,
-      "entropia_normalizada": 0.3843,
-      "categorias_efetivas": 1.3052,
-      "top_1_previsto": "Climatização > Ar condicionado central",
-      "top_1_pct": 0.925,
-      "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
-      "top_2_pct": 0.075,
-      "concordancia_historico": 0.925,
-      "risco": "estavel"
-    },
-    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Estrutura Predial > Pintura",
       "suporte": 61,
@@ -2545,6 +2530,21 @@
       "top_2_previsto": "Manutenção Preventiva > Esgoto",
       "top_2_pct": 0.075,
       "concordancia_historico": 0.85,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "etapa1_oficial",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 41,
+      "categorias_previstas": 2,
+      "entropia_previsoes": 0.3776,
+      "entropia_normalizada": 0.3776,
+      "categorias_efetivas": 1.2992,
+      "top_1_previsto": "Climatização > Ar condicionado central",
+      "top_1_pct": 0.9268,
+      "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
+      "top_2_pct": 0.0732,
+      "concordancia_historico": 0.9268,
       "risco": "estavel"
     },
     {
@@ -3195,16 +3195,16 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 346,
+      "suporte": 347,
       "categorias_previstas": 8,
-      "entropia_previsoes": 0.6932,
-      "entropia_normalizada": 0.2311,
-      "categorias_efetivas": 1.6169,
+      "entropia_previsoes": 0.7021,
+      "entropia_normalizada": 0.234,
+      "categorias_efetivas": 1.6268,
       "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_1_pct": 0.8902,
+      "top_1_pct": 0.8876,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0723,
-      "concordancia_historico": 0.8902,
+      "top_2_pct": 0.0749,
+      "concordancia_historico": 0.8876,
       "risco": "estavel"
     },
     {
@@ -3523,6 +3523,21 @@
       "risco": "estavel"
     },
     {
+      "modelo": "etapa1_oficial",
+      "categoria_historica": "Hidrossanitária > Hidráulica",
+      "suporte": 1335,
+      "categorias_previstas": 23,
+      "entropia_previsoes": 0.8168,
+      "entropia_normalizada": 0.1806,
+      "categorias_efetivas": 1.7615,
+      "top_1_previsto": "Hidrossanitária > Hidráulica",
+      "top_1_pct": 0.8921,
+      "top_2_previsto": "Manutenção Preventiva > Reservatório",
+      "top_2_pct": 0.0502,
+      "concordancia_historico": 0.8921,
+      "risco": "estavel"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Manutenção Preventiva > Elevador",
       "suporte": 95,
@@ -3550,21 +3565,6 @@
       "top_2_previsto": "SISTEMAS > OUTRAS SOLICITAÇÕES",
       "top_2_pct": 0.027,
       "concordancia_historico": 0.973,
-      "risco": "estavel"
-    },
-    {
-      "modelo": "etapa1_oficial",
-      "categoria_historica": "Hidrossanitária > Hidráulica",
-      "suporte": 1333,
-      "categorias_previstas": 23,
-      "entropia_previsoes": 0.8071,
-      "entropia_normalizada": 0.1784,
-      "categorias_efetivas": 1.7497,
-      "top_1_previsto": "Hidrossanitária > Hidráulica",
-      "top_1_pct": 0.8935,
-      "top_2_previsto": "Manutenção Preventiva > Reservatório",
-      "top_2_pct": 0.0503,
-      "concordancia_historico": 0.8935,
       "risco": "estavel"
     },
     {
@@ -3615,16 +3615,16 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1694,
+      "suporte": 1697,
       "categorias_previstas": 15,
-      "entropia_previsoes": 0.6783,
-      "entropia_normalizada": 0.1736,
-      "categorias_efetivas": 1.6003,
+      "entropia_previsoes": 0.6775,
+      "entropia_normalizada": 0.1734,
+      "categorias_efetivas": 1.5993,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8707,
+      "top_1_pct": 0.8709,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
-      "top_2_pct": 0.1133,
-      "concordancia_historico": 0.8707,
+      "top_2_pct": 0.1131,
+      "concordancia_historico": 0.8709,
       "risco": "estavel"
     },
     {
@@ -4275,11 +4275,11 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "suporte": 441,
+      "suporte": 442,
       "categorias_previstas": 4,
-      "entropia_previsoes": 0.1237,
-      "entropia_normalizada": 0.0618,
-      "categorias_efetivas": 1.0895,
+      "entropia_previsoes": 0.1235,
+      "entropia_normalizada": 0.0617,
+      "categorias_efetivas": 1.0893,
       "top_1_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "top_1_pct": 0.9864,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
@@ -4440,7 +4440,7 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Manutenção Preventiva > Ar condicionado split",
-      "suporte": 1861,
+      "suporte": 1862,
       "categorias_previstas": 2,
       "entropia_previsoes": 0.0357,
       "entropia_normalizada": 0.0357,
@@ -4500,7 +4500,7 @@
     {
       "modelo": "etapa1_oficial",
       "categoria_historica": "Manutenção Preventiva > Ar condicionado central",
-      "suporte": 171,
+      "suporte": 173,
       "categorias_previstas": 1,
       "entropia_previsoes": -0.0,
       "entropia_normalizada": 0.0,
