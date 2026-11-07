@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "criterio_agrupamento": "identidade exata do SHA-256 dos quatro campos normalizados (titulo, descricao GLPI, titulo O.S.M., descricao O.S.M.), separados e nao concatenados",
+  "normalizacao": "NFKD, remocao de diacriticos, casefold e colapso de espacos; identica a ablation_lstm.py e comparacao_kfold_groupkfold.py",
+  "corpus": {
+    "linhas_nao_vazias": 14559,
+    "linhas_sem_id": 0,
+    "linhas_sem_texto_em_todos_os_campos": 0,
+    "grupos_textuais": 10714,
+    "grupos_unitarios": 10307,
+    "linhas_com_duplicata": 4252,
+    "proporcao_linhas_com_duplicata": 0.2921,
+    "maior_grupo": 190
+  },
+  "distribuicao_tamanhos": [
+    {
+      "tamanho": 1,
+      "grupos": 10307
+    },
+    {
+      "tamanho": 2,
+      "grupos": 115
+    },
+    {
+      "tamanho": 3,
+      "grupos": 29
+    },
+    {
+      "tamanho": 4,
+      "grupos": 47
+    },
+    {
+      "tamanho": 5,
+      "grupos": 52
+    },
+    {
+      "tamanho": 6,
+      "grupos": 41
+    },
+    {
+      "tamanho": 7,
+      "grupos": 17
+    },
+    {
+      "tamanho": 8,
+      "grupos": 11
+    },
+    {
+      "tamanho": 9,
+      "grupos": 5
+    },
+    {
+      "tamanho": 10,
+      "grupos": 4
+    },
+    {
+      "tamanho": 11,
+      "grupos": 2
+    },
+    {
+      "tamanho": 12,
+      "grupos": 1
+    },
+    {
+      "tamanho": 14,
+      "grupos": 1
+    },
+    {
+      "tamanho": 17,
+      "grupos": 3
+    },
+    {
+      "tamanho": 18,
+      "grupos": 15
+    },
+    {
+      "tamanho": 19,
+      "grupos": 4
+    },
+    {
+      "tamanho": 21,
+      "grupos": 6
+    },
+    {
+      "tamanho": 22,
+      "grupos": 2
+    },
+    {
+      "tamanho": 23,
+      "grupos": 1
+    },
+    {
+      "tamanho": 25,
+      "grupos": 1
+    },
+    {
+      "tamanho": 27,
+      "grupos": 1
+    },
+    {
+      "tamanho": 30,
+      "grupos": 1
+    },
+    {
+      "tamanho": 31,
+      "grupos": 4
+    },
+    {
+      "tamanho": 32,
+      "grupos": 5
+    },
+    {
+      "tamanho": 33,
+      "grupos": 2
+    },
+    {
+      "tamanho": 34,
+      "grupos": 5
+    },
+    {
+      "tamanho": 35,
+      "grupos": 3
+    },
+    {
+      "tamanho": 36,
+      "grupos": 4
+    },
+    {
+      "tamanho": 37,
+      "grupos": 14
+    },
+    {
+      "tamanho": 39,
+      "grupos": 2
+    },
+    {
+      "tamanho": 40,
+      "grupos": 1
+    },
+    {
+      "tamanho": 42,
+      "grupos": 2
+    },
+    {
+      "tamanho": 45,
+      "grupos": 1
+    },
+    {
+      "tamanho": 69,
+      "grupos": 1
+    },
+    {
+      "tamanho": 107,
+      "grupos": 1
+    },
+    {
+      "tamanho": 155,
+      "grupos": 1
+    },
+    {
+      "tamanho": 174,
+      "grupos": 1
+    },
+    {
+      "tamanho": 190,
+      "grupos": 1
+    }
+  ],
+  "particionamento": {
+    "limite_por_dobra_k5": 2912,
+    "grupos_maiores_que_uma_dobra": 0
+  },
+  "rotulos_conflitantes": {
+    "grupos_com_referencia_divergente": 15,
+    "linhas_afetadas": 105,
+    "nota": "texto identico com referencia humana diferente; limita o teto de acuracia e nao e corrigido por este passo"
+  },
+  "mapa_sha256": "083abf85f4b7eeaa20081155249e1a5807fb2e6bb9aff47707440847864ec0b0",
+  "hash_grupos_sha256": "71872e6159876efaf1411cc5175f3dd21cdb9a709fc9cd04478d7daf9ac9c506",
+  "trilha": "B",
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 00:28",
+  "script_origem": "src/trilha_b.py"
+}

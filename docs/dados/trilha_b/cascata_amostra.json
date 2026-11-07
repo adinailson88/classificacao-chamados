@@ -1,0 +1,1848 @@
+{
+ "protocolo": "300 chamados sorteados (semente 42) entre os 33,5% de menor confianca bruta do tfidf_embedding nas predicoes out-of-fold; so hashes de id, sem texto",
+ "n_abstidos": 4809,
+ "acuracia_modelo_nos_abstidos": 0.5762,
+ "categorias": [
+  "Climatização > Ar condicionado central",
+  "Climatização > Ar condicionado split",
+  "Elétrica > Gerador",
+  "Elétrica > Iluminação",
+  "Elétrica > Instalações elétricas",
+  "Elétrica > Nobreak",
+  "Equipamentos de Transporte > Elevador",
+  "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+  "Estrutura Predial > Esquadrias, porta, portão e janelas",
+  "Estrutura Predial > Forro",
+  "Estrutura Predial > Infiltração",
+  "Estrutura Predial > Pintura",
+  "Estrutura Predial > Telhados, calhas, rufos, etc.",
+  "Hidrossanitária > Bomba",
+  "Hidrossanitária > ETA / ETE",
+  "Hidrossanitária > Hidráulica",
+  "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+  "Instalação de Acessórios e Mobiliário > Placas de identificação",
+  "Manutenção Preventiva > Ar condicionado central",
+  "Manutenção Preventiva > Ar condicionado split",
+  "Manutenção Preventiva > Esgoto",
+  "Manutenção Preventiva > Gerador",
+  "Manutenção Preventiva > Hidráulica",
+  "Manutenção Preventiva > Iluminação",
+  "Manutenção Preventiva > Poços artesianos",
+  "Manutenção Preventiva > Quadros Elétricos",
+  "Manutenção Preventiva > Reservatório",
+  "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
+  "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
+  "Manutenção Preventiva > Vistoria em Instalações",
+  "Outros > Erro de chamado",
+  "Outros > Outros",
+  "Posto de trabalho > Contratação de Posto de trabalho",
+  "Projetos e Reformas > Projeto",
+  "Projetos e Reformas > Reforma",
+  "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
+  "Suprimentos / Apoio Técnico > Materiais",
+  "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+  "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem"
+ ],
+ "itens": [
+  {
+   "id_sha256": "274ba2873415882d526f6cd8d8dd5a70ab6b50b5651e5649a6f5a319a249b4ba",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.116288,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "784e2aa6738a85b15bf3f7cee107aed6323ec1baf0aa05f822983b832c47175a",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.082724,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "e0f530b7887a66905eed850c9f830034ee050de2a57cd3554c3efc1821c712e4",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.066668,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "01f416e1c041510c4529deb5006d23918b89fff2aafcc29daf083556d9ebab5a",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.073799,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "caf0ea3f2fc08ba9526e49b85036b434b2ab65617c7a5350f0df3baca9ff530d",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.102496,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "0ee94f0394d9cd8a6358e4a82d3d4342a2bd29a342819a67e0593681a747a257",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.044374,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "eb745d563d64d60de29aeedd5ed1b464033db8f03a153cb431f47447d098f37b",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.094602,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "913e4da836071d3eefa9b400d18c7d05940a5b8f2cf08c9215c0af1df30c3444",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.110087,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "7cae64772719f9d607e7f7bb70d162c7a44520e0ea1f83be19829d9d907dc30c",
+   "previsto": "Elétrica > Gerador",
+   "confianca": 0.07626,
+   "referencia_humana": "Elétrica > Gerador"
+  },
+  {
+   "id_sha256": "fa933b00a6fafc8f06ff30c5bc5bfde05868d164a74268f3cdbe8b73b01b22cd",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.046983,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "8fa9feeed7b46341ab85ed2d218c094d6ccc63bf2febec9b3e33a313e9a9a7e9",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.045256,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "c73eeeb8ae4d6c14ff1c9d32affef0f97015f557e3d27f9251a3329345dec178",
+   "previsto": "Suprimentos / Apoio Técnico > Materiais",
+   "confianca": 0.060544,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "a5a5d12ecbd0fa82aa9b75c948abbb3c81209f72400e0dd887f6ae26eeeead58",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.083554,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "8050582bab193b41c6df477f9308e9da1b75d5362588c251eac53b98f9ad89d1",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.073436,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "95558b3e7d3ec20c50e4183574dec6828cea99548296e0a6eeb5bbb2f4c23696",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.041486,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "e958deff40ba4c1ade5ad304f22a43692ad9f3744aa7f7432a8c279aa24e1973",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.051075,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "801e015a1903ae96108076a43ead4b29f36a34381a2a072fd26410d4961dde1f",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.094805,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "7280830301e490713f9fa051713d8b05f35269b70a05965dafcc01a5b9f693e7",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.10162,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "daec287f258ed64f5529261036652c6f10ce3fac5c10c6fcbb5c262c50df7a8b",
+   "previsto": "Estrutura Predial > Forro",
+   "confianca": 0.088175,
+   "referencia_humana": "Estrutura Predial > Forro"
+  },
+  {
+   "id_sha256": "a7428ecd1652fb1c4b2b4dc8a4382d6a4d383d8d2544822f6b90cd6e4342563c",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.071415,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "a24fd489a1551cda83822dd96119c2d5b1b1b4fa5a336f65ca901d7e9ccba1fc",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.107166,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "13e5fa23a839a90b18472d3232dd2799098505a1e93e1843ea544de81e33157e",
+   "previsto": "Elétrica > Nobreak",
+   "confianca": 0.094841,
+   "referencia_humana": "Elétrica > Nobreak"
+  },
+  {
+   "id_sha256": "47227f356efdb67922baeb8da86b02e8a7262a2103ddcca1275bea2ce531b59c",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.078544,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "d663eacf96884a69dc0db85e1544feac4a4fc447d838b0e3750b238e12896a83",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.10601,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "6a961938ffd2c9ecd2a051a73a4cc173ba9d571ec5cbb3f7fe25bf32521cc85d",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.09855,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "488910581b4857405889a6cd7f043e48cc5f4553dd75497d7b6ddcef9335193e",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.115549,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "5a016839014350f415b66fdf22ac7fcb30fd91c1707340338f0f87fe222fe6bb",
+   "previsto": "Manutenção Preventiva > Esgoto",
+   "confianca": 0.092997,
+   "referencia_humana": "Manutenção Preventiva > Esgoto"
+  },
+  {
+   "id_sha256": "5ebc91a9e6249b375c5f1d152d92d0aa4ba132636ed0646e4536f185f86193e6",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.044502,
+   "referencia_humana": "Elétrica > Nobreak"
+  },
+  {
+   "id_sha256": "273e08195be70e27865626fd8497902285d0e2e13e9da01eb801ead2db3b817e",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.114384,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "310af641ec1e773f87354925e357aaae41c0dd3e85e87d604e56c45d8d19af2d",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.069068,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "c4baf230f08b115f8b48150a9b5920379153121d4d668c69b2863fc710da00ca",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.067403,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "03867aa694400a3e353aa78e8f354d46a20222674e5745500f3b6162827a1124",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.066089,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "eda434b77f2df31265335e51c9d5cea2cd1ad6b62f7e286e1bb3c0732e3a80da",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.067318,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "1b91607fb59f1d178f397f0560b047f7a1a53198a46d7cd1b92a3111f97d7406",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.045466,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "8c01ebfac5d2b97f43a93eff8039f2f5011696831fd30b98ab3cabb73bf2a01c",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.083632,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "a4f251629cc0f20929df24311fb31113f0fe1e3d78a8ff3d1fb375a3d443f3dd",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.059379,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "7ac8282fa9a0676b99960141b0b3742a8e9872e84ea38d04042bde59d7b30ca5",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.048716,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "885ab4f02ce8d46f418f7c13e4cf0fa5b95340bd482c34de840b0221c49e9c58",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.096235,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "2495c6d2ac39929313f1f5824f66f9dcb40e9e195f9deaaaccdb1631fbc06b26",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.04642,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "3ca68ce3042999384e7daf87226fe6b52cd5d8faadcb308f97a64e688e8ecfe0",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.102024,
+   "referencia_humana": "Manutenção Preventiva > Vistoria em Instalações"
+  },
+  {
+   "id_sha256": "0446062d3367dd75c82e30593de023054f3b3a6df9f93cc565ad2dd7763d732e",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.0981,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "4c3ea13a3ee2947ecf36f71aa3d7b6d96c6eefe625628477482831d330eeade8",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.089082,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "0a4f2ffcde444a36e3b1c39bb18d1e3fa0f24132df02291bc9b047afcfb71484",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.053386,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "b498afbf365ce1eaacd89e964a30fddc6dfa9d74d0f334e68c804e527b66203a",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.05056,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "460160dcc8af11885b168b34eb66208023c4fcc2231787561b0d9ce14c9c2155",
+   "previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+   "confianca": 0.08471,
+   "referencia_humana": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem"
+  },
+  {
+   "id_sha256": "644de623cbfd3cdfdad56e943dadbc507504817da5df001a55bc14fb5e54e509",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.037832,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "1c8ad00cb8cfb434d243602de4c6ba8429eb1603b4276b76a99386bd7de24d5d",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.065925,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "7a3c8fec3faa6db0973ae08d34f6f2e4fa93c446c16f6f350b8422db624015ec",
+   "previsto": "Projetos e Reformas > Reforma",
+   "confianca": 0.086376,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "ba19a186dbbd380dda45d9e1e8db26ea457176f476dbc997e7862ef1bde9d690",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.11654,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "93554d0b664207b41221b816868dc069538d1fcd0c6a0c1c010631d872977394",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.085338,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "ba3aa7c5e260b2064b98b89fa9a94343e9cee9d7add7f0e60762bbd087629fb8",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.103645,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "dffd20ecf9364dd830802a240e8f53d72ca3aad5d7f9d231eea3e748ca5b7539",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.061076,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "cd4cf6f1a60b611231efeaf3ef431717663c6ab70d328c0941ac5a073b9a5bc3",
+   "previsto": "Estrutura Predial > Forro",
+   "confianca": 0.11152,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "c5ff25f584cbba218ab92aa15d5361cd57f55fa231accba2a4bb98387439def8",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.081232,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "b568b463024a92d790a6094353d4bcdd9d2982f08309a9ac84f2c37561d62edd",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.056234,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "a804d5c3b2975c5f5ee7a5d29744adeb8cd118a440b1c83a1053f5fc85308944",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.069438,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "b0decc800156b916fb07d860c5836a93684ffe1541d0c534ffa95b28cd4208f6",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.071122,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "c20468c1a312d1940964bc79f2bd27caa169d5af261a870610e5945df8afdfd7",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.116171,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "00c68dbbda09ab0c92badadd498663cdbae481559a357f59d7d4a0d1d14652a3",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.078844,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "3241942cb3d6b46c3bd68a0fef4268b6ff959d066d43e3de457fa91465192010",
+   "previsto": "Manutenção Preventiva > Reservatório",
+   "confianca": 0.060057,
+   "referencia_humana": "Manutenção Preventiva > Reservatório"
+  },
+  {
+   "id_sha256": "263b20fc4cb4953c1f7b26dc567ee05850812b5ee6ee9b796c61399319fd5326",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.11068,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "b8b445ba5ddcf7dab8342ce3e26609e07f5d864b5dfcef813e7ce2d78bc5f1a5",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.071074,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "3004b32fe66cb679d70ac72ebcce46e1d6897452f1b623a895012aec178512f4",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.065294,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "cd658b6147f34952bb2774002b56b609db4e80ca90a6a27705978bdc1b0de248",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.059001,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "0475f8968201a1f7039cb84aaa80865654ad3cee065ea89c0efbeacdefec6aae",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.061956,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "e1a70b08640f9ce38427f30b2fb01970a90116821632524c81d7b4214238a7fa",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.037764,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "914e9eb841375334b1ca8a68fdefd1554560bcdf6508a66c5c3650aea1bf189c",
+   "previsto": "Outros > Outros",
+   "confianca": 0.117658,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "b0fd1a2b241f6f99dbaa0b9db2feeb6921a2c57cad92bb53f21e89a887953f82",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.080848,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "9d9dab2a42a76e0590f3b5376b7186add05b8b44633435b91567e835ae6e211f",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.074249,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "e835f29fc73e3708e87091fb58246438d157b811fd188209435130f73e49c3c6",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.057508,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "90ced74d06db9b0086b201bfb73221cf5acda057a700d538de4b3152f43007ef",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.049012,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "0c314f28437ff9e242e671e97e2b1ae1b4a5ce139e05d46ca8d3fe7611e9da09",
+   "previsto": "Suprimentos / Apoio Técnico > Materiais",
+   "confianca": 0.054495,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "314e2107a9faa9f14855bbf1a0252aadcddbd81b84318d7775e141492ff9ecac",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.091432,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "a9bdf6a828b5fcbf31d0844fd28385b295787f0a99009c9c812fe604053608da",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.084348,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "37c58898661fce493b1e982af54c11d358d251c6112d7e56e98d6aaa5fd460bc",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.048301,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "2d0bdafe79e442811b0468cff9362e3b081d8277368d61f13702338c0710f651",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.093106,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "9e72829641ecefc38f9582fd9e7ed3efd96ee555ee58d45c63552db2d09a7a7b",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.057339,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "d0ca82dd60c86073e2fd75d0d2c790a69ac9f73d44483a0b4f6cc1efd455b535",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.060309,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "515b3d9e52a945ca273816681762b8298e4ac973136ce0931e18a5577b8ba41d",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.067472,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "161bcbcd3bd8d380c155ec60005102b069d0d577671dc884ca40614c0d88067d",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.0416,
+   "referencia_humana": "Estrutura Predial > Pintura"
+  },
+  {
+   "id_sha256": "c39e63e90afaf8f36fdbfad69242222e50867c99141c90a6eb65dcfacf11e457",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.07511,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "c6504db051403617bc09881c5cf68b0ef1687a350ab5f4607de80dc60f4fb522",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.087363,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "81fa57a662f160e9cb85e02eedd0b35ab65377ece743fd50bf1ddf22c7ffc658",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.047012,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "e225dba13e6eaef6773c8b80d999a5538913707be414d4a5435cfbabb6a09f49",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.099111,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "012690571f77c80d43031559b11f2fe942b24d9036b7afc662b483631916c533",
+   "previsto": "Manutenção Preventiva > Reservatório",
+   "confianca": 0.102137,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "55a663b4152771df1fda1c49824dd1ce6059d819e7ab537b7d331d24125e41a0",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.078972,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "d71575b11dcd97c7f73bd7fa32ebae8e8b33b9e30bfeebb5ae3f2a07c79d88ff",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.065826,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "5dcf96733361b8201eaefdd6076cc7d5ac5102dc873c98d9bdc761ffb65f4567",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.101478,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "a611418dfa9030a5fdd074cac090ba41dc343733c60c99ec1225acacd0038a2a",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.048413,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "68677a690ebb505ac28f00f10353e61b72ea7b6c2ac748ab71e664143f81f66f",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.066993,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "c76eb246f13cc8604d09c68eff0ae4d7f8f295d8296be739e2f7c83ceb0ae4e4",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.044688,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "45aa2deaaa1a3528c538d8a2b0e772e8ce1fa14047dbb852af9e7409a4d4f8ad",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.052781,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "604b614a8c4c5671fbbbee2f396ffc551e1ebb7ea9e05bf51d60d80bff544ea3",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.06528,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "eeb081407a9aebbf4d3cdc8d53044df16022f721e9f3137e45ec2f0f1f686626",
+   "previsto": "Instalação de Acessórios e Mobiliário > Placas de identificação",
+   "confianca": 0.067139,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "de3c5327e81eb6b6ea5ccbbda9e45443e47e121de7cde585a32ea4ea5a3bbe0f",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.086465,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "9807fe182f3dc6252a470df9020a7a9041c9c2c07a8b5c5f3f64fdee9b9db3c3",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.041182,
+   "referencia_humana": "Estrutura Predial > Pintura"
+  },
+  {
+   "id_sha256": "d0d7d875cfa766fb3fd17dc523fdabaa1641ab5cdf2712ae10013fd68bb66d98",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.1144,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "b15f393c0842696d63b6983b6c5751d89ca23f5b3a01fa94c5b80c35b9ef66f6",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.05032,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "77d3f38dbc5a0cd783ca89aea21211f72eab2251347d626bdb757191b35eb576",
+   "previsto": "Elétrica > Nobreak",
+   "confianca": 0.111446,
+   "referencia_humana": "Elétrica > Nobreak"
+  },
+  {
+   "id_sha256": "3388f8f2369aece8e46ced7dd8715623dcd4fdfe050fbe0942dc18bfb6ddd600",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.049273,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "e6b61890d3372be2dac1765acba66b005f95794a355da8588b71a456f2daabc5",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.08491,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "0c052e2e9cf6400c5bca1acfc7d6c94877a0afcf0b9a7ceac72282d27ac0fff4",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.072766,
+   "referencia_humana": "Elétrica > Nobreak"
+  },
+  {
+   "id_sha256": "e076a8f7f812733f60360d73c003e26300ccb2855de3e9a83c593b3e41ce0663",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.082586,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "df4c7bec61e81173adfe5f88b299a807fbbc0d2e360644d4244584ed35c80d40",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.088371,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "3e36a9229c60e6e25d697f067a57f057a353f1b04793c34fbb14f52a1701f4ce",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.081058,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "2276999f5e591377317be30629e0fb078a68b03331880845ba305ad5116fbff9",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.075006,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "33ab5da4d608361b7d81abcf112a54ce76391bb3fd2b6dd96898a5741f3369cc",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.07532,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "49b9ca2a9cf1d301b566e208019d539c82c0412e8050225b58dd46f8727d86ea",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.075494,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "9d3e6c647d4693bc121a0a9e36444968dd01f46fbfd0eace00fa29a8225622fa",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.070476,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "50dcd7a598c97ebe68c22ca13edef29ba7ac8e4f34ee01a5e766b5de102a7f21",
+   "previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+   "confianca": 0.072288,
+   "referencia_humana": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem"
+  },
+  {
+   "id_sha256": "7811c6ee4cf5f2b58888eabb5ae48763a99c9722f02a9decb1076e79aae0dcce",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.077914,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "6dc2fb6081013c6969590719903335c429a96a4c6811277e1012cb35bab7ad67",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.116186,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "5253bdb229f8b369ffaa29087e694a7510dbfbd294e140c3089054cd574df1cf",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.09419,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "d010d1db3ee0088e718f56d9017324a6068812ce62b9f11477b356c9b520c541",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.060208,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "caee35a5249af0b8f439ade6192e6ce3c36c446dc8db2cab442750dd7a168d76",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.095842,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "42269e7d09ca9e5a77063992a7a1f74d1a83c633f3fd1edc4efb0660176263ad",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.053594,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "7bcba898badc1b3cb8d81b6d371e487e0a25b07ceeb30bd9658808a95aea7090",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.101488,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "3c1d9213f8765a2a3628d1c7721fa46d60f0601845ad1892374e6d32ee270be1",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.061174,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "552b0c018f4162e0263df54ea8744fdb363250585549e3a913a5cbbe5066aad3",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.054231,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "0bf9490e27c5f56d7b8de19a7d8dd1e5fd0120f063a252c928ca2d7ac269bb3a",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.079923,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "a2b0574ce0e6b7d4e4288e0bdaa55e394804f6b12d8c6542729e7f9f93dc4e8f",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.09266,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "1ae47bec86357f9fa43b795dcbcf03401a40b3984b212d51367a33ffc1ffd785",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.083504,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "4493b95e2021cc421519327987bc39e153b638ee2ee37297f587755f4d6951ab",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.072941,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "a3c83a51d75848f9dd322eb0db200494809a5a2c7447a61d41bd45c39db2a379",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.06555,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "67662a46454fd4d9d28c0df410a807dee742d4f58cce7f88ffbc35361857b65a",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.056182,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "bcf1c4da5149dc8f0e2bad7594ce7f933af0a9cd9afa18ffdcd83b4f4a9bc525",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.063523,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "17fcc5b753c17707cce839ac18eae3c26ba7ba65d5dbae5c1a301a3887ae5cf3",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.060936,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "d1ad79478e062cfcd8fbd63ecb9239082fe4bfd9a1126e9345c1b6f923af5445",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.109515,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "ab8998ce738078ee978c91b46086706e87668e04253ab9ea78bf6e46e675f0b3",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.0483,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "36d064f78f3fffdce76a4ff17909bb4af612ccd3fe1bfdfdd425f79b8072445a",
+   "previsto": "Suprimentos / Apoio Técnico > Materiais",
+   "confianca": 0.101141,
+   "referencia_humana": "Suprimentos / Apoio Técnico > Materiais"
+  },
+  {
+   "id_sha256": "fca1ad9d17c6f471ee10d4cbe539b58acced4892c162293b313d2d17a0db01b6",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.106784,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "ad2e00bd7ac04c2efc30fc7f9ff116d9f9f1dc5678074eae1cd750f0b08f3684",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.082591,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "cb3c10f3651c351675169a9964b76fab510d7dda063944489344b774e7eb8811",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.106217,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "c67dadf69e52467a7f520a67ccb29c593a9565b0a9d080d42a971ff087ffb041",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.07815,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "6662a9c5d9675276bff48f2a6ff6db833fd02c3677273c0ae9ae84d35c39d648",
+   "previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+   "confianca": 0.083034,
+   "referencia_humana": "Posto de trabalho > Contratação de Posto de trabalho"
+  },
+  {
+   "id_sha256": "2069cb46d38f7b2025c26c9b4779c09796b28e7646205994bca08d00ce0a349f",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.074099,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "6c0cd75ae1b5fa16e665ded686467cb3cd0bf42908d610cf1263f1ac180df32d",
+   "previsto": "Manutenção Preventiva > Reservatório",
+   "confianca": 0.109681,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "d8e4f08a98ab65ec5c72740a5465cfdd1e415b2a034a1b1129e0704d803b25f4",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.10829,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "c9ff3ba6f2b777c48d44b6780bb7d728151a4766ba59c5fdbe4c28614786e7d8",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.071056,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "2384e3918051142f8a14ccddb0d92b53274df1701f0f652f344b268dee45ce53",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.089319,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "e0e2395b20d0492a8c8198ca35d933990bedbce98b29e5f0f8e55be6c3222bdd",
+   "previsto": "Estrutura Predial > Pintura",
+   "confianca": 0.083576,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "fc8b1d5eb1886a1969c22d78284f49299b9ee12853d45d07bb3d17fe555be46d",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.07277,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "6a72a01bb32d5eb0bc55d1de24c6967ef465c48f1bc35b876bcf4f7f5f1de285",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.116274,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "e43fbb7fcc1c8636ad31ae9dc0f0ff6cd8fbb38b3858eda90f8471e3c83f60c0",
+   "previsto": "Projetos e Reformas > Reforma",
+   "confianca": 0.055398,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "82af498652ef41247a7013552a7ac0538cec5a7232eb17ad11a06f1a20956293",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.04852,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "e5e55a9a32facc65cbe451b886db2065d74b81649fe2da34a99d7ca0f6919f61",
+   "previsto": "Manutenção Preventiva > Vistoria em Instalações",
+   "confianca": 0.111558,
+   "referencia_humana": "Manutenção Preventiva > Vistoria em Instalações"
+  },
+  {
+   "id_sha256": "1313875e2c66da8418fc29aafa9d0c23443974cb2734e9d7ad393538a2eae115",
+   "previsto": "Manutenção Preventiva > Vistoria em Instalações",
+   "confianca": 0.111558,
+   "referencia_humana": "Manutenção Preventiva > Vistoria em Instalações"
+  },
+  {
+   "id_sha256": "07f1ae95d36abc3ea538b1696e8c00b65717c76921d6f990acc514108839f727",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.097707,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "4987ed252a8732b906614beddb808972bf15361de735c459d0ce2df48d14a744",
+   "previsto": "Elétrica > Gerador",
+   "confianca": 0.100599,
+   "referencia_humana": "Elétrica > Gerador"
+  },
+  {
+   "id_sha256": "3fb4aa3712285b9f23418ba5c58ffde6d50702ec22504e4157a0bdbf33de8913",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.065121,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "d779627273ced67b4135052534fa217fc96cab4d91a5997f3f3a47f7b904649b",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.113109,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "5c99227fea339af1fff83bb2c3cd53f06b74ac7eb78d846ce8c9aba138733386",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.097144,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "7ad8bd44a7584f6ad728ee8bb7e63ea86947be5b2d114466ac6ea614cb1aa4dd",
+   "previsto": "Manutenção Preventiva > Reservatório",
+   "confianca": 0.093791,
+   "referencia_humana": "Manutenção Preventiva > Reservatório"
+  },
+  {
+   "id_sha256": "817459a796dcbe97f96d0b60d293d484a485a07208779ab6e8aeff0ba21b751d",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.066629,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "e8bc4259ef8b5e8eadf651717ebf5aadee20cbce4768e4f594a566e6f623c2fa",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.073315,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Placas de identificação"
+  },
+  {
+   "id_sha256": "06821d02dcea780697223e0c07cc106a317cd6d13433aa518365d6acfe6cf3f8",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.093179,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "9f476b7ea0b3cf8199ad3fbebfa2d1b4e273efd2416e8d6c75db09c4ebb07641",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.061583,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "00dbde6213499bf45e256f14adbea01174d4654b5e2929f108c8964cb9649ea7",
+   "previsto": "Hidrossanitária > Bomba",
+   "confianca": 0.089101,
+   "referencia_humana": "Hidrossanitária > Bomba"
+  },
+  {
+   "id_sha256": "d1119979d66cbe6e7c2308b763835411d9587e2dc4ad15da7dcda8e3e3c27af4",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.070029,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "6bf4156aaae5972abfac5adde758748dd75d1ad5a3b2bda51e48dbf61a861382",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.115986,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "a7ac52601a1c2d5f04350f38ba53d8b42a36674e9d7c0838325f65d694f7125c",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.062671,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "cd1c48af795c0f85e19ed2dd4d62418b77db2281bf43db28e32d082686d8752a",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.116783,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "0fd1e02f0cf5a0d33f9e866374e7e0e7ee4a95d05c4c83954abd62ad4b39625c",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.073358,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "0a876e7deaa4e433d236b9553e9de86db21550ae4b119db14adcd14b66589bfe",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.073585,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "76bec84bd3180539fe0d7ebdd6239cbac67fd631da713b1308973996abe25946",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.062075,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "2d71716f2347dcc60ee75c2cf5df3af382aade507528724395111e5e32cca7e1",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.082844,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "c1ef54ddd9fd09b8651db2c70b7ef0126fa351566714f61ea1f6f46dd033dacf",
+   "previsto": "Elétrica > Nobreak",
+   "confianca": 0.054697,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "35dbdca6b8010c6e35d5f641bd15ce28e66e2d06b6ef157c7c7d744881825df3",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.09638,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "d4f0bec4656a6cf26d858827cc78c52c64e5352e54b38409a7aa48db7087fc8b",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.065706,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "27575d62101d71af71d0a184c6332aac5aa61df24910b9536ba155785a2a5cae",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.113901,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "7c9b39a6d57d6f88478e0d93d25410fb9f292b16655bfccb86ab2459a5d6292f",
+   "previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+   "confianca": 0.045526,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "0527e56aa05d00fe28e5d7e45491d53fe8c566337adb095e9d90f26621799c26",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.065762,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "0b2e1b2d340ab4d647b4de4c437673bc4d3d41a64a728f58acb782991eced7af",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.103135,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "58c28836249542257d6c4f4fdb53633b757a8a39eef01f3bd9052321a71d7f80",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.084884,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "5ca9c0ecd3855ff9daf6a62180668901848bcfffa88a54baa7ff7dc1a573ad8c",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.09403,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "def4a4213a26c40111ad104786dbfca8cc4c5cd1867bb3b9daa385668110ac2a",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.052379,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "6e374a65a2b26634a3e9b219679a4773d0ec6e9596729b4cad9e2b5e391ab7e7",
+   "previsto": "Manutenção Preventiva > Ar condicionado central",
+   "confianca": 0.091451,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "0dc461ba96121064fbd67a190fd3aa1a2345aa5223595a7997aabb7948d1c38a",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.061326,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "f25a4b0458e255fcb8bbf15ee34c02fe5e4d54943408ac960a9f586060fc180d",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.080195,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "5b1481317b630852520078deec11b595e854964c8427791566f2d9557ca66274",
+   "previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+   "confianca": 0.062648,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "0dac36401df3e69a05052c4573613f9fa428869ae89eb1e2b547e2e1e822bc6e",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.066599,
+   "referencia_humana": "Manutenção Preventiva > Reservatório"
+  },
+  {
+   "id_sha256": "1f543041c604af677cf99a3285088de939bb90165f5a3d878d225cd52accfa4d",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.053034,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "4f212bc6bc4f79ab0d5b64f30a542d2af390fff320ba714672a614759075b846",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.070247,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "f47ace3d82965429deb412a90b8f38bdedfd9e3eac8b2d52cf9ec06ac9aad85c",
+   "previsto": "Equipamentos de Transporte > Elevador",
+   "confianca": 0.105724,
+   "referencia_humana": "Equipamentos de Transporte > Elevador"
+  },
+  {
+   "id_sha256": "ab583d325f6cb6bd28a36d77efed0efb85b4c2857d0b080eb186645cb5e2c768",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.059171,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "bb133639a2189709cdc0fe6f319dc90dbaf69d9fa88b9a39c6638400f17f2d18",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.097565,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "ba8e0275c62897e05ee2cdab632f4daea2f275ad7d464fd52f442823f42392bf",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.081014,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "481b0ace4232676adada9f7910d28123363d7164e959aab1a3374b9105f021f9",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.083607,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "54e7cf8b23af54a64a6342a6f4e11de669ad5a7f256b05608747d5c5f5c61431",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.095148,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "64b184bdceb1aa8d76493361052d20ee17a29afb7ae6167f732d4f73e86e0d6d",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.062978,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "59b22861cb193a14a59faafd739af14ebf05fc7a4179ae675542f520c1d94b54",
+   "previsto": "Outros > Outros",
+   "confianca": 0.074654,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "97a52efbac8b184c3eba7e4cfbdc8a0349660977060f4dd8ab066c1364181724",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.083976,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "e55517e84446b17fe9bbabaeae928760cbd5d8e82575613162ad8829fa4ee1d7",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.059561,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "d1ad83cc72d80ec95f3dc5378c0ac8b8ed3121011447ae404b19fb94973782df",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.059477,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "ec6e8ec51658fa3d2e6113e1e428235f72ad79ad6dc7c2e99b28d7a0acc85358",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.096148,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "1227974b6b0caa87a51d1a446418c754c3506732b7a6a2996b9fbb739c322ba8",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.114012,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "a489050c98581a6cb429cf45da985226f12aa4275b3145d4fbe76ae1ef7833c5",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.073802,
+   "referencia_humana": "Outros > Outros"
+  },
+  {
+   "id_sha256": "98bce8163548e8e4a45d0ba7a7d62657cb6321e13798c5ee728b3edd5b5be2be",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.107136,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "67b15f18ee912472ff6eda94db5bfbf94af9c80be5b3966afe8d4833b229a8e7",
+   "previsto": "Manutenção Preventiva > Esgoto",
+   "confianca": 0.069397,
+   "referencia_humana": "Manutenção Preventiva > Esgoto"
+  },
+  {
+   "id_sha256": "e3c6275371fdf595e36b7d49ae19aaad4c909d7c7a4682e73bad59e9ffa88607",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.06004,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "b8c993e829f3c05d381134e76059cd0a1257272bb8ffc991a01a1af6df41e692",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.05313,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "77bf612eba86dfa35c69d5d231160f76250f72be60a614e0ad3d83377bdbfc43",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.097916,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Placas de identificação"
+  },
+  {
+   "id_sha256": "9df5b6e91c5224f41ac1df4f72a44c9a8a3c3751dfc6b72008b0ff3008bf12d0",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.057429,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "47263a3d171d7ff545b03f4612ada5d2808d62c9f8ef123782ede374cd1b190a",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.061589,
+   "referencia_humana": "Estrutura Predial > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "1154c0bd581b5878529eb6c9ec1ead5e2a0c5f7de8d8e3b25d1d11f621e78d11",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.056385,
+   "referencia_humana": "Hidrossanitária > Bomba"
+  },
+  {
+   "id_sha256": "ffc0cf6ca50b27a0ae95d1b980b7f0dbfe1a5d225091f82d075da218526d0842",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.062706,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "b61c661559daeaa03056e5468edda9e23b2e8e5e0101acaa09752571122919b5",
+   "previsto": "Hidrossanitária > Bomba",
+   "confianca": 0.115257,
+   "referencia_humana": "Hidrossanitária > Bomba"
+  },
+  {
+   "id_sha256": "75ccd9ba37a853c1f696da1771bb50d5d2bab4cdc83d28cd3620154fee08b2c5",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.050328,
+   "referencia_humana": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem"
+  },
+  {
+   "id_sha256": "6d65fab0e03f60d72ddbe2989f2a42830823ad27d88e9fd1dfd05074aae1099c",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.092825,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "be8012bd548b38d9b8156499a0b1542a9bb6cd94a07f1f911543e39c6b3a2e94",
+   "previsto": "Suprimentos / Apoio Técnico > Materiais",
+   "confianca": 0.048178,
+   "referencia_humana": "Suprimentos / Apoio Técnico > Materiais"
+  },
+  {
+   "id_sha256": "7db804d20f550ac0e5777ff2406e7a5d56e6da03c287009af6cc8139139dda6c",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.048362,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "93d77a1f2e99f4e6a79177aa1acff08b360afe32ef9bf879b3051f626f64d93e",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.05488,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "156fe97f6e4ddb808f9a8edf2073b20c2040eef4b0a7478bee1568e79b91f430",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.083464,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "812d4939f28400fe79fda99cca4c5a14ce3f7973923413a5f1e370f94d6fd6f2",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.103684,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "7a1b4ab2ed95f92ef0dff131cbc8033091d513cc4bfd3cb0614344198f4e4b2a",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.10642,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "0c943b6adf66adf86bb7f84faa1d9150a1e6e5559bf2dd7ada2f6897cc3b0e0f",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.054574,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "cc3f9d41ea589868ac2f52905c2fe10e5f1db17d39e1677b2919a0e858510582",
+   "previsto": "Manutenção Preventiva > Quadros Elétricos",
+   "confianca": 0.078805,
+   "referencia_humana": "Manutenção Preventiva > Quadros Elétricos"
+  },
+  {
+   "id_sha256": "02d6ff92ee63ff5b88918e9edcde41e23e736bd688190fbd57e7d3f20aae23eb",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.093629,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "398ccd4bda42eff6c2038c44a4c0a047d44f036d7e245f84da9c91493bd051c8",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.041415,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "72e3cdd67d2cfef4a46873c1056a8b2765c8527b52dec5635a8b0af4f9ce8e71",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.043168,
+   "referencia_humana": "Projetos e Reformas > Reforma"
+  },
+  {
+   "id_sha256": "00a4d448b5cf18dc94a224e384220ab91e8e05965b0fde0167a49ed312bd4119",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.073751,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "aed2a15c1e685a2cda2914d4819fb44ccab17381c4dd18cf94ce8d16fee2b048",
+   "previsto": "Elétrica > Gerador",
+   "confianca": 0.088581,
+   "referencia_humana": "Manutenção Preventiva > Gerador"
+  },
+  {
+   "id_sha256": "eef62d40315a150bf3b9804673b239868fedb7be68086c8ecaf4ec5cdfcc33ae",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.11007,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "ca1a15f2eaa06b9d67800946fb17a46b6b6f57ef1bbf7295a1ece2302a100938",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.053335,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "e9c6768b7d80c588c4bf7dc80915eb3ecea229eca689b0962f303289c45ca8c7",
+   "previsto": "Elétrica > Gerador",
+   "confianca": 0.0884,
+   "referencia_humana": "Manutenção Preventiva > Gerador"
+  },
+  {
+   "id_sha256": "b1de1f4e0f4431b57b951ae89b4161d86046e3cd9d986a0f7f5287367be5b836",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.102419,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "05e711c87870706f449d99b314046637a2a681f01a8290ab835c084529c71aaf",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.053141,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "b326873f22cc6f4ef32a0001568f3a591ad3dd53198d7d7942721e1f01a2badc",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.059934,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "867c14647866ba7fdaf9fd9c47f9c55771d6a80a6dca4fd3df643ac29c5b80b9",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.105229,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "63f3219522469622f3a3d6012ec2104f910b02c6cbd201762f2b2da0f2feb660",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.076138,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "374203662c849f25447df5eb182aa3b0a9bc6fccb23f71b8d30305d270065a01",
+   "previsto": "Estrutura Predial > Forro",
+   "confianca": 0.052605,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "b11135ff1c287e21e57e479c2061e05eaf593fa0a16ffc3a673992670001e550",
+   "previsto": "Estrutura Predial > Pintura",
+   "confianca": 0.105258,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "f8e03bc93126748e81d885a8cff45033e18cf22043026ff90ae86a1fe0f3502d",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.088503,
+   "referencia_humana": "Manutenção Preventiva > Quadros Elétricos"
+  },
+  {
+   "id_sha256": "f646eeec0217cc6e5a382eff15dd04ebc027b7544353f5263cb719086e7becd1",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.094711,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "47982b0080641462e3bbe34ecc0c7c5f50644238c9f59a9551a3b0d0d1996602",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.085108,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "9f732e456986d4f440019981f5984b703669aa00c3a6f52681a723c8840e9aa5",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.073761,
+   "referencia_humana": "Manutenção Preventiva > Hidráulica"
+  },
+  {
+   "id_sha256": "64c2c67250b88356e6e006b3d1ac9b5bad119771e5abedc33a030a275cddde91",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.059328,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "defc10d434e30a01742a9ccf359f3d6c9e329f808e1f62a60c98ac192260c13b",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.096301,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "9a90ea5e0112196ac2a8680c42108962ceadd0b52678677e0485b9419ee6091a",
+   "previsto": "Manutenção Preventiva > Reservatório",
+   "confianca": 0.098917,
+   "referencia_humana": "Manutenção Preventiva > Reservatório"
+  },
+  {
+   "id_sha256": "528127c9b564db4d7b84c7ad9bf278a3861c7126ec618c9ae32525257e3128b3",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.109925,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "d5d225e4574dc0ec9263790f5c01a1d5caefab6cc4846df152ccce32c6dcae88",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.043377,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "139131bb125508388086dddca04e485d49e6776ecbfb6c308cd880a9d35b3a7f",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.095203,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "1f9347c72a10f7a419833d8d6cad9549883fbbcb194e4cc1724f272c790dce90",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.09385,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "53c0be5acac80ff030be466b8ad0ef4f04751f74daf98d21efdd6fe994aa5632",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.066998,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "4a188650c5ef5106367e0c9ce7f528a8daa48e8c9fa42f2d26144602edf1d7c9",
+   "previsto": "Estrutura Predial > Telhados, calhas, rufos, etc.",
+   "confianca": 0.097701,
+   "referencia_humana": "Manutenção Preventiva > Telhados, calhas, rufos, etc."
+  },
+  {
+   "id_sha256": "84a7777c16ae8d4cb8573b18a1b693ba4ee686fa80efee65afc57184f90ba9e6",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.068077,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "881319805b315e205edff72012aa101fb057075293464b6413d86cd76593f02b",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.099763,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "da8a951f73ba289dad569972536f87b37cbe62dd8935c3f8cc0c29b27898cd02",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.094379,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "bc3d8ef3efaf6a37f24757fbb63114d3728452d7827d091d46377ad014d1935b",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.093732,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "655d3becfe2f3937e83875d0f00361ddb9a71e4e0441c1ab43974359a5e2480c",
+   "previsto": "Climatização > Ar condicionado central",
+   "confianca": 0.05446,
+   "referencia_humana": "Climatização > Ar condicionado central"
+  },
+  {
+   "id_sha256": "4bf998d80fdf121b8b20e0874917096d77d5f4095fcca288ccc81c16da5fd85e",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.050705,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "e01b7e61909fe498fe4b4260f672f09933056c8e5488ea6321920c802e69aa07",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.102436,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "8e711ae819a4a209b231070c2d554c8c236d053a3f0c85f725c768475fcc5386",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.047458,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "5871c4d3fc59b694087017f9000f0ead1ecc8fb2f1556647e3a04fca5c1c92a7",
+   "previsto": "Instalação de Acessórios e Mobiliário > Placas de identificação",
+   "confianca": 0.082968,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "4aabbd0f77a08426bbab99a8c3a5a9c967f15e862cc90f96af1ac62b3ba9ffc9",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.071632,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "1c92672cfe2c28c6587edc7898d1f9d71987f9d765ade79f5f3da0740aeb85b0",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.057216,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "0340324cb927d2b43593fa06db9f19ead218fe32181be9f43a99920422b85db4",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.099777,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "a892fd5b440afadbabeadfad29107afd03179b083d46c0e174d66839234c0a8b",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.083814,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "47867d98073ef8c4872aa92bdb9645e0edf90bcfd5170e9d7c7a89fbbed670f4",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.054329,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "a5fb814c3a74ea63d3107676dbaa517d9c79ce1d72cd666af606413162264b37",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.050653,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "5ab784fa67363494dcccfc9a7b4ca26ee760049047a3524eb606257221c1c0a4",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.071935,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "bfeffc47efaa6d45aecfe1a2a847932d6f85b1686a06fd8bcf98a6a0f1809658",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.065283,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "f1ef6d14aae430574deeac850706ce7eaf328bbdb17c1d1a1141f1fe82e9d7f0",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.077267,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "fcd13cc6f775e9e0f298c4a71fa0709e7443110eec1e4704df81f011f38b04bc",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.076675,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "fb763b50a5847ce0c3c3aa5f35ca0d55b1f58192075b9f7614de47ea27d2de56",
+   "previsto": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)",
+   "confianca": 0.053025,
+   "referencia_humana": "Manutenção Preventiva > Sistemas de combate a incêndio (extintores, hidrantes)"
+  },
+  {
+   "id_sha256": "6895a4776fdf8bbd50754d88effe48680b5e3d438705bb15c230a4dd23338576",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.090379,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "3b1d716a61d7ef0308451c963d1868ea452d245d029aaf1d5af4af25c761ab75",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.061908,
+   "referencia_humana": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem"
+  },
+  {
+   "id_sha256": "e6267dab7e5926c95224c7b8845e05b9135c8dba3a5b0227f337cdb8de2f987c",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.053752,
+   "referencia_humana": "Outros > Erro de chamado"
+  },
+  {
+   "id_sha256": "8c955e795a9d349c0109fd8e7322c7b99d194ce7fd34d69c7a9d43f5d808050f",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.050362,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "1e7cc14986f69ab982fb67e8a4eefafa4df8a65bd07a3c25678bcaad7407166f",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.112934,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "d8c9f2ad8791f3f27fb285e7b93441cb1e936bb5827b6c52c4b2fd60ab1c5927",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.07938,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "9ed95ac490696eca555ddd9bc4cf7c4d7902e93bb135ae2405c7d25983907d91",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.110061,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "91de777f604166b9ddc46a754f3dcad53fd5e8ee7488c67b9a76badfeb780905",
+   "previsto": "Manutenção Preventiva > Reservatório",
+   "confianca": 0.109681,
+   "referencia_humana": "Manutenção Preventiva > Reservatório"
+  },
+  {
+   "id_sha256": "d7d140b312a9e68ac4aff85a0a91e27514bea1ff6effdefa35892e57bcb99ff3",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.074274,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "f100ba95a54af260ae770eb749f30af26b213121ba232eac3982088ac92e4b1e",
+   "previsto": "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
+   "confianca": 0.042999,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "ce4b9fa4a2b7056a63bebbfceddcfbaa5529c3b7391b7d547762c10b7635b934",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.080839,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "1cdecccb6c1586d77394d9688834299d1ca7761d672b795e8bf7304a97f69e88",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.097266,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "30e46e6fe026200ee74772ca20cb16d07f9ef38aefbe55262effbd8293194cff",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.10925,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "3c2795329bfc1cd2578ecc3ce6fe04979612190c0b7123f883ea25ac4cbaf389",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.116338,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "4847ad64aaeb492ed6beb5db08cf0a12ba57eef48412d14a0a3a11113a676518",
+   "previsto": "Outros > Erro de chamado",
+   "confianca": 0.042881,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "590dc83f36b27f00141c40d04f4248a29c1fc74f13c1a1a882107da69c16e6a8",
+   "previsto": "Estrutura Predial > Pintura",
+   "confianca": 0.089858,
+   "referencia_humana": "Estrutura Predial > Pintura"
+  },
+  {
+   "id_sha256": "7b4bc48169b677e8781657cf01df8f6d6f43923e71d6e615faa1c584c72f0508",
+   "previsto": "Elétrica > Iluminação",
+   "confianca": 0.062876,
+   "referencia_humana": "Elétrica > Iluminação"
+  },
+  {
+   "id_sha256": "3d0c83921a75c5af18f68f990cc9ffae5da2bae55165cba70dcc2d5f34bcace3",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.061993,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "a6e1be2f3a406ca979c8d7f5a321d4f848474e818f3d526e39ae0bdedb63c8ed",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.057724,
+   "referencia_humana": "Estrutura Predial > Esquadrias, porta, portão e janelas"
+  },
+  {
+   "id_sha256": "dc4e7050b9d598e2046c89c312444f8ecce976ef6b541483ebc895dd82292517",
+   "previsto": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+   "confianca": 0.053875,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "3a5554022e2df459aed20ee88a3f74c17c78026aaec567714f0ac515ccce6663",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.059041,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "2d6aea29dcc43609a48b5e7b682d2ba0573ac95d9d9837b1c996032dcaa8fc0e",
+   "previsto": "Climatização > Ar condicionado split",
+   "confianca": 0.042523,
+   "referencia_humana": "Climatização > Ar condicionado split"
+  },
+  {
+   "id_sha256": "fa7365537ffe10ddc9f38255e38695e81b59d837d35fe90ecd63a0c568fe292d",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.047596,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "2d2e14e9697d8844884d70da41477dd9c32d1e1b2d49303b1e78aa9f6af97184",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.108555,
+   "referencia_humana": "Estrutura Predial > Alvenaria / Pisos / Estrutura"
+  },
+  {
+   "id_sha256": "a9641665e1aba41afeec8e62004567e561fbf83260b5aa53b7f286f8bc251211",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.072648,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  },
+  {
+   "id_sha256": "a398152fa8e559b07ad69683d6f51a0e9cefad1d0e0c495642fe10b2e1170417",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.041002,
+   "referencia_humana": "Outros > Outros"
+  },
+  {
+   "id_sha256": "55fc41acbfedd150ca58262116dbfbff238e11a333d7949baf6f2a5f61f2416e",
+   "previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+   "confianca": 0.074555,
+   "referencia_humana": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi"
+  },
+  {
+   "id_sha256": "d02b13d17bd7234cfd868c28b24f6143d98b9ff5d43611fa34bb381e637ad700",
+   "previsto": "Estrutura Predial > Infiltração",
+   "confianca": 0.076458,
+   "referencia_humana": "Estrutura Predial > Infiltração"
+  },
+  {
+   "id_sha256": "6cb497aa700037253b42f846f73ea3767c78d4a4959f95c0251ab43f499ffad8",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.089921,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "5c82366f441ae9d0c250efeebc28e07b8ae4f9ebd34f38472a0b2c26e8b444e5",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.061278,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "4d872d8aa28a42bc54bb96a291a19132a0099181095abb5888084845b87bfae6",
+   "previsto": "Hidrossanitária > Hidráulica",
+   "confianca": 0.080368,
+   "referencia_humana": "Manutenção Preventiva > Esgoto"
+  },
+  {
+   "id_sha256": "0af7312f5f5cf1a3b75cd70cefe8a4443bcc7f76992393de139f0069a485117c",
+   "previsto": "Outros > Outros",
+   "confianca": 0.049641,
+   "referencia_humana": "Hidrossanitária > Hidráulica"
+  },
+  {
+   "id_sha256": "819805209a38be286b7dcc94172aa4b9a6a5afe7e5bb4e587cd08860f864f500",
+   "previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+   "confianca": 0.094182,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "4f638a2b1fefd99e89e8eb4d622cd7866be41fb6fc2dc519088824662d12bdbd",
+   "previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+   "confianca": 0.1147,
+   "referencia_humana": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)"
+  },
+  {
+   "id_sha256": "f3c1419a6f5605155224408aa931d3cb9d72c3375ba61ce14eb601eed5cf6b06",
+   "previsto": "Elétrica > Instalações elétricas",
+   "confianca": 0.102696,
+   "referencia_humana": "Elétrica > Instalações elétricas"
+  }
+ ]
+}

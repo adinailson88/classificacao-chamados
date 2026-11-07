@@ -1,0 +1,1900 @@
+{
+  "schema_version": 1,
+  "status": "concluido",
+  "hash_corpus": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "origem": "docs/dados/retreino_canonico_predicoes.csv",
+  "criterios": {
+    "tipo": "familia da categoria, conforme src/tipo_manutencao.py; Preventiva, Corretiva e Nao manutencao",
+    "abc": "percentual acumulado de volume, corte A em 0.8 e B em 0.95; a categoria que cruza o corte pertence a classe que ela fecha",
+    "f1_restrito": "o F1 de um recorte usa apenas os rotulos daquele recorte, mas todos os pares, para que falsos positivos vindos de fora continuem contando"
+  },
+  "modelos": [
+    {
+      "modelo": "embedding_e5",
+      "acuracia_global": 0.7554,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9596,
+          "macro_f1": 0.7612
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.654,
+          "macro_f1": 0.5865
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.5584,
+          "macro_f1": 0.3397
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9027,
+        "macro_f1": 0.7901,
+        "f1_por_tipo": {
+          "Preventiva": 0.9432,
+          "Corretiva": 0.9181,
+          "Não manutenção": 0.5091
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 7740
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 645
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 402
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 176
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 434
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 6
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 158
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 10
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4786
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.7643,
+          "macro_f1": 0.7514
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.7238,
+          "macro_f1": 0.6894
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.6888,
+          "macro_f1": 0.4305
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9853,
+            "macro_f1": 0.9724
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.8775,
+            "macro_f1": 0.9307
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.6684,
+            "macro_f1": 0.4905
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.6402,
+            "macro_f1": 0.6371
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.6742,
+            "macro_f1": 0.6135
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.8758,
+            "macro_f1": 0.5221
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.643,
+            "macro_f1": 0.593
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.26,
+            "macro_f1": 0.1222
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0435,
+            "macro_f1": 0.0144
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "extra_trees",
+      "acuracia_global": 0.8054,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9635,
+          "macro_f1": 0.7797
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7386,
+          "macro_f1": 0.635
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.487,
+          "macro_f1": 0.3848
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9533,
+        "macro_f1": 0.8402,
+        "f1_por_tipo": {
+          "Preventiva": 0.9775,
+          "Corretiva": 0.9626,
+          "Não manutenção": 0.5805
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8585
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 146
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 56
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 303
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 312
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 1
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 163
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 1
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4790
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8428,
+          "macro_f1": 0.7943
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.6987,
+          "macro_f1": 0.7412
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.4499,
+          "macro_f1": 0.4573
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9877,
+            "macro_f1": 0.9716
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9487,
+            "macro_f1": 0.9742
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.4949,
+            "macro_f1": 0.5096
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7656,
+            "macro_f1": 0.7097
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.6323,
+            "macro_f1": 0.6491
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.5667,
+            "macro_f1": 0.559
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.5923,
+            "macro_f1": 0.6709
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.08,
+            "macro_f1": 0.1481
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "linear_svc",
+      "acuracia_global": 0.8241,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9705,
+          "macro_f1": 0.8054
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7625,
+          "macro_f1": 0.7
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.526,
+          "macro_f1": 0.3974
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9459,
+        "macro_f1": 0.833,
+        "f1_por_tipo": {
+          "Preventiva": 0.9748,
+          "Corretiva": 0.9563,
+          "Não manutenção": 0.568
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8410
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 265
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 112
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 262
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 351
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 3
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 130
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 4
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4820
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8482,
+          "macro_f1": 0.8163
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.7591,
+          "macro_f1": 0.7505
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.584,
+          "macro_f1": 0.5437
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9906,
+            "macro_f1": 0.9753
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9603,
+            "macro_f1": 0.9713
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.5765,
+            "macro_f1": 0.5699
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7709,
+            "macro_f1": 0.7415
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.7184,
+            "macro_f1": 0.6874
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.7515,
+            "macro_f1": 0.6732
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.6207,
+            "macro_f1": 0.6402
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.18,
+            "macro_f1": 0.2318
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "lstm",
+      "acuracia_global": 0.7067,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.957,
+          "macro_f1": 0.7386
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.5892,
+          "macro_f1": 0.4681
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.3701,
+          "macro_f1": 0.2469
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.8859,
+        "macro_f1": 0.7286,
+        "f1_por_tipo": {
+          "Preventiva": 0.9511,
+          "Corretiva": 0.9057,
+          "Não manutenção": 0.3292
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 7656
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 836
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 295
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 311
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 292
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 13
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 153
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 30
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4771
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.7355,
+          "macro_f1": 0.7243
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.6159,
+          "macro_f1": 0.5741
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.4592,
+          "macro_f1": 0.323
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9856,
+            "macro_f1": 0.9712
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.8891,
+            "macro_f1": 0.9236
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.5612,
+            "macro_f1": 0.4416
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.6028,
+            "macro_f1": 0.6079
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.5268,
+            "macro_f1": 0.4543
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.5364,
+            "macro_f1": 0.356
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.4402,
+            "macro_f1": 0.4565
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.11,
+            "macro_f1": 0.0559
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "naive_bayes",
+      "acuracia_global": 0.7222,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9475,
+          "macro_f1": 0.678
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.6177,
+          "macro_f1": 0.2175
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.401,
+          "macro_f1": 0.2345
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9381,
+        "macro_f1": 0.8006,
+        "f1_por_tipo": {
+          "Preventiva": 0.9627,
+          "Corretiva": 0.9511,
+          "Não manutenção": 0.4881
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8468
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 180
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 139
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 341
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 257
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 18
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 211
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4743
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8106,
+          "macro_f1": 0.6903
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.4046,
+          "macro_f1": 0.3965
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.0786,
+          "macro_f1": 0.0915
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9904,
+            "macro_f1": 0.9629
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.8758,
+            "macro_f1": 0.9399
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.2602,
+            "macro_f1": 0.2929
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7485,
+            "macro_f1": 0.6057
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.0489,
+            "macro_f1": 0.0546
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.501,
+            "macro_f1": 0.4689
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "random_forest",
+      "acuracia_global": 0.7923,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9616,
+          "macro_f1": 0.7627
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7196,
+          "macro_f1": 0.6122
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.4675,
+          "macro_f1": 0.3546
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9517,
+        "macro_f1": 0.8344,
+        "f1_por_tipo": {
+          "Preventiva": 0.9766,
+          "Corretiva": 0.9614,
+          "Não manutenção": 0.5651
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8582
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 154
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 51
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 310
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 304
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 2
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 174
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 2
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4778
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8297,
+          "macro_f1": 0.7785
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.691,
+          "macro_f1": 0.7334
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.4191,
+          "macro_f1": 0.4203
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9877,
+            "macro_f1": 0.9723
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9454,
+            "macro_f1": 0.9718
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.4592,
+            "macro_f1": 0.4695
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7464,
+            "macro_f1": 0.6854
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.6183,
+            "macro_f1": 0.6471
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.5333,
+            "macro_f1": 0.5218
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.572,
+            "macro_f1": 0.6416
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.06,
+            "macro_f1": 0.1016
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "regressao_logistica",
+      "acuracia_global": 0.8079,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9645,
+          "macro_f1": 0.7992
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7356,
+          "macro_f1": 0.6851
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.5795,
+          "macro_f1": 0.3869
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9391,
+        "macro_f1": 0.8325,
+        "f1_por_tipo": {
+          "Preventiva": 0.9716,
+          "Corretiva": 0.9503,
+          "Não manutenção": 0.5757
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8276
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 390
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 121
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 204
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 409
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 3
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 150
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 6
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4798
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8239,
+          "macro_f1": 0.8045
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.7729,
+          "macro_f1": 0.748
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.624,
+          "macro_f1": 0.526
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9856,
+            "macro_f1": 0.9728
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9387,
+            "macro_f1": 0.9659
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.5969,
+            "macro_f1": 0.5602
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7373,
+            "macro_f1": 0.7258
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.7099,
+            "macro_f1": 0.6808
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.8,
+            "macro_f1": 0.6527
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.6755,
+            "macro_f1": 0.6426
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.24,
+            "macro_f1": 0.1968
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "sgd",
+      "acuracia_global": 0.8096,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9651,
+          "macro_f1": 0.7855
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7387,
+          "macro_f1": 0.6768
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.5698,
+          "macro_f1": 0.3884
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9396,
+        "macro_f1": 0.8335,
+        "f1_por_tipo": {
+          "Preventiva": 0.971,
+          "Corretiva": 0.9507,
+          "Não manutenção": 0.5788
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8284
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 371
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 132
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 209
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 404
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 3
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 147
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 5
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4802
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8275,
+          "macro_f1": 0.8055
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.7652,
+          "macro_f1": 0.7502
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.6179,
+          "macro_f1": 0.5032
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9877,
+            "macro_f1": 0.9725
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9338,
+            "macro_f1": 0.9624
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.5816,
+            "macro_f1": 0.5297
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7422,
+            "macro_f1": 0.727
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.7044,
+            "macro_f1": 0.68
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.797,
+            "macro_f1": 0.6305
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.6633,
+            "macro_f1": 0.6574
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.24,
+            "macro_f1": 0.1792
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "tfidf_caracteres",
+      "acuracia_global": 0.828,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9709,
+          "macro_f1": 0.8081
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7684,
+          "macro_f1": 0.7081
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.5292,
+          "macro_f1": 0.4162
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9481,
+        "macro_f1": 0.8374,
+        "f1_por_tipo": {
+          "Preventiva": 0.9756,
+          "Corretiva": 0.9579,
+          "Não manutenção": 0.5786
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8442
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 238
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 107
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 266
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 348
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 2
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 131
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 1
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4822
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8544,
+          "macro_f1": 0.8209
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.7514,
+          "macro_f1": 0.7536
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.5809,
+          "macro_f1": 0.5577
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9909,
+            "macro_f1": 0.9754
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9586,
+            "macro_f1": 0.9734
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.5867,
+            "macro_f1": 0.575
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.7818,
+            "macro_f1": 0.7492
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.7021,
+            "macro_f1": 0.6806
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.7364,
+            "macro_f1": 0.6927
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.6227,
+            "macro_f1": 0.6634
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.19,
+            "macro_f1": 0.2533
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "modelo": "tfidf_embedding",
+      "acuracia_global": 0.8307,
+      "por_tipo": [
+        {
+          "tipo": "Preventiva",
+          "categorias": 12,
+          "chamados": 4954,
+          "acuracia": 0.9707,
+          "macro_f1": 0.8073
+        },
+        {
+          "tipo": "Corretiva",
+          "categorias": 21,
+          "chamados": 8787,
+          "acuracia": 0.7731,
+          "macro_f1": 0.7056
+        },
+        {
+          "tipo": "Não manutenção",
+          "categorias": 6,
+          "chamados": 616,
+          "acuracia": 0.526,
+          "macro_f1": 0.4095
+        }
+      ],
+      "tarefa_tipo": {
+        "acuracia": 0.9482,
+        "macro_f1": 0.836,
+        "f1_por_tipo": {
+          "Preventiva": 0.9758,
+          "Corretiva": 0.958,
+          "Não manutenção": 0.5741
+        },
+        "confusao": [
+          {
+            "verdade": "Corretiva",
+            "previsto": "Corretiva",
+            "n": 8449
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Não manutenção",
+            "n": 235
+          },
+          {
+            "verdade": "Corretiva",
+            "previsto": "Preventiva",
+            "n": 103
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Corretiva",
+            "n": 270
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Não manutenção",
+            "n": 343
+          },
+          {
+            "verdade": "Não manutenção",
+            "previsto": "Preventiva",
+            "n": 3
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Corretiva",
+            "n": 132
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Não manutenção",
+            "n": 1
+          },
+          {
+            "verdade": "Preventiva",
+            "previsto": "Preventiva",
+            "n": 4821
+          }
+        ]
+      },
+      "curva_abc": [
+        {
+          "classe": "A",
+          "categorias": 12,
+          "chamados": 11753,
+          "proporcao_do_volume": 0.8186,
+          "acuracia": 0.8579,
+          "macro_f1": 0.8243
+        },
+        {
+          "classe": "B",
+          "categorias": 11,
+          "chamados": 1955,
+          "proporcao_do_volume": 0.1362,
+          "acuracia": 0.7535,
+          "macro_f1": 0.7562
+        },
+        {
+          "classe": "C",
+          "categorias": 16,
+          "chamados": 649,
+          "proporcao_do_volume": 0.0452,
+          "acuracia": 0.5701,
+          "macro_f1": 0.5471
+        }
+      ],
+      "curva_abc_por_tipo": {
+        "Preventiva": [
+          {
+            "classe": "A",
+            "categorias": 4,
+            "chamados": 4154,
+            "proporcao_do_volume": 0.8385,
+            "acuracia": 0.9906,
+            "macro_f1": 0.9762
+          },
+          {
+            "classe": "B",
+            "categorias": 3,
+            "chamados": 604,
+            "proporcao_do_volume": 0.1219,
+            "acuracia": 0.9603,
+            "macro_f1": 0.9735
+          },
+          {
+            "classe": "C",
+            "categorias": 5,
+            "chamados": 196,
+            "proporcao_do_volume": 0.0396,
+            "acuracia": 0.5816,
+            "macro_f1": 0.5725
+          }
+        ],
+        "Corretiva": [
+          {
+            "classe": "A",
+            "categorias": 7,
+            "chamados": 7168,
+            "proporcao_do_volume": 0.8158,
+            "acuracia": 0.787,
+            "macro_f1": 0.7532
+          },
+          {
+            "classe": "B",
+            "categorias": 6,
+            "chamados": 1289,
+            "proporcao_do_volume": 0.1467,
+            "acuracia": 0.7083,
+            "macro_f1": 0.6843
+          },
+          {
+            "classe": "C",
+            "categorias": 8,
+            "chamados": 330,
+            "proporcao_do_volume": 0.0376,
+            "acuracia": 0.7242,
+            "macro_f1": 0.6799
+          }
+        ],
+        "Não manutenção": [
+          {
+            "classe": "A",
+            "categorias": 3,
+            "chamados": 493,
+            "proporcao_do_volume": 0.8003,
+            "acuracia": 0.6227,
+            "macro_f1": 0.6685
+          },
+          {
+            "classe": "B",
+            "categorias": 2,
+            "chamados": 100,
+            "proporcao_do_volume": 0.1623,
+            "acuracia": 0.17,
+            "macro_f1": 0.2258
+          },
+          {
+            "classe": "C",
+            "categorias": 1,
+            "chamados": 23,
+            "proporcao_do_volume": 0.0373,
+            "acuracia": 0.0,
+            "macro_f1": 0.0
+          }
+        ]
+      }
+    }
+  ],
+  "gerado_em": "30/10/2026 19:48",
+  "script_origem": "src/recortes_canonicos.py"
+}

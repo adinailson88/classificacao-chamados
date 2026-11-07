@@ -1,0 +1,498 @@
+{
+ "protocolo": "Simulacao cronologica de aprendizado continuo com confirmacoes humanas (Trilha B).\n\nPergunta: se a base for sendo confirmada ao longo do tempo e o modelo retreinado a\ncada trimestre, quanto se ganha em acuracia e em cobertura sob controle de risco\n(Learn-then-Test), e a escolha ativa de quem revisar rende mais do que a aleatoria?\n\nProtocolo. O corte B e ordenado pela data de abertura. O modelo inicial treina com\ntudo o que foi aberto ate 2021; cada trimestre seguinte e predito ANTES de seus\nrotulos serem revelados. Em cada bloco ha uma amostra aleatoria de auditoria\n(``--auditoria``), igual para todas as estrategias, usada para calibrar o limiar do\nLearn-then-Test e, nas estrategias que aprendem, tambem para treino. As estrategias\ndiferem no que mais e confirmado depois de cada bloco:\n\n- ``estatico``   nada alem da auditoria (que so calibra); o modelo nunca e retreinado;\n- ``aleatorio``  auditoria + ``--revisoes`` chamados sorteados;\n- ``ativo``      auditoria + os ``--revisoes`` de menor confianca fora da auditoria;\n- ``completo``   todos os rotulos do bloco (teto, custo de rotular tudo).\n\nA auditoria aleatoria preserva a validade do limiar: casos escolhidos pela incerteza\nnao servem de calibracao. Saem apenas agregados e contagens (sem texto de chamado).\n",
+ "modelo": "linear_svc",
+ "meta_de_erro": 0.1,
+ "auditoria_por_bloco": 100,
+ "revisoes_por_bloco": 0,
+ "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+ "agregado": {
+  "aleatorio": {
+   "n": 7691,
+   "acuracia": 0.7977,
+   "acuracia_por_ano": {
+    "2022": 0.8142,
+    "2023": 0.806,
+    "2024": 0.7859,
+    "2025": 0.8109,
+    "2026": 0.7716
+   },
+   "controlado": {
+    "blocos": 8,
+    "cobertura": 0.4202,
+    "erro": 0.0637,
+    "blocos_acima_da_meta": 2
+   },
+   "ingenuo": {
+    "blocos": 18,
+    "cobertura": 0.6696,
+    "erro": 0.0732,
+    "blocos_acima_da_meta": 5
+   }
+  }
+ },
+ "estrategias": {
+  "aleatorio": [
+   {
+    "bloco": "2022T1",
+    "treino": 6666,
+    "n": 331,
+    "acuracia": 0.8429,
+    "acertos": 279,
+    "controle": null
+   },
+   {
+    "bloco": "2022T2",
+    "treino": 6766,
+    "n": 439,
+    "acuracia": 0.8519,
+    "acertos": 374,
+    "controle": null
+   },
+   {
+    "bloco": "2022T3",
+    "treino": 6866,
+    "n": 399,
+    "acuracia": 0.7619,
+    "acertos": 304,
+    "controlado": {
+     "limiar": null,
+     "n": 399,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.10178728108713833,
+     "n": 399,
+     "automatizados": 187,
+     "cobertura": 0.4687,
+     "erro": 0.0428,
+     "erros": 8
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2022T4",
+    "treino": 6966,
+    "n": 209,
+    "acuracia": 0.7895,
+    "acertos": 165,
+    "controlado": {
+     "limiar": null,
+     "n": 209,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.07859501039501643,
+     "n": 209,
+     "automatizados": 126,
+     "cobertura": 0.6029,
+     "erro": 0.0794,
+     "erros": 10
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2023T1",
+    "treino": 7066,
+    "n": 259,
+    "acuracia": 0.6911,
+    "acertos": 179,
+    "controlado": {
+     "limiar": 0.17004955619787498,
+     "n": 259,
+     "automatizados": 43,
+     "cobertura": 0.166,
+     "erro": 0.0,
+     "erros": 0
+    },
+    "ingenuo": {
+     "limiar": 0.08499294080583727,
+     "n": 259,
+     "automatizados": 132,
+     "cobertura": 0.5097,
+     "erro": 0.0909,
+     "erros": 12
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2023T2",
+    "treino": 7166,
+    "n": 412,
+    "acuracia": 0.8131,
+    "acertos": 335,
+    "controlado": {
+     "limiar": 0.1713839428328597,
+     "n": 412,
+     "automatizados": 115,
+     "cobertura": 0.2791,
+     "erro": 0.0087,
+     "erros": 1
+    },
+    "ingenuo": {
+     "limiar": 0.08114468331218277,
+     "n": 412,
+     "automatizados": 288,
+     "cobertura": 0.699,
+     "erro": 0.0486,
+     "erros": 14
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2023T3",
+    "treino": 7266,
+    "n": 365,
+    "acuracia": 0.7342,
+    "acertos": 268,
+    "controlado": {
+     "limiar": 0.1760949809019046,
+     "n": 365,
+     "automatizados": 103,
+     "cobertura": 0.2822,
+     "erro": 0.0583,
+     "erros": 6
+    },
+    "ingenuo": {
+     "limiar": 0.07668176308545686,
+     "n": 365,
+     "automatizados": 237,
+     "cobertura": 0.6493,
+     "erro": 0.0886,
+     "erros": 21
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2023T4",
+    "treino": 7366,
+    "n": 588,
+    "acuracia": 0.8963,
+    "acertos": 527,
+    "controlado": {
+     "limiar": null,
+     "n": 588,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.08069484569859968,
+     "n": 588,
+     "automatizados": 485,
+     "cobertura": 0.8248,
+     "erro": 0.0247,
+     "erros": 12
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2024T1",
+    "treino": 7466,
+    "n": 375,
+    "acuracia": 0.7813,
+    "acertos": 293,
+    "controlado": {
+     "limiar": 0.10445746415189393,
+     "n": 375,
+     "automatizados": 201,
+     "cobertura": 0.536,
+     "erro": 0.0547,
+     "erros": 11
+    },
+    "ingenuo": {
+     "limiar": 0.07217007531210988,
+     "n": 375,
+     "automatizados": 265,
+     "cobertura": 0.7067,
+     "erro": 0.1283,
+     "erros": 34
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2024T2",
+    "treino": 7566,
+    "n": 393,
+    "acuracia": 0.7481,
+    "acertos": 294,
+    "controlado": {
+     "limiar": null,
+     "n": 393,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.0799580747349021,
+     "n": 393,
+     "automatizados": 284,
+     "cobertura": 0.7226,
+     "erro": 0.1514,
+     "erros": 43
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2024T3",
+    "treino": 7666,
+    "n": 396,
+    "acuracia": 0.7677,
+    "acertos": 304,
+    "controlado": {
+     "limiar": null,
+     "n": 396,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.10611564277523196,
+     "n": 396,
+     "automatizados": 212,
+     "cobertura": 0.5354,
+     "erro": 0.0519,
+     "erros": 11
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2024T4",
+    "treino": 7766,
+    "n": 405,
+    "acuracia": 0.8444,
+    "acertos": 342,
+    "controlado": {
+     "limiar": null,
+     "n": 405,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.11015178121070879,
+     "n": 405,
+     "automatizados": 265,
+     "cobertura": 0.6543,
+     "erro": 0.0226,
+     "erros": 6
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2025T1",
+    "treino": 7866,
+    "n": 341,
+    "acuracia": 0.8094,
+    "acertos": 276,
+    "controlado": {
+     "limiar": null,
+     "n": 341,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.10715477921368874,
+     "n": 341,
+     "automatizados": 180,
+     "cobertura": 0.5279,
+     "erro": 0.0333,
+     "erros": 6
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2025T2",
+    "treino": 7966,
+    "n": 432,
+    "acuracia": 0.8102,
+    "acertos": 350,
+    "controlado": {
+     "limiar": null,
+     "n": 432,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.10674874283969876,
+     "n": 432,
+     "automatizados": 246,
+     "cobertura": 0.5694,
+     "erro": 0.0203,
+     "erros": 5
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2025T3",
+    "treino": 8066,
+    "n": 381,
+    "acuracia": 0.7874,
+    "acertos": 300,
+    "controlado": {
+     "limiar": null,
+     "n": 381,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.079951635735674,
+     "n": 381,
+     "automatizados": 235,
+     "cobertura": 0.6168,
+     "erro": 0.0468,
+     "erros": 11
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2025T4",
+    "treino": 8166,
+    "n": 464,
+    "acuracia": 0.8319,
+    "acertos": 386,
+    "controlado": {
+     "limiar": null,
+     "n": 464,
+     "automatizados": 0,
+     "cobertura": 0.0,
+     "erro": null
+    },
+    "ingenuo": {
+     "limiar": 0.06900310772837716,
+     "n": 464,
+     "automatizados": 362,
+     "cobertura": 0.7802,
+     "erro": 0.0525,
+     "erros": 19
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2026T1",
+    "treino": 8266,
+    "n": 433,
+    "acuracia": 0.8037,
+    "acertos": 348,
+    "controlado": {
+     "limiar": 0.1466780044237058,
+     "n": 433,
+     "automatizados": 141,
+     "cobertura": 0.3256,
+     "erro": 0.0071,
+     "erros": 1
+    },
+    "ingenuo": {
+     "limiar": 0.06391706705163024,
+     "n": 433,
+     "automatizados": 319,
+     "cobertura": 0.7367,
+     "erro": 0.069,
+     "erros": 22
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2026T2",
+    "treino": 8366,
+    "n": 432,
+    "acuracia": 0.7963,
+    "acertos": 344,
+    "controlado": {
+     "limiar": 0.07842316446502556,
+     "n": 432,
+     "automatizados": 305,
+     "cobertura": 0.706,
+     "erro": 0.1016,
+     "erros": 31
+    },
+    "ingenuo": {
+     "limiar": 0.060547996305430805,
+     "n": 432,
+     "automatizados": 351,
+     "cobertura": 0.8125,
+     "erro": 0.1168,
+     "erros": 41
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2026T3",
+    "treino": 8466,
+    "n": 472,
+    "acuracia": 0.7331,
+    "acertos": 346,
+    "controlado": {
+     "limiar": 0.08839095106746435,
+     "n": 472,
+     "automatizados": 250,
+     "cobertura": 0.5297,
+     "erro": 0.108,
+     "erros": 27
+    },
+    "ingenuo": {
+     "limiar": 0.061986862387842095,
+     "n": 472,
+     "automatizados": 342,
+     "cobertura": 0.7246,
+     "erro": 0.1491,
+     "erros": 51
+    },
+    "controle": true
+   },
+   {
+    "bloco": "2026T4",
+    "treino": 8566,
+    "n": 165,
+    "acuracia": 0.7333,
+    "acertos": 121,
+    "controlado": {
+     "limiar": 0.1532162456889505,
+     "n": 165,
+     "automatizados": 66,
+     "cobertura": 0.4,
+     "erro": 0.0152,
+     "erros": 1
+    },
+    "ingenuo": {
+     "limiar": 0.06131831967490861,
+     "n": 165,
+     "automatizados": 118,
+     "cobertura": 0.7152,
+     "erro": 0.1102,
+     "erros": 13
+    },
+    "controle": true
+   }
+  ]
+ },
+ "blocos": [
+  "2022T1",
+  "2022T2",
+  "2022T3",
+  "2022T4",
+  "2023T1",
+  "2023T2",
+  "2023T3",
+  "2023T4",
+  "2024T1",
+  "2024T2",
+  "2024T3",
+  "2024T4",
+  "2025T1",
+  "2025T2",
+  "2025T3",
+  "2025T4",
+  "2026T1",
+  "2026T2",
+  "2026T3",
+  "2026T4"
+ ],
+ "treino_inicial": 6666
+}

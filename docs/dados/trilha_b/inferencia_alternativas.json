@@ -1,0 +1,1389 @@
+{
+  "schema_version": 1,
+  "status": "concluido",
+  "hash_corpus": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "protocolo": {
+    "unidade": "grupo de texto normalizado idêntico, congelado no Passo 2",
+    "teste_global": "estatística Q de Cochran com distribuição de referência por permutação do rótulo de modelo dentro de cada grupo",
+    "teste_pareado": "permutação pareada por troca de sinal da diferença de acertos por grupo",
+    "intervalo": "bootstrap de conglomerados da diferença de acurácia, sorteando grupos com reposição",
+    "correcao_multipla": "Holm-Bonferroni sobre a família dos 21 pares",
+    "permutacoes_pareadas": 5000,
+    "permutacoes_globais": 1000,
+    "reamostragens_do_bootstrap": 1000,
+    "semente": 42,
+    "alfa": 0.05
+  },
+  "corpus": {
+    "registros": 14357,
+    "grupos_textuais": 10596,
+    "modelos": 10
+  },
+  "auditoria_da_unidade": {
+    "unidade_estatistica_anterior": "linha (chamado individual)",
+    "unidade_estatistica_adotada": "grupo de texto normalizado idêntico",
+    "linhas": 14357,
+    "grupos": 10596,
+    "tamanho_medio_do_grupo": 1.3549,
+    "maior_grupo": 190,
+    "grupos_unitarios": 10205,
+    "linhas_em_grupos_nao_unitarios": 4152,
+    "proporcao_de_linhas_dependentes": 0.2892,
+    "por_modelo": [
+      {
+        "modelo": "embedding_e5",
+        "acuracia": 0.7554,
+        "erro_padrao_por_linha": 0.003588,
+        "erro_padrao_por_grupo": 0.00807,
+        "efeito_de_desenho": 5.06
+      },
+      {
+        "modelo": "extra_trees",
+        "acuracia": 0.8054,
+        "erro_padrao_por_linha": 0.003304,
+        "erro_padrao_por_grupo": 0.006521,
+        "efeito_de_desenho": 3.895
+      },
+      {
+        "modelo": "linear_svc",
+        "acuracia": 0.8241,
+        "erro_padrao_por_linha": 0.003177,
+        "erro_padrao_por_grupo": 0.006146,
+        "efeito_de_desenho": 3.742
+      },
+      {
+        "modelo": "lstm",
+        "acuracia": 0.7067,
+        "erro_padrao_por_linha": 0.0038,
+        "erro_padrao_por_grupo": 0.009458,
+        "efeito_de_desenho": 6.195
+      },
+      {
+        "modelo": "naive_bayes",
+        "acuracia": 0.7222,
+        "erro_padrao_por_linha": 0.003738,
+        "erro_padrao_por_grupo": 0.009042,
+        "efeito_de_desenho": 5.852
+      },
+      {
+        "modelo": "random_forest",
+        "acuracia": 0.7923,
+        "erro_padrao_por_linha": 0.003386,
+        "erro_padrao_por_grupo": 0.006845,
+        "efeito_de_desenho": 4.088
+      },
+      {
+        "modelo": "regressao_logistica",
+        "acuracia": 0.8079,
+        "erro_padrao_por_linha": 0.003288,
+        "erro_padrao_por_grupo": 0.006488,
+        "efeito_de_desenho": 3.893
+      },
+      {
+        "modelo": "sgd",
+        "acuracia": 0.8096,
+        "erro_padrao_por_linha": 0.003277,
+        "erro_padrao_por_grupo": 0.006471,
+        "efeito_de_desenho": 3.9
+      },
+      {
+        "modelo": "tfidf_caracteres",
+        "acuracia": 0.828,
+        "erro_padrao_por_linha": 0.003149,
+        "erro_padrao_por_grupo": 0.006028,
+        "efeito_de_desenho": 3.664
+      },
+      {
+        "modelo": "tfidf_embedding",
+        "acuracia": 0.8307,
+        "erro_padrao_por_linha": 0.00313,
+        "erro_padrao_por_grupo": 0.005955,
+        "efeito_de_desenho": 3.62
+      }
+    ],
+    "efeito_de_desenho_min": 3.62,
+    "efeito_de_desenho_max": 6.195,
+    "leitura": "efeito de desenho acima de 1 indica que a suposição de independência entre linhas estreita artificialmente a precisão; os valores de p do McNemar por linha herdam esse estreitamento"
+  },
+  "teste_global": {
+    "estatistica_q": 4188.0599,
+    "graus_de_liberdade": 9,
+    "permutacoes": 1000,
+    "unidade_da_permutacao": "grupo textual",
+    "p_permutacional": 0.000999,
+    "p_permutacional_e_limite_superior": true,
+    "p_qui_quadrado_por_linha": 0.0,
+    "rejeita_igualdade": true,
+    "hipotese_nula": "os sete modelos têm a mesma taxa de acerto",
+    "justificativa": "a estatística Q permanece adequada por ser pareada e binária, mas a distribuição qui-quadrado tabelada pressupõe independência entre registros, violada aqui; a referência passa a ser empírica, obtida por permutação do rótulo de modelo dentro de cada grupo textual"
+  },
+  "pares": [
+    {
+      "diferenca_de_acuracia": 0.124,
+      "diferenca_em_pontos_percentuais": 12.4,
+      "ic95_da_diferenca": [
+        0.114,
+        0.134
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2139,
+      "grupos_que_favorecem_o_segundo": 364,
+      "grupos_empatados": 8093,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.8546,
+      "d_de_cohen_pareado_por_grupo": 0.3669,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2144,
+      "linhas_so_o_segundo_acerta": 364,
+      "linhas_discordantes": 2508,
+      "p_mcnemar_por_linha": 2.1544910080345767e-276,
+      "par": [
+        "tfidf_embedding",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1213,
+      "diferenca_em_pontos_percentuais": 12.13,
+      "ic95_da_diferenca": [
+        0.1118,
+        0.1314
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2113,
+      "grupos_que_favorecem_o_segundo": 376,
+      "grupos_empatados": 8107,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.8489,
+      "d_de_cohen_pareado_por_grupo": 0.3592,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2118,
+      "linhas_so_o_segundo_acerta": 376,
+      "linhas_discordantes": 2494,
+      "p_mcnemar_por_linha": 2.8151338189091222e-266,
+      "par": [
+        "tfidf_caracteres",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1174,
+      "diferenca_em_pontos_percentuais": 11.74,
+      "ic95_da_diferenca": [
+        0.1078,
+        0.1265
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2035,
+      "grupos_que_favorecem_o_segundo": 355,
+      "grupos_empatados": 8206,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.8515,
+      "d_de_cohen_pareado_por_grupo": 0.3539,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2041,
+      "linhas_so_o_segundo_acerta": 355,
+      "linhas_discordantes": 2396,
+      "p_mcnemar_por_linha": 1.1179163939464716e-259,
+      "par": [
+        "linear_svc",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1084,
+      "diferenca_em_pontos_percentuais": 10.84,
+      "ic95_da_diferenca": [
+        0.0992,
+        0.1178
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2077,
+      "grupos_que_favorecem_o_segundo": 529,
+      "grupos_empatados": 7990,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.797,
+      "d_de_cohen_pareado_por_grupo": 0.3076,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2086,
+      "linhas_so_o_segundo_acerta": 529,
+      "linhas_discordantes": 2615,
+      "p_mcnemar_por_linha": 2.3401797966516543e-203,
+      "par": [
+        "tfidf_embedding",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1058,
+      "diferenca_em_pontos_percentuais": 10.58,
+      "ic95_da_diferenca": [
+        0.0966,
+        0.1153
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2061,
+      "grupos_que_favorecem_o_segundo": 551,
+      "grupos_empatados": 7984,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7891,
+      "d_de_cohen_pareado_por_grupo": 0.299,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2070,
+      "linhas_so_o_segundo_acerta": 551,
+      "linhas_discordantes": 2621,
+      "p_mcnemar_por_linha": 3.2995873918090235e-193,
+      "par": [
+        "tfidf_caracteres",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1029,
+      "diferenca_em_pontos_percentuais": 10.29,
+      "ic95_da_diferenca": [
+        0.094,
+        0.1119
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1884,
+      "grupos_que_favorecem_o_segundo": 409,
+      "grupos_empatados": 8303,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.8216,
+      "d_de_cohen_pareado_por_grupo": 0.3108,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1890,
+      "linhas_so_o_segundo_acerta": 413,
+      "linhas_discordantes": 2303,
+      "p_mcnemar_por_linha": 9.956317805696806e-208,
+      "par": [
+        "sgd",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1019,
+      "diferenca_em_pontos_percentuais": 10.19,
+      "ic95_da_diferenca": [
+        0.093,
+        0.1112
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2028,
+      "grupos_que_favorecem_o_segundo": 575,
+      "grupos_empatados": 7993,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7791,
+      "d_de_cohen_pareado_por_grupo": 0.2874,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2038,
+      "linhas_so_o_segundo_acerta": 575,
+      "linhas_discordantes": 2613,
+      "p_mcnemar_por_linha": 6.572929312785114e-180,
+      "par": [
+        "linear_svc",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.1012,
+      "diferenca_em_pontos_percentuais": 10.12,
+      "ic95_da_diferenca": [
+        0.0924,
+        0.11
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1868,
+      "grupos_que_favorecem_o_segundo": 417,
+      "grupos_empatados": 8311,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.8175,
+      "d_de_cohen_pareado_por_grupo": 0.3059,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1874,
+      "linhas_so_o_segundo_acerta": 421,
+      "linhas_discordantes": 2295,
+      "p_mcnemar_por_linha": 8.657002195330151e-202,
+      "par": [
+        "regressao_logistica",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0987,
+      "diferenca_em_pontos_percentuais": 9.87,
+      "ic95_da_diferenca": [
+        0.0897,
+        0.1077
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2003,
+      "grupos_que_favorecem_o_segundo": 585,
+      "grupos_empatados": 8008,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.774,
+      "d_de_cohen_pareado_por_grupo": 0.2792,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2007,
+      "linhas_so_o_segundo_acerta": 590,
+      "linhas_discordantes": 2597,
+      "p_mcnemar_por_linha": 6.389992514033596e-170,
+      "par": [
+        "extra_trees",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0873,
+      "diferenca_em_pontos_percentuais": 8.73,
+      "ic95_da_diferenca": [
+        0.0784,
+        0.0955
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1963,
+      "grupos_que_favorecem_o_segundo": 715,
+      "grupos_empatados": 7918,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.733,
+      "d_de_cohen_pareado_por_grupo": 0.2413,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1969,
+      "linhas_so_o_segundo_acerta": 715,
+      "linhas_discordantes": 2684,
+      "p_mcnemar_por_linha": 3.141256922730281e-129,
+      "par": [
+        "sgd",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0857,
+      "diferenca_em_pontos_percentuais": 8.57,
+      "ic95_da_diferenca": [
+        0.0767,
+        0.0943
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 2030,
+      "grupos_que_favorecem_o_segundo": 806,
+      "grupos_empatados": 7760,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7158,
+      "d_de_cohen_pareado_por_grupo": 0.2294,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 2036,
+      "linhas_so_o_segundo_acerta": 806,
+      "linhas_discordantes": 2842,
+      "p_mcnemar_por_linha": 1.3517414615429373e-117,
+      "par": [
+        "regressao_logistica",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0856,
+      "diferenca_em_pontos_percentuais": 8.56,
+      "ic95_da_diferenca": [
+        0.0771,
+        0.0943
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1915,
+      "grupos_que_favorecem_o_segundo": 685,
+      "grupos_empatados": 7996,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7365,
+      "d_de_cohen_pareado_por_grupo": 0.2392,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1919,
+      "linhas_so_o_segundo_acerta": 690,
+      "linhas_discordantes": 2609,
+      "p_mcnemar_por_linha": 1.024763018896143e-127,
+      "par": [
+        "random_forest",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0832,
+      "diferenca_em_pontos_percentuais": 8.32,
+      "ic95_da_diferenca": [
+        0.0753,
+        0.091
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1710,
+      "grupos_que_favorecem_o_segundo": 519,
+      "grupos_empatados": 8367,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7672,
+      "d_de_cohen_pareado_por_grupo": 0.2529,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1714,
+      "linhas_so_o_segundo_acerta": 520,
+      "linhas_discordantes": 2234,
+      "p_mcnemar_por_linha": 1.4381502873616857e-140,
+      "par": [
+        "extra_trees",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0753,
+      "diferenca_em_pontos_percentuais": 7.53,
+      "ic95_da_diferenca": [
+        0.0681,
+        0.0828
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1466,
+      "grupos_que_favorecem_o_segundo": 393,
+      "grupos_empatados": 8737,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7886,
+      "d_de_cohen_pareado_por_grupo": 0.2484,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1474,
+      "linhas_so_o_segundo_acerta": 393,
+      "linhas_discordantes": 1867,
+      "p_mcnemar_por_linha": 6.944113780761929e-138,
+      "par": [
+        "tfidf_embedding",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0726,
+      "diferenca_em_pontos_percentuais": 7.26,
+      "ic95_da_diferenca": [
+        0.0655,
+        0.0802
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1456,
+      "grupos_que_favorecem_o_segundo": 421,
+      "grupos_empatados": 8719,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7757,
+      "d_de_cohen_pareado_por_grupo": 0.238,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1464,
+      "linhas_so_o_segundo_acerta": 421,
+      "linhas_discordantes": 1885,
+      "p_mcnemar_por_linha": 2.777830268338152e-127,
+      "par": [
+        "tfidf_caracteres",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0701,
+      "diferenca_em_pontos_percentuais": 7.01,
+      "ic95_da_diferenca": [
+        0.0626,
+        0.0779
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1629,
+      "grupos_que_favorecem_o_segundo": 626,
+      "grupos_empatados": 8341,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7224,
+      "d_de_cohen_pareado_por_grupo": 0.2099,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1633,
+      "linhas_so_o_segundo_acerta": 627,
+      "linhas_discordantes": 2260,
+      "p_mcnemar_por_linha": 3.3867355225210644e-99,
+      "par": [
+        "random_forest",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0687,
+      "diferenca_em_pontos_percentuais": 6.87,
+      "ic95_da_diferenca": [
+        0.0619,
+        0.0764
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1396,
+      "grupos_que_favorecem_o_segundo": 418,
+      "grupos_empatados": 8782,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7696,
+      "d_de_cohen_pareado_por_grupo": 0.2283,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1405,
+      "linhas_so_o_segundo_acerta": 418,
+      "linhas_discordantes": 1823,
+      "p_mcnemar_por_linha": 5.4225247696055265e-118,
+      "par": [
+        "linear_svc",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0542,
+      "diferenca_em_pontos_percentuais": 5.42,
+      "ic95_da_diferenca": [
+        0.0484,
+        0.0603
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1121,
+      "grupos_que_favorecem_o_segundo": 348,
+      "grupos_empatados": 9127,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.7631,
+      "d_de_cohen_pareado_por_grupo": 0.1999,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1126,
+      "linhas_so_o_segundo_acerta": 348,
+      "linhas_discordantes": 1474,
+      "p_mcnemar_por_linha": 4.511869936160903e-91,
+      "par": [
+        "sgd",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0525,
+      "diferenca_em_pontos_percentuais": 5.25,
+      "ic95_da_diferenca": [
+        0.0467,
+        0.0586
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1106,
+      "grupos_que_favorecem_o_segundo": 357,
+      "grupos_empatados": 9133,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.756,
+      "d_de_cohen_pareado_por_grupo": 0.1939,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1111,
+      "linhas_so_o_segundo_acerta": 357,
+      "linhas_discordantes": 1468,
+      "p_mcnemar_por_linha": 5.434462619630702e-86,
+      "par": [
+        "regressao_logistica",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.05,
+      "diferenca_em_pontos_percentuais": 5.0,
+      "ic95_da_diferenca": [
+        0.0431,
+        0.0571
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1489,
+      "grupos_que_favorecem_o_segundo": 773,
+      "grupos_empatados": 8334,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6583,
+      "d_de_cohen_pareado_por_grupo": 0.1475,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1494,
+      "linhas_so_o_segundo_acerta": 776,
+      "linhas_discordantes": 2270,
+      "p_mcnemar_por_linha": 3.5075215801088004e-51,
+      "par": [
+        "extra_trees",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0487,
+      "diferenca_em_pontos_percentuais": 4.87,
+      "ic95_da_diferenca": [
+        0.0416,
+        0.0557
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1425,
+      "grupos_que_favorecem_o_segundo": 723,
+      "grupos_empatados": 8448,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6634,
+      "d_de_cohen_pareado_por_grupo": 0.1464,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1429,
+      "linhas_so_o_segundo_acerta": 730,
+      "linhas_discordantes": 2159,
+      "p_mcnemar_por_linha": 5.2656568556798075e-51,
+      "par": [
+        "embedding_e5",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0384,
+      "diferenca_em_pontos_percentuais": 3.84,
+      "ic95_da_diferenca": [
+        0.0326,
+        0.0444
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1055,
+      "grupos_que_favorecem_o_segundo": 510,
+      "grupos_empatados": 9031,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6741,
+      "d_de_cohen_pareado_por_grupo": 0.1352,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1062,
+      "linhas_so_o_segundo_acerta": 511,
+      "linhas_discordantes": 1573,
+      "p_mcnemar_por_linha": 9.968440833895593e-44,
+      "par": [
+        "tfidf_embedding",
+        "random_forest"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0369,
+      "diferenca_em_pontos_percentuais": 3.69,
+      "ic95_da_diferenca": [
+        0.0302,
+        0.0436
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1407,
+      "grupos_que_favorecem_o_segundo": 879,
+      "grupos_empatados": 8310,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6155,
+      "d_de_cohen_pareado_por_grupo": 0.1078,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1412,
+      "linhas_so_o_segundo_acerta": 882,
+      "linhas_discordantes": 2294,
+      "p_mcnemar_por_linha": 2.3221139311056736e-28,
+      "par": [
+        "random_forest",
+        "embedding_e5"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0357,
+      "diferenca_em_pontos_percentuais": 3.57,
+      "ic95_da_diferenca": [
+        0.0302,
+        0.0418
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1026,
+      "grupos_que_favorecem_o_segundo": 519,
+      "grupos_empatados": 9051,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6641,
+      "d_de_cohen_pareado_por_grupo": 0.1265,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1033,
+      "linhas_so_o_segundo_acerta": 520,
+      "linhas_discordantes": 1553,
+      "p_mcnemar_por_linha": 1.3539459036401913e-38,
+      "par": [
+        "tfidf_caracteres",
+        "random_forest"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0332,
+      "diferenca_em_pontos_percentuais": 3.32,
+      "ic95_da_diferenca": [
+        0.0246,
+        0.0414
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1884,
+      "grupos_que_favorecem_o_segundo": 1409,
+      "grupos_empatados": 7303,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5721,
+      "d_de_cohen_pareado_por_grupo": 0.0805,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1888,
+      "linhas_so_o_segundo_acerta": 1412,
+      "linhas_discordantes": 3300,
+      "p_mcnemar_por_linha": 1.354404517542943e-16,
+      "par": [
+        "embedding_e5",
+        "naive_bayes"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0318,
+      "diferenca_em_pontos_percentuais": 3.18,
+      "ic95_da_diferenca": [
+        0.0262,
+        0.0374
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 974,
+      "grupos_que_favorecem_o_segundo": 524,
+      "grupos_empatados": 9098,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6502,
+      "d_de_cohen_pareado_por_grupo": 0.1141,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 982,
+      "linhas_so_o_segundo_acerta": 525,
+      "linhas_discordantes": 1507,
+      "p_mcnemar_por_linha": 7.361103746260079e-32,
+      "par": [
+        "linear_svc",
+        "random_forest"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0253,
+      "diferenca_em_pontos_percentuais": 2.53,
+      "ic95_da_diferenca": [
+        0.02,
+        0.0309
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 870,
+      "grupos_que_favorecem_o_segundo": 513,
+      "grupos_empatados": 9213,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6291,
+      "d_de_cohen_pareado_por_grupo": 0.0942,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 877,
+      "linhas_so_o_segundo_acerta": 514,
+      "linhas_discordantes": 1391,
+      "p_mcnemar_por_linha": 2.8398102116318397e-22,
+      "par": [
+        "tfidf_embedding",
+        "extra_trees"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0228,
+      "diferenca_em_pontos_percentuais": 2.28,
+      "ic95_da_diferenca": [
+        0.0183,
+        0.0278
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 704,
+      "grupos_que_favorecem_o_segundo": 380,
+      "grupos_empatados": 9512,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6494,
+      "d_de_cohen_pareado_por_grupo": 0.0957,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 708,
+      "linhas_so_o_segundo_acerta": 381,
+      "linhas_discordantes": 1089,
+      "p_mcnemar_por_linha": 5.145148352185682e-23,
+      "par": [
+        "tfidf_embedding",
+        "regressao_logistica"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0226,
+      "diferenca_em_pontos_percentuais": 2.26,
+      "ic95_da_diferenca": [
+        0.0173,
+        0.0281
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 842,
+      "grupos_que_favorecem_o_segundo": 523,
+      "grupos_empatados": 9231,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6168,
+      "d_de_cohen_pareado_por_grupo": 0.0848,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 849,
+      "linhas_so_o_segundo_acerta": 524,
+      "linhas_discordantes": 1373,
+      "p_mcnemar_por_linha": 2.250157964503182e-18,
+      "par": [
+        "tfidf_caracteres",
+        "extra_trees"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0211,
+      "diferenca_em_pontos_percentuais": 2.11,
+      "ic95_da_diferenca": [
+        0.0165,
+        0.026
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 663,
+      "grupos_que_favorecem_o_segundo": 363,
+      "grupos_empatados": 9570,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6462,
+      "d_de_cohen_pareado_por_grupo": 0.0911,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 667,
+      "linhas_so_o_segundo_acerta": 364,
+      "linhas_discordantes": 1031,
+      "p_mcnemar_por_linha": 5.182904512237755e-21,
+      "par": [
+        "tfidf_embedding",
+        "sgd"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0201,
+      "diferenca_em_pontos_percentuais": 2.01,
+      "ic95_da_diferenca": [
+        0.0158,
+        0.0251
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 670,
+      "grupos_que_favorecem_o_segundo": 384,
+      "grupos_empatados": 9542,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6357,
+      "d_de_cohen_pareado_por_grupo": 0.0857,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 674,
+      "linhas_so_o_segundo_acerta": 385,
+      "linhas_discordantes": 1059,
+      "p_mcnemar_por_linha": 8.749953044053461e-19,
+      "par": [
+        "tfidf_caracteres",
+        "regressao_logistica"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0187,
+      "diferenca_em_pontos_percentuais": 1.87,
+      "ic95_da_diferenca": [
+        0.0137,
+        0.0238
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 788,
+      "grupos_que_favorecem_o_segundo": 526,
+      "grupos_empatados": 9282,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5997,
+      "d_de_cohen_pareado_por_grupo": 0.0713,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 796,
+      "linhas_so_o_segundo_acerta": 527,
+      "linhas_discordantes": 1323,
+      "p_mcnemar_por_linha": 1.7309102970836688e-13,
+      "par": [
+        "linear_svc",
+        "extra_trees"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0185,
+      "diferenca_em_pontos_percentuais": 1.85,
+      "ic95_da_diferenca": [
+        0.0141,
+        0.0233
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 629,
+      "grupos_que_favorecem_o_segundo": 367,
+      "grupos_empatados": 9600,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6315,
+      "d_de_cohen_pareado_por_grupo": 0.0807,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 633,
+      "linhas_so_o_segundo_acerta": 368,
+      "linhas_discordantes": 1001,
+      "p_mcnemar_por_linha": 7.167212507832373e-17,
+      "par": [
+        "tfidf_caracteres",
+        "sgd"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0173,
+      "diferenca_em_pontos_percentuais": 1.73,
+      "ic95_da_diferenca": [
+        0.0118,
+        0.0229
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 872,
+      "grupos_que_favorecem_o_segundo": 627,
+      "grupos_empatados": 9097,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5817,
+      "d_de_cohen_pareado_por_grupo": 0.0621,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 876,
+      "linhas_so_o_segundo_acerta": 628,
+      "linhas_discordantes": 1504,
+      "p_mcnemar_por_linha": 1.9023211994538864e-10,
+      "par": [
+        "sgd",
+        "random_forest"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0162,
+      "diferenca_em_pontos_percentuais": 1.62,
+      "ic95_da_diferenca": [
+        0.0123,
+        0.0206
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 561,
+      "grupos_que_favorecem_o_segundo": 332,
+      "grupos_empatados": 9703,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6282,
+      "d_de_cohen_pareado_por_grupo": 0.075,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 565,
+      "linhas_so_o_segundo_acerta": 332,
+      "linhas_discordantes": 897,
+      "p_mcnemar_por_linha": 9.464270371574214e-15,
+      "par": [
+        "linear_svc",
+        "regressao_logistica"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0156,
+      "diferenca_em_pontos_percentuais": 1.56,
+      "ic95_da_diferenca": [
+        0.0099,
+        0.0214
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 909,
+      "grupos_que_favorecem_o_segundo": 688,
+      "grupos_empatados": 8999,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5692,
+      "d_de_cohen_pareado_por_grupo": 0.0543,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 913,
+      "linhas_so_o_segundo_acerta": 689,
+      "linhas_discordantes": 1602,
+      "p_mcnemar_por_linha": 2.525279805034e-08,
+      "par": [
+        "regressao_logistica",
+        "random_forest"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0155,
+      "diferenca_em_pontos_percentuais": 1.55,
+      "ic95_da_diferenca": [
+        0.0082,
+        0.0235
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 1678,
+      "grupos_que_favorecem_o_segundo": 1451,
+      "grupos_empatados": 7467,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5363,
+      "d_de_cohen_pareado_por_grupo": 0.0386,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 1679,
+      "linhas_so_o_segundo_acerta": 1456,
+      "linhas_discordantes": 3135,
+      "p_mcnemar_por_linha": 7.342120479470311e-05,
+      "par": [
+        "naive_bayes",
+        "lstm"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.000441,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0146,
+      "diferenca_em_pontos_percentuais": 1.46,
+      "ic95_da_diferenca": [
+        0.0107,
+        0.0188
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 526,
+      "grupos_que_favorecem_o_segundo": 321,
+      "grupos_empatados": 9749,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.621,
+      "d_de_cohen_pareado_por_grupo": 0.069,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 530,
+      "linhas_so_o_segundo_acerta": 321,
+      "linhas_discordantes": 851,
+      "p_mcnemar_por_linha": 1.0026093864628063e-12,
+      "par": [
+        "linear_svc",
+        "sgd"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0131,
+      "diferenca_em_pontos_percentuais": 1.31,
+      "ic95_da_diferenca": [
+        0.0098,
+        0.0164
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 391,
+      "grupos_que_favorecem_o_segundo": 203,
+      "grupos_empatados": 10002,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6582,
+      "d_de_cohen_pareado_por_grupo": 0.0751,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 391,
+      "linhas_so_o_segundo_acerta": 203,
+      "linhas_discordantes": 594,
+      "p_mcnemar_por_linha": 1.684092105893636e-14,
+      "par": [
+        "extra_trees",
+        "random_forest"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.0,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0065,
+      "diferenca_em_pontos_percentuais": 0.65,
+      "ic95_da_diferenca": [
+        0.0035,
+        0.0094
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 278,
+      "grupos_que_favorecem_o_segundo": 183,
+      "grupos_empatados": 10135,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.603,
+      "d_de_cohen_pareado_por_grupo": 0.0424,
+      "p_permutacional_agrupado": 0.0002,
+      "p_permutacional_e_limite_superior": true,
+      "linhas_so_o_primeiro_acerta": 278,
+      "linhas_so_o_segundo_acerta": 184,
+      "linhas_discordantes": 462,
+      "p_mcnemar_por_linha": 1.5132446400673542e-05,
+      "par": [
+        "tfidf_embedding",
+        "linear_svc"
+      ],
+      "p_ajustado_holm": 0.009,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.000106,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0026,
+      "diferenca_em_pontos_percentuais": 0.26,
+      "ic95_da_diferenca": [
+        0.0011,
+        0.0043
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 97,
+      "grupos_que_favorecem_o_segundo": 59,
+      "grupos_empatados": 10440,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.6218,
+      "d_de_cohen_pareado_por_grupo": 0.0296,
+      "p_permutacional_agrupado": 0.003399,
+      "p_permutacional_e_limite_superior": false,
+      "linhas_so_o_primeiro_acerta": 97,
+      "linhas_so_o_segundo_acerta": 59,
+      "linhas_discordantes": 156,
+      "p_mcnemar_por_linha": 0.0030527985386427613,
+      "par": [
+        "tfidf_embedding",
+        "tfidf_caracteres"
+      ],
+      "p_ajustado_holm": 0.016995,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.015264,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0039,
+      "diferenca_em_pontos_percentuais": 0.39,
+      "ic95_da_diferenca": [
+        0.0011,
+        0.0065
+      ],
+      "ic_exclui_zero": true,
+      "grupos_que_favorecem_o_primeiro": 245,
+      "grupos_que_favorecem_o_segundo": 188,
+      "grupos_empatados": 10163,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5658,
+      "d_de_cohen_pareado_por_grupo": 0.0261,
+      "p_permutacional_agrupado": 0.009198,
+      "p_permutacional_e_limite_superior": false,
+      "linhas_so_o_primeiro_acerta": 245,
+      "linhas_so_o_segundo_acerta": 189,
+      "linhas_discordantes": 434,
+      "p_mcnemar_por_linha": 0.008288536214641595,
+      "par": [
+        "tfidf_caracteres",
+        "linear_svc"
+      ],
+      "p_ajustado_holm": 0.036792,
+      "significativo": true,
+      "p_ajustado_holm_por_linha": 0.033154,
+      "significativo_por_linha": true
+    },
+    {
+      "diferenca_de_acuracia": 0.0042,
+      "diferenca_em_pontos_percentuais": 0.42,
+      "ic95_da_diferenca": [
+        -0.0012,
+        0.0093
+      ],
+      "ic_exclui_zero": false,
+      "grupos_que_favorecem_o_primeiro": 723,
+      "grupos_que_favorecem_o_segundo": 666,
+      "grupos_empatados": 9207,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5205,
+      "d_de_cohen_pareado_por_grupo": 0.0156,
+      "p_permutacional_agrupado": 0.114777,
+      "p_permutacional_e_limite_superior": false,
+      "linhas_so_o_primeiro_acerta": 727,
+      "linhas_so_o_segundo_acerta": 667,
+      "linhas_discordantes": 1394,
+      "p_mcnemar_por_linha": 0.11405393534884803,
+      "par": [
+        "sgd",
+        "extra_trees"
+      ],
+      "p_ajustado_holm": 0.344331,
+      "significativo": false,
+      "p_ajustado_holm_por_linha": 0.342162,
+      "significativo_por_linha": false
+    },
+    {
+      "diferenca_de_acuracia": 0.0017,
+      "diferenca_em_pontos_percentuais": 0.17,
+      "ic95_da_diferenca": [
+        -0.0007,
+        0.004
+      ],
+      "ic_exclui_zero": false,
+      "grupos_que_favorecem_o_primeiro": 159,
+      "grupos_que_favorecem_o_segundo": 135,
+      "grupos_empatados": 10302,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.5408,
+      "d_de_cohen_pareado_por_grupo": 0.0136,
+      "p_permutacional_agrupado": 0.176765,
+      "p_permutacional_e_limite_superior": false,
+      "linhas_so_o_primeiro_acerta": 159,
+      "linhas_so_o_segundo_acerta": 135,
+      "linhas_discordantes": 294,
+      "p_mcnemar_por_linha": 0.1797947582207586,
+      "par": [
+        "sgd",
+        "regressao_logistica"
+      ],
+      "p_ajustado_holm": 0.35353,
+      "significativo": false,
+      "p_ajustado_holm_por_linha": 0.35959,
+      "significativo_por_linha": false
+    },
+    {
+      "diferenca_de_acuracia": 0.0025,
+      "diferenca_em_pontos_percentuais": 0.25,
+      "ic95_da_diferenca": [
+        -0.0031,
+        0.0078
+      ],
+      "ic_exclui_zero": false,
+      "grupos_que_favorecem_o_primeiro": 766,
+      "grupos_que_favorecem_o_segundo": 733,
+      "grupos_empatados": 9097,
+      "proporcao_de_grupos_decididos_a_favor_do_primeiro": 0.511,
+      "d_de_cohen_pareado_por_grupo": 0.009,
+      "p_permutacional_agrupado": 0.373925,
+      "p_permutacional_e_limite_superior": false,
+      "linhas_so_o_primeiro_acerta": 770,
+      "linhas_so_o_segundo_acerta": 734,
+      "linhas_discordantes": 1504,
+      "p_mcnemar_por_linha": 0.3667947247276938,
+      "par": [
+        "regressao_logistica",
+        "extra_trees"
+      ],
+      "p_ajustado_holm": 0.373925,
+      "significativo": false,
+      "p_ajustado_holm_por_linha": 0.366795,
+      "significativo_por_linha": false
+    }
+  ],
+  "conclusao_da_auditoria": {
+    "pares_que_mudam_de_veredito_com_a_unidade_correta": 0,
+    "pares_divergentes": [],
+    "leitura": "a inferência por linha e a por grupo concordam no veredito de cada par nesta rodada; o que muda é a magnitude do valor de p, que por linha é anticonservador"
+  },
+  "gerado_em": "30/10/2026 12:21",
+  "script_origem": "src/inferencia_agrupada.py"
+}

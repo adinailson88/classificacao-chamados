@@ -1,0 +1,138 @@
+{
+  "acuracia_por_condicao": {
+    "nossa_para_nossa": {
+      "naive_bayes": 0.7222,
+      "regressao_logistica": 0.8079,
+      "linear_svc": 0.8241,
+      "sgd": 0.8096,
+      "extra_trees": 0.8054,
+      "random_forest": 0.7923,
+      "lstm": 0.7067,
+      "tfidf_caracteres": 0.828,
+      "embedding_e5": 0.7554,
+      "tfidf_embedding": 0.8307
+    },
+    "nossa_para_ufrn": {
+      "tfidf_embedding": 0.6737,
+      "linear_svc": 0.6706,
+      "naive_bayes": 0.6404,
+      "regressao_logistica": 0.6586,
+      "sgd": 0.6655,
+      "extra_trees": 0.6119,
+      "random_forest": 0.5984,
+      "tfidf_caracteres": 0.678
+    },
+    "nossa_para_ufrn_sem_viario": {
+      "tfidf_embedding": 0.8174,
+      "linear_svc": 0.8207,
+      "naive_bayes": 0.7992,
+      "regressao_logistica": 0.7983,
+      "sgd": 0.7986,
+      "extra_trees": 0.7603,
+      "random_forest": 0.7398,
+      "tfidf_caracteres": 0.8263
+    },
+    "ufrn_para_ufrn": {
+      "tfidf_embedding": 0.9253,
+      "naive_bayes": 0.8964,
+      "regressao_logistica": 0.8955,
+      "linear_svc": 0.9198,
+      "sgd": 0.8959,
+      "extra_trees": 0.9002,
+      "random_forest": 0.8846,
+      "tfidf_caracteres": 0.9274
+    },
+    "ufrn_para_nossa": {
+      "tfidf_embedding": 0.8347,
+      "naive_bayes": 0.7287,
+      "regressao_logistica": 0.8226,
+      "linear_svc": 0.8363,
+      "sgd": 0.8327,
+      "extra_trees": 0.83,
+      "random_forest": 0.8077,
+      "tfidf_caracteres": 0.8274
+    }
+  },
+  "correlacao_de_postos": [
+    {
+      "condicoes": [
+        "nossa_para_nossa",
+        "nossa_para_ufrn"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.9048
+    },
+    {
+      "condicoes": [
+        "nossa_para_nossa",
+        "nossa_para_ufrn_sem_viario"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.6905
+    },
+    {
+      "condicoes": [
+        "nossa_para_nossa",
+        "ufrn_para_ufrn"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.7143
+    },
+    {
+      "condicoes": [
+        "nossa_para_nossa",
+        "ufrn_para_nossa"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.7619
+    },
+    {
+      "condicoes": [
+        "nossa_para_ufrn",
+        "nossa_para_ufrn_sem_viario"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.9048
+    },
+    {
+      "condicoes": [
+        "nossa_para_ufrn",
+        "ufrn_para_ufrn"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.7857
+    },
+    {
+      "condicoes": [
+        "nossa_para_ufrn",
+        "ufrn_para_nossa"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.5714
+    },
+    {
+      "condicoes": [
+        "nossa_para_ufrn_sem_viario",
+        "ufrn_para_ufrn"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.8333
+    },
+    {
+      "condicoes": [
+        "nossa_para_ufrn_sem_viario",
+        "ufrn_para_nossa"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.4286
+    },
+    {
+      "condicoes": [
+        "ufrn_para_ufrn",
+        "ufrn_para_nossa"
+      ],
+      "n_modelos": 8,
+      "spearman": 0.5238
+    }
+  ]
+}
