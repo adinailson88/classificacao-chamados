@@ -1,23 +1,24 @@
 {
   "resumo": {
     "linhas_com_2_ou_mais_modelos": 14592,
-    "linhas_alta_ambiguidade": 3522,
-    "entropia_media_votos": 0.4803
+    "linhas_alta_ambiguidade": 3630,
+    "entropia_media_votos": 0.4881
   },
   "linhas_mais_ambiguas": [
     {
-      "linha": 407,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "linha": 835,
+      "categoria_historica": "Projetos e Reformas > Reforma",
       "n_modelos": 8,
-      "categorias_votadas": 4,
-      "entropia_votos": 2.0,
+      "categorias_votadas": 8,
+      "entropia_votos": 3.0,
       "entropia_normalizada": 1.0,
-      "categorias_efetivas": 4.0,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "maioria_pct": 0.25,
+      "categorias_efetivas": 8.0,
+      "maioria": "Projetos e Reformas > Reforma",
+      "maioria_pct": 0.125,
       "modelos_divergentes": [
         "extra_trees",
         "linear_svc",
+        "lstm",
         "naive_bayes",
         "random_forest",
         "regressao_logistica",
@@ -25,20 +26,40 @@
       ]
     },
     {
-      "linha": 5028,
-      "categoria_historica": "Projetos e Reformas > Reforma",
+      "linha": 4037,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 8,
+      "categorias_votadas": 8,
+      "entropia_votos": 3.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 8.0,
+      "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.125,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 4031,
+      "categoria_historica": "Elétrica > Instalações elétricas",
       "n_modelos": 8,
       "categorias_votadas": 4,
       "entropia_votos": 2.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 4.0,
-      "maioria": "Projetos e Reformas > Reforma",
+      "maioria": "Elétrica > Instalações elétricas",
       "maioria_pct": 0.25,
       "modelos_divergentes": [
         "extra_trees",
         "linear_svc",
+        "lstm",
         "naive_bayes",
-        "random_forest",
         "regressao_logistica",
         "sgd"
       ]
@@ -58,25 +79,6 @@
         "lstm",
         "naive_bayes",
         "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 13726,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 8,
-      "categorias_votadas": 4,
-      "entropia_votos": 2.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 4.0,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.25,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
         "regressao_logistica",
         "sgd"
       ]
@@ -115,6 +117,23 @@
         "naive_bayes",
         "random_forest",
         "sgd"
+      ]
+    },
+    {
+      "linha": 48,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
       ]
     },
     {
@@ -373,6 +392,23 @@
       ]
     },
     {
+      "linha": 1162,
+      "categoria_historica": "Manutenção Preventiva > Gerador",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Elétrica > Gerador",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
+      ]
+    },
+    {
       "linha": 1261,
       "categoria_historica": "Climatização > Ar condicionado split",
       "n_modelos": 8,
@@ -458,23 +494,6 @@
       ]
     },
     {
-      "linha": 1526,
-      "categoria_historica": "Projetos e Reformas > Reforma",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 1530,
       "categoria_historica": "Elétrica > Iluminação",
       "n_modelos": 8,
@@ -526,6 +545,23 @@
       ]
     },
     {
+      "linha": 1801,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
       "linha": 1986,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
@@ -540,23 +576,6 @@
         "lstm",
         "naive_bayes",
         "random_forest"
-      ]
-    },
-    {
-      "linha": 2003,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd"
       ]
     },
     {
@@ -624,6 +643,40 @@
         "extra_trees",
         "naive_bayes",
         "random_forest",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 2499,
+      "categoria_historica": "Climatização > Ar condicionado split",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "naive_bayes",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 2602,
+      "categoria_historica": "Climatização > Ar condicionado split",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "naive_bayes",
+        "regressao_logistica",
         "sgd"
       ]
     },
@@ -696,7 +749,7 @@
       ]
     },
     {
-      "linha": 3383,
+      "linha": 3270,
       "categoria_historica": "Elétrica > Iluminação",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -706,9 +759,9 @@
       "maioria": "Elétrica > Iluminação",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
-        "extra_trees",
         "naive_bayes",
         "random_forest",
+        "regressao_logistica",
         "sgd"
       ]
     },
@@ -724,6 +777,23 @@
       "maioria_pct": 0.5,
       "modelos_divergentes": [
         "extra_trees",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
+      ]
+    },
+    {
+      "linha": 3693,
+      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
         "lstm",
         "naive_bayes",
         "random_forest"
@@ -795,6 +865,23 @@
         "naive_bayes",
         "regressao_logistica",
         "sgd"
+      ]
+    },
+    {
+      "linha": 3960,
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Climatização > Ar condicionado central",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
       ]
     },
     {
@@ -900,6 +987,23 @@
       ]
     },
     {
+      "linha": 4744,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
+      ]
+    },
+    {
       "linha": 4749,
       "categoria_historica": "Estrutura Predial > Pintura",
       "n_modelos": 8,
@@ -982,6 +1086,40 @@
         "lstm",
         "naive_bayes",
         "random_forest"
+      ]
+    },
+    {
+      "linha": 5125,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 5199,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "lstm",
+        "regressao_logistica",
+        "sgd"
       ]
     },
     {
@@ -1155,7 +1293,7 @@
       ]
     },
     {
-      "linha": 6017,
+      "linha": 6244,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -1165,8 +1303,8 @@
       "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
+        "extra_trees",
         "linear_svc",
-        "lstm",
         "regressao_logistica",
         "sgd"
       ]
@@ -1200,6 +1338,23 @@
       "maioria_pct": 0.5,
       "modelos_divergentes": [
         "extra_trees",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 6791,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "lstm",
         "random_forest",
         "regressao_logistica",
         "sgd"
@@ -1274,40 +1429,6 @@
       ]
     },
     {
-      "linha": 7164,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 7246,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 7264,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
@@ -1359,6 +1480,23 @@
       ]
     },
     {
+      "linha": 7440,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
       "linha": 7508,
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "n_modelos": 8,
@@ -1393,23 +1531,6 @@
       ]
     },
     {
-      "linha": 7575,
-      "categoria_historica": "Estrutura Predial > Pintura",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Pintura",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
       "linha": 7584,
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "n_modelos": 8,
@@ -1424,6 +1545,23 @@
         "naive_bayes",
         "regressao_logistica",
         "sgd"
+      ]
+    },
+    {
+      "linha": 7613,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Elétrica > Instalações elétricas",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "naive_bayes",
+        "random_forest"
       ]
     },
     {
@@ -1478,41 +1616,7 @@
       ]
     },
     {
-      "linha": 7692,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
       "linha": 7721,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 7757,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -1541,6 +1645,23 @@
       "modelos_divergentes": [
         "linear_svc",
         "lstm",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 7818,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "naive_bayes",
+        "random_forest",
         "regressao_logistica",
         "sgd"
       ]
@@ -1767,40 +1888,6 @@
       ]
     },
     {
-      "linha": 9107,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 9142,
-      "categoria_historica": "Climatização > Ar condicionado split",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Climatização > Ar condicionado split",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 9250,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
@@ -1903,6 +1990,23 @@
       ]
     },
     {
+      "linha": 10380,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
+      ]
+    },
+    {
       "linha": 10405,
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "n_modelos": 8,
@@ -1917,23 +2021,6 @@
         "lstm",
         "regressao_logistica",
         "sgd"
-      ]
-    },
-    {
-      "linha": 10406,
-      "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Esquadrias, porta, portão e janelas",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest"
       ]
     },
     {
@@ -2056,24 +2143,24 @@
       ]
     },
     {
-      "linha": 11017,
-      "categoria_historica": "Elétrica > Iluminação",
+      "linha": 11008,
+      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
       "categorias_votadas": 2,
       "entropia_votos": 1.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
-      "maioria": "Elétrica > Iluminação",
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
-        "linear_svc",
+        "lstm",
         "naive_bayes",
         "regressao_logistica",
         "sgd"
       ]
     },
     {
-      "linha": 11266,
+      "linha": 11105,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -2090,7 +2177,7 @@
       ]
     },
     {
-      "linha": 11364,
+      "linha": 11266,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -2158,6 +2245,23 @@
       ]
     },
     {
+      "linha": 11607,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "lstm",
+        "naive_bayes",
+        "sgd"
+      ]
+    },
+    {
       "linha": 11644,
       "categoria_historica": "Outros > Erro de chamado",
       "n_modelos": 8,
@@ -2205,6 +2309,23 @@
         "linear_svc",
         "lstm",
         "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 11694,
+      "categoria_historica": "Manutenção Preventiva > Hidráulica",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Manutenção Preventiva > Hidráulica",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "lstm",
+        "naive_bayes",
+        "random_forest",
         "sgd"
       ]
     },
@@ -2277,6 +2398,23 @@
       ]
     },
     {
+      "linha": 12170,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "lstm",
+        "naive_bayes"
+      ]
+    },
+    {
       "linha": 12183,
       "categoria_historica": "Estrutura Predial > Pintura",
       "n_modelos": 8,
@@ -2291,23 +2429,6 @@
         "linear_svc",
         "naive_bayes",
         "random_forest"
-      ]
-    },
-    {
-      "linha": 12186,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
       ]
     },
     {
@@ -2362,23 +2483,6 @@
       ]
     },
     {
-      "linha": 12509,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "lstm",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 12650,
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
@@ -2387,74 +2491,6 @@
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
       "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
-      "linha": 12689,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
-      "linha": 12769,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
-      "linha": 12848,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Outros > Erro de chamado",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "naive_bayes",
-        "random_forest"
-      ]
-    },
-    {
-      "linha": 12975,
-      "categoria_historica": "Outros > Erro de chamado",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Outros > Erro de chamado",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
         "extra_trees",
@@ -2532,19 +2568,19 @@
       ]
     },
     {
-      "linha": 13616,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "linha": 13500,
+      "categoria_historica": "Outros > Erro de chamado",
       "n_modelos": 8,
       "categorias_votadas": 2,
       "entropia_votos": 1.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria": "Outros > Erro de chamado",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
         "extra_trees",
         "linear_svc",
-        "regressao_logistica",
+        "naive_bayes",
         "sgd"
       ]
     },
@@ -2566,6 +2602,23 @@
       ]
     },
     {
+      "linha": 13716,
+      "categoria_historica": "Outros > Erro de chamado",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "naive_bayes",
+        "sgd"
+      ]
+    },
+    {
       "linha": 13722,
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
@@ -2584,6 +2637,40 @@
     },
     {
       "linha": 13794,
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "extra_trees",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
+      ]
+    },
+    {
+      "linha": 13864,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 13894,
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -2685,24 +2772,7 @@
       ]
     },
     {
-      "linha": 14202,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "random_forest",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 14218,
+      "linha": 14166,
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
       "categorias_votadas": 2,
@@ -2713,26 +2783,26 @@
       "maioria_pct": 0.5,
       "modelos_divergentes": [
         "extra_trees",
-        "lstm",
+        "linear_svc",
         "naive_bayes",
         "random_forest"
       ]
     },
     {
-      "linha": 14223,
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "linha": 14184,
+      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "n_modelos": 8,
       "categorias_votadas": 2,
       "entropia_votos": 1.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
-      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
-        "extra_trees",
         "linear_svc",
-        "naive_bayes",
-        "regressao_logistica"
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
       ]
     },
     {
@@ -2770,40 +2840,6 @@
       ]
     },
     {
-      "linha": 14332,
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Manutenção Preventiva > Iluminação",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "random_forest",
-        "regressao_logistica"
-      ]
-    },
-    {
-      "linha": 14334,
-      "categoria_historica": "Manutenção Preventiva > Iluminação",
-      "n_modelos": 8,
-      "categorias_votadas": 2,
-      "entropia_votos": 1.0,
-      "entropia_normalizada": 1.0,
-      "categorias_efetivas": 2.0,
-      "maioria": "Manutenção Preventiva > Iluminação",
-      "maioria_pct": 0.5,
-      "modelos_divergentes": [
-        "extra_trees",
-        "lstm",
-        "random_forest",
-        "regressao_logistica"
-      ]
-    },
-    {
       "linha": 14350,
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
@@ -2821,20 +2857,20 @@
       ]
     },
     {
-      "linha": 14557,
-      "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "linha": 14384,
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
       "categorias_votadas": 2,
       "entropia_votos": 1.0,
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 2.0,
-      "maioria": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "maioria_pct": 0.5,
       "modelos_divergentes": [
-        "extra_trees",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest"
       ]
     },
     {
@@ -2853,24 +2889,6 @@
         "naive_bayes",
         "random_forest",
         "regressao_logistica"
-      ]
-    },
-    {
-      "linha": 104,
-      "categoria_historica": "Projetos e Reformas > Reforma",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
       ]
     },
     {
@@ -2964,21 +2982,21 @@
       ]
     },
     {
-      "linha": 406,
-      "categoria_historica": "Elétrica > Instalações elétricas",
+      "linha": 381,
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "n_modelos": 8,
       "categorias_votadas": 3,
       "entropia_votos": 1.5613,
       "entropia_normalizada": 0.9851,
       "categorias_efetivas": 2.9512,
-      "maioria": "Elétrica > Instalações elétricas",
+      "maioria": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "maioria_pct": 0.375,
       "modelos_divergentes": [
         "extra_trees",
+        "linear_svc",
         "lstm",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
+        "naive_bayes",
+        "random_forest"
       ]
     },
     {
@@ -3054,24 +3072,6 @@
       ]
     },
     {
-      "linha": 857,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 929,
       "categoria_historica": "Hidrossanitária > Hidráulica",
       "n_modelos": 8,
@@ -3105,6 +3105,24 @@
         "naive_bayes",
         "regressao_logistica",
         "sgd"
+      ]
+    },
+    {
+      "linha": 1011,
+      "categoria_historica": "Manutenção Preventiva > Vistoria em Instalações",
+      "n_modelos": 8,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.5613,
+      "entropia_normalizada": 0.9851,
+      "categorias_efetivas": 2.9512,
+      "maioria": "Manutenção Preventiva > Vistoria em Instalações",
+      "maioria_pct": 0.375,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "naive_bayes",
+        "random_forest",
+        "regressao_logistica"
       ]
     },
     {
@@ -3324,42 +3342,6 @@
       ]
     },
     {
-      "linha": 2129,
-      "categoria_historica": "Estrutura Predial > Telhados, calhas, rufos, etc.",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "lstm",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 2133,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "etapa1_oficial",
-        "linear_svc",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 2222,
       "categoria_historica": "Estrutura Predial > Esquadrias, porta, portão e janelas",
       "n_modelos": 8,
@@ -3378,24 +3360,6 @@
       ]
     },
     {
-      "linha": 2261,
-      "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "linear_svc",
-        "lstm",
-        "naive_bayes",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
       "linha": 2892,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
@@ -3409,6 +3373,24 @@
         "etapa1_oficial",
         "linear_svc",
         "lstm",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 2950,
+      "categoria_historica": "Elétrica > Instalações elétricas",
+      "n_modelos": 8,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.5613,
+      "entropia_normalizada": 0.9851,
+      "categorias_efetivas": 2.9512,
+      "maioria": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "maioria_pct": 0.375,
+      "modelos_divergentes": [
+        "etapa1_oficial",
+        "linear_svc",
+        "random_forest",
         "regressao_logistica",
         "sgd"
       ]
@@ -3444,6 +3426,24 @@
       "modelos_divergentes": [
         "extra_trees",
         "linear_svc",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 3374,
+      "categoria_historica": "Elétrica > Iluminação",
+      "n_modelos": 8,
+      "categorias_votadas": 3,
+      "entropia_votos": 1.5613,
+      "entropia_normalizada": 0.9851,
+      "categorias_efetivas": 2.9512,
+      "maioria": "Elétrica > Iluminação",
+      "maioria_pct": 0.375,
+      "modelos_divergentes": [
+        "extra_trees",
+        "naive_bayes",
         "random_forest",
         "regressao_logistica",
         "sgd"
