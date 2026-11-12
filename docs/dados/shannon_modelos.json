@@ -11,7 +11,7 @@
     "concordancia_historico": 0.6847,
     "confianca_media": 0.7118,
     "entropia_historico_local": 4.3163,
-    "js_vs_historico_global": 0.0337
+    "js_vs_historico_global": 0.0336
   },
   {
     "modelo": "regressao_logistica",
@@ -25,7 +25,7 @@
     "concordancia_historico": 0.7664,
     "confianca_media": 0.5186,
     "entropia_historico_local": 4.3163,
-    "js_vs_historico_global": 0.0201
+    "js_vs_historico_global": 0.0199
   },
   {
     "modelo": "sgd",
@@ -39,7 +39,7 @@
     "concordancia_historico": 0.7733,
     "confianca_media": 0.4604,
     "entropia_historico_local": 4.3135,
-    "js_vs_historico_global": 0.0126
+    "js_vs_historico_global": 0.0124
   },
   {
     "modelo": "naive_bayes",
@@ -53,7 +53,7 @@
     "concordancia_historico": 0.6961,
     "confianca_media": 0.7385,
     "entropia_historico_local": 4.3136,
-    "js_vs_historico_global": 0.089
+    "js_vs_historico_global": 0.0893
   },
   {
     "modelo": "linear_svc",
@@ -67,7 +67,21 @@
     "concordancia_historico": 0.8071,
     "confianca_media": 0.1023,
     "entropia_historico_local": 4.3136,
-    "js_vs_historico_global": 0.006
+    "js_vs_historico_global": 0.0059
+  },
+  {
+    "modelo": "etapa1_oficial",
+    "registros": 14723,
+    "categorias_previstas": 65,
+    "entropia_previsoes": 4.4244,
+    "entropia_normalizada": 0.7347,
+    "categorias_efetivas": 21.4716,
+    "categoria_top": "Manutenção Preventiva > Ar condicionado split",
+    "categoria_top_pct": 0.1404,
+    "concordancia_historico": 0.933,
+    "confianca_media": 0.9626,
+    "entropia_historico_local": 4.3467,
+    "js_vs_historico_global": 0.0031
   },
   {
     "modelo": "random_forest",
@@ -81,21 +95,7 @@
     "concordancia_historico": 0.7776,
     "confianca_media": 0.6771,
     "entropia_historico_local": 4.3136,
-    "js_vs_historico_global": 0.0232
-  },
-  {
-    "modelo": "etapa1_oficial",
-    "registros": 14646,
-    "categorias_previstas": 67,
-    "entropia_previsoes": 4.4212,
-    "entropia_normalizada": 0.7288,
-    "categorias_efetivas": 21.4244,
-    "categoria_top": "Manutenção Preventiva > Ar condicionado split",
-    "categoria_top_pct": 0.1398,
-    "concordancia_historico": 0.9351,
-    "confianca_media": 0.9656,
-    "entropia_historico_local": 4.3469,
-    "js_vs_historico_global": 0.0026
+    "js_vs_historico_global": 0.0233
   },
   {
     "modelo": "extra_trees",
@@ -109,6 +109,6 @@
     "concordancia_historico": 0.7818,
     "confianca_media": 0.7064,
     "entropia_historico_local": 4.3139,
-    "js_vs_historico_global": 0.0247
+    "js_vs_historico_global": 0.0248
   }
 ]
