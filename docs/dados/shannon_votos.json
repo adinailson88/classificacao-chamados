@@ -1,8 +1,8 @@
 {
   "resumo": {
-    "linhas_com_2_ou_mais_modelos": 14592,
-    "linhas_alta_ambiguidade": 3630,
-    "entropia_media_votos": 0.4881
+    "linhas_com_2_ou_mais_modelos": 14724,
+    "linhas_alta_ambiguidade": 3694,
+    "entropia_media_votos": 0.4935
   },
   "linhas_mais_ambiguas": [
     {
@@ -34,6 +34,26 @@
       "entropia_normalizada": 1.0,
       "categorias_efetivas": 8.0,
       "maioria": "Outros > Erro de chamado",
+      "maioria_pct": 0.125,
+      "modelos_divergentes": [
+        "extra_trees",
+        "linear_svc",
+        "lstm",
+        "naive_bayes",
+        "random_forest",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
+      "linha": 14624,
+      "categoria_historica": "Projeto > Arquitetônico",
+      "n_modelos": 8,
+      "categorias_votadas": 8,
+      "entropia_votos": 3.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 8.0,
+      "maioria": "Projeto > Arquitetônico",
       "maioria_pct": 0.125,
       "modelos_divergentes": [
         "extra_trees",
@@ -2874,6 +2894,23 @@
       ]
     },
     {
+      "linha": 14708,
+      "categoria_historica": "Climatização > Ar condicionado split",
+      "n_modelos": 8,
+      "categorias_votadas": 2,
+      "entropia_votos": 1.0,
+      "entropia_normalizada": 1.0,
+      "categorias_efetivas": 2.0,
+      "maioria": "Climatização > Ar condicionado split",
+      "maioria_pct": 0.5,
+      "modelos_divergentes": [
+        "linear_svc",
+        "lstm",
+        "regressao_logistica",
+        "sgd"
+      ]
+    },
+    {
       "linha": 42,
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "n_modelos": 8,
@@ -3410,42 +3447,6 @@
         "linear_svc",
         "lstm",
         "naive_bayes",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 3098,
-      "categoria_historica": "Elétrica > Instalações elétricas",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Elétrica > Instalações elétricas",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "extra_trees",
-        "linear_svc",
-        "random_forest",
-        "regressao_logistica",
-        "sgd"
-      ]
-    },
-    {
-      "linha": 3374,
-      "categoria_historica": "Elétrica > Iluminação",
-      "n_modelos": 8,
-      "categorias_votadas": 3,
-      "entropia_votos": 1.5613,
-      "entropia_normalizada": 0.9851,
-      "categorias_efetivas": 2.9512,
-      "maioria": "Elétrica > Iluminação",
-      "maioria_pct": 0.375,
-      "modelos_divergentes": [
-        "extra_trees",
-        "naive_bayes",
-        "random_forest",
-        "regressao_logistica",
         "sgd"
       ]
     }
