@@ -1,10 +1,10 @@
 {
- "total_chamados": 14724,
+ "total_chamados": 14727,
  "com_conferencia_glpi": 14572,
  "verdade_glpi": 13983,
  "verdade_manual": 589,
  "pendente_glpi_errado_sem_q": 0,
- "sem_conferencia": 152,
+ "sem_conferencia": 155,
  "correto_com_q_preenchida": 7,
  "errado_com_q_igual_a_c": 90,
  "por_modelo": {
@@ -17,12 +17,12 @@
    "acuracia": 0.7059
   },
   "regressao_logistica": {
-   "correto": 11507,
-   "errado": 3065,
+   "correto": 11587,
+   "errado": 2985,
    "pendente": 0,
    "sem_predicao": 0,
    "avaliados": 14572,
-   "acuracia": 0.7897
+   "acuracia": 0.7952
   },
   "linear_svc": {
    "correto": 11872,
@@ -163,7 +163,7 @@
   "2018090218",
   "2018100230"
  ],
- "gerado_em": "13/11/2026 04:00",
+ "gerado_em": "13/11/2026 16:55",
  "aba": "CONFERENCIA_MULTIMODELO",
  "regra": "M='Correto' -> verdade = C; M='Errado' + Q preenchida -> verdade = Q; M='Errado' sem Q -> pendente; M vazio -> ignorado"
 }
