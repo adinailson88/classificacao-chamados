@@ -1,0 +1,464 @@
+{
+  "trilha": "B",
+  "encoder": "intfloat/multilingual-e5-base",
+  "retreino": {
+    "schema_version": 1,
+    "status": "apto_para_regras",
+    "protocolo": "predicoes out-of-fold sobre as particoes canonicas do Passo 3; rotulo e a referencia humana revisada; nenhum modelo treina no grupo textual que preve",
+    "semente": 42,
+    "corpus": {
+      "linhas_avaliadas": 14357,
+      "grupos_textuais": 10596,
+      "categorias": 39,
+      "dobras": 5,
+      "linhas_fora_das_particoes": 202,
+      "linhas_sem_rotulo": 0,
+      "linhas_com_texto_alterado_apos_o_congelamento": 0
+    },
+    "ambiente": {
+      "python": "3.11.17",
+      "plataforma": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.43",
+      "dependencias": {
+        "numpy": "1.26.4",
+        "sklearn": "1.5.2",
+        "tensorflow": "2.17.0"
+      }
+    },
+    "modelos": [
+      {
+        "modelo": "tfidf_caracteres",
+        "acuracia": 0.828,
+        "macro_f1": 0.6939,
+        "balanced_accuracy": 0.7008,
+        "tempo_treino_s": 150.72,
+        "tempo_inferencia_s": 57.71,
+        "pico_memoria_mb": 313.7,
+        "registros_sem_predicao": 0,
+        "grupos_vazados_para_o_treino": 0,
+        "por_campus": [
+          {
+            "campus": "Campus Jorge Amado",
+            "n": 3905,
+            "acuracia": 0.8182,
+            "macro_f1": 0.6607
+          },
+          {
+            "campus": "Campus Maria Felipa - Jequié",
+            "n": 11,
+            "acuracia": 0.7273,
+            "macro_f1": 0.5905
+          },
+          {
+            "campus": "Campus Paulo Freire",
+            "n": 3866,
+            "acuracia": 0.8295,
+            "macro_f1": 0.6365
+          },
+          {
+            "campus": "Campus Sosígenes Costa",
+            "n": 4222,
+            "acuracia": 0.8475,
+            "macro_f1": 0.6643
+          },
+          {
+            "campus": "Reitoria",
+            "n": 2353,
+            "acuracia": 0.8075,
+            "macro_f1": 0.6832
+          }
+        ]
+      },
+      {
+        "modelo": "embedding_e5",
+        "acuracia": 0.7554,
+        "macro_f1": 0.6023,
+        "balanced_accuracy": 0.7135,
+        "tempo_treino_s": 31.14,
+        "tempo_inferencia_s": 0.13,
+        "pico_memoria_mb": 128.6,
+        "registros_sem_predicao": 0,
+        "grupos_vazados_para_o_treino": 0,
+        "por_campus": [
+          {
+            "campus": "Campus Jorge Amado",
+            "n": 3905,
+            "acuracia": 0.7365,
+            "macro_f1": 0.5857
+          },
+          {
+            "campus": "Campus Maria Felipa - Jequié",
+            "n": 11,
+            "acuracia": 0.3636,
+            "macro_f1": 0.3214
+          },
+          {
+            "campus": "Campus Paulo Freire",
+            "n": 3866,
+            "acuracia": 0.7566,
+            "macro_f1": 0.5364
+          },
+          {
+            "campus": "Campus Sosígenes Costa",
+            "n": 4222,
+            "acuracia": 0.7823,
+            "macro_f1": 0.5941
+          },
+          {
+            "campus": "Reitoria",
+            "n": 2353,
+            "acuracia": 0.7382,
+            "macro_f1": 0.5933
+          }
+        ]
+      },
+      {
+        "modelo": "tfidf_embedding",
+        "acuracia": 0.8307,
+        "macro_f1": 0.6913,
+        "balanced_accuracy": 0.6965,
+        "tempo_treino_s": 217.97,
+        "tempo_inferencia_s": 58.07,
+        "pico_memoria_mb": 585.1,
+        "registros_sem_predicao": 0,
+        "grupos_vazados_para_o_treino": 0,
+        "por_campus": [
+          {
+            "campus": "Campus Jorge Amado",
+            "n": 3905,
+            "acuracia": 0.8218,
+            "macro_f1": 0.6572
+          },
+          {
+            "campus": "Campus Maria Felipa - Jequié",
+            "n": 11,
+            "acuracia": 0.6364,
+            "macro_f1": 0.5238
+          },
+          {
+            "campus": "Campus Paulo Freire",
+            "n": 3866,
+            "acuracia": 0.8308,
+            "macro_f1": 0.6355
+          },
+          {
+            "campus": "Campus Sosígenes Costa",
+            "n": 4222,
+            "acuracia": 0.8491,
+            "macro_f1": 0.6623
+          },
+          {
+            "campus": "Reitoria",
+            "n": 2353,
+            "acuracia": 0.813,
+            "macro_f1": 0.687
+          }
+        ]
+      }
+    ],
+    "melhor_por_macro_f1": "tfidf_caracteres",
+    "problemas": {
+      "modelos_com_vazamento_de_grupo": 0,
+      "modelos_com_registro_sem_predicao": 0,
+      "linhas_do_corpus_sem_rotulo": 0
+    },
+    "bloqueios": [],
+    "trilha": "B"
+  },
+  "temporal": {
+    "schema_version": 1,
+    "trilha": "B",
+    "semente": 42,
+    "modelos": [
+      "tfidf_caracteres",
+      "embedding_e5",
+      "tfidf_embedding"
+    ],
+    "cenarios": [
+      {
+        "cenario": "prospectivo",
+        "descricao": "treino em tudo o que foi aberto ate o corte, teste nos chamados abertos depois",
+        "treino": 13870,
+        "teste": 487,
+        "modelos": [
+          {
+            "modelo": "tfidf_caracteres",
+            "treino": 13870,
+            "teste": 487,
+            "teste_com_grupo_ja_visto": 89,
+            "acuracia": 0.7659,
+            "macro_f1": 0.6583,
+            "grupos_novos": {
+              "n": 398,
+              "acuracia": 0.7136,
+              "macro_f1": 0.6308
+            }
+          },
+          {
+            "modelo": "embedding_e5",
+            "treino": 13870,
+            "teste": 487,
+            "teste_com_grupo_ja_visto": 89,
+            "acuracia": 0.7413,
+            "macro_f1": 0.631,
+            "grupos_novos": {
+              "n": 398,
+              "acuracia": 0.6834,
+              "macro_f1": 0.5922
+            }
+          },
+          {
+            "modelo": "tfidf_embedding",
+            "treino": 13870,
+            "teste": 487,
+            "teste_com_grupo_ja_visto": 89,
+            "acuracia": 0.768,
+            "macro_f1": 0.6549,
+            "grupos_novos": {
+              "n": 398,
+              "acuracia": 0.7161,
+              "macro_f1": 0.6271
+            }
+          }
+        ]
+      },
+      {
+        "cenario": "origem_rolante_2022",
+        "descricao": "treino antes de 2022, teste em 2022",
+        "treino": 6666,
+        "teste": 1378,
+        "modelos": [
+          {
+            "modelo": "tfidf_caracteres",
+            "treino": 6666,
+            "teste": 1378,
+            "teste_com_grupo_ja_visto": 347,
+            "acuracia": 0.8128,
+            "macro_f1": 0.634,
+            "grupos_novos": {
+              "n": 1031,
+              "acuracia": 0.7565,
+              "macro_f1": 0.6368
+            }
+          },
+          {
+            "modelo": "embedding_e5",
+            "treino": 6666,
+            "teste": 1378,
+            "teste_com_grupo_ja_visto": 347,
+            "acuracia": 0.7322,
+            "macro_f1": 0.5463,
+            "grupos_novos": {
+              "n": 1031,
+              "acuracia": 0.6489,
+              "macro_f1": 0.5635
+            }
+          },
+          {
+            "modelo": "tfidf_embedding",
+            "treino": 6666,
+            "teste": 1378,
+            "teste_com_grupo_ja_visto": 347,
+            "acuracia": 0.8171,
+            "macro_f1": 0.6347,
+            "grupos_novos": {
+              "n": 1031,
+              "acuracia": 0.7624,
+              "macro_f1": 0.6375
+            }
+          }
+        ]
+      },
+      {
+        "cenario": "origem_rolante_2023",
+        "descricao": "treino antes de 2023, teste em 2023",
+        "treino": 8044,
+        "teste": 1624,
+        "modelos": [
+          {
+            "modelo": "tfidf_caracteres",
+            "treino": 8044,
+            "teste": 1624,
+            "teste_com_grupo_ja_visto": 128,
+            "acuracia": 0.8091,
+            "macro_f1": 0.5727,
+            "grupos_novos": {
+              "n": 1496,
+              "acuracia": 0.7928,
+              "macro_f1": 0.5727
+            }
+          },
+          {
+            "modelo": "embedding_e5",
+            "treino": 8044,
+            "teste": 1624,
+            "teste_com_grupo_ja_visto": 128,
+            "acuracia": 0.7463,
+            "macro_f1": 0.5311,
+            "grupos_novos": {
+              "n": 1496,
+              "acuracia": 0.7246,
+              "macro_f1": 0.5311
+            }
+          },
+          {
+            "modelo": "tfidf_embedding",
+            "treino": 8044,
+            "teste": 1624,
+            "teste_com_grupo_ja_visto": 128,
+            "acuracia": 0.8097,
+            "macro_f1": 0.5804,
+            "grupos_novos": {
+              "n": 1496,
+              "acuracia": 0.7934,
+              "macro_f1": 0.5804
+            }
+          }
+        ]
+      },
+      {
+        "cenario": "origem_rolante_2024",
+        "descricao": "treino antes de 2024, teste em 2024",
+        "treino": 9668,
+        "teste": 1569,
+        "modelos": [
+          {
+            "modelo": "tfidf_caracteres",
+            "treino": 9668,
+            "teste": 1569,
+            "teste_com_grupo_ja_visto": 356,
+            "acuracia": 0.7903,
+            "macro_f1": 0.5843,
+            "grupos_novos": {
+              "n": 1213,
+              "acuracia": 0.7288,
+              "macro_f1": 0.5542
+            }
+          },
+          {
+            "modelo": "embedding_e5",
+            "treino": 9668,
+            "teste": 1569,
+            "teste_com_grupo_ja_visto": 356,
+            "acuracia": 0.7202,
+            "macro_f1": 0.5522,
+            "grupos_novos": {
+              "n": 1213,
+              "acuracia": 0.6389,
+              "macro_f1": 0.5386
+            }
+          },
+          {
+            "modelo": "tfidf_embedding",
+            "treino": 9668,
+            "teste": 1569,
+            "teste_com_grupo_ja_visto": 356,
+            "acuracia": 0.7935,
+            "macro_f1": 0.5935,
+            "grupos_novos": {
+              "n": 1213,
+              "acuracia": 0.7329,
+              "macro_f1": 0.5692
+            }
+          }
+        ]
+      },
+      {
+        "cenario": "origem_rolante_2025",
+        "descricao": "treino antes de 2025, teste em 2025",
+        "treino": 11237,
+        "teste": 1618,
+        "modelos": [
+          {
+            "modelo": "tfidf_caracteres",
+            "treino": 11237,
+            "teste": 1618,
+            "teste_com_grupo_ja_visto": 415,
+            "acuracia": 0.7954,
+            "macro_f1": 0.6771,
+            "grupos_novos": {
+              "n": 1203,
+              "acuracia": 0.7249,
+              "macro_f1": 0.6544
+            }
+          },
+          {
+            "modelo": "embedding_e5",
+            "treino": 11237,
+            "teste": 1618,
+            "teste_com_grupo_ja_visto": 415,
+            "acuracia": 0.7899,
+            "macro_f1": 0.6311,
+            "grupos_novos": {
+              "n": 1203,
+              "acuracia": 0.719,
+              "macro_f1": 0.5888
+            }
+          },
+          {
+            "modelo": "tfidf_embedding",
+            "treino": 11237,
+            "teste": 1618,
+            "teste_com_grupo_ja_visto": 415,
+            "acuracia": 0.7954,
+            "macro_f1": 0.6829,
+            "grupos_novos": {
+              "n": 1203,
+              "acuracia": 0.7249,
+              "macro_f1": 0.6556
+            }
+          }
+        ]
+      },
+      {
+        "cenario": "origem_rolante_2026",
+        "descricao": "treino antes de 2026, teste em 2026",
+        "treino": 12855,
+        "teste": 1502,
+        "modelos": [
+          {
+            "modelo": "tfidf_caracteres",
+            "treino": 12855,
+            "teste": 1502,
+            "teste_com_grupo_ja_visto": 310,
+            "acuracia": 0.767,
+            "macro_f1": 0.6623,
+            "grupos_novos": {
+              "n": 1192,
+              "acuracia": 0.7064,
+              "macro_f1": 0.6273
+            }
+          },
+          {
+            "modelo": "embedding_e5",
+            "treino": 12855,
+            "teste": 1502,
+            "teste_com_grupo_ja_visto": 310,
+            "acuracia": 0.7457,
+            "macro_f1": 0.6177,
+            "grupos_novos": {
+              "n": 1192,
+              "acuracia": 0.6812,
+              "macro_f1": 0.5776
+            }
+          },
+          {
+            "modelo": "tfidf_embedding",
+            "treino": 12855,
+            "teste": 1502,
+            "teste_com_grupo_ja_visto": 310,
+            "acuracia": 0.7723,
+            "macro_f1": 0.6754,
+            "grupos_novos": {
+              "n": 1192,
+              "acuracia": 0.7131,
+              "macro_f1": 0.6453
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 11:57",
+  "script_origem": "src/trilha_b.py"
+}

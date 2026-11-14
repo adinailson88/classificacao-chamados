@@ -1,0 +1,700 @@
+{
+  "schema_version": 1,
+  "status": "concluido",
+  "protocolo": "dobra interna de calibracao: para cada dobra externa f, o modelo e treinado nas dobras que nao sao f nem a interna c, o calibrador e o limiar sao ajustados em c, e so entao f e avaliada",
+  "garantia_de_aceite": "nenhum registro da dobra externa participa do ajuste do calibrador nem da escolha do limiar",
+  "ressalva": "o calibrador e ajustado sobre escores de um modelo treinado em tres dobras e aplicado a escores de um modelo treinado em quatro; e a troca entre ausencia de vazamento e casamento exato de distribuicao",
+  "definicoes": {
+    "ece": "Expected Calibration Error com faixas de largura igual: media ponderada, sobre 10 faixas, do modulo da diferenca entre acuracia e confianca media da faixa",
+    "brier": "escore de Brier binario acerto/erro; pune ma calibracao e baixa resolucao ao mesmo tempo",
+    "limiar": "menor escore que atinge o alvo de acuracia na dobra interna de calibracao"
+  },
+  "corpus": {
+    "registros": 14357,
+    "dobras": 5,
+    "categorias": 39
+  },
+  "alvos_de_acuracia": [
+    0.9,
+    0.95,
+    0.99
+  ],
+  "modelos": [
+    {
+      "modelo": "tfidf_caracteres",
+      "acuracia_global": 0.828,
+      "bruta": {
+        "ece": 0.6575,
+        "brier": 0.5527,
+        "confiabilidade": [
+          {
+            "faixa": "[0.0, 0.1)",
+            "n": 4169,
+            "confianca_media": 0.0695,
+            "acuracia": 0.5479
+          },
+          {
+            "faixa": "[0.1, 0.2)",
+            "n": 4143,
+            "confianca_media": 0.1473,
+            "acuracia": 0.8776
+          },
+          {
+            "faixa": "[0.2, 0.3)",
+            "n": 5443,
+            "confianca_media": 0.2433,
+            "acuracia": 0.9888
+          },
+          {
+            "faixa": "[0.3, 0.4)",
+            "n": 443,
+            "confianca_media": 0.3368,
+            "acuracia": 0.9661
+          },
+          {
+            "faixa": "[0.4, 0.5)",
+            "n": 120,
+            "confianca_media": 0.4403,
+            "acuracia": 0.9917
+          },
+          {
+            "faixa": "[0.5, 0.6)",
+            "n": 32,
+            "confianca_media": 0.5417,
+            "acuracia": 1.0
+          },
+          {
+            "faixa": "[0.6, 0.7)",
+            "n": 7,
+            "confianca_media": 0.6237,
+            "acuracia": 1.0
+          },
+          {
+            "faixa": "[0.7, 0.8)",
+            "n": 0,
+            "confianca_media": null,
+            "acuracia": null
+          },
+          {
+            "faixa": "[0.8, 0.9)",
+            "n": 0,
+            "confianca_media": null,
+            "acuracia": null
+          },
+          {
+            "faixa": "[0.9, 1.0)",
+            "n": 0,
+            "confianca_media": null,
+            "acuracia": null
+          }
+        ]
+      },
+      "calibrada": {
+        "ece": 0.0111,
+        "brier": 0.1025,
+        "confiabilidade": [
+          {
+            "faixa": "[0.0, 0.1)",
+            "n": 4,
+            "confianca_media": 0.0,
+            "acuracia": 0.0
+          },
+          {
+            "faixa": "[0.1, 0.2)",
+            "n": 15,
+            "confianca_media": 0.1525,
+            "acuracia": 0.1333
+          },
+          {
+            "faixa": "[0.2, 0.3)",
+            "n": 83,
+            "confianca_media": 0.2226,
+            "acuracia": 0.253
+          },
+          {
+            "faixa": "[0.3, 0.4)",
+            "n": 366,
+            "confianca_media": 0.333,
+            "acuracia": 0.3525
+          },
+          {
+            "faixa": "[0.4, 0.5)",
+            "n": 723,
+            "confianca_media": 0.4541,
+            "acuracia": 0.4053
+          },
+          {
+            "faixa": "[0.5, 0.6)",
+            "n": 1636,
+            "confianca_media": 0.5594,
+            "acuracia": 0.555
+          },
+          {
+            "faixa": "[0.6, 0.7)",
+            "n": 318,
+            "confianca_media": 0.6448,
+            "acuracia": 0.6447
+          },
+          {
+            "faixa": "[0.7, 0.8)",
+            "n": 1445,
+            "confianca_media": 0.7531,
+            "acuracia": 0.7225
+          },
+          {
+            "faixa": "[0.8, 0.9)",
+            "n": 1586,
+            "confianca_media": 0.8482,
+            "acuracia": 0.8392
+          },
+          {
+            "faixa": "[0.9, 1.0)",
+            "n": 8181,
+            "confianca_media": 0.9783,
+            "acuracia": 0.9724
+          }
+        ]
+      },
+      "automacao_seletiva": {
+        "0.9": {
+          "dobras_com_limiar": 5,
+          "automatizados": 12146,
+          "cobertura": 0.846,
+          "acuracia_seletiva": 0.8983,
+          "taxa_encaminhamento_humano": 0.154,
+          "limiares_por_dobra": [
+            0.071,
+            0.079,
+            0.064,
+            0.064,
+            0.074
+          ]
+        },
+        "0.95": {
+          "dobras_com_limiar": 5,
+          "automatizados": 9909,
+          "cobertura": 0.6902,
+          "acuracia_seletiva": 0.9478,
+          "taxa_encaminhamento_humano": 0.3098,
+          "limiares_por_dobra": [
+            0.113,
+            0.112,
+            0.093,
+            0.101,
+            0.107
+          ]
+        },
+        "0.99": {
+          "dobras_com_limiar": 5,
+          "automatizados": 3710,
+          "cobertura": 0.2584,
+          "acuracia_seletiva": 0.9868,
+          "taxa_encaminhamento_humano": 0.7416,
+          "limiares_por_dobra": [
+            0.432,
+            0.212,
+            0.182,
+            0.184,
+            0.401
+          ]
+        }
+      },
+      "dobras": [
+        {
+          "dobra_externa": 1,
+          "dobra_interna": 2,
+          "linhas_treino": 8733,
+          "linhas_calibracao": 2897,
+          "linhas_avaliadas": 2727,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 2,
+          "dobra_interna": 3,
+          "linhas_treino": 8829,
+          "linhas_calibracao": 2631,
+          "linhas_avaliadas": 2897,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 3,
+          "dobra_interna": 4,
+          "linhas_treino": 8723,
+          "linhas_calibracao": 3003,
+          "linhas_avaliadas": 2631,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 4,
+          "dobra_interna": 5,
+          "linhas_treino": 8255,
+          "linhas_calibracao": 3099,
+          "linhas_avaliadas": 3003,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 5,
+          "dobra_interna": 1,
+          "linhas_treino": 8531,
+          "linhas_calibracao": 2727,
+          "linhas_avaliadas": 3099,
+          "calibrador_ajustado": true
+        }
+      ]
+    },
+    {
+      "modelo": "embedding_e5",
+      "acuracia_global": 0.7554,
+      "bruta": {
+        "ece": 0.359,
+        "brier": 0.266,
+        "confiabilidade": [
+          {
+            "faixa": "[0.0, 0.1)",
+            "n": 1219,
+            "confianca_media": 0.0828,
+            "acuracia": 0.2387
+          },
+          {
+            "faixa": "[0.1, 0.2)",
+            "n": 3406,
+            "confianca_media": 0.1479,
+            "acuracia": 0.5164
+          },
+          {
+            "faixa": "[0.2, 0.3)",
+            "n": 2189,
+            "confianca_media": 0.2456,
+            "acuracia": 0.7382
+          },
+          {
+            "faixa": "[0.3, 0.4)",
+            "n": 1278,
+            "confianca_media": 0.3469,
+            "acuracia": 0.8568
+          },
+          {
+            "faixa": "[0.4, 0.5)",
+            "n": 1024,
+            "confianca_media": 0.4481,
+            "acuracia": 0.9014
+          },
+          {
+            "faixa": "[0.5, 0.6)",
+            "n": 857,
+            "confianca_media": 0.5475,
+            "acuracia": 0.93
+          },
+          {
+            "faixa": "[0.6, 0.7)",
+            "n": 1240,
+            "confianca_media": 0.6596,
+            "acuracia": 0.9871
+          },
+          {
+            "faixa": "[0.7, 0.8)",
+            "n": 2861,
+            "confianca_media": 0.7444,
+            "acuracia": 0.9986
+          },
+          {
+            "faixa": "[0.8, 0.9)",
+            "n": 282,
+            "confianca_media": 0.8105,
+            "acuracia": 1.0
+          },
+          {
+            "faixa": "[0.9, 1.0)",
+            "n": 1,
+            "confianca_media": 0.9005,
+            "acuracia": 1.0
+          }
+        ]
+      },
+      "calibrada": {
+        "ece": 0.0436,
+        "brier": 0.127,
+        "confiabilidade": [
+          {
+            "faixa": "[0.0, 0.1)",
+            "n": 4,
+            "confianca_media": 0.0,
+            "acuracia": 0.25
+          },
+          {
+            "faixa": "[0.1, 0.2)",
+            "n": 112,
+            "confianca_media": 0.1718,
+            "acuracia": 0.2054
+          },
+          {
+            "faixa": "[0.2, 0.3)",
+            "n": 484,
+            "confianca_media": 0.2497,
+            "acuracia": 0.1921
+          },
+          {
+            "faixa": "[0.3, 0.4)",
+            "n": 812,
+            "confianca_media": 0.3618,
+            "acuracia": 0.3042
+          },
+          {
+            "faixa": "[0.4, 0.5)",
+            "n": 649,
+            "confianca_media": 0.4577,
+            "acuracia": 0.3683
+          },
+          {
+            "faixa": "[0.5, 0.6)",
+            "n": 428,
+            "confianca_media": 0.5628,
+            "acuracia": 0.4509
+          },
+          {
+            "faixa": "[0.6, 0.7)",
+            "n": 1662,
+            "confianca_media": 0.6539,
+            "acuracia": 0.5626
+          },
+          {
+            "faixa": "[0.7, 0.8)",
+            "n": 1651,
+            "confianca_media": 0.7613,
+            "acuracia": 0.6887
+          },
+          {
+            "faixa": "[0.8, 0.9)",
+            "n": 1765,
+            "confianca_media": 0.8542,
+            "acuracia": 0.8136
+          },
+          {
+            "faixa": "[0.9, 1.0)",
+            "n": 6790,
+            "confianca_media": 0.9776,
+            "acuracia": 0.9633
+          }
+        ]
+      },
+      "automacao_seletiva": {
+        "0.9": {
+          "dobras_com_limiar": 5,
+          "automatizados": 10804,
+          "cobertura": 0.7525,
+          "acuracia_seletiva": 0.876,
+          "taxa_encaminhamento_humano": 0.2475,
+          "limiares_por_dobra": [
+            0.179,
+            0.186,
+            0.143,
+            0.15,
+            0.173
+          ]
+        },
+        "0.95": {
+          "dobras_com_limiar": 5,
+          "automatizados": 8423,
+          "cobertura": 0.5867,
+          "acuracia_seletiva": 0.9332,
+          "taxa_encaminhamento_humano": 0.4133,
+          "limiares_por_dobra": [
+            0.266,
+            0.266,
+            0.223,
+            0.226,
+            0.297
+          ]
+        },
+        "0.99": {
+          "dobras_com_limiar": 5,
+          "automatizados": 5668,
+          "cobertura": 0.3948,
+          "acuracia_seletiva": 0.9778,
+          "taxa_encaminhamento_humano": 0.6052,
+          "limiares_por_dobra": [
+            0.497,
+            0.445,
+            0.37,
+            0.462,
+            0.511
+          ]
+        }
+      },
+      "dobras": [
+        {
+          "dobra_externa": 1,
+          "dobra_interna": 2,
+          "linhas_treino": 8733,
+          "linhas_calibracao": 2897,
+          "linhas_avaliadas": 2727,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 2,
+          "dobra_interna": 3,
+          "linhas_treino": 8829,
+          "linhas_calibracao": 2631,
+          "linhas_avaliadas": 2897,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 3,
+          "dobra_interna": 4,
+          "linhas_treino": 8723,
+          "linhas_calibracao": 3003,
+          "linhas_avaliadas": 2631,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 4,
+          "dobra_interna": 5,
+          "linhas_treino": 8255,
+          "linhas_calibracao": 3099,
+          "linhas_avaliadas": 3003,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 5,
+          "dobra_interna": 1,
+          "linhas_treino": 8531,
+          "linhas_calibracao": 2727,
+          "linhas_avaliadas": 3099,
+          "calibrador_ajustado": true
+        }
+      ]
+    },
+    {
+      "modelo": "tfidf_embedding",
+      "acuracia_global": 0.8307,
+      "bruta": {
+        "ece": 0.6583,
+        "brier": 0.5521,
+        "confiabilidade": [
+          {
+            "faixa": "[0.0, 0.1)",
+            "n": 3909,
+            "confianca_media": 0.071,
+            "acuracia": 0.537
+          },
+          {
+            "faixa": "[0.1, 0.2)",
+            "n": 4264,
+            "confianca_media": 0.1482,
+            "acuracia": 0.8738
+          },
+          {
+            "faixa": "[0.2, 0.3)",
+            "n": 5640,
+            "confianca_media": 0.2431,
+            "acuracia": 0.9881
+          },
+          {
+            "faixa": "[0.3, 0.4)",
+            "n": 443,
+            "confianca_media": 0.3346,
+            "acuracia": 0.9661
+          },
+          {
+            "faixa": "[0.4, 0.5)",
+            "n": 82,
+            "confianca_media": 0.435,
+            "acuracia": 0.9878
+          },
+          {
+            "faixa": "[0.5, 0.6)",
+            "n": 17,
+            "confianca_media": 0.5373,
+            "acuracia": 1.0
+          },
+          {
+            "faixa": "[0.6, 0.7)",
+            "n": 2,
+            "confianca_media": 0.6073,
+            "acuracia": 1.0
+          },
+          {
+            "faixa": "[0.7, 0.8)",
+            "n": 0,
+            "confianca_media": null,
+            "acuracia": null
+          },
+          {
+            "faixa": "[0.8, 0.9)",
+            "n": 0,
+            "confianca_media": null,
+            "acuracia": null
+          },
+          {
+            "faixa": "[0.9, 1.0)",
+            "n": 0,
+            "confianca_media": null,
+            "acuracia": null
+          }
+        ]
+      },
+      "calibrada": {
+        "ece": 0.0121,
+        "brier": 0.1007,
+        "confiabilidade": [
+          {
+            "faixa": "[0.0, 0.1)",
+            "n": 12,
+            "confianca_media": 0.0127,
+            "acuracia": 0.1667
+          },
+          {
+            "faixa": "[0.1, 0.2)",
+            "n": 5,
+            "confianca_media": 0.1562,
+            "acuracia": 0.0
+          },
+          {
+            "faixa": "[0.2, 0.3)",
+            "n": 144,
+            "confianca_media": 0.2522,
+            "acuracia": 0.25
+          },
+          {
+            "faixa": "[0.3, 0.4)",
+            "n": 280,
+            "confianca_media": 0.358,
+            "acuracia": 0.3857
+          },
+          {
+            "faixa": "[0.4, 0.5)",
+            "n": 562,
+            "confianca_media": 0.4349,
+            "acuracia": 0.3701
+          },
+          {
+            "faixa": "[0.5, 0.6)",
+            "n": 1375,
+            "confianca_media": 0.5467,
+            "acuracia": 0.5375
+          },
+          {
+            "faixa": "[0.6, 0.7)",
+            "n": 1009,
+            "confianca_media": 0.643,
+            "acuracia": 0.6432
+          },
+          {
+            "faixa": "[0.7, 0.8)",
+            "n": 1153,
+            "confianca_media": 0.7573,
+            "acuracia": 0.719
+          },
+          {
+            "faixa": "[0.8, 0.9)",
+            "n": 1412,
+            "confianca_media": 0.8534,
+            "acuracia": 0.8385
+          },
+          {
+            "faixa": "[0.9, 1.0)",
+            "n": 8405,
+            "confianca_media": 0.9779,
+            "acuracia": 0.9722
+          }
+        ]
+      },
+      "automacao_seletiva": {
+        "0.9": {
+          "dobras_com_limiar": 5,
+          "automatizados": 12260,
+          "cobertura": 0.8539,
+          "acuracia_seletiva": 0.8975,
+          "taxa_encaminhamento_humano": 0.1461,
+          "limiares_por_dobra": [
+            0.074,
+            0.079,
+            0.067,
+            0.065,
+            0.077
+          ]
+        },
+        "0.95": {
+          "dobras_com_limiar": 5,
+          "automatizados": 10085,
+          "cobertura": 0.7024,
+          "acuracia_seletiva": 0.949,
+          "taxa_encaminhamento_humano": 0.2976,
+          "limiares_por_dobra": [
+            0.113,
+            0.114,
+            0.096,
+            0.103,
+            0.108
+          ]
+        },
+        "0.99": {
+          "dobras_com_limiar": 5,
+          "automatizados": 3770,
+          "cobertura": 0.2626,
+          "acuracia_seletiva": 0.9854,
+          "taxa_encaminhamento_humano": 0.7374,
+          "limiares_por_dobra": [
+            0.422,
+            0.21,
+            0.182,
+            0.192,
+            0.385
+          ]
+        }
+      },
+      "dobras": [
+        {
+          "dobra_externa": 1,
+          "dobra_interna": 2,
+          "linhas_treino": 8733,
+          "linhas_calibracao": 2897,
+          "linhas_avaliadas": 2727,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 2,
+          "dobra_interna": 3,
+          "linhas_treino": 8829,
+          "linhas_calibracao": 2631,
+          "linhas_avaliadas": 2897,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 3,
+          "dobra_interna": 4,
+          "linhas_treino": 8723,
+          "linhas_calibracao": 3003,
+          "linhas_avaliadas": 2631,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 4,
+          "dobra_interna": 5,
+          "linhas_treino": 8255,
+          "linhas_calibracao": 3099,
+          "linhas_avaliadas": 3003,
+          "calibrador_ajustado": true
+        },
+        {
+          "dobra_externa": 5,
+          "dobra_interna": 1,
+          "linhas_treino": 8531,
+          "linhas_calibracao": 2727,
+          "linhas_avaliadas": 3099,
+          "calibrador_ajustado": true
+        }
+      ]
+    }
+  ],
+  "modelos_com_ece_melhorado": [
+    "tfidf_caracteres",
+    "embedding_e5",
+    "tfidf_embedding"
+  ],
+  "trilha": "B",
+  "encoder": "intfloat/multilingual-e5-base",
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 12:48",
+  "script_origem": "src/trilha_b.py"
+}
