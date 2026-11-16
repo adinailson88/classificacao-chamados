@@ -1,5 +1,5 @@
 {
-  "gerado_em": "14/11/2026 13:13",
+  "gerado_em": "16/11/2026 16:49",
   "fonte": "docs/dados/registros_<modelo>.json",
   "alvo": "categoria historica; validacao humana ainda nao iniciada",
   "calibrador_ajustado": false,
@@ -8,18 +8,18 @@
   "modelos": [
     {
       "modelo": "naive_bayes",
-      "total": 14728,
+      "total": 14730,
       "acerto_historico": 0.6933,
-      "confianca_media": 0.7371,
+      "confianca_media": 0.7372,
       "brier": 0.1454,
       "ece": 0.0446,
-      "mce": 0.0594,
+      "mce": 0.0593,
       "faixa_95": {
         "faixa": ">=95%",
-        "n": 6193,
+        "n": 6195,
         "acerto_historico": 0.9361,
         "confianca_media": 0.9954,
-        "gap": 0.0594,
+        "gap": 0.0593,
         "brier": 0.0636
       },
       "por_faixa": [
@@ -65,10 +65,10 @@
         },
         {
           "faixa": ">=95%",
-          "n": 6193,
+          "n": 6195,
           "acerto_historico": 0.9361,
           "confianca_media": 0.9954,
-          "gap": 0.0594,
+          "gap": 0.0593,
           "brier": 0.0636
         }
       ],
@@ -77,8 +77,8 @@
     },
     {
       "modelo": "regressao_logistica",
-      "total": 14728,
-      "acerto_historico": 0.7746,
+      "total": 14730,
+      "acerto_historico": 0.7747,
       "confianca_media": 0.5024,
       "brier": 0.236,
       "ece": 0.2722,
@@ -94,18 +94,18 @@
       "por_faixa": [
         {
           "faixa": "<50%",
-          "n": 7817,
-          "acerto_historico": 0.6249,
+          "n": 7818,
+          "acerto_historico": 0.625,
           "confianca_media": 0.2198,
           "gap": -0.4051,
           "brier": 0.3811
         },
         {
           "faixa": "50-70%",
-          "n": 1456,
-          "acerto_historico": 0.875,
+          "n": 1457,
+          "acerto_historico": 0.8751,
           "confianca_media": 0.5961,
-          "gap": -0.2789,
+          "gap": -0.279,
           "brier": 0.1909
         },
         {
@@ -146,7 +146,7 @@
     },
     {
       "modelo": "linear_svc",
-      "total": 14728,
+      "total": 14730,
       "acerto_historico": 0.8041,
       "confianca_media": 0.1021,
       "brier": 0.6339,
@@ -163,11 +163,11 @@
       "por_faixa": [
         {
           "faixa": "<50%",
-          "n": 14727,
+          "n": 14729,
           "acerto_historico": 0.8041,
           "confianca_media": 0.1021,
           "gap": -0.702,
-          "brier": 0.6339
+          "brier": 0.634
         },
         {
           "faixa": "50-70%",
@@ -215,12 +215,12 @@
     },
     {
       "modelo": "sgd",
-      "total": 14728,
-      "acerto_historico": 0.7706,
+      "total": 14730,
+      "acerto_historico": 0.7707,
       "confianca_media": 0.4592,
       "brier": 0.2496,
       "ece": 0.3115,
-      "mce": 0.412,
+      "mce": 0.4121,
       "faixa_95": {
         "faixa": ">=95%",
         "n": 0,
@@ -232,10 +232,10 @@
       "por_faixa": [
         {
           "faixa": "<50%",
-          "n": 8309,
-          "acerto_historico": 0.6335,
+          "n": 8311,
+          "acerto_historico": 0.6336,
           "confianca_media": 0.2215,
-          "gap": -0.412,
+          "gap": -0.4121,
           "brier": 0.3736
         },
         {
@@ -284,12 +284,12 @@
     },
     {
       "modelo": "extra_trees",
-      "total": 14728,
-      "acerto_historico": 0.7888,
+      "total": 14730,
+      "acerto_historico": 0.7889,
       "confianca_media": 0.6975,
       "brier": 0.1291,
       "ece": 0.0932,
-      "mce": 0.1846,
+      "mce": 0.1847,
       "faixa_95": {
         "faixa": ">=95%",
         "n": 5012,
@@ -309,18 +309,18 @@
         },
         {
           "faixa": "50-70%",
-          "n": 2314,
-          "acerto_historico": 0.7783,
+          "n": 2315,
+          "acerto_historico": 0.7784,
           "confianca_media": 0.5937,
-          "gap": -0.1846,
+          "gap": -0.1847,
           "brier": 0.2021
         },
         {
           "faixa": "70-80%",
-          "n": 1081,
-          "acerto_historico": 0.8945,
-          "confianca_media": 0.751,
-          "gap": -0.1435,
+          "n": 1082,
+          "acerto_historico": 0.8946,
+          "confianca_media": 0.7511,
+          "gap": -0.1436,
           "brier": 0.1149
         },
         {
@@ -353,12 +353,12 @@
     },
     {
       "modelo": "random_forest",
-      "total": 14728,
+      "total": 14730,
       "acerto_historico": 0.7746,
       "confianca_media": 0.6754,
       "brier": 0.1363,
       "ece": 0.0992,
-      "mce": 0.2055,
+      "mce": 0.2057,
       "faixa_95": {
         "faixa": ">=95%",
         "n": 4451,
@@ -378,11 +378,11 @@
         },
         {
           "faixa": "50-70%",
-          "n": 2175,
-          "acerto_historico": 0.7963,
-          "confianca_media": 0.5908,
-          "gap": -0.2055,
-          "brier": 0.2052
+          "n": 2177,
+          "acerto_historico": 0.7965,
+          "confianca_media": 0.5909,
+          "gap": -0.2057,
+          "brier": 0.2051
         },
         {
           "faixa": "70-80%",
@@ -422,15 +422,15 @@
     },
     {
       "modelo": "lstm",
-      "total": 14728,
-      "acerto_historico": 0.6816,
-      "confianca_media": 0.7097,
+      "total": 14730,
+      "acerto_historico": 0.6817,
+      "confianca_media": 0.7098,
       "brier": 0.1307,
       "ece": 0.0281,
-      "mce": 0.0454,
+      "mce": 0.0453,
       "faixa_95": {
         "faixa": ">=95%",
-        "n": 4724,
+        "n": 4725,
         "acerto_historico": 0.9765,
         "confianca_media": 0.9858,
         "gap": 0.0093,
@@ -463,10 +463,10 @@
         },
         {
           "faixa": "80-90%",
-          "n": 1793,
-          "acerto_historico": 0.8104,
+          "n": 1794,
+          "acerto_historico": 0.8105,
           "confianca_media": 0.8558,
-          "gap": 0.0454,
+          "gap": 0.0453,
           "brier": 0.1562
         },
         {
@@ -479,7 +479,7 @@
         },
         {
           "faixa": ">=95%",
-          "n": 4724,
+          "n": 4725,
           "acerto_historico": 0.9765,
           "confianca_media": 0.9858,
           "gap": 0.0093,
