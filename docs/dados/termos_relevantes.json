@@ -1,11 +1,11 @@
 {
-  "gerado_em": "16/11/2026 09:02",
+  "gerado_em": "17/11/2026 09:26",
   "natureza": "exploratorio_triagem_taxonomia (NAO e metrica de acuracia validada)",
   "parametros": {
     "top_n": 25,
     "min_df": 5,
     "min_chamados_categoria": 10,
-    "representacao": "tfidf_10890_termos",
+    "representacao": "tfidf_10905_termos",
     "metodo_termos": "log_odds_dirichlet_prior + centroide_tfidf",
     "metodo_correlacao": "cosseno_centroides_tfidf"
   },
@@ -57,363 +57,363 @@
   ],
   "termos_por_categoria": {
     "Climatização > Ar condicionado central": {
-      "n_chamados": 41,
+      "n_chamados": 42,
       "top_log_odds": [
         {
           "termo": "central",
-          "z": 29.608,
+          "z": 29.514,
           "freq": 86
         },
         {
           "termo": "condicionado central",
-          "z": 26.386,
+          "z": 26.302,
           "freq": 69
         },
         {
           "termo": "evento",
-          "z": 19.325,
+          "z": 19.278,
           "freq": 27
         },
         {
           "termo": "monte",
-          "z": 16.29,
+          "z": 16.246,
           "freq": 21
         },
         {
+          "termo": "torre",
+          "z": 15.06,
+          "freq": 18
+        },
+        {
           "termo": "auditorio monte",
-          "z": 14.435,
+          "z": 14.398,
           "freq": 16
         },
         {
           "termo": "monte pascoal",
-          "z": 14.242,
+          "z": 14.202,
           "freq": 17
         },
         {
           "termo": "pascoal",
-          "z": 14.015,
+          "z": 13.975,
           "freq": 17
         },
         {
-          "termo": "torre",
-          "z": 12.742,
-          "freq": 14
-        },
-        {
           "termo": "central csc",
-          "z": 12.7,
+          "z": 12.656,
           "freq": 19
         },
         {
           "termo": "resfriamento",
-          "z": 12.534,
+          "z": 12.513,
           "freq": 13
         },
         {
           "termo": "auditorio",
-          "z": 12.345,
+          "z": 12.3,
           "freq": 20
         },
         {
+          "termo": "refrigeracao",
+          "z": 12.12,
+          "freq": 16
+        },
+        {
           "termo": "central descricao",
-          "z": 11.244,
+          "z": 11.214,
           "freq": 10
         },
         {
           "termo": "climatizacao",
-          "z": 11.217,
+          "z": 11.19,
+          "freq": 9
+        },
+        {
+          "termo": "boia",
+          "z": 10.881,
           "freq": 9
         },
         {
           "termo": "telas",
-          "z": 10.899,
+          "z": 10.875,
           "freq": 8
         },
         {
           "termo": "bombas",
-          "z": 10.281,
+          "z": 10.245,
           "freq": 13
         },
         {
-          "termo": "condicionado",
-          "z": 10.275,
-          "freq": 90
-        },
-        {
           "termo": "tecnico refrigeracao",
-          "z": 10.195,
+          "z": 10.175,
           "freq": 7
         },
         {
-          "termo": "boia",
-          "z": 10.11,
-          "freq": 8
+          "termo": "condicionado",
+          "z": 10.155,
+          "freq": 90
         },
         {
           "termo": "ar condicionado",
-          "z": 10.052,
+          "z": 9.934,
           "freq": 88
         },
         {
-          "termo": "refrigeracao",
-          "z": 9.762,
-          "freq": 12
-        },
-        {
           "termo": "tecnico",
-          "z": 9.506,
+          "z": 9.469,
           "freq": 13
         },
         {
           "termo": "motores",
-          "z": 9.447,
+          "z": 9.428,
           "freq": 6
         },
         {
           "termo": "grau",
-          "z": 9.4,
+          "z": 9.379,
           "freq": 6
         },
         {
           "termo": "ligar ar",
-          "z": 9.357,
+          "z": 9.336,
           "freq": 6
         },
         {
-          "termo": "horario",
-          "z": 9.161,
-          "freq": 7
+          "termo": "boias",
+          "z": 9.239,
+          "freq": 6
         }
       ],
       "top_tfidf": [
         {
           "termo": "central",
-          "peso": 0.1762
+          "peso": 0.1718
         },
         {
           "termo": "condicionado central",
-          "peso": 0.1505
+          "peso": 0.1467
         },
         {
           "termo": "condicionado",
-          "peso": 0.0928
+          "peso": 0.0905
         },
         {
           "termo": "ar condicionado",
-          "peso": 0.0911
+          "peso": 0.0889
         },
         {
           "termo": "evento",
-          "peso": 0.074
+          "peso": 0.0721
         },
         {
           "termo": "monte",
-          "peso": 0.0504
+          "peso": 0.0491
         },
         {
           "termo": "auditorio monte",
-          "peso": 0.0462
-        },
-        {
-          "termo": "auditorio",
-          "peso": 0.0441
-        },
-        {
-          "termo": "central csc",
-          "peso": 0.0412
-        },
-        {
-          "termo": "bombas",
-          "peso": 0.0392
-        },
-        {
-          "termo": "monte pascoal",
-          "peso": 0.0374
-        },
-        {
-          "termo": "pascoal",
-          "peso": 0.0372
-        },
-        {
-          "termo": "torre resfriamento",
-          "peso": 0.0367
-        },
-        {
-          "termo": "resfriamento",
-          "peso": 0.0365
-        },
-        {
-          "termo": "motores",
-          "peso": 0.0355
-        },
-        {
-          "termo": "central descricao",
-          "peso": 0.0348
+          "peso": 0.045
         },
         {
           "termo": "torre",
-          "peso": 0.0338
+          "peso": 0.0431
         },
         {
-          "termo": "dia",
-          "peso": 0.0296
+          "termo": "auditorio",
+          "peso": 0.043
         },
         {
-          "termo": "csc",
-          "peso": 0.0295
+          "termo": "central csc",
+          "peso": 0.0402
         },
         {
-          "termo": "reparo",
-          "peso": 0.0294
+          "termo": "bombas",
+          "peso": 0.0383
         },
         {
-          "termo": "manutencao",
-          "peso": 0.0286
+          "termo": "monte pascoal",
+          "peso": 0.0364
         },
         {
-          "termo": "climatizacao",
-          "peso": 0.0261
+          "termo": "pascoal",
+          "peso": 0.0362
         },
         {
-          "termo": "telas",
-          "peso": 0.0251
+          "termo": "torre resfriamento",
+          "peso": 0.0359
+        },
+        {
+          "termo": "resfriamento",
+          "peso": 0.0357
+        },
+        {
+          "termo": "motores",
+          "peso": 0.0346
+        },
+        {
+          "termo": "central descricao",
+          "peso": 0.034
         },
         {
           "termo": "refrigeracao",
-          "peso": 0.025
+          "peso": 0.0331
         },
         {
-          "termo": "horario",
-          "peso": 0.025
+          "termo": "dia",
+          "peso": 0.0289
+        },
+        {
+          "termo": "csc",
+          "peso": 0.0288
+        },
+        {
+          "termo": "reparo",
+          "peso": 0.0287
+        },
+        {
+          "termo": "manutencao",
+          "peso": 0.0279
+        },
+        {
+          "termo": "boia",
+          "peso": 0.0266
+        },
+        {
+          "termo": "climatizacao",
+          "peso": 0.0254
+        },
+        {
+          "termo": "telas",
+          "peso": 0.0245
         }
       ]
     },
     "Climatização > Ar condicionado split": {
-      "n_chamados": 1636,
+      "n_chamados": 1639,
       "top_log_odds": [
         {
           "termo": "ar condicionado",
-          "z": 90.659,
-          "freq": 3395
+          "z": 90.706,
+          "freq": 3406
         },
         {
           "termo": "condicionado",
-          "z": 90.293,
-          "freq": 3398
+          "z": 90.34,
+          "freq": 3409
         },
         {
           "termo": "aparelho",
-          "z": 35.842,
-          "freq": 634
+          "z": 35.872,
+          "freq": 638
         },
         {
           "termo": "aparelhos",
-          "z": 26.749,
+          "z": 26.752,
           "freq": 248
         },
         {
           "termo": "condicionado descricao",
-          "z": 24.003,
+          "z": 23.983,
           "freq": 331
         },
         {
           "termo": "aparelhos ar",
-          "z": 21.865,
+          "z": 21.842,
           "freq": 183
         },
         {
           "termo": "manutencao ar",
-          "z": 20.722,
-          "freq": 252
-        },
-        {
-          "termo": "instalacao ar",
-          "z": 20.69,
-          "freq": 191
+          "z": 20.745,
+          "freq": 254
         },
         {
           "termo": "funcionando",
-          "z": 20.637,
-          "freq": 180
+          "z": 20.685,
+          "freq": 181
+        },
+        {
+          "termo": "instalacao ar",
+          "z": 20.67,
+          "freq": 191
         },
         {
           "termo": "funcionar",
-          "z": 20.576,
+          "z": 20.541,
           "freq": 156
         },
         {
           "termo": "reparo ar",
-          "z": 20.094,
-          "freq": 250
-        },
-        {
-          "termo": "aparelho ar",
-          "z": 19.18,
-          "freq": 410
-        },
-        {
-          "termo": "controle",
-          "z": 19.124,
-          "freq": 121
+          "z": 20.116,
+          "freq": 252
         },
         {
           "termo": "defeito",
-          "z": 19.104,
-          "freq": 183
+          "z": 19.244,
+          "freq": 185
+        },
+        {
+          "termo": "aparelho ar",
+          "z": 19.176,
+          "freq": 411
+        },
+        {
+          "termo": "controle",
+          "z": 19.099,
+          "freq": 121
         },
         {
           "termo": "parou",
-          "z": 18.742,
+          "z": 18.721,
           "freq": 123
         },
         {
           "termo": "reparo",
-          "z": 18.639,
-          "freq": 440
+          "z": 18.661,
+          "freq": 442
         },
         {
           "termo": "gas",
-          "z": 17.941,
+          "z": 17.913,
           "freq": 112
         },
         {
           "termo": "condicionado laboratorio",
-          "z": 17.69,
+          "z": 17.676,
           "freq": 216
         },
         {
           "termo": "funciona",
-          "z": 17.494,
+          "z": 17.468,
           "freq": 103
         },
         {
           "termo": "parou funcionar",
-          "z": 16.868,
+          "z": 16.848,
           "freq": 96
         },
         {
           "termo": "liga",
-          "z": 16.807,
+          "z": 16.78,
           "freq": 100
         },
         {
           "termo": "gelando",
-          "z": 16.681,
+          "z": 16.668,
           "freq": 168
         },
         {
           "termo": "problema",
-          "z": 16.075,
-          "freq": 212
+          "z": 16.474,
+          "freq": 218
         },
         {
           "termo": "erro",
-          "z": 15.172,
+          "z": 15.155,
           "freq": 85
         },
         {
           "termo": "gabinete",
-          "z": 14.743,
+          "z": 14.714,
           "freq": 91
         }
       ],
@@ -424,7 +424,7 @@
         },
         {
           "termo": "ar condicionado",
-          "peso": 0.1353
+          "peso": 0.1352
         },
         {
           "termo": "aparelho",
@@ -456,15 +456,15 @@
         },
         {
           "termo": "condicionado descricao",
-          "peso": 0.0291
+          "peso": 0.029
         },
         {
           "termo": "executado",
-          "peso": 0.0286
+          "peso": 0.0285
         },
         {
           "termo": "solucao executado",
-          "peso": 0.0285
+          "peso": 0.0284
         },
         {
           "termo": "manutencao",
@@ -492,19 +492,19 @@
         },
         {
           "termo": "prezados",
-          "peso": 0.0176
+          "peso": 0.0175
         },
         {
           "termo": "condicionado laboratorio",
-          "peso": 0.0174
+          "peso": 0.0173
         },
         {
           "termo": "aparelhos",
-          "peso": 0.0158
+          "peso": 0.0157
         },
         {
           "termo": "defeito",
-          "peso": 0.0156
+          "peso": 0.0157
         },
         {
           "termo": "bom",
@@ -525,134 +525,134 @@
       "top_log_odds": [
         {
           "termo": "gerador",
-          "z": 34.961,
+          "z": 34.971,
           "freq": 160
         },
         {
           "termo": "manutencao gerador",
-          "z": 16.827,
+          "z": 16.829,
           "freq": 20
         },
         {
           "termo": "oleo",
-          "z": 14.95,
+          "z": 14.953,
           "freq": 14
         },
         {
           "termo": "reparo gerador",
-          "z": 14.797,
+          "z": 14.799,
           "freq": 26
         },
         {
           "termo": "instalacao gerador",
-          "z": 13.915,
+          "z": 13.916,
           "freq": 17
         },
         {
           "termo": "corretiva gerador",
-          "z": 13.623,
+          "z": 13.624,
           "freq": 12
         },
         {
           "termo": "gerador obra",
-          "z": 13.248,
+          "z": 13.25,
           "freq": 11
         },
         {
           "termo": "sensor",
-          "z": 12.614,
+          "z": 12.616,
           "freq": 10
         },
         {
           "termo": "combustivel",
-          "z": 12.598,
+          "z": 12.6,
           "freq": 10
         },
         {
           "termo": "obra",
-          "z": 12.049,
+          "z": 12.052,
           "freq": 14
         },
         {
           "termo": "gerador descricao",
-          "z": 11.795,
+          "z": 11.797,
           "freq": 9
         },
         {
           "termo": "gerador csc",
-          "z": 11.42,
+          "z": 11.421,
           "freq": 10
         },
         {
           "termo": "coelba",
-          "z": 11.217,
+          "z": 11.219,
           "freq": 8
         },
         {
           "termo": "infraestrutura instalacao",
-          "z": 10.56,
+          "z": 10.561,
           "freq": 7
         },
         {
           "termo": "locacao",
-          "z": 10.485,
+          "z": 10.486,
           "freq": 7
         },
         {
           "termo": "corretiva",
-          "z": 10.096,
+          "z": 10.099,
           "freq": 12
         },
         {
           "termo": "reparo",
-          "z": 10.025,
+          "z": 10.019,
           "freq": 37
         },
         {
           "termo": "falha",
-          "z": 9.945,
+          "z": 9.947,
           "freq": 7
         },
         {
           "termo": "manutencao corretiva",
-          "z": 9.761,
+          "z": 9.763,
           "freq": 11
         },
         {
           "termo": "gerador manutencao",
-          "z": 9.482,
+          "z": 9.483,
           "freq": 6
         },
         {
           "termo": "complementar",
-          "z": 8.824,
+          "z": 8.828,
           "freq": 20
         },
         {
           "termo": "quadro gerador",
-          "z": 8.79,
+          "z": 8.791,
           "freq": 5
         },
         {
           "termo": "energia",
-          "z": 8.688,
+          "z": 8.67,
           "freq": 16
         },
         {
           "termo": "resistencia",
-          "z": 8.42,
+          "z": 8.422,
           "freq": 5
         },
         {
           "termo": "reserva",
-          "z": 8.11,
+          "z": 8.112,
           "freq": 7
         }
       ],
       "top_tfidf": [
         {
           "termo": "gerador",
-          "peso": 0.2376
+          "peso": 0.2377
         },
         {
           "termo": "reparo gerador",
@@ -696,7 +696,7 @@
         },
         {
           "termo": "manutencao",
-          "peso": 0.0344
+          "peso": 0.0345
         },
         {
           "termo": "locacao",
@@ -748,7 +748,7 @@
         },
         {
           "termo": "coelba",
-          "peso": 0.022
+          "peso": 0.0221
         }
       ]
     },
@@ -757,128 +757,128 @@
       "top_log_odds": [
         {
           "termo": "lampadas",
-          "z": 53.901,
+          "z": 53.912,
           "freq": 787
         },
         {
           "termo": "iluminacao",
-          "z": 45.013,
-          "freq": 395
+          "z": 44.984,
+          "freq": 392
         },
         {
           "termo": "troca",
-          "z": 34.541,
+          "z": 34.558,
           "freq": 324
         },
         {
           "termo": "lampada",
-          "z": 33.397,
+          "z": 33.403,
           "freq": 396
         },
         {
           "termo": "substituicao",
-          "z": 31.976,
+          "z": 31.974,
           "freq": 340
         },
         {
           "termo": "refletores",
-          "z": 28.271,
+          "z": 28.277,
           "freq": 164
         },
         {
           "termo": "luminarias",
-          "z": 25.839,
-          "freq": 133
+          "z": 25.992,
+          "freq": 134
         },
         {
           "termo": "descricao troca",
-          "z": 21.985,
+          "z": 21.993,
           "freq": 91
         },
         {
           "termo": "queimadas",
-          "z": 21.471,
+          "z": 21.474,
           "freq": 278
         },
         {
           "termo": "queimada",
-          "z": 19.183,
+          "z": 19.186,
           "freq": 139
         },
         {
           "termo": "postes",
-          "z": 19.152,
+          "z": 19.158,
           "freq": 67
         },
         {
           "termo": "externa",
-          "z": 18.933,
+          "z": 18.941,
           "freq": 82
         },
         {
           "termo": "corredor",
-          "z": 18.899,
+          "z": 18.906,
           "freq": 77
         },
         {
           "termo": "estao",
-          "z": 18.506,
+          "z": 18.518,
           "freq": 148
         },
         {
           "termo": "led",
-          "z": 18.304,
+          "z": 18.309,
           "freq": 63
         },
         {
+          "termo": "interruptor",
+          "z": 17.084,
+          "freq": 53
+        },
+        {
           "termo": "lampadas queimadas",
-          "z": 16.875,
+          "z": 16.877,
           "freq": 215
         },
         {
-          "termo": "interruptor",
-          "z": 16.741,
-          "freq": 51
-        },
-        {
           "termo": "troca lampadas",
-          "z": 16.38,
+          "z": 16.383,
           "freq": 140
         },
         {
           "termo": "queimados",
-          "z": 16.115,
+          "z": 16.119,
           "freq": 55
         },
         {
           "termo": "luminaria",
-          "z": 16.083,
+          "z": 16.09,
           "freq": 65
         },
         {
           "termo": "substituicao lampadas",
-          "z": 15.841,
+          "z": 15.843,
           "freq": 118
         },
         {
           "termo": "poste",
-          "z": 15.419,
+          "z": 15.423,
           "freq": 45
         },
         {
           "termo": "refletor",
-          "z": 15.19,
+          "z": 15.193,
           "freq": 71
         },
         {
-          "termo": "duas",
-          "z": 14.241,
-          "freq": 61
+          "termo": "descricao substituicao",
+          "z": 14.223,
+          "freq": 46
         },
         {
-          "termo": "descricao substituicao",
-          "z": 14.217,
-          "freq": 46
+          "termo": "duas",
+          "z": 14.173,
+          "freq": 61
         }
       ],
       "top_tfidf": [
@@ -896,7 +896,7 @@
         },
         {
           "termo": "iluminacao",
-          "peso": 0.0523
+          "peso": 0.052
         },
         {
           "termo": "troca",
@@ -972,7 +972,7 @@
         },
         {
           "termo": "luminarias",
-          "peso": 0.0188
+          "peso": 0.0189
         },
         {
           "termo": "queimada descricao",
@@ -985,161 +985,161 @@
       ]
     },
     "Elétrica > Instalações elétricas": {
-      "n_chamados": 973,
+      "n_chamados": 972,
       "top_log_odds": [
         {
           "termo": "tomada",
-          "z": 50.353,
+          "z": 50.371,
           "freq": 575
         },
         {
           "termo": "tomadas",
-          "z": 48.044,
-          "freq": 570
+          "z": 48.263,
+          "freq": 573
         },
         {
           "termo": "instalacao",
-          "z": 35.132,
-          "freq": 685
+          "z": 35.269,
+          "freq": 687
         },
         {
           "termo": "energia",
-          "z": 35.006,
-          "freq": 275
+          "z": 34.919,
+          "freq": 274
         },
         {
           "termo": "eletrica",
-          "z": 31.158,
-          "freq": 223
+          "z": 31.254,
+          "freq": 224
         },
         {
           "termo": "pontos",
-          "z": 24.572,
-          "freq": 197
+          "z": 24.692,
+          "freq": 198
         },
         {
           "termo": "ponto",
-          "z": 20.866,
-          "freq": 170
-        },
-        {
-          "termo": "rede",
-          "z": 20.534,
-          "freq": 211
+          "z": 20.622,
+          "freq": 168
         },
         {
           "termo": "nobreak",
-          "z": 20.508,
+          "z": 20.519,
           "freq": 116
         },
         {
+          "termo": "rede",
+          "z": 20.285,
+          "freq": 209
+        },
+        {
           "termo": "instalacao tomada",
-          "z": 19.617,
+          "z": 19.622,
           "freq": 145
         },
         {
           "termo": "instalacao tomadas",
-          "z": 19.41,
+          "z": 19.415,
           "freq": 111
         },
         {
           "termo": "circuito",
-          "z": 18.918,
+          "z": 18.926,
           "freq": 80
         },
         {
           "termo": "disjuntor",
-          "z": 17.122,
+          "z": 17.13,
           "freq": 67
         },
         {
           "termo": "rede eletrica",
-          "z": 17.06,
+          "z": 17.067,
           "freq": 65
         },
         {
           "termo": "cabo",
-          "z": 16.381,
+          "z": 16.392,
           "freq": 90
         },
         {
           "termo": "eletricas",
-          "z": 16.136,
+          "z": 16.143,
           "freq": 58
         },
         {
           "termo": "ventilador",
-          "z": 16.103,
+          "z": 16.112,
           "freq": 67
         },
         {
           "termo": "estao",
-          "z": 16.009,
+          "z": 16.025,
           "freq": 159
         },
         {
           "termo": "logica",
-          "z": 15.703,
+          "z": 15.711,
           "freq": 65
         },
         {
           "termo": "estao funcionando",
-          "z": 14.726,
+          "z": 14.732,
           "freq": 49
         },
         {
           "termo": "transformador",
-          "z": 14.651,
+          "z": 14.656,
           "freq": 49
         },
         {
           "termo": "impressora",
-          "z": 14.556,
+          "z": 14.563,
           "freq": 48
         },
         {
           "termo": "adequacao",
-          "z": 14.455,
+          "z": 14.463,
           "freq": 53
         },
         {
           "termo": "pontos energia",
-          "z": 14.233,
+          "z": 14.238,
           "freq": 49
         },
         {
           "termo": "funcionando",
-          "z": 13.897,
-          "freq": 90
+          "z": 13.712,
+          "freq": 89
         }
       ],
       "top_tfidf": [
         {
           "termo": "tomada",
-          "peso": 0.0672
+          "peso": 0.0673
         },
         {
           "termo": "tomadas",
-          "peso": 0.0645
+          "peso": 0.0647
         },
         {
           "termo": "instalacao",
-          "peso": 0.0514
+          "peso": 0.0516
         },
         {
           "termo": "energia",
-          "peso": 0.0319
+          "peso": 0.0318
         },
         {
           "termo": "solucao",
           "peso": 0.0275
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.027
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.027
         },
         {
@@ -1148,7 +1148,7 @@
         },
         {
           "termo": "eletrica",
-          "peso": 0.0253
+          "peso": 0.0254
         },
         {
           "termo": "instalacao tomada",
@@ -1156,22 +1156,22 @@
         },
         {
           "termo": "executado",
-          "peso": 0.0232
+          "peso": 0.0233
         },
         {
           "termo": "solucao executado",
-          "peso": 0.0232
+          "peso": 0.0233
         },
         {
           "termo": "rede",
-          "peso": 0.0204
-        },
-        {
-          "termo": "ponto",
-          "peso": 0.0195
+          "peso": 0.0202
         },
         {
           "termo": "pontos",
+          "peso": 0.0193
+        },
+        {
+          "termo": "ponto",
           "peso": 0.0193
         },
         {
@@ -1203,12 +1203,12 @@
           "peso": 0.0119
         },
         {
-          "termo": "funcionando",
+          "termo": "tomada descricao",
           "peso": 0.0119
         },
         {
-          "termo": "tomada descricao",
-          "peso": 0.0119
+          "termo": "funcionando",
+          "peso": 0.0118
         },
         {
           "termo": "salas",
@@ -1221,138 +1221,138 @@
       "top_log_odds": [
         {
           "termo": "nobreak",
-          "z": 42.445,
+          "z": 42.452,
           "freq": 154
         },
         {
           "termo": "bateria",
-          "z": 27.328,
+          "z": 27.332,
           "freq": 64
         },
         {
           "termo": "nobreaks",
-          "z": 24.128,
+          "z": 24.132,
           "freq": 50
         },
         {
           "termo": "baterias",
-          "z": 20.948,
+          "z": 20.951,
           "freq": 38
         },
         {
           "termo": "break",
-          "z": 18.882,
+          "z": 18.885,
           "freq": 36
         },
         {
           "termo": "tombo",
-          "z": 17.996,
+          "z": 18.0,
           "freq": 34
         },
         {
           "termo": "troca bateria",
-          "z": 17.42,
+          "z": 17.422,
           "freq": 34
         },
         {
           "termo": "troca",
-          "z": 17.108,
+          "z": 17.114,
           "freq": 74
         },
         {
           "termo": "carga",
-          "z": 16.335,
+          "z": 16.338,
           "freq": 23
         },
         {
           "termo": "nobreak descricao",
-          "z": 15.963,
+          "z": 15.965,
           "freq": 25
         },
         {
           "termo": "ufba",
-          "z": 13.452,
+          "z": 13.453,
           "freq": 19
         },
         {
           "termo": "usuario",
-          "z": 13.355,
+          "z": 13.357,
           "freq": 17
         },
         {
           "termo": "serie",
-          "z": 13.183,
+          "z": 13.185,
           "freq": 15
         },
         {
           "termo": "sms",
-          "z": 12.66,
+          "z": 12.662,
           "freq": 14
         },
         {
           "termo": "troca nobreak",
-          "z": 12.602,
+          "z": 12.603,
           "freq": 15
         },
         {
           "termo": "bateria nobreak",
-          "z": 12.129,
+          "z": 12.131,
           "freq": 13
         },
         {
           "termo": "manutencao nobreak",
-          "z": 11.762,
+          "z": 11.764,
           "freq": 12
         },
         {
           "termo": "bruno",
-          "z": 11.551,
+          "z": 11.554,
           "freq": 12
         },
         {
           "termo": "patrimonio",
-          "z": 11.378,
+          "z": 11.319,
           "freq": 27
         },
         {
           "termo": "solicita manutencao",
-          "z": 10.771,
+          "z": 10.773,
           "freq": 10
         },
         {
           "termo": "computador",
-          "z": 10.419,
+          "z": 10.422,
           "freq": 20
         },
         {
-          "termo": "tarde usuario",
-          "z": 10.225,
+          "termo": "apitando",
+          "z": 10.226,
           "freq": 12
         },
         {
-          "termo": "apitando",
-          "z": 10.225,
+          "termo": "tarde usuario",
+          "z": 10.226,
           "freq": 12
         },
         {
           "termo": "descricao nobreak",
-          "z": 10.033,
+          "z": 10.035,
           "freq": 10
         },
         {
           "termo": "solicita",
-          "z": 10.022,
+          "z": 10.024,
           "freq": 14
         }
       ],
       "top_tfidf": [
         {
           "termo": "nobreak",
-          "peso": 0.1728
+          "peso": 0.1729
         },
         {
           "termo": "bateria",
-          "peso": 0.0707
+          "peso": 0.0708
         },
         {
           "termo": "nobreaks",
@@ -1372,7 +1372,7 @@
         },
         {
           "termo": "troca bateria",
-          "peso": 0.0394
+          "peso": 0.0395
         },
         {
           "termo": "nobreak descricao",
@@ -1388,11 +1388,11 @@
         },
         {
           "termo": "historico",
-          "peso": 0.0281
+          "peso": 0.0282
         },
         {
           "termo": "historico solucao",
-          "peso": 0.0281
+          "peso": 0.0282
         },
         {
           "termo": "solucao",
@@ -1412,7 +1412,7 @@
         },
         {
           "termo": "patrimonio",
-          "peso": 0.0228
+          "peso": 0.0227
         },
         {
           "termo": "troca nobreak",
@@ -1453,62 +1453,62 @@
       "top_log_odds": [
         {
           "termo": "subestacao",
-          "z": 31.683,
+          "z": 31.685,
           "freq": 55
         },
         {
           "termo": "media",
-          "z": 12.759,
+          "z": 12.76,
           "freq": 9
         },
         {
           "termo": "transformadores",
-          "z": 11.935,
+          "z": 11.936,
           "freq": 8
         },
         {
           "termo": "primaria",
-          "z": 11.099,
+          "z": 11.1,
           "freq": 20
         },
         {
           "termo": "disjuntores",
-          "z": 10.739,
+          "z": 10.74,
           "freq": 8
         },
         {
           "termo": "interligacao",
-          "z": 10.416,
+          "z": 10.417,
           "freq": 6
         },
         {
           "termo": "coelba",
-          "z": 10.131,
+          "z": 10.132,
           "freq": 6
         },
         {
           "termo": "montagem",
-          "z": 9.961,
+          "z": 9.962,
           "freq": 7
         },
         {
           "termo": "aerea",
-          "z": 9.791,
+          "z": 9.792,
           "freq": 6
         },
         {
           "termo": "oleo",
-          "z": 9.601,
+          "z": 9.602,
           "freq": 6
         },
         {
           "termo": "desmontagem",
-          "z": 9.339,
+          "z": 9.34,
           "freq": 5
         },
         {
           "termo": "transformador",
-          "z": 9.271,
+          "z": 9.272,
           "freq": 7
         },
         {
@@ -1518,12 +1518,12 @@
         },
         {
           "termo": "subestacao primaria",
-          "z": 8.545,
+          "z": 8.546,
           "freq": 17
         },
         {
           "termo": "energia",
-          "z": 7.769,
+          "z": 7.752,
           "freq": 12
         },
         {
@@ -1538,7 +1538,7 @@
         },
         {
           "termo": "manutencao corretiva",
-          "z": 6.662,
+          "z": 6.663,
           "freq": 6
         },
         {
@@ -1548,7 +1548,7 @@
         },
         {
           "termo": "eletrica",
-          "z": 5.644,
+          "z": 5.639,
           "freq": 8
         },
         {
@@ -1558,7 +1558,7 @@
         },
         {
           "termo": "fazer",
-          "z": 4.943,
+          "z": 4.944,
           "freq": 5
         },
         {
@@ -1568,12 +1568,12 @@
         },
         {
           "termo": "equipe",
-          "z": 4.3,
+          "z": 4.294,
           "freq": 5
         },
         {
           "termo": "problema",
-          "z": 4.16,
+          "z": 4.131,
           "freq": 8
         }
       ],
@@ -1600,11 +1600,11 @@
         },
         {
           "termo": "transformador",
-          "peso": 0.0437
+          "peso": 0.0436
         },
         {
           "termo": "energia",
-          "peso": 0.0434
+          "peso": 0.0433
         },
         {
           "termo": "transformadores",
@@ -1620,7 +1620,7 @@
         },
         {
           "termo": "coelba",
-          "peso": 0.0358
+          "peso": 0.0357
         },
         {
           "termo": "interligacao",
@@ -1636,7 +1636,7 @@
         },
         {
           "termo": "oleo",
-          "peso": 0.034
+          "peso": 0.0339
         },
         {
           "termo": "chave",
@@ -1685,134 +1685,134 @@
       "top_log_odds": [
         {
           "termo": "elevador",
-          "z": 31.253,
+          "z": 31.257,
           "freq": 51
         },
         {
           "termo": "elevador reitoria",
-          "z": 12.047,
+          "z": 12.049,
           "freq": 8
         },
         {
           "termo": "elevador descricao",
-          "z": 10.056,
+          "z": 10.057,
           "freq": 7
         },
         {
           "termo": "parado",
-          "z": 9.038,
+          "z": 9.039,
           "freq": 5
         },
         {
           "termo": "elevatoria",
-          "z": 7.847,
+          "z": 7.848,
           "freq": 5
         },
         {
           "termo": "manutencao corretiva",
-          "z": 7.146,
+          "z": 7.148,
           "freq": 6
         },
         {
           "termo": "corretiva",
-          "z": 6.883,
+          "z": 6.885,
           "freq": 6
         },
         {
           "termo": "funcionar",
-          "z": 6.367,
+          "z": 6.369,
           "freq": 7
         },
         {
           "termo": "elevadores",
-          "z": 5.658,
+          "z": 5.659,
           "freq": 5
         },
         {
           "termo": "reitoria",
-          "z": 5.468,
+          "z": 5.469,
           "freq": 14
         },
         {
           "termo": "conserto",
-          "z": 4.612,
+          "z": 4.614,
           "freq": 5
         },
         {
           "termo": "porta",
-          "z": 4.154,
+          "z": 4.156,
           "freq": 10
         },
         {
           "termo": "nucleo pedagogico",
-          "z": 2.89,
+          "z": 2.892,
           "freq": 5
         },
         {
           "termo": "pedagogico",
-          "z": 2.877,
+          "z": 2.879,
           "freq": 5
         },
         {
           "termo": "nucleo",
-          "z": 2.713,
+          "z": 2.715,
           "freq": 5
         },
         {
           "termo": "equipamento",
-          "z": 2.636,
+          "z": 2.626,
           "freq": 5
         },
         {
           "termo": "cja",
-          "z": 2.346,
+          "z": 2.344,
           "freq": 8
         },
         {
           "termo": "reparo",
-          "z": 2.17,
+          "z": 2.168,
           "freq": 7
         },
         {
           "termo": "troca",
-          "z": 2.089,
+          "z": 2.09,
           "freq": 5
         },
         {
           "termo": "executado",
-          "z": 1.982,
+          "z": 1.985,
           "freq": 21
         },
         {
           "termo": "manutencao",
-          "z": 1.624,
+          "z": 1.625,
           "freq": 21
         },
         {
           "termo": "solucao executado",
-          "z": 1.611,
+          "z": 1.613,
           "freq": 19
         },
         {
           "termo": "descricao",
-          "z": 1.485,
+          "z": 1.486,
           "freq": 23
         },
         {
           "termo": "historico solucao",
-          "z": 1.344,
+          "z": 1.347,
           "freq": 22
         },
         {
           "termo": "historico",
-          "z": 1.343,
+          "z": 1.345,
           "freq": 22
         }
       ],
       "top_tfidf": [
         {
           "termo": "elevador",
-          "peso": 0.3849
+          "peso": 0.385
         },
         {
           "termo": "descricao elevador",
@@ -1879,11 +1879,11 @@
           "peso": 0.0286
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.0282
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.0282
         },
         {
@@ -1908,7 +1908,7 @@
         },
         {
           "termo": "nucleo",
-          "peso": 0.0267
+          "peso": 0.0268
         }
       ]
     },
@@ -1917,134 +1917,134 @@
       "top_log_odds": [
         {
           "termo": "instalacao",
-          "z": 35.046,
+          "z": 35.042,
           "freq": 858
         },
         {
           "termo": "piso",
-          "z": 26.94,
+          "z": 26.947,
           "freq": 210
         },
         {
           "termo": "parede",
-          "z": 24.348,
+          "z": 24.356,
           "freq": 219
         },
         {
           "termo": "quadro",
-          "z": 24.294,
+          "z": 24.302,
           "freq": 214
         },
         {
           "termo": "suporte",
-          "z": 23.388,
+          "z": 23.396,
           "freq": 198
         },
         {
           "termo": "papel",
-          "z": 19.843,
+          "z": 19.848,
           "freq": 117
         },
         {
           "termo": "quadro branco",
-          "z": 17.731,
+          "z": 17.736,
           "freq": 92
         },
         {
           "termo": "fixacao",
-          "z": 17.409,
+          "z": 17.415,
           "freq": 112
         },
         {
           "termo": "pintura",
-          "z": 17.096,
+          "z": 17.103,
           "freq": 141
         },
         {
           "termo": "bancada",
-          "z": 16.882,
+          "z": 16.886,
           "freq": 88
         },
         {
           "termo": "placas",
-          "z": 16.781,
+          "z": 16.787,
           "freq": 118
         },
         {
           "termo": "branco",
-          "z": 16.767,
+          "z": 16.772,
           "freq": 94
         },
         {
           "termo": "infraestrutura",
-          "z": 16.59,
+          "z": 16.597,
           "freq": 127
         },
         {
           "termo": "instalacao quadro",
-          "z": 16.164,
+          "z": 16.168,
           "freq": 76
         },
         {
           "termo": "salas",
-          "z": 15.975,
+          "z": 15.985,
           "freq": 218
         },
         {
           "termo": "cuni",
-          "z": 15.486,
+          "z": 15.494,
           "freq": 155
         },
         {
           "termo": "tampa",
-          "z": 14.889,
+          "z": 14.894,
           "freq": 76
         },
         {
           "termo": "prezados",
-          "z": 14.753,
+          "z": 14.765,
           "freq": 325
         },
         {
           "termo": "tatil",
-          "z": 14.554,
+          "z": 14.557,
           "freq": 64
         },
         {
           "termo": "sinalizacao",
-          "z": 14.41,
+          "z": 14.414,
           "freq": 65
         },
         {
           "termo": "solicitamos",
-          "z": 14.323,
+          "z": 14.33,
           "freq": 147
         },
         {
           "termo": "descricao prezados",
-          "z": 14.315,
+          "z": 14.326,
           "freq": 280
         },
         {
           "termo": "tampas",
-          "z": 14.297,
+          "z": 14.301,
           "freq": 64
         },
         {
           "termo": "piso tatil",
-          "z": 14.028,
+          "z": 14.031,
           "freq": 62
         },
         {
           "termo": "suportes",
-          "z": 13.769,
+          "z": 13.773,
           "freq": 58
         }
       ],
       "top_tfidf": [
         {
           "termo": "instalacao",
-          "peso": 0.0444
+          "peso": 0.0443
         },
         {
           "termo": "solucao",
@@ -2068,7 +2068,7 @@
         },
         {
           "termo": "solucao executado",
-          "peso": 0.0244
+          "peso": 0.0245
         },
         {
           "termo": "quadro",
@@ -2084,7 +2084,7 @@
         },
         {
           "termo": "piso",
-          "peso": 0.0164
+          "peso": 0.0165
         },
         {
           "termo": "prezados",
@@ -2092,7 +2092,7 @@
         },
         {
           "termo": "reparo",
-          "peso": 0.015
+          "peso": 0.0149
         },
         {
           "termo": "descricao prezados",
@@ -2149,127 +2149,127 @@
       "top_log_odds": [
         {
           "termo": "porta",
-          "z": 71.207,
+          "z": 71.22,
           "freq": 1197
         },
         {
           "termo": "fechadura",
-          "z": 41.801,
+          "z": 41.807,
           "freq": 592
         },
         {
           "termo": "vidro",
-          "z": 34.872,
+          "z": 34.878,
           "freq": 285
         },
         {
           "termo": "janela",
-          "z": 30.461,
+          "z": 30.467,
           "freq": 218
         },
         {
           "termo": "portas",
-          "z": 29.486,
+          "z": 29.493,
           "freq": 188
         },
         {
           "termo": "janelas",
-          "z": 26.505,
+          "z": 26.51,
           "freq": 159
         },
         {
           "termo": "portao",
-          "z": 23.837,
+          "z": 23.842,
           "freq": 123
         },
         {
           "termo": "macaneta",
-          "z": 19.231,
+          "z": 19.233,
           "freq": 202
         },
         {
           "termo": "fechaduras",
-          "z": 19.037,
+          "z": 19.04,
           "freq": 86
         },
         {
           "termo": "entrada",
-          "z": 18.87,
+          "z": 18.878,
           "freq": 136
         },
         {
           "termo": "chave",
-          "z": 18.857,
+          "z": 18.861,
           "freq": 78
         },
         {
           "termo": "solta",
-          "z": 18.733,
+          "z": 18.738,
           "freq": 76
         },
         {
           "termo": "reparo",
-          "z": 18.012,
+          "z": 17.992,
           "freq": 283
         },
         {
           "termo": "cadeado",
-          "z": 17.977,
+          "z": 17.981,
           "freq": 71
         },
         {
           "termo": "conserto",
-          "z": 17.712,
+          "z": 17.718,
           "freq": 97
         },
         {
           "termo": "substituicao",
-          "z": 17.625,
+          "z": 17.617,
           "freq": 241
         },
         {
           "termo": "fechadura porta",
-          "z": 17.551,
+          "z": 17.553,
           "freq": 149
         },
         {
           "termo": "abrir",
-          "z": 17.394,
+          "z": 17.398,
           "freq": 66
         },
         {
           "termo": "troca fechadura",
-          "z": 17.096,
+          "z": 17.099,
           "freq": 84
         },
         {
           "termo": "fechar",
-          "z": 16.789,
+          "z": 16.793,
           "freq": 61
         },
         {
           "termo": "porta banheiro",
-          "z": 16.434,
+          "z": 16.437,
           "freq": 66
         },
         {
           "termo": "porta vidro",
-          "z": 15.987,
+          "z": 15.989,
           "freq": 130
         },
         {
           "termo": "biblioteca",
-          "z": 15.607,
+          "z": 15.614,
           "freq": 117
         },
         {
           "termo": "pelicula",
-          "z": 15.201,
+          "z": 15.204,
           "freq": 60
         },
         {
           "termo": "porta entrada",
-          "z": 15.06,
+          "z": 15.063,
           "freq": 49
         }
       ],
@@ -2299,11 +2299,11 @@
           "peso": 0.0275
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.0268
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.0268
         },
         {
@@ -2312,7 +2312,7 @@
         },
         {
           "termo": "executado",
-          "peso": 0.0265
+          "peso": 0.0266
         },
         {
           "termo": "solucao executado",
@@ -2381,127 +2381,127 @@
       "top_log_odds": [
         {
           "termo": "forro",
-          "z": 57.953,
+          "z": 57.961,
           "freq": 309
         },
         {
           "termo": "placas",
-          "z": 21.161,
+          "z": 21.166,
           "freq": 55
         },
         {
           "termo": "placas forro",
-          "z": 18.481,
+          "z": 18.484,
           "freq": 34
         },
         {
           "termo": "reparo forro",
-          "z": 17.638,
+          "z": 17.64,
           "freq": 39
         },
         {
           "termo": "placa",
-          "z": 16.289,
+          "z": 16.294,
           "freq": 40
         },
         {
           "termo": "placa forro",
-          "z": 15.703,
+          "z": 15.705,
           "freq": 23
         },
         {
           "termo": "caiu",
-          "z": 15.595,
+          "z": 15.598,
           "freq": 22
         },
         {
           "termo": "teto",
-          "z": 15.212,
+          "z": 15.216,
           "freq": 32
         },
         {
           "termo": "mineral",
-          "z": 15.203,
+          "z": 15.205,
           "freq": 21
         },
         {
           "termo": "gesso",
-          "z": 14.757,
+          "z": 14.76,
           "freq": 20
         },
         {
           "termo": "forro mineral",
-          "z": 14.432,
+          "z": 14.434,
           "freq": 19
         },
         {
           "termo": "forro descricao",
-          "z": 13.872,
+          "z": 13.874,
           "freq": 27
         },
         {
           "termo": "forros",
-          "z": 12.16,
+          "z": 12.162,
           "freq": 13
         },
         {
           "termo": "instalacao forro",
-          "z": 11.762,
+          "z": 11.763,
           "freq": 21
         },
         {
           "termo": "manutencao forro",
-          "z": 11.513,
+          "z": 11.515,
           "freq": 12
         },
         {
           "termo": "chuva",
-          "z": 11.303,
+          "z": 11.306,
           "freq": 16
         },
         {
           "termo": "gatos",
-          "z": 10.655,
+          "z": 10.657,
           "freq": 10
         },
         {
           "termo": "assistencia",
-          "z": 10.588,
+          "z": 10.59,
           "freq": 11
         },
         {
           "termo": "forro biblioteca",
-          "z": 10.549,
+          "z": 10.551,
           "freq": 11
         },
         {
           "termo": "assistencia estudantil",
-          "z": 10.513,
+          "z": 10.515,
           "freq": 10
         },
         {
           "termo": "estudantil",
-          "z": 10.495,
+          "z": 10.497,
           "freq": 11
         },
         {
           "termo": "forro salas",
-          "z": 10.478,
+          "z": 10.48,
           "freq": 10
         },
         {
           "termo": "salas cabralia",
-          "z": 10.387,
+          "z": 10.389,
           "freq": 10
         },
         {
           "termo": "salas",
-          "z": 10.042,
+          "z": 10.047,
           "freq": 41
         },
         {
           "termo": "danificado",
-          "z": 9.943,
+          "z": 9.945,
           "freq": 13
         }
       ],
@@ -2564,7 +2564,7 @@
         },
         {
           "termo": "historico solucao",
-          "peso": 0.0267
+          "peso": 0.0268
         },
         {
           "termo": "descricao",
@@ -2613,127 +2613,127 @@
       "top_log_odds": [
         {
           "termo": "infiltracao",
-          "z": 43.843,
+          "z": 43.846,
           "freq": 277
         },
         {
           "termo": "teto",
-          "z": 22.029,
+          "z": 22.033,
           "freq": 66
         },
         {
           "termo": "infiltracoes",
-          "z": 21.811,
+          "z": 21.813,
           "freq": 56
         },
         {
           "termo": "mofo",
-          "z": 21.766,
+          "z": 21.768,
           "freq": 57
         },
         {
           "termo": "goteira",
-          "z": 17.417,
+          "z": 17.419,
           "freq": 38
         },
         {
           "termo": "ocorrencia",
-          "z": 17.339,
+          "z": 17.341,
           "freq": 35
         },
         {
           "termo": "laje",
-          "z": 17.28,
+          "z": 17.282,
           "freq": 35
         },
         {
           "termo": "telhado",
-          "z": 17.223,
+          "z": 17.226,
           "freq": 57
         },
         {
           "termo": "empresa",
-          "z": 17.169,
+          "z": 17.172,
           "freq": 40
         },
         {
           "termo": "parede",
-          "z": 15.748,
+          "z": 15.751,
           "freq": 63
         },
         {
           "termo": "chuva",
-          "z": 15.445,
+          "z": 15.448,
           "freq": 31
         },
         {
           "termo": "chuvas",
-          "z": 15.413,
+          "z": 15.416,
           "freq": 31
         },
         {
           "termo": "vazamento",
-          "z": 14.248,
+          "z": 14.252,
           "freq": 73
         },
         {
           "termo": "reparo telhado",
-          "z": 14.131,
+          "z": 14.133,
           "freq": 24
         },
         {
           "termo": "agua",
-          "z": 14.125,
+          "z": 14.108,
           "freq": 108
         },
         {
           "termo": "sendo",
-          "z": 13.825,
+          "z": 13.816,
           "freq": 54
         },
         {
           "termo": "abril",
-          "z": 12.516,
+          "z": 12.517,
           "freq": 32
         },
         {
           "termo": "reformas",
-          "z": 12.453,
+          "z": 12.454,
           "freq": 18
         },
         {
           "termo": "estao sendo",
-          "z": 12.138,
+          "z": 12.139,
           "freq": 18
         },
         {
           "termo": "infiltracao parede",
-          "z": 12.13,
+          "z": 12.132,
           "freq": 18
         },
         {
           "termo": "hoje",
-          "z": 11.887,
+          "z": 11.866,
           "freq": 29
         },
         {
           "termo": "mes",
-          "z": 11.765,
+          "z": 11.767,
           "freq": 17
         },
         {
           "termo": "podera aberto",
-          "z": 11.687,
+          "z": 11.689,
           "freq": 16
         },
         {
           "termo": "previsao",
-          "z": 11.536,
+          "z": 11.537,
           "freq": 16
         },
         {
           "termo": "finalizacao",
-          "z": 11.421,
+          "z": 11.422,
           "freq": 16
         }
       ],
@@ -2764,7 +2764,7 @@
         },
         {
           "termo": "mofo",
-          "peso": 0.0279
+          "peso": 0.028
         },
         {
           "termo": "infiltracoes",
@@ -2787,11 +2787,11 @@
           "peso": 0.0242
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.0242
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.0242
         },
         {
@@ -2804,11 +2804,11 @@
         },
         {
           "termo": "solucao executado",
-          "peso": 0.0209
+          "peso": 0.0208
         },
         {
           "termo": "executado",
-          "peso": 0.0209
+          "peso": 0.0208
         },
         {
           "termo": "forro",
@@ -2845,127 +2845,127 @@
       "top_log_odds": [
         {
           "termo": "pintura",
-          "z": 51.679,
+          "z": 51.687,
           "freq": 178
         },
         {
           "termo": "paredes",
-          "z": 16.998,
+          "z": 17.001,
           "freq": 25
         },
         {
           "termo": "executado pintura",
-          "z": 15.954,
+          "z": 15.956,
           "freq": 19
         },
         {
           "termo": "tinta",
-          "z": 15.84,
+          "z": 15.843,
           "freq": 18
         },
         {
           "termo": "complementar pintura",
-          "z": 13.684,
+          "z": 13.686,
           "freq": 15
         },
         {
           "termo": "latas",
-          "z": 13.131,
+          "z": 13.133,
           "freq": 12
         },
         {
           "termo": "pintura parede",
-          "z": 13.124,
+          "z": 13.126,
           "freq": 12
         },
         {
           "termo": "varanda",
-          "z": 13.123,
+          "z": 13.126,
           "freq": 14
         },
         {
           "termo": "pintura paredes",
-          "z": 12.135,
+          "z": 12.137,
           "freq": 10
         },
         {
           "termo": "piso",
-          "z": 12.095,
+          "z": 12.099,
           "freq": 22
         },
         {
           "termo": "descricao pintura",
-          "z": 11.437,
+          "z": 11.439,
           "freq": 9
         },
         {
           "termo": "vagas",
-          "z": 11.135,
+          "z": 11.136,
           "freq": 9
         },
         {
           "termo": "parede",
-          "z": 11.09,
+          "z": 11.093,
           "freq": 24
         },
         {
           "termo": "reparo pintura",
-          "z": 11.054,
+          "z": 11.055,
           "freq": 10
         },
         {
           "termo": "varanda leste",
-          "z": 10.72,
+          "z": 10.721,
           "freq": 8
         },
         {
           "termo": "leste",
-          "z": 10.713,
+          "z": 10.715,
           "freq": 8
         },
         {
           "termo": "oficiais",
-          "z": 10.137,
+          "z": 10.139,
           "freq": 7
         },
         {
           "termo": "recuperacao",
-          "z": 10.087,
+          "z": 10.089,
           "freq": 10
         },
         {
           "termo": "vias",
-          "z": 10.01,
+          "z": 10.012,
           "freq": 7
         },
         {
           "termo": "diversas",
-          "z": 9.988,
+          "z": 9.991,
           "freq": 9
         },
         {
           "termo": "branco gelo",
-          "z": 9.444,
-          "freq": 7
-        },
-        {
-          "termo": "gelo",
-          "z": 9.423,
+          "z": 9.446,
           "freq": 7
         },
         {
           "termo": "laboratorio praticas",
-          "z": 9.392,
+          "z": 9.393,
+          "freq": 6
+        },
+        {
+          "termo": "gelo",
+          "z": 9.375,
+          "freq": 7
+        },
+        {
+          "termo": "torres",
+          "z": 9.371,
           "freq": 6
         },
         {
           "termo": "varanda sul",
-          "z": 9.369,
-          "freq": 6
-        },
-        {
-          "termo": "torres",
-          "z": 9.369,
+          "z": 9.371,
           "freq": 6
         }
       ],
@@ -3027,11 +3027,11 @@
           "peso": 0.022
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.0215
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.0215
         },
         {
@@ -3060,7 +3060,7 @@
         },
         {
           "termo": "laboratorio",
-          "peso": 0.0184
+          "peso": 0.0183
         },
         {
           "termo": "reitoria",
@@ -3077,127 +3077,127 @@
       "top_log_odds": [
         {
           "termo": "telhado",
-          "z": 39.691,
+          "z": 39.696,
           "freq": 167
         },
         {
           "termo": "calha",
-          "z": 22.248,
+          "z": 22.251,
           "freq": 53
         },
         {
           "termo": "cobertura",
-          "z": 21.945,
+          "z": 21.948,
           "freq": 60
         },
         {
           "termo": "forro",
-          "z": 19.786,
+          "z": 19.791,
           "freq": 72
         },
         {
           "termo": "goteira",
-          "z": 18.617,
+          "z": 18.62,
           "freq": 39
         },
         {
           "termo": "goteiras",
-          "z": 18.591,
+          "z": 18.593,
           "freq": 38
         },
         {
           "termo": "manutencao telhado",
-          "z": 17.87,
+          "z": 17.872,
           "freq": 38
         },
         {
           "termo": "calhas",
-          "z": 16.943,
+          "z": 16.946,
           "freq": 31
         },
         {
           "termo": "telhas",
-          "z": 16.77,
+          "z": 16.772,
           "freq": 30
         },
         {
           "termo": "telhados",
-          "z": 16.487,
+          "z": 16.489,
           "freq": 29
         },
         {
           "termo": "telhado laboratorio",
-          "z": 14.026,
+          "z": 14.027,
           "freq": 24
         },
         {
           "termo": "revisao",
-          "z": 13.122,
+          "z": 13.125,
           "freq": 38
         },
         {
           "termo": "chuvas",
-          "z": 13.039,
+          "z": 13.042,
           "freq": 23
         },
         {
           "termo": "reparo telhado",
-          "z": 12.236,
+          "z": 12.238,
           "freq": 18
         },
         {
           "termo": "estrutura",
-          "z": 11.978,
+          "z": 11.981,
           "freq": 28
         },
         {
           "termo": "chuva",
-          "z": 11.716,
+          "z": 11.718,
           "freq": 20
         },
         {
           "termo": "drenagem",
-          "z": 11.704,
+          "z": 11.706,
           "freq": 19
         },
         {
           "termo": "varios",
-          "z": 11.45,
+          "z": 11.452,
           "freq": 16
         },
         {
           "termo": "pingueira",
-          "z": 11.332,
+          "z": 11.334,
           "freq": 14
         },
         {
           "termo": "lona",
-          "z": 11.262,
+          "z": 11.264,
           "freq": 14
         },
         {
           "termo": "elementos",
-          "z": 11.026,
+          "z": 11.028,
           "freq": 13
         },
         {
-          "termo": "fibra",
-          "z": 10.594,
-          "freq": 20
-        },
-        {
           "termo": "varios pontos",
-          "z": 10.593,
+          "z": 10.595,
           "freq": 12
         },
         {
+          "termo": "fibra",
+          "z": 10.513,
+          "freq": 20
+        },
+        {
           "termo": "cobertura pav",
-          "z": 10.448,
+          "z": 10.45,
           "freq": 12
         },
         {
           "termo": "forro mineral",
-          "z": 9.791,
+          "z": 9.793,
           "freq": 11
         }
       ],
@@ -3300,7 +3300,7 @@
         },
         {
           "termo": "vazamento",
-          "peso": 0.0149
+          "peso": 0.015
         }
       ]
     },
@@ -3309,127 +3309,127 @@
       "top_log_odds": [
         {
           "termo": "bomba",
-          "z": 48.29,
+          "z": 48.297,
           "freq": 156
         },
         {
           "termo": "bombas",
-          "z": 30.216,
+          "z": 30.221,
           "freq": 59
         },
         {
           "termo": "reparo bomba",
-          "z": 23.425,
+          "z": 23.428,
           "freq": 48
         },
         {
           "termo": "fossa",
-          "z": 19.902,
+          "z": 19.905,
           "freq": 26
         },
         {
           "termo": "limpeza fossa",
-          "z": 16.897,
+          "z": 16.9,
           "freq": 19
         },
         {
           "termo": "bomba poco",
-          "z": 16.674,
+          "z": 16.676,
           "freq": 18
         },
         {
           "termo": "poco",
-          "z": 16.342,
+          "z": 16.345,
           "freq": 23
         },
         {
           "termo": "detritos",
-          "z": 15.72,
+          "z": 15.723,
           "freq": 16
         },
         {
           "termo": "poco artesiano",
-          "z": 15.555,
+          "z": 15.557,
           "freq": 16
         },
         {
           "termo": "artesiano",
-          "z": 15.529,
+          "z": 15.532,
           "freq": 16
         },
         {
           "termo": "complementar",
-          "z": 15.336,
+          "z": 15.341,
           "freq": 38
         },
         {
           "termo": "reparo",
-          "z": 15.097,
+          "z": 15.089,
           "freq": 58
         },
         {
           "termo": "manutencao bomba",
-          "z": 15.071,
+          "z": 15.073,
           "freq": 15
         },
         {
           "termo": "bomba agua",
-          "z": 14.707,
+          "z": 14.709,
           "freq": 14
         },
         {
           "termo": "agua",
-          "z": 14.116,
+          "z": 14.107,
           "freq": 51
         },
         {
           "termo": "rele",
-          "z": 12.974,
+          "z": 12.977,
           "freq": 12
         },
         {
           "termo": "estacao elevatoria",
-          "z": 12.408,
+          "z": 12.41,
           "freq": 10
         },
         {
           "termo": "casa bombas",
-          "z": 11.701,
+          "z": 11.703,
           "freq": 9
         },
         {
           "termo": "casa",
-          "z": 11.142,
+          "z": 11.145,
           "freq": 11
         },
         {
           "termo": "elevatoria",
-          "z": 11.056,
+          "z": 11.058,
           "freq": 10
         },
         {
           "termo": "complementar limpeza",
-          "z": 10.958,
+          "z": 10.959,
           "freq": 8
         },
         {
           "termo": "distribuicao",
-          "z": 10.875,
+          "z": 10.877,
           "freq": 8
         },
         {
           "termo": "substituicao rele",
-          "z": 10.677,
+          "z": 10.679,
           "freq": 8
         },
         {
           "termo": "instalacao bomba",
-          "z": 10.47,
+          "z": 10.471,
           "freq": 9
         },
         {
           "termo": "complementar reparo",
-          "z": 10.378,
+          "z": 10.381,
           "freq": 10
         }
       ],
@@ -3452,7 +3452,7 @@
         },
         {
           "termo": "agua",
-          "peso": 0.062
+          "peso": 0.0619
         },
         {
           "termo": "bomba agua",
@@ -3541,127 +3541,127 @@
       "top_log_odds": [
         {
           "termo": "cloro",
-          "z": 26.015,
+          "z": 26.019,
           "freq": 39
         },
         {
           "termo": "compra",
-          "z": 20.984,
+          "z": 20.989,
           "freq": 37
         },
         {
           "termo": "dpd",
-          "z": 16.752,
+          "z": 16.754,
           "freq": 16
         },
         {
           "termo": "ete",
-          "z": 15.838,
+          "z": 15.839,
           "freq": 21
         },
         {
           "termo": "tratamento agua",
-          "z": 14.812,
+          "z": 14.815,
           "freq": 13
         },
         {
           "termo": "kit",
-          "z": 14.495,
+          "z": 14.497,
           "freq": 12
         },
         {
           "termo": "bomba",
-          "z": 13.954,
+          "z": 13.958,
           "freq": 20
         },
         {
           "termo": "wetland",
-          "z": 13.924,
+          "z": 13.925,
           "freq": 15
         },
         {
           "termo": "medidor",
-          "z": 13.885,
+          "z": 13.887,
           "freq": 11
         },
         {
           "termo": "eta",
-          "z": 13.812,
+          "z": 13.814,
           "freq": 11
         },
         {
           "termo": "insumos",
-          "z": 12.601,
+          "z": 12.604,
           "freq": 10
         },
         {
           "termo": "compra kit",
-          "z": 12.469,
+          "z": 12.471,
           "freq": 9
         },
         {
           "termo": "resolucao",
-          "z": 12.334,
+          "z": 12.336,
           "freq": 10
         },
         {
-          "termo": "reagente cloro",
-          "z": 11.838,
+          "termo": "kit reagente",
+          "z": 11.839,
           "freq": 8
         },
         {
           "termo": "cloro livre",
-          "z": 11.838,
+          "z": 11.839,
           "freq": 8
         },
         {
           "termo": "reagente",
-          "z": 11.838,
+          "z": 11.839,
           "freq": 8
         },
         {
-          "termo": "livre dpd",
-          "z": 11.838,
-          "freq": 8
-        },
-        {
-          "termo": "kit reagente",
-          "z": 11.838,
+          "termo": "reagente cloro",
+          "z": 11.839,
           "freq": 8
         },
         {
           "termo": "dpd dpd",
-          "z": 11.838,
+          "z": 11.839,
+          "freq": 8
+        },
+        {
+          "termo": "livre dpd",
+          "z": 11.839,
           "freq": 8
         },
         {
           "termo": "estacao tratamento",
-          "z": 11.827,
+          "z": 11.829,
           "freq": 8
         },
         {
           "termo": "livre",
-          "z": 11.114,
+          "z": 11.116,
           "freq": 8
         },
         {
           "termo": "agua jorge",
-          "z": 11.055,
+          "z": 11.057,
           "freq": 7
         },
         {
           "termo": "operacao",
-          "z": 11.049,
+          "z": 11.051,
           "freq": 9
         },
         {
           "termo": "ete cja",
-          "z": 11.006,
+          "z": 11.008,
           "freq": 8
         },
         {
           "termo": "yuri amorim",
-          "z": 10.957,
+          "z": 10.958,
           "freq": 7
         }
       ],
@@ -3716,7 +3716,7 @@
         },
         {
           "termo": "agua",
-          "peso": 0.0459
+          "peso": 0.0458
         },
         {
           "termo": "estacao",
@@ -3732,11 +3732,11 @@
         },
         {
           "termo": "amado",
-          "peso": 0.0386
+          "peso": 0.0385
         },
         {
           "termo": "jorge",
-          "peso": 0.0378
+          "peso": 0.0377
         },
         {
           "termo": "medidor",
@@ -3773,127 +3773,127 @@
       "top_log_odds": [
         {
           "termo": "banheiro",
-          "z": 48.449,
+          "z": 48.426,
           "freq": 683
         },
         {
           "termo": "agua",
-          "z": 48.018,
+          "z": 47.992,
           "freq": 768
         },
         {
           "termo": "vazamento",
-          "z": 45.168,
+          "z": 45.178,
           "freq": 560
         },
         {
           "termo": "pia",
-          "z": 37.5,
+          "z": 37.507,
           "freq": 429
         },
         {
           "termo": "sanitario",
-          "z": 34.367,
+          "z": 34.35,
           "freq": 352
         },
         {
           "termo": "bebedouro",
-          "z": 34.292,
+          "z": 34.298,
           "freq": 403
         },
         {
           "termo": "masculino",
-          "z": 33.056,
+          "z": 33.065,
           "freq": 309
         },
         {
           "termo": "torneira",
-          "z": 32.121,
+          "z": 32.126,
           "freq": 457
         },
         {
           "termo": "feminino",
-          "z": 32.008,
+          "z": 31.957,
           "freq": 311
         },
         {
           "termo": "vaso",
-          "z": 29.593,
+          "z": 29.577,
           "freq": 247
         },
         {
           "termo": "banheiro feminino",
-          "z": 28.672,
+          "z": 28.621,
           "freq": 238
         },
         {
           "termo": "banheiro masculino",
-          "z": 28.059,
+          "z": 28.066,
           "freq": 218
         },
         {
           "termo": "descarga",
-          "z": 26.608,
+          "z": 26.612,
           "freq": 278
         },
         {
           "termo": "vaso sanitario",
-          "z": 26.496,
+          "z": 26.474,
           "freq": 201
         },
         {
           "termo": "reservatorio",
-          "z": 26.331,
+          "z": 26.345,
           "freq": 485
         },
         {
           "termo": "vazando",
-          "z": 24.59,
+          "z": 24.567,
           "freq": 168
         },
         {
           "termo": "copa",
-          "z": 21.742,
+          "z": 21.749,
           "freq": 153
         },
         {
           "termo": "reparo",
-          "z": 21.331,
+          "z": 21.307,
           "freq": 406
         },
         {
           "termo": "proximo",
-          "z": 19.979,
+          "z": 19.986,
           "freq": 153
         },
         {
           "termo": "registro",
-          "z": 19.563,
+          "z": 19.567,
           "freq": 110
         },
         {
           "termo": "substituicao",
-          "z": 18.814,
+          "z": 18.805,
           "freq": 321
         },
         {
           "termo": "mictorio",
-          "z": 18.499,
+          "z": 18.502,
           "freq": 119
         },
         {
           "termo": "vazamento agua",
-          "z": 18.266,
+          "z": 18.27,
           "freq": 93
         },
         {
           "termo": "bebedouros",
-          "z": 17.645,
+          "z": 17.648,
           "freq": 97
         },
         {
           "termo": "filtro",
-          "z": 17.333,
+          "z": 17.337,
           "freq": 83
         }
       ],
@@ -3920,7 +3920,7 @@
         },
         {
           "termo": "bebedouro",
-          "peso": 0.0407
+          "peso": 0.0406
         },
         {
           "termo": "sanitario",
@@ -3972,7 +3972,7 @@
         },
         {
           "termo": "reparo",
-          "peso": 0.024
+          "peso": 0.0239
         },
         {
           "termo": "banheiro feminino",
@@ -4001,173 +4001,173 @@
       ]
     },
     "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)": {
-      "n_chamados": 359,
+      "n_chamados": 358,
       "top_log_odds": [
         {
           "termo": "suporte",
-          "z": 32.514,
+          "z": 32.557,
           "freq": 150
         },
         {
           "termo": "instalacao",
-          "z": 27.248,
-          "freq": 305
+          "z": 27.206,
+          "freq": 304
         },
         {
           "termo": "quadro",
-          "z": 23.124,
-          "freq": 101
+          "z": 22.764,
+          "freq": 99
         },
         {
           "termo": "sanitario",
-          "z": 18.996,
-          "freq": 93
-        },
-        {
-          "termo": "sabonete",
-          "z": 18.551,
-          "freq": 44
+          "z": 19.402,
+          "freq": 95
         },
         {
           "termo": "assento",
-          "z": 18.378,
-          "freq": 46
+          "z": 18.898,
+          "freq": 48
+        },
+        {
+          "termo": "sabonete",
+          "z": 18.569,
+          "freq": 44
         },
         {
           "termo": "papel",
-          "z": 17.924,
+          "z": 17.951,
           "freq": 52
         },
         {
           "termo": "liquido",
-          "z": 17.651,
+          "z": 17.669,
           "freq": 39
         },
         {
           "termo": "instalacao suporte",
-          "z": 16.177,
+          "z": 16.198,
           "freq": 36
         },
         {
-          "termo": "quadro branco",
-          "z": 15.482,
-          "freq": 39
+          "termo": "vaso",
+          "z": 15.761,
+          "freq": 61
         },
         {
           "termo": "instalar",
-          "z": 15.467,
+          "z": 15.496,
           "freq": 55
         },
         {
-          "termo": "vaso",
-          "z": 15.268,
-          "freq": 59
-        },
-        {
           "termo": "armarios",
-          "z": 15.164,
+          "z": 15.185,
           "freq": 35
         },
         {
+          "termo": "vaso sanitario",
+          "z": 15.128,
+          "freq": 54
+        },
+        {
+          "termo": "quadro branco",
+          "z": 14.858,
+          "freq": 37
+        },
+        {
           "termo": "quebrado",
-          "z": 14.778,
+          "z": 14.801,
           "freq": 37
         },
         {
           "termo": "sabonete liquido",
-          "z": 14.736,
+          "z": 14.749,
           "freq": 31
         },
         {
-          "termo": "vaso sanitario",
-          "z": 14.606,
-          "freq": 52
-        },
-        {
           "termo": "tvs",
-          "z": 14.299,
+          "z": 14.315,
           "freq": 26
         },
         {
-          "termo": "branco",
-          "z": 14.202,
-          "freq": 39
-        },
-        {
           "termo": "tampa",
-          "z": 14.141,
+          "z": 14.163,
           "freq": 36
         },
         {
-          "termo": "assento sanitario",
-          "z": 13.305,
-          "freq": 23
-        },
-        {
-          "termo": "suporte papel",
-          "z": 13.193,
+          "termo": "substituicao assento",
+          "z": 13.783,
           "freq": 24
         },
         {
+          "termo": "branco",
+          "z": 13.584,
+          "freq": 37
+        },
+        {
+          "termo": "assento sanitario",
+          "z": 13.321,
+          "freq": 23
+        },
+        {
           "termo": "parede",
-          "z": 13.184,
+          "z": 13.214,
           "freq": 57
         },
         {
-          "termo": "substituicao assento",
-          "z": 13.116,
-          "freq": 22
+          "termo": "suporte papel",
+          "z": 13.21,
+          "freq": 24
         },
         {
           "termo": "tampa vaso",
-          "z": 12.837,
+          "z": 12.853,
           "freq": 23
         },
         {
           "termo": "suporte sabonete",
-          "z": 12.755,
+          "z": 12.765,
           "freq": 28
         }
       ],
       "top_tfidf": [
         {
           "termo": "instalacao",
-          "peso": 0.0685
+          "peso": 0.0686
         },
         {
           "termo": "suporte",
-          "peso": 0.0527
+          "peso": 0.0528
         },
         {
           "termo": "quadro",
-          "peso": 0.0394
+          "peso": 0.0391
         },
         {
           "termo": "solucao executado",
-          "peso": 0.027
+          "peso": 0.0271
+        },
+        {
+          "termo": "sanitario",
+          "peso": 0.0271
         },
         {
           "termo": "executado",
-          "peso": 0.0269
+          "peso": 0.027
         },
         {
           "termo": "solucao",
           "peso": 0.0269
         },
         {
-          "termo": "sanitario",
-          "peso": 0.0268
-        },
-        {
           "termo": "descricao",
           "peso": 0.0268
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.0266
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.0266
         },
         {
@@ -4176,59 +4176,59 @@
         },
         {
           "termo": "parede",
-          "peso": 0.0219
+          "peso": 0.022
         },
         {
           "termo": "papel",
-          "peso": 0.0218
+          "peso": 0.0219
         },
         {
           "termo": "sabonete",
-          "peso": 0.0215
+          "peso": 0.0216
         },
         {
           "termo": "banheiro",
-          "peso": 0.0207
+          "peso": 0.0211
         },
         {
           "termo": "vaso",
-          "peso": 0.0194
-        },
-        {
-          "termo": "prezados",
-          "peso": 0.018
-        },
-        {
-          "termo": "liquido",
-          "peso": 0.0176
+          "peso": 0.0197
         },
         {
           "termo": "vaso sanitario",
-          "peso": 0.0175
+          "peso": 0.0178
         },
         {
-          "termo": "quadro branco",
-          "peso": 0.0175
+          "termo": "prezados",
+          "peso": 0.0177
+        },
+        {
+          "termo": "liquido",
+          "peso": 0.0177
         },
         {
           "termo": "instalacao suporte",
-          "peso": 0.0172
+          "peso": 0.0173
         },
         {
-          "termo": "branco",
-          "peso": 0.0167
+          "termo": "quadro branco",
+          "peso": 0.017
         },
         {
           "termo": "assento",
-          "peso": 0.0166
+          "peso": 0.0169
+        },
+        {
+          "termo": "branco",
+          "peso": 0.0163
         },
         {
           "termo": "descricao instalacao",
-          "peso": 0.016
+          "peso": 0.0161
         },
         {
-          "termo": "sabonete liquido",
-          "peso": 0.016
+          "termo": "feminino",
+          "peso": 0.0161
         }
       ]
     },
@@ -4237,138 +4237,138 @@
       "top_log_odds": [
         {
           "termo": "placa",
-          "z": 48.159,
+          "z": 48.167,
           "freq": 160
         },
         {
           "termo": "identificacao",
-          "z": 39.797,
+          "z": 39.803,
           "freq": 113
         },
         {
           "termo": "placa identificacao",
-          "z": 30.125,
+          "z": 30.128,
           "freq": 91
         },
         {
           "termo": "placas",
-          "z": 24.671,
+          "z": 24.676,
           "freq": 54
         },
         {
           "termo": "confeccao",
-          "z": 21.928,
+          "z": 21.932,
           "freq": 36
         },
         {
           "termo": "placas identificacao",
-          "z": 16.437,
+          "z": 16.439,
           "freq": 19
         },
         {
           "termo": "instalacao placa",
-          "z": 13.772,
+          "z": 13.774,
           "freq": 14
         },
         {
           "termo": "executado placa",
-          "z": 12.516,
+          "z": 12.518,
           "freq": 12
         },
         {
           "termo": "confeccao placa",
-          "z": 11.895,
+          "z": 11.896,
           "freq": 22
         },
         {
           "termo": "identificacao descricao",
-          "z": 11.791,
+          "z": 11.793,
           "freq": 15
         },
         {
           "termo": "troca placa",
-          "z": 11.383,
+          "z": 11.385,
           "freq": 9
         },
         {
           "termo": "rede cuni",
-          "z": 11.306,
+          "z": 11.308,
           "freq": 9
         },
         {
           "termo": "medicas",
-          "z": 11.274,
+          "z": 11.276,
           "freq": 9
         },
         {
           "termo": "cuni",
-          "z": 10.694,
+          "z": 10.697,
           "freq": 25
         },
         {
           "termo": "ciencias ambientais",
-          "z": 10.659,
+          "z": 10.661,
           "freq": 8
         },
         {
           "termo": "ambientais",
-          "z": 10.503,
+          "z": 10.505,
           "freq": 8
         },
         {
           "termo": "colocar placa",
-          "z": 10.132,
+          "z": 10.134,
           "freq": 8
         },
         {
           "termo": "executado confeccao",
-          "z": 10.031,
+          "z": 10.033,
           "freq": 7
         },
         {
           "termo": "sinalizacao",
-          "z": 9.983,
+          "z": 9.985,
           "freq": 12
         },
         {
           "termo": "habilidades medicas",
-          "z": 9.847,
+          "z": 9.849,
           "freq": 7
         },
         {
           "termo": "identificacao porta",
-          "z": 9.814,
+          "z": 9.815,
           "freq": 7
         },
         {
           "termo": "informatica",
-          "z": 9.513,
+          "z": 9.515,
           "freq": 9
         },
         {
           "termo": "nova placa",
-          "z": 9.29,
+          "z": 9.291,
           "freq": 8
         },
         {
-          "termo": "floras",
-          "z": 9.23,
+          "termo": "confeccao placas",
+          "z": 9.232,
           "freq": 6
         },
         {
-          "termo": "confeccao placas",
-          "z": 9.23,
+          "termo": "floras",
+          "z": 9.232,
           "freq": 6
         }
       ],
       "top_tfidf": [
         {
           "termo": "placa",
-          "peso": 0.2649
+          "peso": 0.265
         },
         {
           "termo": "identificacao",
-          "peso": 0.1956
+          "peso": 0.1957
         },
         {
           "termo": "placa identificacao",
@@ -4376,7 +4376,7 @@
         },
         {
           "termo": "placas",
-          "peso": 0.0832
+          "peso": 0.0833
         },
         {
           "termo": "confeccao",
@@ -4408,7 +4408,7 @@
         },
         {
           "termo": "porta",
-          "peso": 0.0255
+          "peso": 0.0256
         },
         {
           "termo": "executado placa",
@@ -4439,11 +4439,11 @@
           "peso": 0.0197
         },
         {
-          "termo": "historico",
+          "termo": "historico solucao",
           "peso": 0.0196
         },
         {
-          "termo": "historico solucao",
+          "termo": "historico",
           "peso": 0.0196
         },
         {
@@ -4469,127 +4469,127 @@
       "top_log_odds": [
         {
           "termo": "central",
-          "z": 54.64,
+          "z": 54.65,
           "freq": 528
         },
         {
           "termo": "condicionado central",
-          "z": 46.754,
+          "z": 46.761,
           "freq": 523
         },
         {
           "termo": "tratamento",
-          "z": 43.196,
+          "z": 43.204,
           "freq": 387
         },
         {
           "termo": "atividades",
-          "z": 37.103,
+          "z": 37.111,
           "freq": 228
         },
         {
           "termo": "deste",
-          "z": 30.164,
+          "z": 30.175,
           "freq": 228
         },
         {
           "termo": "dinfra",
-          "z": 29.258,
+          "z": 29.267,
           "freq": 170
         },
         {
           "termo": "central csc",
-          "z": 28.322,
+          "z": 28.326,
           "freq": 192
         },
         {
           "termo": "devem",
-          "z": 25.222,
+          "z": 25.232,
           "freq": 170
         },
         {
           "termo": "refrigeracao",
-          "z": 24.467,
+          "z": 24.62,
           "freq": 102
         },
         {
           "termo": "mensal",
-          "z": 23.915,
+          "z": 23.928,
           "freq": 279
         },
         {
           "termo": "relatorio",
-          "z": 23.768,
+          "z": 23.773,
           "freq": 94
         },
         {
           "termo": "serem",
-          "z": 23.722,
+          "z": 23.727,
           "freq": 94
         },
         {
           "termo": "processo",
-          "z": 23.7,
+          "z": 23.704,
           "freq": 94
         },
         {
           "termo": "informacoes",
-          "z": 23.594,
-          "freq": 94
-        },
-        {
-          "termo": "item",
-          "z": 23.552,
+          "z": 23.6,
           "freq": 94
         },
         {
           "termo": "tecnico",
-          "z": 23.539,
+          "z": 23.545,
           "freq": 95
         },
         {
+          "termo": "item",
+          "z": 23.482,
+          "freq": 94
+        },
+        {
           "termo": "tecnicos",
-          "z": 22.918,
+          "z": 22.922,
           "freq": 94
         },
         {
           "termo": "quimico",
-          "z": 22.724,
+          "z": 22.727,
           "freq": 200
         },
         {
           "termo": "procedimento",
-          "z": 22.709,
+          "z": 22.713,
           "freq": 94
         },
         {
           "termo": "informando",
-          "z": 22.683,
+          "z": 22.689,
           "freq": 94
         },
         {
           "termo": "condicionado",
-          "z": 22.647,
+          "z": 22.633,
           "freq": 601
         },
         {
           "termo": "devera informada",
-          "z": 22.244,
+          "z": 22.25,
           "freq": 94
         },
         {
           "termo": "retorno",
-          "z": 22.053,
+          "z": 22.062,
           "freq": 152
         },
         {
           "termo": "informada",
-          "z": 21.907,
+          "z": 21.914,
           "freq": 94
         },
         {
           "termo": "consta",
-          "z": 21.83,
+          "z": 21.834,
           "freq": 94
         }
       ],
@@ -4608,11 +4608,11 @@
         },
         {
           "termo": "condicionado",
-          "peso": 0.1222
+          "peso": 0.1221
         },
         {
           "termo": "ar condicionado",
-          "peso": 0.1072
+          "peso": 0.1071
         },
         {
           "termo": "tratamento quimico",
@@ -4701,127 +4701,127 @@
       "top_log_odds": [
         {
           "termo": "manutencao preventiva",
-          "z": 73.982,
+          "z": 74.021,
           "freq": 3610
         },
         {
           "termo": "preventiva",
-          "z": 73.908,
+          "z": 73.946,
           "freq": 3610
         },
         {
           "termo": "anexo",
-          "z": 73.782,
+          "z": 73.824,
           "freq": 4057
         },
         {
           "termo": "ar condicionado",
-          "z": 71.643,
+          "z": 71.612,
           "freq": 3829
         },
         {
           "termo": "condicionado",
-          "z": 71.1,
+          "z": 71.069,
           "freq": 3829
         },
         {
           "termo": "equipamentos",
-          "z": 66.863,
+          "z": 66.886,
           "freq": 2298
         },
         {
           "termo": "acordo anexo",
-          "z": 61.651,
+          "z": 61.672,
           "freq": 1956
         },
         {
           "termo": "manutencao",
-          "z": 58.505,
+          "z": 58.521,
           "freq": 4342
         },
         {
-          "termo": "mensal",
-          "z": 56.402,
-          "freq": 1640
-        },
-        {
           "termo": "acordo",
-          "z": 56.396,
+          "z": 56.423,
           "freq": 1956
         },
         {
+          "termo": "mensal",
+          "z": 56.421,
+          "freq": 1640
+        },
+        {
           "termo": "preventiva mensal",
-          "z": 56.176,
+          "z": 56.194,
           "freq": 1640
         },
         {
           "termo": "anexo pagina",
-          "z": 56.065,
-          "freq": 1628
-        },
-        {
-          "termo": "anexo acompanhamento",
-          "z": 55.99,
+          "z": 56.085,
           "freq": 1628
         },
         {
           "termo": "acompanhamento servicos",
-          "z": 55.99,
+          "z": 56.01,
           "freq": 1628
         },
         {
           "termo": "servicos devera",
-          "z": 55.99,
+          "z": 56.01,
+          "freq": 1628
+        },
+        {
+          "termo": "anexo acompanhamento",
+          "z": 56.01,
           "freq": 1628
         },
         {
           "termo": "feito acordo",
-          "z": 55.976,
+          "z": 55.996,
           "freq": 1628
         },
         {
           "termo": "devera feito",
-          "z": 55.969,
+          "z": 55.989,
           "freq": 1628
         },
         {
           "termo": "conforme arquivo",
-          "z": 55.965,
+          "z": 55.985,
           "freq": 1628
         },
         {
           "termo": "pagina",
-          "z": 55.92,
+          "z": 55.94,
           "freq": 1628
         },
         {
           "termo": "arquivo anexo",
-          "z": 55.581,
+          "z": 55.602,
           "freq": 1628
         },
         {
           "termo": "arquivo",
-          "z": 55.381,
+          "z": 55.403,
           "freq": 1628
         },
         {
           "termo": "mensal ar",
-          "z": 53.738,
+          "z": 53.752,
           "freq": 1640
         },
         {
           "termo": "equipamentos ar",
-          "z": 52.79,
+          "z": 52.801,
           "freq": 2285
         },
         {
           "termo": "devera",
-          "z": 52.191,
+          "z": 52.215,
           "freq": 1639
         },
         {
           "termo": "descricao manutencao",
-          "z": 51.548,
+          "z": 51.573,
           "freq": 1614
         }
       ],
@@ -4836,7 +4836,7 @@
         },
         {
           "termo": "manutencao preventiva",
-          "peso": 0.167
+          "peso": 0.1671
         },
         {
           "termo": "preventiva",
@@ -4872,7 +4872,7 @@
         },
         {
           "termo": "preventiva mensal",
-          "peso": 0.1053
+          "peso": 0.1054
         },
         {
           "termo": "mensal",
@@ -4933,127 +4933,127 @@
       "top_log_odds": [
         {
           "termo": "preventiva mensal",
-          "z": 31.306,
+          "z": 31.316,
           "freq": 191
         },
         {
           "termo": "mensal",
-          "z": 30.681,
+          "z": 30.691,
           "freq": 191
         },
         {
           "termo": "concluido",
-          "z": 29.998,
+          "z": 30.003,
           "freq": 91
         },
         {
           "termo": "nucleo pedagogico",
-          "z": 29.71,
+          "z": 29.717,
           "freq": 121
         },
         {
           "termo": "pedagogico",
-          "z": 29.642,
+          "z": 29.65,
           "freq": 121
         },
         {
           "termo": "nucleo",
-          "z": 28.784,
+          "z": 28.792,
           "freq": 121
         },
         {
           "termo": "informar",
-          "z": 25.523,
+          "z": 25.533,
           "freq": 182
         },
         {
           "termo": "elevadores",
-          "z": 25.516,
+          "z": 25.519,
           "freq": 179
         },
         {
           "termo": "jorge amado",
-          "z": 22.328,
+          "z": 22.299,
           "freq": 79
         },
         {
           "termo": "amado",
-          "z": 22.305,
+          "z": 22.276,
           "freq": 79
         },
         {
           "termo": "elevador",
-          "z": 22.071,
+          "z": 22.075,
           "freq": 45
         },
         {
           "termo": "jorge",
-          "z": 21.542,
+          "z": 21.516,
           "freq": 79
         },
         {
           "termo": "coordenacao",
-          "z": 20.984,
+          "z": 20.993,
           "freq": 160
         },
         {
           "termo": "pedagogico jorge",
-          "z": 20.935,
+          "z": 20.938,
           "freq": 48
         },
         {
           "termo": "paulo freire",
-          "z": 20.189,
+          "z": 20.183,
           "freq": 68
         },
         {
           "termo": "freire",
-          "z": 20.165,
+          "z": 20.159,
           "freq": 68
         },
         {
           "termo": "pedagogico paulo",
-          "z": 19.958,
+          "z": 19.96,
           "freq": 68
         },
         {
           "termo": "paulo",
-          "z": 19.811,
+          "z": 19.806,
           "freq": 68
         },
         {
           "termo": "informar descrever",
+          "z": 19.552,
+          "freq": 91
+        },
+        {
+          "termo": "nesse informar",
           "z": 19.545,
           "freq": 91
         },
         {
           "termo": "seja detectado",
-          "z": 19.538,
+          "z": 19.545,
           "freq": 91
         },
         {
           "termo": "descrever nesse",
-          "z": 19.538,
-          "freq": 91
-        },
-        {
-          "termo": "nesse informar",
-          "z": 19.538,
+          "z": 19.545,
           "freq": 91
         },
         {
           "termo": "algum servicos",
-          "z": 19.538,
+          "z": 19.545,
           "freq": 91
         },
         {
           "termo": "anomalia algum",
-          "z": 19.538,
+          "z": 19.545,
           "freq": 91
         },
         {
           "termo": "detectado alguma",
-          "z": 19.531,
+          "z": 19.538,
           "freq": 91
         }
       ],
@@ -5087,11 +5087,11 @@
           "peso": 0.142
         },
         {
-          "termo": "concluido informar",
+          "termo": "servicos concluido",
           "peso": 0.1389
         },
         {
-          "termo": "servicos concluido",
+          "termo": "concluido informar",
           "peso": 0.1389
         },
         {
@@ -5104,7 +5104,7 @@
         },
         {
           "termo": "preventiva",
-          "peso": 0.1222
+          "peso": 0.1223
         },
         {
           "termo": "coordenacao",
@@ -5116,7 +5116,7 @@
         },
         {
           "termo": "pedagogico",
-          "peso": 0.1168
+          "peso": 0.1169
         },
         {
           "termo": "nucleo",
@@ -5139,19 +5139,19 @@
           "peso": 0.0791
         },
         {
-          "termo": "descrever nesse",
-          "peso": 0.0791
-        },
-        {
-          "termo": "algum servicos",
-          "peso": 0.0791
-        },
-        {
           "termo": "nesse informar",
           "peso": 0.0791
         },
         {
+          "termo": "descrever nesse",
+          "peso": 0.0791
+        },
+        {
           "termo": "seja detectado",
+          "peso": 0.0791
+        },
+        {
+          "termo": "algum servicos",
           "peso": 0.0791
         },
         {
@@ -5165,127 +5165,127 @@
       "top_log_odds": [
         {
           "termo": "esgoto",
-          "z": 24.958,
+          "z": 24.962,
           "freq": 36
         },
         {
           "termo": "detritos",
-          "z": 18.016,
+          "z": 18.018,
           "freq": 19
         },
         {
           "termo": "bomba poco",
-          "z": 17.589,
+          "z": 17.592,
           "freq": 18
         },
         {
           "termo": "bomba",
-          "z": 17.365,
+          "z": 17.369,
           "freq": 27
         },
         {
           "termo": "poco",
-          "z": 17.058,
+          "z": 17.062,
           "freq": 22
         },
         {
           "termo": "limpeza fossa",
-          "z": 17.022,
+          "z": 17.025,
           "freq": 17
         },
         {
           "termo": "fossa",
-          "z": 17.011,
+          "z": 17.013,
           "freq": 17
         },
         {
           "termo": "estacao elevatoria",
-          "z": 14.338,
+          "z": 14.34,
           "freq": 12
         },
         {
           "termo": "elevatoria",
-          "z": 14.178,
+          "z": 14.18,
           "freq": 13
         },
         {
           "termo": "manutencao bomba",
-          "z": 13.073,
+          "z": 13.075,
           "freq": 10
         },
         {
           "termo": "estacao",
-          "z": 12.692,
+          "z": 12.695,
           "freq": 12
         },
         {
           "termo": "elevatoria esgoto",
-          "z": 12.147,
+          "z": 12.149,
           "freq": 10
         },
         {
           "termo": "rede esgoto",
-          "z": 12.099,
+          "z": 12.101,
           "freq": 9
         },
         {
           "termo": "reparo bomba",
-          "z": 9.134,
+          "z": 9.136,
           "freq": 7
         },
         {
           "termo": "cfcs cpf",
-          "z": 8.471,
+          "z": 8.473,
           "freq": 8
         },
         {
           "termo": "mictorio",
-          "z": 8.226,
+          "z": 8.228,
           "freq": 8
         },
         {
           "termo": "fossas",
-          "z": 7.719,
+          "z": 7.72,
           "freq": 10
         },
         {
           "termo": "localizadas",
-          "z": 7.647,
+          "z": 7.648,
           "freq": 5
         },
         {
           "termo": "sanitario",
-          "z": 6.755,
+          "z": 6.749,
           "freq": 13
         },
         {
           "termo": "limpeza",
-          "z": 6.723,
+          "z": 6.726,
           "freq": 26
         },
         {
           "termo": "executado limpeza",
-          "z": 6.719,
+          "z": 6.721,
           "freq": 5
         },
         {
           "termo": "caixas",
-          "z": 6.58,
+          "z": 6.582,
           "freq": 6
         },
         {
           "termo": "bombas",
-          "z": 6.105,
+          "z": 6.106,
           "freq": 6
         },
         {
           "termo": "proxima",
-          "z": 6.051,
+          "z": 6.053,
           "freq": 5
         },
         {
           "termo": "pav",
-          "z": 5.553,
+          "z": 5.555,
           "freq": 10
         }
       ],
@@ -5308,7 +5308,7 @@
         },
         {
           "termo": "fossas",
-          "peso": 0.0524
+          "peso": 0.0525
         },
         {
           "termo": "sanitario",
@@ -5376,7 +5376,7 @@
         },
         {
           "termo": "cja",
-          "peso": 0.0246
+          "peso": 0.0245
         },
         {
           "termo": "descricao",
@@ -5397,127 +5397,127 @@
       "top_log_odds": [
         {
           "termo": "coordenacao",
-          "z": 76.514,
+          "z": 76.538,
           "freq": 2349
         },
         {
           "termo": "informar",
-          "z": 75.072,
+          "z": 75.092,
           "freq": 2343
         },
         {
           "termo": "documento",
-          "z": 74.14,
+          "z": 74.167,
           "freq": 2364
         },
         {
           "termo": "gerador",
-          "z": 65.391,
+          "z": 65.404,
           "freq": 2567
         },
         {
           "termo": "coordenacao manutencao",
-          "z": 53.919,
+          "z": 53.935,
           "freq": 1177
         },
         {
           "termo": "caso",
-          "z": 53.851,
+          "z": 53.868,
           "freq": 1174
         },
         {
           "termo": "seja",
-          "z": 51.752,
+          "z": 51.771,
           "freq": 1176
         },
         {
           "termo": "alguma",
-          "z": 50.88,
+          "z": 50.892,
           "freq": 1171
         },
         {
           "termo": "algum",
-          "z": 50.326,
+          "z": 50.337,
           "freq": 1170
         },
         {
           "termo": "documento anexo",
-          "z": 49.854,
+          "z": 49.875,
           "freq": 1170
         },
         {
           "termo": "nesse",
-          "z": 49.217,
+          "z": 49.228,
           "freq": 1170
         },
         {
           "termo": "caso seja",
-          "z": 48.372,
+          "z": 48.383,
           "freq": 1173
         },
         {
           "termo": "manutencao coordenacao",
-          "z": 46.924,
+          "z": 46.933,
           "freq": 1170
         },
         {
           "termo": "detectado",
-          "z": 43.382,
+          "z": 43.39,
           "freq": 1170
         },
         {
           "termo": "informar coordenacao",
-          "z": 42.781,
+          "z": 42.789,
           "freq": 1171
         },
         {
           "termo": "descrever",
-          "z": 42.666,
+          "z": 42.674,
           "freq": 1170
         },
         {
           "termo": "alguma anomalia",
-          "z": 42.559,
+          "z": 42.567,
           "freq": 1170
         },
         {
           "termo": "anomalia",
-          "z": 42.559,
+          "z": 42.567,
           "freq": 1170
         },
         {
           "termo": "detectado alguma",
-          "z": 42.451,
-          "freq": 1170
-        },
-        {
-          "termo": "algum servicos",
-          "z": 42.341,
-          "freq": 1170
-        },
-        {
-          "termo": "anomalia algum",
-          "z": 42.341,
+          "z": 42.459,
           "freq": 1170
         },
         {
           "termo": "seja detectado",
-          "z": 42.341,
+          "z": 42.349,
           "freq": 1170
         },
         {
           "termo": "descrever nesse",
-          "z": 42.341,
+          "z": 42.349,
+          "freq": 1170
+        },
+        {
+          "termo": "anomalia algum",
+          "z": 42.349,
+          "freq": 1170
+        },
+        {
+          "termo": "algum servicos",
+          "z": 42.349,
           "freq": 1170
         },
         {
           "termo": "nesse informar",
-          "z": 42.341,
+          "z": 42.349,
           "freq": 1170
         },
         {
           "termo": "informar descrever",
-          "z": 42.332,
+          "z": 42.339,
           "freq": 1169
         }
       ],
@@ -5571,11 +5571,7 @@
           "peso": 0.0962
         },
         {
-          "termo": "seja detectado",
-          "peso": 0.0944
-        },
-        {
-          "termo": "nesse informar",
+          "termo": "algum servicos",
           "peso": 0.0944
         },
         {
@@ -5583,7 +5579,11 @@
           "peso": 0.0944
         },
         {
-          "termo": "algum servicos",
+          "termo": "nesse informar",
+          "peso": 0.0944
+        },
+        {
+          "termo": "seja detectado",
           "peso": 0.0944
         },
         {
@@ -5599,11 +5599,11 @@
           "peso": 0.0944
         },
         {
-          "termo": "anomalia",
+          "termo": "alguma anomalia",
           "peso": 0.0943
         },
         {
-          "termo": "alguma anomalia",
+          "termo": "anomalia",
           "peso": 0.0943
         },
         {
@@ -5629,134 +5629,134 @@
       "top_log_odds": [
         {
           "termo": "reservatorio",
-          "z": 15.706,
+          "z": 15.712,
           "freq": 61
         },
         {
           "termo": "reservatorios inferiores",
-          "z": 12.284,
+          "z": 12.286,
           "freq": 10
         },
         {
           "termo": "reservatorios",
-          "z": 11.891,
+          "z": 11.895,
           "freq": 25
         },
         {
           "termo": "banheiros",
-          "z": 11.408,
+          "z": 11.411,
           "freq": 18
         },
         {
           "termo": "localizados reitoria",
-          "z": 11.394,
+          "z": 11.396,
           "freq": 9
         },
         {
           "termo": "inferiores",
-          "z": 11.252,
+          "z": 11.254,
           "freq": 10
         },
         {
           "termo": "reitoria seguir",
-          "z": 10.553,
+          "z": 10.555,
           "freq": 8
         },
         {
           "termo": "reservatorios reitoria",
-          "z": 10.192,
+          "z": 10.194,
           "freq": 8
         },
         {
+          "termo": "fotografias estado",
+          "z": 9.65,
+          "freq": 22
+        },
+        {
           "termo": "tirar fotografias",
-          "z": 9.647,
+          "z": 9.65,
           "freq": 22
         },
         {
           "termo": "estado reservatorio",
-          "z": 9.647,
-          "freq": 22
-        },
-        {
-          "termo": "fotografias estado",
-          "z": 9.647,
+          "z": 9.65,
           "freq": 22
         },
         {
           "termo": "tirar",
-          "z": 9.589,
+          "z": 9.592,
           "freq": 22
         },
         {
           "termo": "fotografias",
-          "z": 9.526,
+          "z": 9.529,
           "freq": 22
         },
         {
           "termo": "instrucoes",
-          "z": 9.503,
+          "z": 9.507,
           "freq": 22
         },
         {
           "termo": "revisao",
-          "z": 9.326,
+          "z": 9.329,
           "freq": 15
         },
         {
           "termo": "estado",
-          "z": 9.203,
+          "z": 9.207,
           "freq": 22
         },
         {
           "termo": "agua fria",
-          "z": 8.815,
+          "z": 8.816,
           "freq": 5
         },
         {
           "termo": "limpeza",
-          "z": 8.745,
+          "z": 8.75,
           "freq": 39
         },
         {
           "termo": "seguir",
-          "z": 8.725,
+          "z": 8.729,
           "freq": 22
         },
         {
           "termo": "fria",
-          "z": 8.683,
+          "z": 8.685,
           "freq": 5
         },
         {
           "termo": "vazamentos",
-          "z": 8.257,
+          "z": 8.26,
           "freq": 15
         },
         {
           "termo": "limpeza reservatorios",
-          "z": 8.206,
+          "z": 8.208,
           "freq": 9
         },
         {
           "termo": "superiores",
-          "z": 8.099,
+          "z": 8.101,
           "freq": 8
         },
         {
           "termo": "valvulas",
-          "z": 7.503,
+          "z": 7.505,
           "freq": 5
         },
         {
           "termo": "caixa agua",
-          "z": 7.283,
+          "z": 7.285,
           "freq": 5
         }
       ],
       "top_tfidf": [
         {
           "termo": "reservatorio",
-          "peso": 0.1335
+          "peso": 0.1336
         },
         {
           "termo": "limpeza",
@@ -5771,7 +5771,7 @@
           "peso": 0.0523
         },
         {
-          "termo": "tirar fotografias",
+          "termo": "estado reservatorio",
           "peso": 0.0495
         },
         {
@@ -5779,7 +5779,7 @@
           "peso": 0.0495
         },
         {
-          "termo": "estado reservatorio",
+          "termo": "tirar fotografias",
           "peso": 0.0495
         },
         {
@@ -5831,11 +5831,11 @@
           "peso": 0.0364
         },
         {
-          "termo": "inferiores superiores",
+          "termo": "superiores localizados",
           "peso": 0.0329
         },
         {
-          "termo": "superiores localizados",
+          "termo": "inferiores superiores",
           "peso": 0.0329
         },
         {
@@ -5861,127 +5861,127 @@
       "top_log_odds": [
         {
           "termo": "funcionamento",
-          "z": 63.167,
+          "z": 63.178,
           "freq": 419
         },
         {
           "termo": "emergencia",
-          "z": 50.348,
+          "z": 50.355,
           "freq": 314
         },
         {
           "termo": "luminarias",
-          "z": 39.089,
+          "z": 39.096,
           "freq": 161
         },
         {
           "termo": "luminaria",
-          "z": 36.37,
+          "z": 36.375,
           "freq": 159
         },
         {
           "termo": "situacao",
-          "z": 36.309,
+          "z": 36.316,
           "freq": 139
         },
         {
           "termo": "localizacao",
-          "z": 35.979,
+          "z": 36.068,
           "freq": 139
         },
         {
           "termo": "informando",
-          "z": 35.881,
+          "z": 35.887,
           "freq": 139
         },
         {
           "termo": "descricao verificacao",
-          "z": 35.593,
+          "z": 35.6,
           "freq": 134
         },
         {
           "termo": "luz",
-          "z": 34.938,
+          "z": 34.943,
           "freq": 139
         },
         {
           "termo": "planilha",
-          "z": 31.523,
+          "z": 31.528,
           "freq": 139
         },
         {
           "termo": "verifique",
-          "z": 31.209,
+          "z": 31.213,
           "freq": 139
         },
         {
           "termo": "verificacao",
-          "z": 30.227,
+          "z": 30.223,
           "freq": 140
         },
         {
           "termo": "tomada",
-          "z": 29.477,
+          "z": 29.486,
           "freq": 139
         },
         {
           "termo": "equipamento",
-          "z": 28.431,
+          "z": 28.375,
           "freq": 139
         },
         {
           "termo": "verificacao funcionamento",
-          "z": 27.367,
+          "z": 27.371,
           "freq": 139
         },
         {
           "termo": "acende",
-          "z": 26.026,
+          "z": 26.029,
           "freq": 140
         },
         {
           "termo": "inspecao",
-          "z": 25.651,
+          "z": 25.66,
           "freq": 146
         },
         {
           "termo": "funcionamento historico",
-          "z": 24.94,
+          "z": 24.943,
           "freq": 133
         },
         {
           "termo": "correto",
-          "z": 23.262,
+          "z": 23.264,
           "freq": 139
         },
         {
           "termo": "luminarias emergencia",
-          "z": 22.551,
+          "z": 22.553,
           "freq": 155
         },
         {
           "termo": "complexo",
-          "z": 19.325,
+          "z": 19.331,
           "freq": 61
         },
         {
           "termo": "planilha anexo",
-          "z": 19.103,
+          "z": 19.105,
           "freq": 139
         },
         {
           "termo": "correto funcionamento",
-          "z": 17.066,
+          "z": 17.068,
           "freq": 139
         },
         {
           "termo": "luminaria emergencia",
-          "z": 12.692,
+          "z": 12.693,
           "freq": 157
         },
         {
           "termo": "garante",
-          "z": 12.45,
+          "z": 12.451,
           "freq": 139
         }
       ],
@@ -6011,79 +6011,79 @@
           "peso": 0.119
         },
         {
-          "termo": "preencha",
-          "peso": 0.1159
-        },
-        {
-          "termo": "situacao funcionamento",
-          "peso": 0.1159
-        },
-        {
-          "termo": "retire equipamento",
-          "peso": 0.1159
-        },
-        {
-          "termo": "verifique luz",
-          "peso": 0.1159
-        },
-        {
-          "termo": "luz acende",
-          "peso": 0.1159
-        },
-        {
-          "termo": "emergencia retire",
-          "peso": 0.1159
-        },
-        {
-          "termo": "localizacao situacao",
-          "peso": 0.1159
+          "termo": "tomada verifique",
+          "peso": 0.116
         },
         {
           "termo": "anexo informando",
-          "peso": 0.1159
-        },
-        {
-          "termo": "garante correto",
-          "peso": 0.1159
-        },
-        {
-          "termo": "funcionamento preencha",
-          "peso": 0.1159
-        },
-        {
-          "termo": "funcionamento luminarias",
-          "peso": 0.1159
+          "peso": 0.116
         },
         {
           "termo": "informando localizacao",
-          "peso": 0.1159
+          "peso": 0.116
         },
         {
-          "termo": "tomada verifique",
-          "peso": 0.1159
+          "termo": "emergencia retire",
+          "peso": 0.116
         },
         {
           "termo": "inspecao luminaria",
-          "peso": 0.1159
+          "peso": 0.116
         },
         {
-          "termo": "acende garante",
-          "peso": 0.1159
+          "termo": "preencha",
+          "peso": 0.116
         },
         {
           "termo": "preencha planilha",
-          "peso": 0.1159
+          "peso": 0.116
+        },
+        {
+          "termo": "funcionamento preencha",
+          "peso": 0.116
+        },
+        {
+          "termo": "funcionamento luminarias",
+          "peso": 0.116
+        },
+        {
+          "termo": "luz acende",
+          "peso": 0.116
+        },
+        {
+          "termo": "situacao funcionamento",
+          "peso": 0.116
+        },
+        {
+          "termo": "acende garante",
+          "peso": 0.116
+        },
+        {
+          "termo": "retire equipamento",
+          "peso": 0.116
+        },
+        {
+          "termo": "garante correto",
+          "peso": 0.116
+        },
+        {
+          "termo": "localizacao situacao",
+          "peso": 0.116
+        },
+        {
+          "termo": "verifique luz",
+          "peso": 0.116
         },
         {
           "termo": "equipamento tomada",
           "peso": 0.1158
         },
         {
-          "termo": "garante",
+          "termo": "retire",
           "peso": 0.1157
         },
         {
-          "termo": "retire",
+          "termo": "garante",
           "peso": 0.1157
         }
       ]
@@ -6093,72 +6093,72 @@
       "top_log_odds": [
         {
           "termo": "nobreaks",
-          "z": 16.077,
+          "z": 16.079,
           "freq": 15
         },
         {
           "termo": "data center",
-          "z": 10.949,
+          "z": 10.951,
           "freq": 7
         },
         {
           "termo": "center",
-          "z": 10.949,
+          "z": 10.951,
           "freq": 7
         },
         {
           "termo": "nobreaks descricao",
-          "z": 10.122,
+          "z": 10.124,
           "freq": 5
         },
         {
           "termo": "estudio",
-          "z": 10.006,
+          "z": 10.007,
           "freq": 5
         },
         {
           "termo": "data",
-          "z": 9.341,
+          "z": 9.343,
           "freq": 7
         },
         {
           "termo": "nobreak",
-          "z": 9.07,
+          "z": 9.073,
           "freq": 10
         },
         {
           "termo": "baterias",
-          "z": 7.885,
+          "z": 7.886,
           "freq": 5
         },
         {
           "termo": "garantir",
-          "z": 7.666,
+          "z": 7.668,
           "freq": 5
         },
         {
           "termo": "localizados",
-          "z": 3.609,
+          "z": 3.61,
           "freq": 5
         },
         {
           "termo": "manutencao",
-          "z": 2.047,
+          "z": 2.048,
           "freq": 18
         },
         {
           "termo": "manutencao preventiva",
-          "z": 1.735,
+          "z": 1.737,
           "freq": 11
         },
         {
           "termo": "preventiva",
-          "z": 1.732,
+          "z": 1.733,
           "freq": 11
         },
         {
           "termo": "descricao manutencao",
-          "z": 1.722,
+          "z": 1.723,
           "freq": 6
         },
         {
@@ -6173,12 +6173,12 @@
         },
         {
           "termo": "historico solucao",
-          "z": 0.101,
+          "z": 0.102,
           "freq": 10
         },
         {
           "termo": "historico",
-          "z": 0.1,
+          "z": 0.102,
           "freq": 10
         },
         {
@@ -6188,17 +6188,17 @@
         },
         {
           "termo": "solucao",
-          "z": 0.065,
+          "z": 0.066,
           "freq": 10
         },
         {
           "termo": "solucao executado",
-          "z": -0.279,
+          "z": -0.278,
           "freq": 6
         },
         {
           "termo": "executado",
-          "z": -0.295,
+          "z": -0.294,
           "freq": 6
         }
       ],
@@ -6220,11 +6220,11 @@
           "peso": 0.0897
         },
         {
-          "termo": "center",
+          "termo": "data center",
           "peso": 0.0884
         },
         {
-          "termo": "data center",
+          "termo": "center",
           "peso": 0.0884
         },
         {
@@ -6232,11 +6232,15 @@
           "peso": 0.0832
         },
         {
-          "termo": "confiabilidade sistema",
+          "termo": "nobreaks localizados",
           "peso": 0.0799
         },
         {
           "termo": "confiabilidade",
+          "peso": 0.0799
+        },
+        {
+          "termo": "confiabilidade sistema",
           "peso": 0.0799
         },
         {
@@ -6245,10 +6249,6 @@
         },
         {
           "termo": "prevenir falhas",
-          "peso": 0.0799
-        },
-        {
-          "termo": "nobreaks localizados",
           "peso": 0.0799
         },
         {
@@ -6310,127 +6310,127 @@
       "top_log_odds": [
         {
           "termo": "poco",
-          "z": 33.773,
+          "z": 33.778,
           "freq": 74
         },
         {
           "termo": "anual",
-          "z": 26.675,
+          "z": 26.679,
           "freq": 50
         },
         {
           "termo": "bombas",
-          "z": 25.383,
+          "z": 25.387,
           "freq": 44
         },
         {
           "termo": "limpeza",
-          "z": 22.566,
+          "z": 22.574,
           "freq": 100
         },
         {
           "termo": "artesiano",
-          "z": 20.316,
+          "z": 20.319,
           "freq": 28
         },
         {
           "termo": "poco artesiano",
-          "z": 20.243,
+          "z": 20.246,
           "freq": 28
         },
         {
           "termo": "pocos",
-          "z": 20.085,
+          "z": 20.088,
           "freq": 52
         },
         {
           "termo": "incluindo",
-          "z": 18.413,
+          "z": 18.416,
           "freq": 22
         },
         {
           "termo": "eventuais",
-          "z": 18.412,
+          "z": 18.415,
           "freq": 22
         },
         {
           "termo": "lubrificacao",
-          "z": 18.373,
+          "z": 18.376,
           "freq": 22
         },
         {
           "termo": "completa",
-          "z": 18.256,
+          "z": 18.258,
           "freq": 22
         },
         {
           "termo": "tubulacoes",
-          "z": 18.03,
+          "z": 18.032,
           "freq": 22
         },
         {
           "termo": "internas",
-          "z": 17.858,
+          "z": 17.861,
           "freq": 22
         },
         {
           "termo": "realizando",
-          "z": 17.754,
+          "z": 17.756,
           "freq": 22
         },
         {
           "termo": "testes",
-          "z": 17.691,
+          "z": 17.694,
           "freq": 22
         },
         {
           "termo": "danos",
-          "z": 17.663,
+          "z": 17.666,
           "freq": 22
         },
         {
           "termo": "eficiencia",
-          "z": 17.338,
+          "z": 17.34,
           "freq": 22
         },
         {
           "termo": "pecas",
-          "z": 17.163,
+          "z": 17.166,
           "freq": 22
         },
         {
           "termo": "substituicao pecas",
-          "z": 16.948,
+          "z": 16.95,
           "freq": 22
         },
         {
           "termo": "fundo",
-          "z": 16.45,
+          "z": 16.453,
           "freq": 22
         },
         {
           "termo": "condicao",
-          "z": 16.427,
+          "z": 16.429,
           "freq": 22
         },
         {
           "termo": "localizado area",
-          "z": 15.591,
+          "z": 15.593,
           "freq": 18
         },
         {
           "termo": "remocao",
-          "z": 14.439,
+          "z": 14.443,
           "freq": 22
         },
         {
           "termo": "area externa",
-          "z": 14.316,
+          "z": 14.319,
           "freq": 18
         },
         {
           "termo": "localizado",
-          "z": 14.046,
+          "z": 14.05,
           "freq": 26
         }
       ],
@@ -6440,11 +6440,11 @@
           "peso": 0.2642
         },
         {
-          "termo": "pocos artesianos",
+          "termo": "artesianos",
           "peso": 0.1943
         },
         {
-          "termo": "artesianos",
+          "termo": "pocos artesianos",
           "peso": 0.1943
         },
         {
@@ -6457,15 +6457,15 @@
         },
         {
           "termo": "limpeza",
-          "peso": 0.1873
+          "peso": 0.1874
         },
         {
           "termo": "anual pocos",
-          "peso": 0.1839
+          "peso": 0.184
         },
         {
           "termo": "anual",
-          "peso": 0.1679
+          "peso": 0.168
         },
         {
           "termo": "bombas",
@@ -6492,48 +6492,48 @@
           "peso": 0.0969
         },
         {
-          "termo": "submersas realizando",
-          "peso": 0.0908
-        },
-        {
-          "termo": "remocao sedimentos",
-          "peso": 0.0908
-        },
-        {
-          "termo": "acumulados fundo",
-          "peso": 0.0908
-        },
-        {
           "termo": "realizando substituicao",
-          "peso": 0.0908
-        },
-        {
-          "termo": "fundo poco",
-          "peso": 0.0908
-        },
-        {
-          "termo": "poco condicao",
-          "peso": 0.0908
+          "peso": 0.0909
         },
         {
           "termo": "lubrificacao conforme",
-          "peso": 0.0908
+          "peso": 0.0909
         },
         {
-          "termo": "incluindo remocao",
-          "peso": 0.0908
+          "termo": "acumulados fundo",
+          "peso": 0.0909
         },
         {
-          "termo": "sedimentos",
-          "peso": 0.0908
-        },
-        {
-          "termo": "tubulacoes internas",
-          "peso": 0.0908
+          "termo": "estado tubulacoes",
+          "peso": 0.0909
         },
         {
           "termo": "completa poco",
-          "peso": 0.0908
+          "peso": 0.0909
+        },
+        {
+          "termo": "testes eficiencia",
+          "peso": 0.0909
+        },
+        {
+          "termo": "internas reparando",
+          "peso": 0.0909
+        },
+        {
+          "termo": "bombas estado",
+          "peso": 0.0909
+        },
+        {
+          "termo": "tubulacoes internas",
+          "peso": 0.0909
+        },
+        {
+          "termo": "poco condicao",
+          "peso": 0.0909
+        },
+        {
+          "termo": "poco incluindo",
+          "peso": 0.0909
         }
       ]
     },
@@ -6542,127 +6542,127 @@
       "top_log_odds": [
         {
           "termo": "quadros",
-          "z": 62.97,
+          "z": 62.98,
           "freq": 1709
         },
         {
           "termo": "inspecao",
-          "z": 60.254,
+          "z": 60.266,
           "freq": 1101
         },
         {
           "termo": "eletricos",
-          "z": 50.591,
+          "z": 50.599,
           "freq": 1141
         },
         {
           "termo": "modo",
-          "z": 46.353,
+          "z": 46.364,
           "freq": 560
         },
         {
           "termo": "deste",
-          "z": 46.229,
+          "z": 46.242,
           "freq": 560
         },
         {
           "termo": "retorno",
-          "z": 46.17,
+          "z": 46.181,
           "freq": 560
         },
         {
           "termo": "servicos",
-          "z": 45.069,
+          "z": 45.094,
           "freq": 1164
         },
         {
           "termo": "bimensal",
-          "z": 44.999,
+          "z": 45.009,
           "freq": 550
         },
         {
           "termo": "eletrico",
-          "z": 43.023,
+          "z": 43.031,
           "freq": 558
         },
         {
           "termo": "entrega",
-          "z": 41.351,
+          "z": 41.358,
           "freq": 560
         },
         {
           "termo": "deste documento",
-          "z": 38.686,
+          "z": 38.692,
           "freq": 560
         },
         {
           "termo": "dar",
-          "z": 37.622,
+          "z": 37.629,
           "freq": 560
         },
         {
           "termo": "tensao",
-          "z": 34.982,
+          "z": 34.988,
           "freq": 552
         },
         {
           "termo": "quadros eletricos",
-          "z": 34.835,
+          "z": 34.839,
           "freq": 1140
         },
         {
           "termo": "manutencao preventiva",
-          "z": 32.614,
+          "z": 32.64,
           "freq": 1125
         },
         {
           "termo": "preventiva",
-          "z": 32.561,
+          "z": 32.587,
           "freq": 1125
         },
         {
           "termo": "anexo pagina",
-          "z": 32.229,
+          "z": 32.246,
           "freq": 560
         },
         {
           "termo": "baixa",
-          "z": 32.162,
+          "z": 32.167,
           "freq": 550
         },
         {
+          "termo": "servicos devera",
+          "z": 32.017,
+          "freq": 560
+        },
+        {
           "termo": "anexo acompanhamento",
-          "z": 32.0,
+          "z": 32.017,
           "freq": 560
         },
         {
           "termo": "acompanhamento servicos",
-          "z": 32.0,
-          "freq": 560
-        },
-        {
-          "termo": "servicos devera",
-          "z": 32.0,
+          "z": 32.017,
           "freq": 560
         },
         {
           "termo": "feito acordo",
-          "z": 31.962,
+          "z": 31.979,
           "freq": 560
         },
         {
           "termo": "devera feito",
-          "z": 31.943,
+          "z": 31.96,
           "freq": 560
         },
         {
           "termo": "conforme arquivo",
-          "z": 31.934,
+          "z": 31.951,
           "freq": 560
         },
         {
           "termo": "pagina",
-          "z": 31.82,
+          "z": 31.837,
           "freq": 560
         }
       ],
@@ -6689,7 +6689,7 @@
         },
         {
           "termo": "servicos",
-          "peso": 0.1198
+          "peso": 0.1199
         },
         {
           "termo": "manutencao preventiva",
@@ -6704,15 +6704,15 @@
           "peso": 0.1078
         },
         {
+          "termo": "modo dar",
+          "peso": 0.1067
+        },
+        {
+          "termo": "atualizacao cadastros",
+          "peso": 0.1067
+        },
+        {
           "termo": "executados atualizacao",
-          "peso": 0.1067
-        },
-        {
-          "termo": "entrega deste",
-          "peso": 0.1067
-        },
-        {
-          "termo": "obrigatoria entrega",
           "peso": 0.1067
         },
         {
@@ -6724,19 +6724,19 @@
           "peso": 0.1067
         },
         {
-          "termo": "modo dar",
-          "peso": 0.1067
-        },
-        {
-          "termo": "atualizacao cadastros",
-          "peso": 0.1067
-        },
-        {
           "termo": "retorno servicos",
           "peso": 0.1067
         },
         {
-          "termo": "dar retorno",
+          "termo": "entrega deste",
+          "peso": 0.1067
+        },
+        {
+          "termo": "obrigatoria entrega",
+          "peso": 0.1067
+        },
+        {
+          "termo": "servicos executados",
           "peso": 0.1066
         },
         {
@@ -6744,7 +6744,7 @@
           "peso": 0.1066
         },
         {
-          "termo": "servicos executados",
+          "termo": "dar retorno",
           "peso": 0.1066
         },
         {
@@ -6760,11 +6760,11 @@
           "peso": 0.1057
         },
         {
-          "termo": "bimensal quadros",
+          "termo": "quadros eletrico",
           "peso": 0.1056
         },
         {
-          "termo": "quadros eletrico",
+          "termo": "tensao conforme",
           "peso": 0.1056
         }
       ]
@@ -6774,127 +6774,127 @@
       "top_log_odds": [
         {
           "termo": "reservatorio",
-          "z": 83.328,
+          "z": 83.345,
           "freq": 1597
         },
         {
           "termo": "limpeza",
-          "z": 54.829,
+          "z": 54.848,
           "freq": 870
         },
         {
           "termo": "seguir",
-          "z": 51.341,
+          "z": 51.353,
           "freq": 572
         },
         {
           "termo": "estado",
-          "z": 50.387,
-          "freq": 572
-        },
-        {
-          "termo": "acesso",
-          "z": 49.073,
+          "z": 50.398,
           "freq": 572
         },
         {
           "termo": "instrucoes",
-          "z": 49.044,
+          "z": 49.054,
+          "freq": 572
+        },
+        {
+          "termo": "acesso",
+          "z": 49.039,
           "freq": 572
         },
         {
           "termo": "fotografias",
-          "z": 48.912,
+          "z": 48.921,
           "freq": 572
         },
         {
           "termo": "tirar",
-          "z": 48.516,
+          "z": 48.526,
           "freq": 572
         },
         {
           "termo": "fotografias estado",
-          "z": 48.114,
-          "freq": 572
-        },
-        {
-          "termo": "estado reservatorio",
-          "z": 48.114,
+          "z": 48.123,
           "freq": 572
         },
         {
           "termo": "tirar fotografias",
-          "z": 48.114,
+          "z": 48.123,
+          "freq": 572
+        },
+        {
+          "termo": "estado reservatorio",
+          "z": 48.123,
           "freq": 572
         },
         {
           "termo": "reservatorios",
-          "z": 43.174,
+          "z": 43.183,
           "freq": 448
         },
         {
           "termo": "utilizar",
-          "z": 36.284,
+          "z": 36.293,
           "freq": 286
         },
         {
           "termo": "vez",
-          "z": 36.281,
+          "z": 36.29,
           "freq": 286
         },
         {
           "termo": "antes",
-          "z": 36.27,
+          "z": 36.278,
           "freq": 286
         },
         {
           "termo": "vazamentos",
-          "z": 36.256,
+          "z": 36.265,
           "freq": 286
         },
         {
           "termo": "retirar",
-          "z": 36.243,
+          "z": 36.252,
           "freq": 286
         },
         {
           "termo": "condicoes",
-          "z": 36.022,
+          "z": 36.03,
           "freq": 286
         },
         {
           "termo": "acordo documento",
-          "z": 36.006,
+          "z": 36.015,
           "freq": 286
         },
         {
           "termo": "seguranca",
-          "z": 35.646,
+          "z": 35.656,
           "freq": 286
         },
         {
           "termo": "hora",
-          "z": 35.585,
+          "z": 35.593,
           "freq": 286
         },
         {
           "termo": "anexo historico",
-          "z": 35.32,
+          "z": 35.329,
           "freq": 274
         },
         {
           "termo": "sera feito",
-          "z": 35.25,
+          "z": 35.258,
           "freq": 286
         },
         {
           "termo": "efetuar",
-          "z": 35.151,
+          "z": 35.159,
           "freq": 286
         },
         {
           "termo": "seguintes",
-          "z": 35.023,
+          "z": 35.033,
           "freq": 287
         }
       ],
@@ -6908,7 +6908,7 @@
           "peso": 0.1736
         },
         {
-          "termo": "estado reservatorio",
+          "termo": "tirar fotografias",
           "peso": 0.1458
         },
         {
@@ -6916,7 +6916,7 @@
           "peso": 0.1458
         },
         {
-          "termo": "tirar fotografias",
+          "termo": "estado reservatorio",
           "peso": 0.1458
         },
         {
@@ -6937,11 +6937,11 @@
         },
         {
           "termo": "seguir",
-          "peso": 0.1337
+          "peso": 0.1338
         },
         {
           "termo": "acesso",
-          "peso": 0.1247
+          "peso": 0.1245
         },
         {
           "termo": "reservatorios",
@@ -6968,15 +6968,7 @@
           "peso": 0.073
         },
         {
-          "termo": "vez tirar",
-          "peso": 0.0729
-        },
-        {
           "termo": "efetuar limpeza",
-          "peso": 0.0729
-        },
-        {
-          "termo": "poluentes retirar",
           "peso": 0.0729
         },
         {
@@ -6984,7 +6976,7 @@
           "peso": 0.0729
         },
         {
-          "termo": "feito esvaziar",
+          "termo": "utilizar acesso",
           "peso": 0.0729
         },
         {
@@ -6992,11 +6984,19 @@
           "peso": 0.0729
         },
         {
+          "termo": "feito esvaziar",
+          "peso": 0.0729
+        },
+        {
           "termo": "esvaziar limpar",
           "peso": 0.0729
         },
         {
-          "termo": "hora sera",
+          "termo": "antes efetuar",
+          "peso": 0.0729
+        },
+        {
+          "termo": "limpar reservatorio",
           "peso": 0.0729
         }
       ]
@@ -7006,127 +7006,127 @@
       "top_log_odds": [
         {
           "termo": "extintores",
-          "z": 48.075,
+          "z": 48.081,
           "freq": 280
         },
         {
           "termo": "recarga",
-          "z": 40.775,
+          "z": 40.78,
           "freq": 210
         },
         {
           "termo": "cadastro",
-          "z": 24.217,
+          "z": 24.221,
           "freq": 46
         },
         {
           "termo": "extintor",
-          "z": 22.578,
+          "z": 22.581,
           "freq": 51
         },
         {
           "termo": "documentos",
-          "z": 20.858,
+          "z": 20.86,
           "freq": 46
         },
         {
           "termo": "recarga extintores",
-          "z": 20.827,
+          "z": 20.829,
           "freq": 183
         },
         {
           "termo": "utilizar",
-          "z": 18.476,
+          "z": 18.481,
           "freq": 46
         },
         {
           "termo": "executado recarga",
-          "z": 17.932,
+          "z": 17.934,
           "freq": 41
         },
         {
           "termo": "descricao recarga",
-          "z": 17.425,
+          "z": 17.427,
           "freq": 49
         },
         {
           "termo": "anexo historico",
-          "z": 17.397,
+          "z": 17.401,
           "freq": 44
         },
         {
           "termo": "enquanto",
-          "z": 17.346,
+          "z": 17.349,
           "freq": 23
         },
         {
           "termo": "cepec",
-          "z": 16.734,
+          "z": 16.737,
           "freq": 27
         },
         {
           "termo": "considerar",
-          "z": 16.53,
+          "z": 16.532,
           "freq": 30
         },
         {
           "termo": "cadastro equipamentos",
-          "z": 15.548,
+          "z": 15.55,
           "freq": 46
         },
         {
           "termo": "nuped",
-          "z": 12.991,
+          "z": 12.995,
           "freq": 25
         },
         {
           "termo": "fornecer",
-          "z": 12.928,
+          "z": 12.93,
           "freq": 14
         },
         {
           "termo": "teste hidrostatico",
-          "z": 12.706,
+          "z": 12.707,
           "freq": 14
         },
         {
           "termo": "hidrostatico",
-          "z": 12.706,
+          "z": 12.707,
           "freq": 14
         },
         {
           "termo": "localizados",
-          "z": 12.65,
+          "z": 12.655,
           "freq": 35
         },
         {
           "termo": "teste",
-          "z": 12.509,
+          "z": 12.511,
           "freq": 14
         },
         {
           "termo": "mangueiras",
-          "z": 12.389,
+          "z": 12.391,
           "freq": 12
         },
         {
           "termo": "total",
-          "z": 12.373,
+          "z": 12.346,
           "freq": 16
         },
         {
           "termo": "preventiva anual",
-          "z": 11.728,
+          "z": 11.729,
           "freq": 11
         },
         {
           "termo": "documentos anexo",
-          "z": 11.485,
+          "z": 11.486,
           "freq": 46
         },
         {
           "termo": "localizados laboratorios",
-          "z": 11.429,
+          "z": 11.431,
           "freq": 10
         }
       ],
@@ -7161,7 +7161,7 @@
         },
         {
           "termo": "extintor",
-          "peso": 0.0734
+          "peso": 0.0735
         },
         {
           "termo": "cadastro equipamentos",
@@ -7196,15 +7196,15 @@
           "peso": 0.0464
         },
         {
-          "termo": "considerar extintores",
-          "peso": 0.0417
-        },
-        {
           "termo": "extintores considerar",
           "peso": 0.0417
         },
         {
           "termo": "extintores localizados",
+          "peso": 0.0417
+        },
+        {
+          "termo": "considerar extintores",
           "peso": 0.0417
         },
         {
@@ -7238,127 +7238,127 @@
       "top_log_odds": [
         {
           "termo": "cobertura",
-          "z": 32.541,
+          "z": 32.547,
           "freq": 70
         },
         {
           "termo": "convencoes",
-          "z": 25.745,
+          "z": 25.75,
           "freq": 55
         },
         {
           "termo": "telhado",
-          "z": 25.093,
+          "z": 25.098,
           "freq": 53
         },
         {
           "termo": "pav convencoes",
-          "z": 25.031,
+          "z": 25.035,
           "freq": 41
         },
         {
           "termo": "pav",
-          "z": 20.761,
+          "z": 20.767,
           "freq": 50
         },
         {
           "termo": "calha",
-          "z": 18.85,
+          "z": 18.854,
           "freq": 26
         },
         {
           "termo": "cobertura pav",
-          "z": 16.25,
+          "z": 16.252,
           "freq": 19
         },
         {
           "termo": "calhas",
-          "z": 15.957,
+          "z": 15.96,
           "freq": 18
         },
         {
           "termo": "telhado pav",
-          "z": 15.861,
+          "z": 15.863,
           "freq": 21
         },
         {
           "termo": "reparo telhado",
-          "z": 15.19,
+          "z": 15.192,
           "freq": 16
         },
         {
           "termo": "pavilhao feiras",
-          "z": 14.688,
+          "z": 14.692,
           "freq": 26
         },
         {
           "termo": "feiras",
-          "z": 14.527,
+          "z": 14.531,
           "freq": 29
         },
         {
           "termo": "entulho",
-          "z": 14.444,
+          "z": 14.447,
           "freq": 16
         },
         {
-          "termo": "telhado pavilhao",
-          "z": 14.388,
+          "termo": "revisao cobertura",
+          "z": 14.39,
           "freq": 15
         },
         {
-          "termo": "revisao cobertura",
-          "z": 14.388,
+          "termo": "telhado pavilhao",
+          "z": 14.39,
           "freq": 15
         },
         {
           "termo": "telhas",
-          "z": 13.863,
+          "z": 13.866,
           "freq": 14
         },
         {
           "termo": "complementar",
-          "z": 13.465,
+          "z": 13.469,
           "freq": 33
         },
         {
           "termo": "ralos",
-          "z": 13.303,
+          "z": 13.305,
           "freq": 12
         },
         {
           "termo": "pavilhao",
-          "z": 12.163,
+          "z": 12.155,
           "freq": 44
         },
         {
           "termo": "revisao",
-          "z": 11.828,
+          "z": 11.832,
           "freq": 20
         },
         {
           "termo": "cobertura pavilhao",
-          "z": 11.492,
+          "z": 11.494,
           "freq": 9
         },
         {
           "termo": "reparo cobertura",
-          "z": 11.248,
+          "z": 11.25,
           "freq": 10
         },
         {
           "termo": "remocao bota",
-          "z": 11.09,
+          "z": 11.092,
           "freq": 8
         },
         {
           "termo": "fora entulho",
-          "z": 11.055,
+          "z": 11.057,
           "freq": 8
         },
         {
           "termo": "aluminizada",
-          "z": 10.82,
+          "z": 10.821,
           "freq": 8
         }
       ],
@@ -7440,12 +7440,12 @@
           "peso": 0.0253
         },
         {
-          "termo": "historico solucao",
-          "peso": 0.025
+          "termo": "historico",
+          "peso": 0.0251
         },
         {
-          "termo": "historico",
-          "peso": 0.025
+          "termo": "historico solucao",
+          "peso": 0.0251
         },
         {
           "termo": "pav",
@@ -7470,127 +7470,127 @@
       "top_log_odds": [
         {
           "termo": "vistoria",
-          "z": 43.376,
+          "z": 43.383,
           "freq": 243
         },
         {
           "termo": "instalacoes",
-          "z": 39.906,
+          "z": 39.914,
           "freq": 208
         },
         {
           "termo": "informada",
-          "z": 35.897,
+          "z": 35.903,
           "freq": 172
         },
         {
           "termo": "devera informada",
-          "z": 35.433,
+          "z": 35.439,
           "freq": 172
         },
         {
           "termo": "necessidade",
-          "z": 35.33,
+          "z": 35.338,
           "freq": 174
         },
         {
           "termo": "preventivas",
-          "z": 34.851,
+          "z": 34.856,
           "freq": 172
         },
         {
           "termo": "acordo documento",
-          "z": 34.367,
+          "z": 34.375,
           "freq": 172
         },
         {
           "termo": "descricao vistoria",
-          "z": 34.122,
+          "z": 34.127,
           "freq": 178
         },
         {
           "termo": "sistemas",
-          "z": 32.38,
+          "z": 32.385,
           "freq": 169
         },
         {
           "termo": "manutencoes",
-          "z": 30.09,
+          "z": 30.094,
           "freq": 173
         },
         {
           "termo": "plano",
-          "z": 27.677,
+          "z": 27.68,
           "freq": 153
         },
         {
           "termo": "tarefa",
-          "z": 22.775,
+          "z": 22.778,
           "freq": 172
         },
         {
           "termo": "corretivas",
-          "z": 20.295,
+          "z": 20.297,
           "freq": 172
         },
         {
           "termo": "documento anexo",
-          "z": 18.457,
+          "z": 18.466,
           "freq": 172
         },
         {
           "termo": "esquadrias",
-          "z": 15.895,
+          "z": 15.898,
           "freq": 36
         },
         {
           "termo": "vistoria instalacoes",
-          "z": 15.651,
+          "z": 15.652,
           "freq": 182
         },
         {
           "termo": "devera",
-          "z": 15.313,
+          "z": 15.322,
           "freq": 172
         },
         {
           "termo": "relatorio",
-          "z": 15.115,
+          "z": 15.118,
           "freq": 39
         },
         {
           "termo": "pias",
-          "z": 14.946,
+          "z": 14.949,
           "freq": 33
         },
         {
           "termo": "hidrossanitarias",
-          "z": 14.268,
+          "z": 14.269,
           "freq": 188
         },
         {
-          "termo": "instalacoes hidrossanitarias",
-          "z": 14.065,
+          "termo": "manutencoes preventivas",
+          "z": 14.066,
           "freq": 172
         },
         {
-          "termo": "manutencoes preventivas",
-          "z": 14.065,
+          "termo": "instalacoes hidrossanitarias",
+          "z": 14.066,
           "freq": 172
         },
         {
           "termo": "hidrossanitarios",
-          "z": 14.025,
+          "z": 14.026,
           "freq": 169
         },
         {
           "termo": "acordo",
-          "z": 13.094,
+          "z": 13.103,
           "freq": 175
         },
         {
           "termo": "plano manutencao",
-          "z": 12.014,
+          "z": 12.015,
           "freq": 152
         }
       ],
@@ -7612,19 +7612,19 @@
           "peso": 0.1002
         },
         {
-          "termo": "informada necessidade",
-          "peso": 0.0997
-        },
-        {
           "termo": "anexo tarefa",
           "peso": 0.0997
         },
         {
-          "termo": "tarefa devera",
+          "termo": "hidrossanitarias acordo",
           "peso": 0.0997
         },
         {
-          "termo": "hidrossanitarias acordo",
+          "termo": "informada necessidade",
+          "peso": 0.0997
+        },
+        {
+          "termo": "tarefa devera",
           "peso": 0.0997
         },
         {
@@ -7698,234 +7698,234 @@
       ]
     },
     "Outros > Erro de chamado": {
-      "n_chamados": 258,
+      "n_chamados": 264,
       "top_log_odds": [
         {
           "termo": "edu br",
-          "z": 31.689,
-          "freq": 162
+          "z": 32.42,
+          "freq": 169
         },
         {
           "termo": "edu",
-          "z": 31.673,
-          "freq": 162
+          "z": 32.404,
+          "freq": 169
         },
         {
           "termo": "solucao enviado",
-          "z": 30.015,
-          "freq": 143
+          "z": 30.373,
+          "freq": 147
         },
         {
           "termo": "enviado",
-          "z": 29.755,
-          "freq": 144
+          "z": 30.116,
+          "freq": 148
         },
         {
           "termo": "saber",
-          "z": 29.743,
-          "freq": 141
+          "z": 30.108,
+          "freq": 145
         },
         {
           "termo": "helpdesk",
-          "z": 29.722,
-          "freq": 140
+          "z": 30.088,
+          "freq": 144
         },
         {
           "termo": "enviar",
-          "z": 29.141,
+          "z": 29.521,
+          "freq": 141
+        },
+        {
+          "termo": "front knowbaseitem",
+          "z": 29.473,
+          "freq": 137
+        },
+        {
+          "termo": "knowbaseitem form",
+          "z": 29.473,
+          "freq": 137
+        },
+        {
+          "termo": "acesse https",
+          "z": 29.473,
+          "freq": 137
+        },
+        {
+          "termo": "acesse",
+          "z": 29.473,
           "freq": 137
         },
         {
           "termo": "knowbaseitem",
-          "z": 29.089,
-          "freq": 133
-        },
-        {
-          "termo": "knowbaseitem form",
-          "z": 29.089,
-          "freq": 133
-        },
-        {
-          "termo": "acesse",
-          "z": 29.089,
-          "freq": 133
-        },
-        {
-          "termo": "acesse https",
-          "z": 29.089,
-          "freq": 133
-        },
-        {
-          "termo": "front knowbaseitem",
-          "z": 29.089,
-          "freq": 133
+          "z": 29.473,
+          "freq": 137
         },
         {
           "termo": "saber enviar",
-          "z": 29.072,
-          "freq": 133
-        },
-        {
-          "termo": "front",
-          "z": 29.056,
-          "freq": 133
+          "z": 29.457,
+          "freq": 137
         },
         {
           "termo": "php id",
-          "z": 29.056,
-          "freq": 133
+          "z": 29.441,
+          "freq": 137
         },
         {
-          "termo": "form",
-          "z": 29.056,
-          "freq": 133
+          "termo": "front",
+          "z": 29.441,
+          "freq": 137
         },
         {
           "termo": "form php",
-          "z": 29.056,
-          "freq": 133
+          "z": 29.441,
+          "freq": 137
+        },
+        {
+          "termo": "form",
+          "z": 29.441,
+          "freq": 137
         },
         {
           "termo": "br front",
-          "z": 29.056,
-          "freq": 133
-        },
-        {
-          "termo": "https helpdesk",
-          "z": 29.039,
-          "freq": 133
-        },
-        {
-          "termo": "helpdesk edu",
-          "z": 29.039,
-          "freq": 133
+          "z": 29.441,
+          "freq": 137
         },
         {
           "termo": "php",
-          "z": 29.039,
-          "freq": 133
+          "z": 29.424,
+          "freq": 137
+        },
+        {
+          "termo": "https helpdesk",
+          "z": 29.424,
+          "freq": 137
+        },
+        {
+          "termo": "helpdesk edu",
+          "z": 29.424,
+          "freq": 137
         },
         {
           "termo": "https",
-          "z": 28.925,
-          "freq": 134
+          "z": 29.296,
+          "freq": 138
         },
         {
           "termo": "sti",
-          "z": 24.192,
-          "freq": 85
+          "z": 24.651,
+          "freq": 89
+        },
+        {
+          "termo": "tela",
+          "z": 24.504,
+          "freq": 92
         },
         {
           "termo": "enviar sti",
-          "z": 24.099,
-          "freq": 84
-        },
-        {
-          "termo": "entidade",
-          "z": 23.967,
-          "freq": 83
+          "z": 24.431,
+          "freq": 88
         }
       ],
       "top_tfidf": [
         {
           "termo": "edu br",
-          "peso": 0.0569
+          "peso": 0.058
         },
         {
           "termo": "edu",
-          "peso": 0.0569
+          "peso": 0.058
         },
         {
           "termo": "solucao enviado",
-          "peso": 0.052
+          "peso": 0.0522
         },
         {
           "termo": "enviado",
-          "peso": 0.0517
+          "peso": 0.052
         },
         {
           "termo": "saber",
-          "peso": 0.0501
+          "peso": 0.0504
         },
         {
           "termo": "helpdesk",
-          "peso": 0.05
+          "peso": 0.0504
         },
         {
           "termo": "enviar",
-          "peso": 0.0491
-        },
-        {
-          "termo": "https",
-          "peso": 0.0484
-        },
-        {
-          "termo": "acesse https",
-          "peso": 0.0484
+          "peso": 0.0494
         },
         {
           "termo": "knowbaseitem",
-          "peso": 0.0484
+          "peso": 0.0487
         },
         {
           "termo": "knowbaseitem form",
-          "peso": 0.0484
+          "peso": 0.0487
         },
         {
           "termo": "acesse",
-          "peso": 0.0484
+          "peso": 0.0487
+        },
+        {
+          "termo": "acesse https",
+          "peso": 0.0487
         },
         {
           "termo": "front knowbaseitem",
-          "peso": 0.0484
+          "peso": 0.0487
+        },
+        {
+          "termo": "https",
+          "peso": 0.0487
         },
         {
           "termo": "saber enviar",
-          "peso": 0.0483
+          "peso": 0.0487
         },
         {
           "termo": "br front",
-          "peso": 0.0483
-        },
-        {
-          "termo": "front",
-          "peso": 0.0483
+          "peso": 0.0487
         },
         {
           "termo": "https helpdesk",
-          "peso": 0.0483
-        },
-        {
-          "termo": "helpdesk edu",
-          "peso": 0.0483
-        },
-        {
-          "termo": "form",
-          "peso": 0.0483
-        },
-        {
-          "termo": "form php",
-          "peso": 0.0483
+          "peso": 0.0487
         },
         {
           "termo": "php id",
-          "peso": 0.0483
+          "peso": 0.0487
+        },
+        {
+          "termo": "helpdesk edu",
+          "peso": 0.0487
+        },
+        {
+          "termo": "front",
+          "peso": 0.0487
         },
         {
           "termo": "php",
-          "peso": 0.0483
+          "peso": 0.0487
+        },
+        {
+          "termo": "form php",
+          "peso": 0.0487
+        },
+        {
+          "termo": "form",
+          "peso": 0.0487
         },
         {
           "termo": "tela",
-          "peso": 0.0354
+          "peso": 0.0362
         },
         {
           "termo": "enviar sti",
-          "peso": 0.0352
+          "peso": 0.0361
         },
         {
-          "termo": "manutencao saber",
-          "peso": 0.0349
+          "termo": "entidade",
+          "peso": 0.036
         }
       ]
     },
@@ -7934,127 +7934,127 @@
       "top_log_odds": [
         {
           "termo": "ajuste",
-          "z": 13.795,
+          "z": 13.798,
           "freq": 16
         },
         {
           "termo": "medicao",
-          "z": 12.178,
+          "z": 12.181,
           "freq": 12
         },
         {
           "termo": "chamados",
-          "z": 10.391,
+          "z": 10.394,
           "freq": 17
         },
         {
           "termo": "valor",
-          "z": 9.997,
+          "z": 9.999,
           "freq": 8
         },
         {
           "termo": "abelhas",
-          "z": 9.929,
+          "z": 9.931,
           "freq": 7
         },
         {
           "termo": "jequie",
-          "z": 9.915,
+          "z": 9.916,
           "freq": 7
         },
         {
           "termo": "ajuste medicao",
-          "z": 9.532,
+          "z": 9.533,
           "freq": 8
         },
         {
-          "termo": "felipa",
-          "z": 9.473,
+          "termo": "maria felipa",
+          "z": 9.474,
           "freq": 6
         },
         {
-          "termo": "maria felipa",
-          "z": 9.473,
+          "termo": "felipa",
+          "z": 9.474,
           "freq": 6
         },
         {
           "termo": "felipa jequie",
-          "z": 8.647,
+          "z": 8.648,
           "freq": 5
         },
         {
           "termo": "maria",
-          "z": 8.372,
+          "z": 8.374,
           "freq": 6
         },
         {
           "termo": "planejamento",
-          "z": 8.132,
+          "z": 8.134,
           "freq": 9
         },
         {
           "termo": "administracao",
-          "z": 8.113,
+          "z": 8.116,
           "freq": 9
         },
         {
           "termo": "projetos projetos",
-          "z": 7.956,
+          "z": 7.958,
           "freq": 5
         },
         {
           "termo": "material sistema",
-          "z": 7.918,
+          "z": 7.92,
           "freq": 8
         },
         {
           "termo": "dinfra edu",
-          "z": 7.902,
+          "z": 7.903,
           "freq": 5
         },
         {
           "termo": "projetos",
-          "z": 7.9,
+          "z": 7.903,
           "freq": 10
         },
         {
           "termo": "manutencao reforma",
-          "z": 7.896,
-          "freq": 8
-        },
-        {
-          "termo": "infraestrutura manutencao",
-          "z": 7.896,
-          "freq": 8
-        },
-        {
-          "termo": "chamados infraestrutura",
-          "z": 7.896,
-          "freq": 8
-        },
-        {
-          "termo": "direcionadas patrimonio",
-          "z": 7.896,
-          "freq": 8
-        },
-        {
-          "termo": "solicitacoes equipamento",
-          "z": 7.896,
-          "freq": 8
-        },
-        {
-          "termo": "solucao solicitacoes",
-          "z": 7.896,
+          "z": 7.898,
           "freq": 8
         },
         {
           "termo": "chamados dinfra",
-          "z": 7.896,
+          "z": 7.898,
+          "freq": 8
+        },
+        {
+          "termo": "solucao solicitacoes",
+          "z": 7.898,
+          "freq": 8
+        },
+        {
+          "termo": "chamados infraestrutura",
+          "z": 7.898,
+          "freq": 8
+        },
+        {
+          "termo": "direcionadas patrimonio",
+          "z": 7.898,
           "freq": 8
         },
         {
           "termo": "equipamento devem",
-          "z": 7.896,
+          "z": 7.898,
+          "freq": 8
+        },
+        {
+          "termo": "solicitacoes equipamento",
+          "z": 7.898,
+          "freq": 8
+        },
+        {
+          "termo": "infraestrutura manutencao",
+          "z": 7.898,
           "freq": 8
         }
       ],
@@ -8113,7 +8113,7 @@
         },
         {
           "termo": "patrimonio",
-          "peso": 0.026
+          "peso": 0.0259
         },
         {
           "termo": "planejamento",
@@ -8144,6 +8144,10 @@
           "peso": 0.0233
         },
         {
+          "termo": "infraestrutura manutencao",
+          "peso": 0.0233
+        },
+        {
           "termo": "solucao solicitacoes",
           "peso": 0.0233
         },
@@ -8152,11 +8156,7 @@
           "peso": 0.0233
         },
         {
-          "termo": "chamados infraestrutura",
-          "peso": 0.0233
-        },
-        {
-          "termo": "manutencao reforma",
+          "termo": "solicitacoes equipamento",
           "peso": 0.0233
         }
       ]
@@ -8166,127 +8166,127 @@
       "top_log_odds": [
         {
           "termo": "contratacao",
-          "z": 46.785,
+          "z": 46.791,
           "freq": 288
         },
         {
           "termo": "trabalho",
-          "z": 44.714,
+          "z": 44.721,
           "freq": 157
         },
         {
           "termo": "pessoal",
-          "z": 40.738,
+          "z": 40.744,
           "freq": 149
         },
         {
           "termo": "posto",
-          "z": 32.203,
+          "z": 32.207,
           "freq": 87
         },
         {
           "termo": "encarregado",
-          "z": 26.365,
+          "z": 26.368,
           "freq": 63
         },
         {
           "termo": "auxiliar",
-          "z": 26.332,
+          "z": 26.335,
           "freq": 62
         },
         {
           "termo": "eletricista",
-          "z": 24.014,
+          "z": 24.018,
           "freq": 47
         },
         {
           "termo": "meses",
-          "z": 23.584,
+          "z": 23.587,
           "freq": 50
         },
         {
           "termo": "postos",
-          "z": 22.584,
+          "z": 22.587,
           "freq": 75
         },
         {
           "termo": "contratacao pessoal",
-          "z": 20.885,
+          "z": 20.887,
           "freq": 139
         },
         {
           "termo": "executado contratacao",
-          "z": 15.904,
+          "z": 15.905,
           "freq": 41
         },
         {
           "termo": "descricao contratacao",
-          "z": 15.415,
+          "z": 15.416,
           "freq": 46
         },
         {
           "termo": "especializado",
-          "z": 13.874,
+          "z": 13.875,
           "freq": 23
         },
         {
           "termo": "ajudante",
-          "z": 13.779,
+          "z": 13.78,
           "freq": 27
         },
         {
           "termo": "veiculo",
-          "z": 13.08,
+          "z": 13.081,
           "freq": 46
         },
         {
           "termo": "posto trabalho",
-          "z": 12.391,
+          "z": 12.392,
           "freq": 80
         },
         {
           "termo": "cja",
-          "z": 11.425,
+          "z": 11.418,
           "freq": 62
         },
         {
           "termo": "medicao",
-          "z": 11.368,
+          "z": 11.371,
           "freq": 13
         },
         {
           "termo": "pedreiro",
-          "z": 11.15,
+          "z": 11.151,
           "freq": 40
         },
         {
           "termo": "quantidade",
-          "z": 10.949,
+          "z": 10.952,
           "freq": 14
         },
         {
           "termo": "realizada contratacao",
-          "z": 10.828,
+          "z": 10.829,
           "freq": 13
         },
         {
-          "termo": "refrigeracao",
-          "z": 10.75,
-          "freq": 16
-        },
-        {
           "termo": "transporte",
-          "z": 10.71,
+          "z": 10.712,
           "freq": 12
         },
         {
+          "termo": "refrigeracao",
+          "z": 10.623,
+          "freq": 16
+        },
+        {
           "termo": "csc contratacao",
-          "z": 10.479,
+          "z": 10.481,
           "freq": 15
         },
         {
           "termo": "mes",
-          "z": 10.356,
+          "z": 10.358,
           "freq": 10
         }
       ],
@@ -8369,7 +8369,7 @@
         },
         {
           "termo": "csc",
-          "peso": 0.0314
+          "peso": 0.0315
         },
         {
           "termo": "trabalho cja",
@@ -8398,92 +8398,92 @@
       "top_log_odds": [
         {
           "termo": "planta",
-          "z": 11.794,
+          "z": 11.795,
           "freq": 8
         },
         {
           "termo": "agua pluvial",
-          "z": 11.785,
+          "z": 11.787,
           "freq": 8
         },
         {
           "termo": "pluvial",
-          "z": 11.762,
+          "z": 11.764,
           "freq": 8
         },
         {
           "termo": "infraestrutura rede",
-          "z": 11.679,
+          "z": 11.681,
           "freq": 8
         },
         {
-          "termo": "tomadas",
-          "z": 10.968,
-          "freq": 22
-        },
-        {
           "termo": "coleta agua",
-          "z": 10.945,
+          "z": 10.947,
           "freq": 7
         },
         {
+          "termo": "tomadas",
+          "z": 10.937,
+          "freq": 22
+        },
+        {
           "termo": "ampliacao pontos",
-          "z": 10.016,
+          "z": 10.017,
           "freq": 6
         },
         {
           "termo": "substituicao tomadas",
-          "z": 9.296,
+          "z": 9.298,
           "freq": 5
         },
         {
           "termo": "ampliacao",
-          "z": 8.754,
+          "z": 8.756,
           "freq": 6
         },
         {
           "termo": "coleta",
-          "z": 8.571,
+          "z": 8.573,
           "freq": 7
         },
         {
           "termo": "instalacao tomadas",
-          "z": 8.456,
+          "z": 8.458,
           "freq": 8
         },
         {
-          "termo": "rede",
-          "z": 8.296,
-          "freq": 19
-        },
-        {
           "termo": "destilador",
-          "z": 8.293,
+          "z": 8.295,
           "freq": 5
         },
         {
+          "termo": "rede",
+          "z": 8.288,
+          "freq": 19
+        },
+        {
           "termo": "pontos",
-          "z": 8.112,
+          "z": 8.109,
           "freq": 15
         },
         {
           "termo": "infraestrutura",
-          "z": 7.539,
+          "z": 7.541,
           "freq": 11
         },
         {
           "termo": "espaco",
-          "z": 7.159,
+          "z": 7.161,
           "freq": 12
         },
         {
           "termo": "novas",
-          "z": 6.953,
+          "z": 6.927,
           "freq": 5
         },
         {
           "termo": "projetos",
-          "z": 6.567,
+          "z": 6.569,
           "freq": 7
         },
         {
@@ -8493,39 +8493,39 @@
         },
         {
           "termo": "novo",
-          "z": 5.877,
+          "z": 5.879,
           "freq": 7
         },
         {
-          "termo": "grande",
-          "z": 5.777,
+          "termo": "adequacao",
+          "z": 5.779,
           "freq": 5
         },
         {
-          "termo": "adequacao",
-          "z": 5.777,
+          "termo": "grande",
+          "z": 5.779,
           "freq": 5
         },
         {
           "termo": "materiais",
-          "z": 5.628,
+          "z": 5.63,
           "freq": 8
         },
         {
           "termo": "projeto",
-          "z": 5.555,
+          "z": 5.556,
           "freq": 6
         },
         {
           "termo": "tecnica",
-          "z": 4.746,
+          "z": 4.729,
           "freq": 5
         }
       ],
       "top_tfidf": [
         {
           "termo": "tomadas",
-          "peso": 0.0744
+          "peso": 0.0743
         },
         {
           "termo": "instalacao",
@@ -8533,7 +8533,7 @@
         },
         {
           "termo": "rede",
-          "peso": 0.0522
+          "peso": 0.0521
         },
         {
           "termo": "infraestrutura rede",
@@ -8630,134 +8630,134 @@
       "top_log_odds": [
         {
           "termo": "readequacao",
-          "z": 19.043,
+          "z": 19.046,
           "freq": 30
         },
         {
           "termo": "iluminacao emergencia",
-          "z": 14.177,
+          "z": 14.178,
           "freq": 17
         },
         {
           "termo": "fisica",
-          "z": 14.003,
+          "z": 14.005,
           "freq": 17
         },
         {
           "termo": "cameras",
-          "z": 13.687,
+          "z": 13.69,
           "freq": 21
         },
         {
           "termo": "atendimento numero",
-          "z": 13.397,
+          "z": 13.399,
           "freq": 16
         },
         {
           "termo": "numero",
-          "z": 13.056,
+          "z": 13.058,
           "freq": 21
         },
         {
           "termo": "instalacao iluminacao",
-          "z": 12.159,
+          "z": 12.161,
           "freq": 13
         },
         {
           "termo": "atendimento",
-          "z": 11.852,
+          "z": 11.795,
           "freq": 28
         },
         {
           "termo": "layout",
-          "z": 11.774,
+          "z": 11.776,
           "freq": 14
         },
         {
           "termo": "logica",
-          "z": 11.721,
+          "z": 11.724,
           "freq": 19
         },
         {
           "termo": "cfctaf ceplac",
-          "z": 11.579,
+          "z": 11.581,
           "freq": 12
         },
         {
           "termo": "cfctaf",
-          "z": 11.549,
+          "z": 11.551,
           "freq": 14
         },
         {
           "termo": "cabo cobre",
-          "z": 11.339,
+          "z": 11.34,
           "freq": 11
         },
         {
-          "termo": "instalacao cameras",
-          "z": 11.017,
+          "termo": "eletrica logica",
+          "z": 11.018,
           "freq": 10
         },
         {
-          "termo": "eletrica logica",
-          "z": 11.017,
+          "termo": "instalacao cameras",
+          "z": 11.018,
           "freq": 10
         },
         {
           "termo": "cobre",
-          "z": 11.011,
+          "z": 11.013,
           "freq": 11
         },
         {
           "termo": "novos",
-          "z": 10.915,
+          "z": 10.888,
           "freq": 15
         },
         {
           "termo": "complementar",
-          "z": 10.512,
+          "z": 10.515,
           "freq": 34
         },
         {
           "termo": "salas aula",
-          "z": 10.47,
+          "z": 10.473,
           "freq": 17
         },
         {
           "termo": "telecomunicacoes",
-          "z": 10.215,
+          "z": 10.216,
           "freq": 9
         },
         {
           "termo": "salas",
-          "z": 10.138,
+          "z": 10.141,
           "freq": 38
         },
         {
           "termo": "videomonitoramento",
-          "z": 9.827,
+          "z": 9.828,
           "freq": 10
         },
         {
           "termo": "iluminacao",
-          "z": 9.211,
+          "z": 9.214,
           "freq": 25
         },
         {
           "termo": "instalacao",
-          "z": 9.201,
+          "z": 9.2,
           "freq": 73
         },
         {
           "termo": "disposicao",
-          "z": 9.121,
+          "z": 9.123,
           "freq": 14
         }
       ],
       "top_tfidf": [
         {
           "termo": "instalacao",
-          "peso": 0.0403
+          "peso": 0.0402
         },
         {
           "termo": "layout",
@@ -8784,19 +8784,19 @@
           "peso": 0.0211
         },
         {
-          "termo": "historico solucao",
-          "peso": 0.021
-        },
-        {
           "termo": "historico",
           "peso": 0.021
         },
         {
-          "termo": "pontos",
-          "peso": 0.0197
+          "termo": "historico solucao",
+          "peso": 0.021
         },
         {
           "termo": "realizado",
+          "peso": 0.0197
+        },
+        {
+          "termo": "pontos",
           "peso": 0.0197
         },
         {
@@ -8862,127 +8862,127 @@
       "top_log_odds": [
         {
           "termo": "incendio",
-          "z": 25.21,
+          "z": 25.213,
           "freq": 36
         },
         {
           "termo": "extintores",
-          "z": 23.532,
+          "z": 23.536,
           "freq": 42
         },
         {
           "termo": "combate incendio",
-          "z": 13.276,
+          "z": 13.278,
           "freq": 10
         },
         {
           "termo": "combate",
-          "z": 13.245,
+          "z": 13.247,
           "freq": 10
         },
         {
           "termo": "extintores incendio",
-          "z": 13.031,
+          "z": 13.032,
           "freq": 12
         },
         {
           "termo": "extintor",
-          "z": 12.65,
+          "z": 12.653,
           "freq": 11
         },
         {
-          "termo": "hidrostatico",
-          "z": 11.872,
+          "termo": "teste hidrostatico",
+          "z": 11.874,
           "freq": 8
         },
         {
-          "termo": "teste hidrostatico",
-          "z": 11.872,
+          "termo": "hidrostatico",
+          "z": 11.874,
           "freq": 8
         },
         {
           "termo": "mangueiras",
-          "z": 11.41,
+          "z": 11.412,
           "freq": 8
         },
         {
           "termo": "hidrostatico mangueiras",
-          "z": 11.033,
+          "z": 11.034,
           "freq": 8
         },
         {
           "termo": "bombas",
-          "z": 10.281,
+          "z": 10.284,
           "freq": 11
         },
         {
           "termo": "teste",
-          "z": 10.229,
+          "z": 10.231,
           "freq": 8
         },
         {
           "termo": "hidrantes",
-          "z": 9.663,
+          "z": 9.664,
           "freq": 7
         },
         {
           "termo": "incendio descricao",
-          "z": 9.199,
+          "z": 9.201,
           "freq": 5
         },
         {
           "termo": "casa bombas",
-          "z": 8.721,
+          "z": 8.723,
           "freq": 5
         },
         {
           "termo": "sinalizacao",
-          "z": 8.536,
+          "z": 8.538,
           "freq": 8
         },
         {
           "termo": "sistema",
-          "z": 8.137,
+          "z": 8.14,
           "freq": 14
         },
         {
           "termo": "adequacao",
-          "z": 7.739,
+          "z": 7.741,
           "freq": 7
         },
         {
           "termo": "acessibilidade",
-          "z": 7.172,
+          "z": 7.174,
           "freq": 5
         },
         {
           "termo": "piso tatil",
-          "z": 6.847,
+          "z": 6.848,
           "freq": 5
         },
         {
           "termo": "casa",
-          "z": 6.724,
+          "z": 6.726,
           "freq": 5
         },
         {
           "termo": "tatil",
-          "z": 6.701,
+          "z": 6.702,
           "freq": 5
         },
         {
           "termo": "seguranca",
-          "z": 5.973,
+          "z": 5.975,
           "freq": 10
         },
         {
           "termo": "molecular",
-          "z": 5.905,
+          "z": 5.906,
           "freq": 5
         },
         {
           "termo": "biologia",
-          "z": 5.825,
+          "z": 5.827,
           "freq": 5
         }
       ],
@@ -9040,11 +9040,11 @@
           "peso": 0.027
         },
         {
-          "termo": "teste hidrostatico",
+          "termo": "hidrostatico mangueiras",
           "peso": 0.027
         },
         {
-          "termo": "hidrostatico mangueiras",
+          "termo": "teste hidrostatico",
           "peso": 0.027
         },
         {
@@ -9094,107 +9094,107 @@
       "top_log_odds": [
         {
           "termo": "bota",
-          "z": 13.727,
+          "z": 13.729,
           "freq": 9
         },
         {
           "termo": "bota fora",
-          "z": 13.727,
+          "z": 13.729,
           "freq": 9
         },
         {
           "termo": "entulho",
-          "z": 12.804,
+          "z": 12.807,
           "freq": 10
         },
         {
           "termo": "fora",
-          "z": 10.926,
+          "z": 10.928,
           "freq": 9
         },
         {
           "termo": "retirada entulho",
-          "z": 10.81,
+          "z": 10.812,
           "freq": 6
         },
         {
           "termo": "organizacao",
-          "z": 9.388,
+          "z": 9.39,
           "freq": 5
         },
         {
           "termo": "retirada",
-          "z": 9.144,
+          "z": 9.146,
           "freq": 10
         },
         {
           "termo": "subestacao",
-          "z": 6.675,
+          "z": 6.677,
           "freq": 5
         },
         {
           "termo": "materiais",
-          "z": 6.377,
+          "z": 6.379,
           "freq": 7
         },
         {
           "termo": "limpeza",
-          "z": 5.265,
+          "z": 5.267,
           "freq": 14
         },
         {
           "termo": "material",
-          "z": 3.402,
+          "z": 3.404,
           "freq": 5
         },
         {
           "termo": "reitoria",
-          "z": 2.589,
+          "z": 2.59,
           "freq": 6
         },
         {
           "termo": "descricao prezados",
-          "z": 2.226,
+          "z": 2.227,
           "freq": 5
         },
         {
           "termo": "prezados",
-          "z": 1.943,
+          "z": 1.945,
           "freq": 5
         },
         {
           "termo": "historico solucao",
-          "z": 1.371,
+          "z": 1.373,
           "freq": 15
         },
         {
           "termo": "historico",
-          "z": 1.37,
+          "z": 1.372,
           "freq": 15
         },
         {
           "termo": "descricao",
-          "z": 1.344,
+          "z": 1.345,
           "freq": 15
         },
         {
           "termo": "solucao",
-          "z": 1.327,
+          "z": 1.329,
           "freq": 15
         },
         {
           "termo": "solucao executado",
-          "z": 1.085,
+          "z": 1.086,
           "freq": 11
         },
         {
           "termo": "executado",
-          "z": 1.064,
+          "z": 1.065,
           "freq": 11
         },
         {
           "termo": "manutencao",
-          "z": 0.203,
+          "z": 0.204,
           "freq": 8
         }
       ],
@@ -9261,7 +9261,7 @@
         },
         {
           "termo": "material",
-          "peso": 0.037
+          "peso": 0.0371
         },
         {
           "termo": "cameras",
@@ -9306,127 +9306,127 @@
       "top_log_odds": [
         {
           "termo": "und",
-          "z": 46.004,
+          "z": 46.011,
           "freq": 189
         },
         {
           "termo": "estoque",
-          "z": 32.849,
+          "z": 32.854,
           "freq": 91
         },
         {
           "termo": "materiais",
-          "z": 31.696,
+          "z": 31.702,
           "freq": 96
         },
         {
           "termo": "fornecimento",
-          "z": 25.815,
+          "z": 25.821,
           "freq": 73
         },
         {
           "termo": "material",
-          "z": 23.388,
+          "z": 23.395,
           "freq": 84
         },
         {
           "termo": "fita",
-          "z": 20.521,
+          "z": 20.524,
           "freq": 38
         },
         {
           "termo": "pvc",
-          "z": 19.967,
+          "z": 19.97,
           "freq": 34
         },
         {
           "termo": "fornecimento materiais",
-          "z": 19.886,
+          "z": 19.888,
           "freq": 39
         },
         {
           "termo": "material estoque",
-          "z": 18.94,
+          "z": 18.943,
           "freq": 34
         },
         {
           "termo": "diversos",
-          "z": 16.835,
+          "z": 16.839,
           "freq": 28
         },
         {
           "termo": "parafuso",
-          "z": 16.035,
+          "z": 16.038,
           "freq": 22
         },
         {
-          "termo": "isolante",
-          "z": 15.655,
+          "termo": "materiais diversos",
+          "z": 15.658,
           "freq": 24
         },
         {
-          "termo": "materiais diversos",
-          "z": 15.655,
+          "termo": "isolante",
+          "z": 15.658,
           "freq": 24
         },
         {
           "termo": "bucha",
-          "z": 14.988,
+          "z": 14.99,
           "freq": 22
         },
         {
           "termo": "condulete",
-          "z": 14.288,
+          "z": 14.29,
           "freq": 18
         },
         {
           "termo": "fita isolante",
-          "z": 13.811,
+          "z": 13.813,
           "freq": 19
         },
         {
           "termo": "compra",
-          "z": 13.521,
+          "z": 13.525,
           "freq": 32
         },
         {
           "termo": "executado material",
-          "z": 12.854,
+          "z": 12.856,
           "freq": 14
         },
         {
           "termo": "azul",
-          "z": 12.714,
+          "z": 12.717,
           "freq": 16
         },
         {
           "termo": "placas identificacao",
-          "z": 12.682,
+          "z": 12.684,
           "freq": 15
         },
         {
           "termo": "top",
-          "z": 12.604,
+          "z": 12.606,
           "freq": 18
         },
         {
           "termo": "simples",
-          "z": 12.565,
+          "z": 12.568,
           "freq": 15
         },
         {
           "termo": "seguintes materiais",
-          "z": 11.733,
+          "z": 11.736,
           "freq": 12
         },
         {
           "termo": "metros",
-          "z": 11.657,
+          "z": 11.66,
           "freq": 17
         },
         {
           "termo": "und fita",
-          "z": 11.646,
+          "z": 11.647,
           "freq": 19
         }
       ],
@@ -9449,7 +9449,7 @@
         },
         {
           "termo": "material",
-          "peso": 0.0534
+          "peso": 0.0535
         },
         {
           "termo": "material estoque",
@@ -9497,19 +9497,19 @@
         },
         {
           "termo": "executado",
-          "peso": 0.0176
+          "peso": 0.0177
         },
         {
           "termo": "descricao",
           "peso": 0.0175
         },
         {
-          "termo": "historico",
-          "peso": 0.0174
+          "termo": "historico solucao",
+          "peso": 0.0175
         },
         {
-          "termo": "historico solucao",
-          "peso": 0.0174
+          "termo": "historico",
+          "peso": 0.0175
         },
         {
           "termo": "solucao executado",
@@ -9538,87 +9538,87 @@
       "top_log_odds": [
         {
           "termo": "contratos",
-          "z": 25.83,
+          "z": 25.833,
           "freq": 99
         },
         {
           "termo": "seja feito",
-          "z": 22.848,
+          "z": 22.852,
           "freq": 33
         },
         {
           "termo": "medicao",
-          "z": 22.795,
+          "z": 22.798,
           "freq": 33
         },
         {
           "termo": "ressalto",
-          "z": 22.723,
+          "z": 22.726,
           "freq": 33
         },
         {
           "termo": "descricao seja",
-          "z": 22.227,
+          "z": 22.231,
           "freq": 33
         },
         {
           "termo": "arquivos",
-          "z": 21.867,
+          "z": 21.87,
           "freq": 40
         },
         {
           "termo": "backup",
-          "z": 18.838,
+          "z": 18.84,
           "freq": 68
         },
         {
           "termo": "endereco",
-          "z": 17.692,
+          "z": 17.694,
           "freq": 33
         },
         {
           "termo": "nuvem",
-          "z": 17.232,
+          "z": 17.234,
           "freq": 19
         },
         {
           "termo": "gerados",
-          "z": 17.08,
+          "z": 17.082,
           "freq": 33
         },
         {
           "termo": "dinfra",
-          "z": 16.046,
+          "z": 16.05,
           "freq": 33
         },
         {
           "termo": "devem",
-          "z": 13.954,
+          "z": 13.958,
           "freq": 33
         },
         {
           "termo": "respectivos",
-          "z": 13.234,
+          "z": 13.235,
           "freq": 33
         },
         {
           "termo": "pastas",
-          "z": 11.643,
+          "z": 11.645,
           "freq": 9
         },
         {
           "termo": "respectivas",
-          "z": 11.281,
+          "z": 11.282,
           "freq": 9
         },
         {
           "termo": "coordenacao manutencao",
-          "z": 9.983,
+          "z": 9.987,
           "freq": 33
         },
         {
           "termo": "aquisicao dados",
-          "z": 9.635,
+          "z": 9.636,
           "freq": 8
         },
         {
@@ -9628,37 +9628,37 @@
         },
         {
           "termo": "seja",
-          "z": 8.821,
+          "z": 8.825,
           "freq": 33
         },
         {
           "termo": "multimedidores",
-          "z": 8.769,
+          "z": 8.77,
           "freq": 8
         },
         {
           "termo": "dados",
-          "z": 8.452,
+          "z": 8.454,
           "freq": 10
         },
         {
           "termo": "coordenacao",
-          "z": 6.309,
+          "z": 6.313,
           "freq": 33
         },
         {
           "termo": "aquisicao",
-          "z": 5.703,
+          "z": 5.705,
           "freq": 8
         },
         {
           "termo": "feito",
-          "z": 5.583,
+          "z": 5.587,
           "freq": 34
         },
         {
           "termo": "planilhas",
-          "z": 3.76,
+          "z": 3.759,
           "freq": 75
         }
       ],
@@ -9692,7 +9692,7 @@
           "peso": 0.1064
         },
         {
-          "termo": "geridos",
+          "termo": "planilhas descricao",
           "peso": 0.1064
         },
         {
@@ -9700,47 +9700,7 @@
           "peso": 0.1064
         },
         {
-          "termo": "gerados devem",
-          "peso": 0.1064
-        },
-        {
-          "termo": "ressalto arquivos",
-          "peso": 0.1064
-        },
-        {
-          "termo": "devem salvos",
-          "peso": 0.1064
-        },
-        {
-          "termo": "diretorios",
-          "peso": 0.1064
-        },
-        {
-          "termo": "medicao contratos",
-          "peso": 0.1064
-        },
-        {
-          "termo": "diretorios respectivos",
-          "peso": 0.1064
-        },
-        {
-          "termo": "respectivos contratos",
-          "peso": 0.1064
-        },
-        {
-          "termo": "contratos historico",
-          "peso": 0.1064
-        },
-        {
-          "termo": "contratos geridos",
-          "peso": 0.1064
-        },
-        {
           "termo": "contratos endereco",
-          "peso": 0.1064
-        },
-        {
-          "termo": "feito backup",
           "peso": 0.1064
         },
         {
@@ -9752,11 +9712,51 @@
           "peso": 0.1064
         },
         {
-          "termo": "planilhas descricao",
+          "termo": "diretorios",
+          "peso": 0.1064
+        },
+        {
+          "termo": "gerados devem",
+          "peso": 0.1064
+        },
+        {
+          "termo": "geridos",
           "peso": 0.1064
         },
         {
           "termo": "geridos coordenacao",
+          "peso": 0.1064
+        },
+        {
+          "termo": "medicao contratos",
+          "peso": 0.1064
+        },
+        {
+          "termo": "contratos historico",
+          "peso": 0.1064
+        },
+        {
+          "termo": "diretorios respectivos",
+          "peso": 0.1064
+        },
+        {
+          "termo": "contratos geridos",
+          "peso": 0.1064
+        },
+        {
+          "termo": "ressalto arquivos",
+          "peso": 0.1064
+        },
+        {
+          "termo": "feito backup",
+          "peso": 0.1064
+        },
+        {
+          "termo": "devem salvos",
+          "peso": 0.1064
+        },
+        {
+          "termo": "respectivos contratos",
           "peso": 0.1064
         },
         {
@@ -9766,234 +9766,234 @@
       ]
     },
     "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi": {
-      "n_chamados": 445,
+      "n_chamados": 444,
       "top_log_odds": [
         {
           "termo": "rede",
-          "z": 54.237,
-          "freq": 486
+          "z": 54.44,
+          "freq": 488
         },
         {
           "termo": "ponto",
-          "z": 42.527,
-          "freq": 304
+          "z": 42.775,
+          "freq": 306
         },
         {
           "termo": "pontos",
-          "z": 33.84,
+          "z": 33.887,
           "freq": 220
         },
         {
           "termo": "ponto rede",
-          "z": 32.218,
-          "freq": 214
+          "z": 32.121,
+          "freq": 216
         },
         {
           "termo": "edu",
-          "z": 31.673,
-          "freq": 180
+          "z": 30.94,
+          "freq": 174
         },
         {
           "termo": "edu br",
-          "z": 31.559,
-          "freq": 179
+          "z": 30.823,
+          "freq": 173
         },
         {
           "termo": "helpdesk",
-          "z": 28.947,
-          "freq": 150
-        },
-        {
-          "termo": "https",
-          "z": 28.657,
+          "z": 28.568,
           "freq": 147
         },
         {
+          "termo": "https",
+          "z": 28.256,
+          "freq": 144
+        },
+        {
           "termo": "enviar",
-          "z": 28.543,
-          "freq": 148
+          "z": 28.157,
+          "freq": 145
         },
         {
           "termo": "saber enviar",
-          "z": 28.247,
-          "freq": 142
+          "z": 27.857,
+          "freq": 139
         },
         {
           "termo": "saber",
-          "z": 28.237,
-          "freq": 146
+          "z": 27.845,
+          "freq": 143
         },
         {
           "termo": "php",
-          "z": 28.213,
-          "freq": 142
+          "z": 27.822,
+          "freq": 139
         },
         {
           "termo": "helpdesk edu",
-          "z": 28.213,
-          "freq": 142
+          "z": 27.822,
+          "freq": 139
         },
         {
           "termo": "https helpdesk",
-          "z": 28.213,
-          "freq": 142
+          "z": 27.822,
+          "freq": 139
         },
         {
           "termo": "acesse https",
-          "z": 28.12,
-          "freq": 141
-        },
-        {
-          "termo": "acesse",
-          "z": 28.12,
-          "freq": 141
+          "z": 27.727,
+          "freq": 138
         },
         {
           "termo": "knowbaseitem",
-          "z": 28.12,
-          "freq": 141
+          "z": 27.727,
+          "freq": 138
         },
         {
           "termo": "knowbaseitem form",
-          "z": 28.12,
-          "freq": 141
+          "z": 27.727,
+          "freq": 138
         },
         {
           "termo": "front knowbaseitem",
-          "z": 28.12,
-          "freq": 141
+          "z": 27.727,
+          "freq": 138
         },
         {
-          "termo": "form php",
-          "z": 28.085,
-          "freq": 141
-        },
-        {
-          "termo": "php id",
-          "z": 28.085,
-          "freq": 141
+          "termo": "acesse",
+          "z": 27.727,
+          "freq": 138
         },
         {
           "termo": "front",
-          "z": 28.085,
-          "freq": 141
+          "z": 27.692,
+          "freq": 138
         },
         {
-          "termo": "br front",
-          "z": 28.085,
-          "freq": 141
+          "termo": "form php",
+          "z": 27.692,
+          "freq": 138
         },
         {
           "termo": "form",
-          "z": 28.085,
-          "freq": 141
+          "z": 27.692,
+          "freq": 138
         },
         {
-          "termo": "enviado",
-          "z": 27.461,
-          "freq": 144
+          "termo": "php id",
+          "z": 27.692,
+          "freq": 138
+        },
+        {
+          "termo": "br front",
+          "z": 27.692,
+          "freq": 138
+        },
+        {
+          "termo": "pontos rede",
+          "z": 27.382,
+          "freq": 140
         }
       ],
       "top_tfidf": [
         {
           "termo": "rede",
-          "peso": 0.1115
+          "peso": 0.1122
         },
         {
           "termo": "ponto",
-          "peso": 0.0787
+          "peso": 0.0794
         },
         {
           "termo": "ponto rede",
-          "peso": 0.0673
+          "peso": 0.0681
         },
         {
           "termo": "pontos",
-          "peso": 0.0498
+          "peso": 0.0499
         },
         {
           "termo": "pontos rede",
-          "peso": 0.0411
+          "peso": 0.0412
         },
         {
           "termo": "instalacao",
-          "peso": 0.038
+          "peso": 0.0383
         },
         {
           "termo": "edu",
-          "peso": 0.0366
+          "peso": 0.0355
         },
         {
           "termo": "edu br",
-          "peso": 0.0365
+          "peso": 0.0354
         },
         {
           "termo": "helpdesk",
-          "peso": 0.0316
+          "peso": 0.031
         },
         {
           "termo": "enviar",
-          "peso": 0.0314
+          "peso": 0.0308
         },
         {
           "termo": "https",
-          "peso": 0.0312
+          "peso": 0.0306
         },
         {
           "termo": "saber",
-          "peso": 0.0309
+          "peso": 0.0303
         },
         {
           "termo": "saber enviar",
-          "peso": 0.0305
+          "peso": 0.0299
         },
         {
           "termo": "php",
-          "peso": 0.0305
+          "peso": 0.0299
         },
         {
           "termo": "helpdesk edu",
-          "peso": 0.0304
+          "peso": 0.0299
         },
         {
           "termo": "https helpdesk",
-          "peso": 0.0304
-        },
-        {
-          "termo": "knowbaseitem",
-          "peso": 0.0303
+          "peso": 0.0299
         },
         {
           "termo": "knowbaseitem form",
-          "peso": 0.0303
+          "peso": 0.0297
         },
         {
-          "termo": "acesse https",
-          "peso": 0.0303
-        },
-        {
-          "termo": "front knowbaseitem",
-          "peso": 0.0303
+          "termo": "knowbaseitem",
+          "peso": 0.0297
         },
         {
           "termo": "acesse",
-          "peso": 0.0303
+          "peso": 0.0297
         },
         {
-          "termo": "form php",
-          "peso": 0.0302
+          "termo": "front knowbaseitem",
+          "peso": 0.0297
+        },
+        {
+          "termo": "acesse https",
+          "peso": 0.0297
         },
         {
           "termo": "php id",
-          "peso": 0.0302
-        },
-        {
-          "termo": "br front",
-          "peso": 0.0302
+          "peso": 0.0297
         },
         {
           "termo": "form",
-          "peso": 0.0302
+          "peso": 0.0297
+        },
+        {
+          "termo": "br front",
+          "peso": 0.0297
+        },
+        {
+          "termo": "form php",
+          "peso": 0.0297
         }
       ]
     },
@@ -10002,127 +10002,127 @@
       "top_log_odds": [
         {
           "termo": "compra",
-          "z": 24.14,
+          "z": 24.145,
           "freq": 76
         },
         {
           "termo": "arvore",
-          "z": 22.776,
+          "z": 22.93,
           "freq": 63
         },
         {
           "termo": "rocagem",
-          "z": 22.725,
+          "z": 22.728,
           "freq": 72
         },
         {
           "termo": "poda",
-          "z": 20.829,
+          "z": 20.831,
           "freq": 71
         },
         {
           "termo": "meliponario",
-          "z": 20.693,
+          "z": 20.696,
           "freq": 43
         },
         {
           "termo": "arvores",
-          "z": 19.977,
+          "z": 19.979,
           "freq": 57
         },
         {
           "termo": "area",
-          "z": 19.109,
+          "z": 19.114,
           "freq": 63
         },
         {
           "termo": "amostra",
-          "z": 17.84,
+          "z": 17.843,
           "freq": 32
         },
         {
           "termo": "cloro",
-          "z": 17.556,
+          "z": 17.559,
           "freq": 35
         },
         {
           "termo": "analises",
-          "z": 17.506,
+          "z": 17.509,
           "freq": 31
         },
         {
           "termo": "entorno",
-          "z": 15.383,
+          "z": 15.386,
           "freq": 24
         },
         {
           "termo": "supressao",
-          "z": 14.666,
+          "z": 14.668,
           "freq": 35
         },
         {
           "termo": "yuri",
-          "z": 13.725,
+          "z": 13.728,
           "freq": 19
         },
         {
           "termo": "coliformes",
-          "z": 13.336,
+          "z": 13.338,
           "freq": 18
         },
         {
           "termo": "rosane",
-          "z": 13.281,
+          "z": 13.283,
           "freq": 18
         },
         {
           "termo": "areas",
-          "z": 13.197,
+          "z": 13.199,
           "freq": 22
         },
         {
           "termo": "amorim",
-          "z": 13.128,
+          "z": 13.13,
           "freq": 18
         },
         {
           "termo": "atenciosamente yuri",
-          "z": 13.037,
+          "z": 13.038,
           "freq": 18
         },
         {
           "termo": "coli",
-          "z": 12.923,
+          "z": 12.925,
           "freq": 17
         },
         {
           "termo": "amorim historico",
-          "z": 12.633,
+          "z": 12.634,
           "freq": 17
         },
         {
           "termo": "parametros",
-          "z": 12.617,
+          "z": 12.619,
           "freq": 16
         },
         {
           "termo": "total",
-          "z": 12.568,
+          "z": 12.537,
           "freq": 21
         },
         {
           "termo": "coleta amostra",
-          "z": 12.481,
+          "z": 12.483,
           "freq": 16
         },
         {
           "termo": "amostra analise",
-          "z": 12.413,
+          "z": 12.415,
           "freq": 16
         },
         {
           "termo": "tipo amostra",
-          "z": 12.413,
+          "z": 12.415,
           "freq": 16
         }
       ],
@@ -10137,15 +10137,15 @@
         },
         {
           "termo": "arvore",
-          "peso": 0.0642
+          "peso": 0.064
         },
         {
           "termo": "arvores",
-          "peso": 0.0473
+          "peso": 0.0474
         },
         {
           "termo": "compra",
-          "peso": 0.0464
+          "peso": 0.0465
         },
         {
           "termo": "meliponario",
@@ -10181,7 +10181,7 @@
         },
         {
           "termo": "prezados",
-          "peso": 0.0216
+          "peso": 0.0217
         },
         {
           "termo": "entorno meliponario",
