@@ -1,11 +1,11 @@
 {
-  "gerado_em": "16/11/2026 21:32",
+  "gerado_em": "17/11/2026 11:09",
   "run_id": "EXP_CLASSIFICACAO_CHAMADOS_2026_06_001",
   "abas": {
-    "log_turnos_classificacao": 3871,
+    "log_turnos_classificacao": 3872,
     "metricas_por_categoria": 73,
     "log_turnos_reclassificacao": 0,
-    "metricas_experimento": 9,
+    "metricas_experimento": 7,
     "comparacao_modelos": 72,
     "comparacao_categoria": 1728,
     "comparacao_previsoes": 16000,
@@ -16,21 +16,21 @@
     "estabilidade_reclassificacao": 0
   },
   "calibracao": {
-    "total": 14734,
+    "total": 14735,
     "ece_historico": 0.0298,
     "validados": 14572
   },
-  "registros": 14734,
+  "registros": 14735,
   "registros_modelos": {
-    "naive_bayes": 14730,
-    "regressao_logistica": 14730,
-    "linear_svc": 14730,
-    "sgd": 14730,
-    "extra_trees": 14730,
-    "random_forest": 14730,
-    "lstm": 14730
+    "naive_bayes": 14734,
+    "regressao_logistica": 14734,
+    "linear_svc": 14734,
+    "sgd": 14734,
+    "extra_trees": 14734,
+    "random_forest": 14734,
+    "lstm": 14734
   },
-  "fonte_registros_modelos": "artefatos",
+  "fonte_registros_modelos": "planilha",
   "calibracao_modelos": {
     "modelos": 7,
     "melhor_ece": "lstm",
@@ -39,7 +39,7 @@
   },
   "calibracao_ajustada_modelos": {
     "modelos": 7,
-    "melhor_ece_ajustado": "linear_svc",
+    "melhor_ece_ajustado": "regressao_logistica",
     "alvo": "categoria historica; validacao humana ainda nao iniciada"
   }
 }
