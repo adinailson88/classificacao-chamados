@@ -1,0 +1,62 @@
+name: Classificacao IA 3 (B+D+E+F+R) na coluna S
+
+# Compara o texto SEM e COM o historico do GLPI (coluna R) e grava a classificacao COM R na coluna S.
+# Disparo manual apenas. Por padrao e simulacao: nao grava nada e publica o relatorio como artefato.
+# Com aplicar=true grava SOMENTE a coluna S (nunca A:R, G, M, N, O, P ou Q).
+# Ver src/classificar_com_historico.py.
+
+on:
+  workflow_dispatch:
+    inputs:
+      aplicar:
+        description: "true grava a coluna S; false (padrao) so simula e gera o relatorio"
+        type: boolean
+        default: false
+
+concurrency:
+  group: escrita-planilha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  classificar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements-leves.txt
+      - name: Instalar dependencias leves
+        run: python -m pip install --retries 5 --timeout 120 -r requirements-leves.txt
+      - name: Recriar chave da conta de servico
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then echo "Secret GCP_SA_KEY ausente." >&2; exit 1; fi
+          printf '%s' "$GCP_SA_KEY" > credenciais_sa.json
+      - name: Classificar com historico
+        env:
+          APLICAR: ${{ github.event.inputs.aplicar == 'true' }}
+        run: |
+          if [ "$APLICAR" = "true" ]; then
+            python src/classificar_com_historico.py --aplicar
+          else
+            python src/classificar_com_historico.py
+          fi
+      - name: Publicar relatorio
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: classificacao_s_relatorio
+          path: dados/classificacao_s_relatorio.json
+          if-no-files-found: ignore
+      - name: Remover credenciais
+        if: always()
+        run: rm -f credenciais_sa.json
