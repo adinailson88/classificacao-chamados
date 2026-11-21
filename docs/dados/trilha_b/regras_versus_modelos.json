@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "status": "concluido",
+  "protocolo": "regra aplicada sobre as predicoes out-of-fold do Passo 4, nos mesmos registros e nas mesmas particoes; a referencia humana nao e alterada em nenhuma configuracao",
+  "corpus": {
+    "registros": 14357,
+    "categorias": 39,
+    "preventivos_na_referencia": 4954
+  },
+  "regra": {
+    "criterio": "dispara somente com termo de periodicidade e termo de equipamento no mesmo chamado; abstem-se caso contrario",
+    "termos_periodicidade": 19,
+    "termos_equipamento": 31,
+    "categorias_alvo": 13,
+    "categorias_alvo_fora_do_conjunto_avaliado": [
+      "Manutenção Preventiva > Elevador"
+    ],
+    "modulo": "src/regras_preventivas.py"
+  },
+  "modelos": {
+    "embedding_e5": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.7554,
+          "macro_f1": 0.6023,
+          "balanced_accuracy": 0.7135
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.7563,
+          "macro_f1": 0.602,
+          "balanced_accuracy": 0.7095
+        },
+        "delta_acuracia": 0.0009,
+        "delta_macro_f1": -0.0003
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9596,
+          "macro_f1": 0.2633,
+          "balanced_accuracy": 0.8169
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9647,
+          "macro_f1": 0.2631,
+          "balanced_accuracy": 0.8178
+        },
+        "delta_acuracia": 0.0051,
+        "delta_macro_f1": -0.0002
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 51,
+        "conflitos_em_que_a_regra_acerta": 28,
+        "conflitos_em_que_o_modelo_acerta": 15,
+        "conflitos_em_que_ambos_erram": 8
+      }
+    },
+    "extra_trees": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.8054,
+          "macro_f1": 0.6411,
+          "balanced_accuracy": 0.6189
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8055,
+          "macro_f1": 0.6421,
+          "balanced_accuracy": 0.6185
+        },
+        "delta_acuracia": 0.0001,
+        "delta_macro_f1": 0.001
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9635,
+          "macro_f1": 0.2429,
+          "balanced_accuracy": 0.759
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9665,
+          "macro_f1": 0.2459,
+          "balanced_accuracy": 0.7675
+        },
+        "delta_acuracia": 0.003,
+        "delta_macro_f1": 0.003
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 37,
+        "conflitos_em_que_a_regra_acerta": 16,
+        "conflitos_em_que_o_modelo_acerta": 14,
+        "conflitos_em_que_ambos_erram": 7
+      }
+    },
+    "linear_svc": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.8241,
+          "macro_f1": 0.6859,
+          "balanced_accuracy": 0.7003
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8234,
+          "macro_f1": 0.678,
+          "balanced_accuracy": 0.6921
+        },
+        "delta_acuracia": -0.0007,
+        "delta_macro_f1": -0.0079
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9705,
+          "macro_f1": 0.2584,
+          "balanced_accuracy": 0.7994
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9711,
+          "macro_f1": 0.252,
+          "balanced_accuracy": 0.7869
+        },
+        "delta_acuracia": 0.0006,
+        "delta_macro_f1": -0.0064
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 39,
+        "conflitos_em_que_a_regra_acerta": 11,
+        "conflitos_em_que_o_modelo_acerta": 21,
+        "conflitos_em_que_ambos_erram": 7
+      }
+    },
+    "lstm": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.7067,
+          "macro_f1": 0.5173,
+          "balanced_accuracy": 0.5737
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.7075,
+          "macro_f1": 0.5155,
+          "balanced_accuracy": 0.5689
+        },
+        "delta_acuracia": 0.0008,
+        "delta_macro_f1": -0.0018
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.957,
+          "macro_f1": 0.2502,
+          "balanced_accuracy": 0.7772
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9612,
+          "macro_f1": 0.2469,
+          "balanced_accuracy": 0.768
+        },
+        "delta_acuracia": 0.0042,
+        "delta_macro_f1": -0.0033
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 53,
+        "conflitos_em_que_a_regra_acerta": 28,
+        "conflitos_em_que_o_modelo_acerta": 17,
+        "conflitos_em_que_ambos_erram": 8
+      }
+    },
+    "naive_bayes": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.7222,
+          "macro_f1": 0.3618,
+          "balanced_accuracy": 0.3595
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.7232,
+          "macro_f1": 0.3724,
+          "balanced_accuracy": 0.3736
+        },
+        "delta_acuracia": 0.001,
+        "delta_macro_f1": 0.0106
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9475,
+          "macro_f1": 0.2112,
+          "balanced_accuracy": 0.6487
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9524,
+          "macro_f1": 0.2228,
+          "balanced_accuracy": 0.6951
+        },
+        "delta_acuracia": 0.0049,
+        "delta_macro_f1": 0.0116
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 43,
+        "conflitos_em_que_a_regra_acerta": 25,
+        "conflitos_em_que_o_modelo_acerta": 11,
+        "conflitos_em_que_ambos_erram": 7
+      }
+    },
+    "random_forest": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.7923,
+          "macro_f1": 0.6189,
+          "balanced_accuracy": 0.597
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.7925,
+          "macro_f1": 0.6203,
+          "balanced_accuracy": 0.5966
+        },
+        "delta_acuracia": 0.0002,
+        "delta_macro_f1": 0.0014
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9616,
+          "macro_f1": 0.2371,
+          "balanced_accuracy": 0.7448
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9649,
+          "macro_f1": 0.2404,
+          "balanced_accuracy": 0.7532
+        },
+        "delta_acuracia": 0.0033,
+        "delta_macro_f1": 0.0033
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 37,
+        "conflitos_em_que_a_regra_acerta": 16,
+        "conflitos_em_que_o_modelo_acerta": 13,
+        "conflitos_em_que_ambos_erram": 8
+      }
+    },
+    "regressao_logistica": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.8079,
+          "macro_f1": 0.6743,
+          "balanced_accuracy": 0.7102
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8086,
+          "macro_f1": 0.673,
+          "balanced_accuracy": 0.706
+        },
+        "delta_acuracia": 0.0007,
+        "delta_macro_f1": -0.0013
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9645,
+          "macro_f1": 0.2586,
+          "balanced_accuracy": 0.8001
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9691,
+          "macro_f1": 0.2578,
+          "balanced_accuracy": 0.8004
+        },
+        "delta_acuracia": 0.0046,
+        "delta_macro_f1": -0.0008
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 49,
+        "conflitos_em_que_a_regra_acerta": 26,
+        "conflitos_em_que_o_modelo_acerta": 16,
+        "conflitos_em_que_ambos_erram": 7
+      }
+    },
+    "sgd": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.8096,
+          "macro_f1": 0.6659,
+          "balanced_accuracy": 0.7034
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8099,
+          "macro_f1": 0.666,
+          "balanced_accuracy": 0.7006
+        },
+        "delta_acuracia": 0.0003,
+        "delta_macro_f1": 0.0001
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9651,
+          "macro_f1": 0.2543,
+          "balanced_accuracy": 0.7916
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9687,
+          "macro_f1": 0.2557,
+          "balanced_accuracy": 0.7965
+        },
+        "delta_acuracia": 0.0036,
+        "delta_macro_f1": 0.0014
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 40,
+        "conflitos_em_que_a_regra_acerta": 19,
+        "conflitos_em_que_o_modelo_acerta": 14,
+        "conflitos_em_que_ambos_erram": 7
+      }
+    },
+    "tfidf_caracteres": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.828,
+          "macro_f1": 0.6939,
+          "balanced_accuracy": 0.7008
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8273,
+          "macro_f1": 0.686,
+          "balanced_accuracy": 0.6926
+        },
+        "delta_acuracia": -0.0007,
+        "delta_macro_f1": -0.0079
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9709,
+          "macro_f1": 0.2586,
+          "balanced_accuracy": 0.8008
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9715,
+          "macro_f1": 0.2518,
+          "balanced_accuracy": 0.7883
+        },
+        "delta_acuracia": 0.0006,
+        "delta_macro_f1": -0.0068
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 39,
+        "conflitos_em_que_a_regra_acerta": 11,
+        "conflitos_em_que_o_modelo_acerta": 22,
+        "conflitos_em_que_ambos_erram": 6
+      }
+    },
+    "tfidf_embedding": {
+      "global": {
+        "modelo_puro": {
+          "n": 14357,
+          "acuracia": 0.8307,
+          "macro_f1": 0.6913,
+          "balanced_accuracy": 0.6965
+        },
+        "hibrido": {
+          "n": 14357,
+          "acuracia": 0.8298,
+          "macro_f1": 0.6828,
+          "balanced_accuracy": 0.6883
+        },
+        "delta_acuracia": -0.0009,
+        "delta_macro_f1": -0.0085
+      },
+      "preventivos": {
+        "modelo_puro": {
+          "n": 4954,
+          "acuracia": 0.9707,
+          "macro_f1": 0.258,
+          "balanced_accuracy": 0.7992
+        },
+        "hibrido": {
+          "n": 4954,
+          "acuracia": 0.9715,
+          "macro_f1": 0.2512,
+          "balanced_accuracy": 0.7868
+        },
+        "delta_acuracia": 0.0008,
+        "delta_macro_f1": -0.0068
+      },
+      "regra": {
+        "disparos": 4545,
+        "cobertura": 0.3166,
+        "conflitos_com_o_modelo": 41,
+        "conflitos_em_que_a_regra_acerta": 12,
+        "conflitos_em_que_o_modelo_acerta": 24,
+        "conflitos_em_que_ambos_erram": 5
+      }
+    }
+  },
+  "modelos_com_ganho_de_macro_f1": [
+    "extra_trees",
+    "naive_bayes",
+    "random_forest",
+    "sgd"
+  ],
+  "problemas": {
+    "registros_sem_texto": 0,
+    "modelos_comparados": 10
+  },
+  "trilha": "B",
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 19:45",
+  "script_origem": "src/trilha_b.py"
+}
