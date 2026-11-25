@@ -86,8 +86,8 @@
     {
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "modelos": 8,
-      "suporte_max": 363,
-      "entropia_media_normalizada": 0.5226,
+      "suporte_max": 364,
+      "entropia_media_normalizada": 0.5227,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -212,8 +212,8 @@
     {
       "categoria_historica": "Climatização > Ar condicionado split",
       "modelos": 8,
-      "suporte_max": 1716,
-      "entropia_media_normalizada": 0.198,
+      "suporte_max": 1717,
+      "entropia_media_normalizada": 0.1978,
       "maior_risco": "estavel"
     },
     {
@@ -838,6 +838,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "lstm",
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "suporte": 360,
+      "categorias_previstas": 31,
+      "entropia_previsoes": 3.5681,
+      "entropia_normalizada": 0.7202,
+      "categorias_efetivas": 11.8608,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.3028,
+      "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "top_2_pct": 0.1778,
+      "concordancia_historico": 0.1778,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "suporte": 1309,
@@ -850,21 +865,6 @@
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.2185,
       "concordancia_historico": 0.2185,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "lstm",
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 359,
-      "categorias_previstas": 31,
-      "entropia_previsoes": 3.5581,
-      "entropia_normalizada": 0.7182,
-      "categorias_efetivas": 11.7784,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.3036,
-      "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_2_pct": 0.1783,
-      "concordancia_historico": 0.1783,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1560,16 +1560,16 @@
     {
       "modelo": "linear_svc",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 359,
+      "suporte": 360,
       "categorias_previstas": 18,
-      "entropia_previsoes": 2.4205,
-      "entropia_normalizada": 0.5805,
-      "categorias_efetivas": 5.3535,
+      "entropia_previsoes": 2.4171,
+      "entropia_normalizada": 0.5796,
+      "categorias_efetivas": 5.3409,
       "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_1_pct": 0.4345,
+      "top_1_pct": 0.4361,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2813,
-      "concordancia_historico": 0.4345,
+      "top_2_pct": 0.2806,
+      "concordancia_historico": 0.4361,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1590,16 +1590,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 363,
+      "suporte": 364,
       "categorias_previstas": 9,
-      "entropia_previsoes": 1.7848,
-      "entropia_normalizada": 0.563,
-      "categorias_efetivas": 3.4456,
+      "entropia_previsoes": 1.7874,
+      "entropia_normalizada": 0.5639,
+      "categorias_efetivas": 3.452,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6309,
+      "top_1_pct": 0.6291,
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_2_pct": 0.146,
-      "concordancia_historico": 0.146,
+      "top_2_pct": 0.1484,
+      "concordancia_historico": 0.1484,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1708,21 +1708,6 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "sgd",
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 359,
-      "categorias_previstas": 21,
-      "entropia_previsoes": 2.3687,
-      "entropia_normalizada": 0.5393,
-      "categorias_efetivas": 5.1649,
-      "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_1_pct": 0.5376,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.1838,
-      "concordancia_historico": 0.5376,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "extra_trees",
       "categoria_historica": "Hidrossanitária > Bomba",
       "suporte": 40,
@@ -1738,18 +1723,33 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "sgd",
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "suporte": 360,
+      "categorias_previstas": 21,
+      "entropia_previsoes": 2.3646,
+      "entropia_normalizada": 0.5384,
+      "categorias_efetivas": 5.1502,
+      "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "top_1_pct": 0.5389,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.1833,
+      "concordancia_historico": 0.5389,
+      "risco": "alta_ambiguidade"
+    },
+    {
       "modelo": "random_forest",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 359,
+      "suporte": 360,
       "categorias_previstas": 11,
-      "entropia_previsoes": 1.8477,
-      "entropia_normalizada": 0.5341,
-      "categorias_efetivas": 3.5992,
+      "entropia_previsoes": 1.8507,
+      "entropia_normalizada": 0.535,
+      "categorias_efetivas": 3.6069,
       "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6295,
+      "top_1_pct": 0.6278,
       "top_2_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_2_pct": 0.1281,
-      "concordancia_historico": 0.1281,
+      "top_2_pct": 0.1306,
+      "concordancia_historico": 0.1306,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1768,21 +1768,6 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 363,
-      "categorias_previstas": 13,
-      "entropia_previsoes": 1.9195,
-      "entropia_normalizada": 0.5187,
-      "categorias_efetivas": 3.783,
-      "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "top_1_pct": 0.6529,
-      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.0909,
-      "concordancia_historico": 0.6529,
-      "risco": "ambiguidade_moderada"
-    },
-    {
       "modelo": "naive_bayes",
       "categoria_historica": "Elétrica > Iluminação",
       "suporte": 781,
@@ -1795,6 +1780,21 @@
       "top_2_previsto": "Climatização > Ar condicionado split",
       "top_2_pct": 0.1319,
       "concordancia_historico": 0.6633,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "suporte": 364,
+      "categorias_previstas": 13,
+      "entropia_previsoes": 1.9159,
+      "entropia_normalizada": 0.5178,
+      "categorias_efetivas": 3.7736,
+      "top_1_previsto": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "top_1_pct": 0.6538,
+      "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_2_pct": 0.0907,
+      "concordancia_historico": 0.6538,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1978,21 +1978,6 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "naive_bayes",
-      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
-      "suporte": 359,
-      "categorias_previstas": 8,
-      "entropia_previsoes": 1.4581,
-      "entropia_normalizada": 0.486,
-      "categorias_efetivas": 2.7474,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.7047,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.1393,
-      "concordancia_historico": 0.0056,
-      "risco": "ambiguidade_moderada"
-    },
-    {
       "modelo": "linear_svc",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Placas de identificação",
       "suporte": 59,
@@ -2005,6 +1990,21 @@
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.1186,
       "concordancia_historico": 0.7458,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "naive_bayes",
+      "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
+      "suporte": 360,
+      "categorias_previstas": 8,
+      "entropia_previsoes": 1.4554,
+      "entropia_normalizada": 0.4851,
+      "categorias_efetivas": 2.7424,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.7056,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.1389,
+      "concordancia_historico": 0.0056,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -3000,16 +3000,16 @@
     {
       "modelo": "lstm",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1715,
-      "categorias_previstas": 34,
-      "entropia_previsoes": 1.4097,
-      "entropia_normalizada": 0.2771,
-      "categorias_efetivas": 2.6569,
+      "suporte": 1716,
+      "categorias_previstas": 35,
+      "entropia_previsoes": 1.416,
+      "entropia_normalizada": 0.2761,
+      "categorias_efetivas": 2.6685,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.7819,
+      "top_1_pct": 0.7815,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
-      "top_2_pct": 0.1114,
-      "concordancia_historico": 0.7819,
+      "top_2_pct": 0.1113,
+      "concordancia_historico": 0.7815,
       "risco": "estavel"
     },
     {
@@ -3210,16 +3210,16 @@
     {
       "modelo": "naive_bayes",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1716,
+      "suporte": 1717,
       "categorias_previstas": 7,
-      "entropia_previsoes": 0.6338,
-      "entropia_normalizada": 0.2258,
-      "categorias_efetivas": 1.5517,
+      "entropia_previsoes": 0.6336,
+      "entropia_normalizada": 0.2257,
+      "categorias_efetivas": 1.5514,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8747,
+      "top_1_pct": 0.8748,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.1101,
-      "concordancia_historico": 0.8747,
+      "concordancia_historico": 0.8748,
       "risco": "estavel"
     },
     {
@@ -3270,16 +3270,16 @@
     {
       "modelo": "sgd",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1716,
+      "suporte": 1717,
       "categorias_previstas": 24,
-      "entropia_previsoes": 0.9517,
-      "entropia_normalizada": 0.2076,
-      "categorias_efetivas": 1.9342,
+      "entropia_previsoes": 0.9513,
+      "entropia_normalizada": 0.2075,
+      "categorias_efetivas": 1.9336,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8432,
+      "top_1_pct": 0.8433,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
-      "top_2_pct": 0.109,
-      "concordancia_historico": 0.8432,
+      "top_2_pct": 0.1089,
+      "concordancia_historico": 0.8433,
       "risco": "estavel"
     },
     {
@@ -3405,16 +3405,16 @@
     {
       "modelo": "regressao_logistica",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1644,
+      "suporte": 1645,
       "categorias_previstas": 23,
-      "entropia_previsoes": 0.8826,
-      "entropia_normalizada": 0.1951,
-      "categorias_efetivas": 1.8437,
+      "entropia_previsoes": 0.8822,
+      "entropia_normalizada": 0.195,
+      "categorias_efetivas": 1.8431,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8759,
+      "top_1_pct": 0.876,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.0687,
-      "concordancia_historico": 0.8759,
+      "concordancia_historico": 0.876,
       "risco": "estavel"
     },
     {
@@ -3450,16 +3450,16 @@
     {
       "modelo": "random_forest",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1716,
+      "suporte": 1717,
       "categorias_previstas": 11,
-      "entropia_previsoes": 0.6584,
-      "entropia_normalizada": 0.1903,
-      "categorias_efetivas": 1.5783,
+      "entropia_previsoes": 0.6581,
+      "entropia_normalizada": 0.1902,
+      "categorias_efetivas": 1.578,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8922,
+      "top_1_pct": 0.8923,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.0775,
-      "concordancia_historico": 0.8922,
+      "concordancia_historico": 0.8923,
       "risco": "estavel"
     },
     {
@@ -3615,16 +3615,16 @@
     {
       "modelo": "linear_svc",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1716,
+      "suporte": 1717,
       "categorias_previstas": 21,
-      "entropia_previsoes": 0.735,
+      "entropia_previsoes": 0.7347,
       "entropia_normalizada": 0.1673,
-      "categorias_efetivas": 1.6645,
+      "categorias_efetivas": 1.6641,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.8869,
+      "top_1_pct": 0.887,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.0798,
-      "concordancia_historico": 0.8869,
+      "concordancia_historico": 0.887,
       "risco": "estavel"
     },
     {
@@ -3675,16 +3675,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Climatização > Ar condicionado split",
-      "suporte": 1644,
+      "suporte": 1645,
       "categorias_previstas": 10,
-      "entropia_previsoes": 0.5037,
+      "entropia_previsoes": 0.5035,
       "entropia_normalizada": 0.1516,
-      "categorias_efetivas": 1.4179,
+      "categorias_efetivas": 1.4176,
       "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.9294,
+      "top_1_pct": 0.9295,
       "top_2_previsto": "Manutenção Preventiva > Ar condicionado split",
       "top_2_pct": 0.0401,
-      "concordancia_historico": 0.9294,
+      "concordancia_historico": 0.9295,
       "risco": "estavel"
     },
     {
