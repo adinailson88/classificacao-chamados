@@ -72,9 +72,9 @@
     {
       "categoria_historica": "Climatização > Ar condicionado central",
       "modelos": 8,
-      "suporte_max": 44,
-      "entropia_media_normalizada": 0.572,
-      "maior_risco": "alta_ambiguidade"
+      "suporte_max": 45,
+      "entropia_media_normalizada": 0.5716,
+      "maior_risco": "ambiguidade_moderada"
     },
     {
       "categoria_historica": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
@@ -101,7 +101,7 @@
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
       "modelos": 8,
       "suporte_max": 131,
-      "entropia_media_normalizada": 0.4799,
+      "entropia_media_normalizada": 0.4785,
       "maior_risco": "alta_ambiguidade"
     },
     {
@@ -628,21 +628,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "lstm",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 130,
-      "categorias_previstas": 29,
-      "entropia_previsoes": 3.7239,
-      "entropia_normalizada": 0.7666,
-      "categorias_efetivas": 13.2131,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.3769,
-      "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
-      "top_2_pct": 0.0692,
-      "concordancia_historico": 0.3769,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "extra_trees",
       "categoria_historica": "Manutenção Preventiva > Hidráulica",
       "suporte": 34,
@@ -655,6 +640,21 @@
       "top_2_previsto": "Manutenção Preventiva > Hidráulica",
       "top_2_pct": 0.2353,
       "concordancia_historico": 0.2353,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "lstm",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 131,
+      "categorias_previstas": 29,
+      "entropia_previsoes": 3.7061,
+      "entropia_normalizada": 0.7629,
+      "categorias_efetivas": 13.0515,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.3817,
+      "top_2_previsto": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
+      "top_2_pct": 0.0687,
+      "concordancia_historico": 0.3817,
       "risco": "alta_ambiguidade"
     },
     {
@@ -688,21 +688,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "random_forest",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 43,
-      "categorias_previstas": 5,
-      "entropia_previsoes": 1.7516,
-      "entropia_normalizada": 0.7544,
-      "categorias_efetivas": 3.3672,
-      "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.5814,
-      "top_2_previsto": "Climatização > Ar condicionado central",
-      "top_2_pct": 0.1628,
-      "concordancia_historico": 0.1628,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "lstm",
       "categoria_historica": "Estrutura Predial > Telhados, calhas, rufos, etc.",
       "suporte": 213,
@@ -715,21 +700,6 @@
       "top_2_previsto": "Manutenção Preventiva > Telhados, calhas, rufos, etc.",
       "top_2_pct": 0.1831,
       "concordancia_historico": 0.216,
-      "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "lstm",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 44,
-      "categorias_previstas": 9,
-      "entropia_previsoes": 2.3667,
-      "entropia_normalizada": 0.7466,
-      "categorias_efetivas": 5.1578,
-      "top_1_previsto": "Climatização > Ar condicionado central",
-      "top_1_pct": 0.4091,
-      "top_2_previsto": "Climatização > Ar condicionado split",
-      "top_2_pct": 0.2727,
-      "concordancia_historico": 0.4091,
       "risco": "alta_ambiguidade"
     },
     {
@@ -748,6 +718,21 @@
       "risco": "alta_ambiguidade"
     },
     {
+      "modelo": "random_forest",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 44,
+      "categorias_previstas": 5,
+      "entropia_previsoes": 1.7293,
+      "entropia_normalizada": 0.7448,
+      "categorias_efetivas": 3.3156,
+      "top_1_previsto": "Climatização > Ar condicionado split",
+      "top_1_pct": 0.5909,
+      "top_2_previsto": "Climatização > Ar condicionado central",
+      "top_2_pct": 0.1591,
+      "concordancia_historico": 0.1591,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "naive_bayes",
       "categoria_historica": "Elétrica > Gerador",
       "suporte": 40,
@@ -760,6 +745,21 @@
       "top_2_previsto": "Climatização > Ar condicionado split",
       "top_2_pct": 0.225,
       "concordancia_historico": 0.0,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "lstm",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 45,
+      "categorias_previstas": 9,
+      "entropia_previsoes": 2.3423,
+      "entropia_normalizada": 0.7389,
+      "categorias_efetivas": 5.0711,
+      "top_1_previsto": "Climatização > Ar condicionado central",
+      "top_1_pct": 0.4222,
+      "top_2_previsto": "Climatização > Ar condicionado split",
+      "top_2_pct": 0.2667,
+      "concordancia_historico": 0.4222,
       "risco": "alta_ambiguidade"
     },
     {
@@ -868,21 +868,6 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "extra_trees",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 44,
-      "categorias_previstas": 5,
-      "entropia_previsoes": 1.6673,
-      "entropia_normalizada": 0.7181,
-      "categorias_efetivas": 3.1762,
-      "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.5227,
-      "top_2_previsto": "Climatização > Ar condicionado central",
-      "top_2_pct": 0.3182,
-      "concordancia_historico": 0.3182,
-      "risco": "alta_ambiguidade"
-    },
-    {
       "modelo": "naive_bayes",
       "categoria_historica": "Suprimentos / Apoio Técnico > Materiais",
       "suporte": 88,
@@ -910,6 +895,21 @@
       "top_2_previsto": "Manutenção Preventiva > Hidráulica",
       "top_2_pct": 0.3235,
       "concordancia_historico": 0.3235,
+      "risco": "alta_ambiguidade"
+    },
+    {
+      "modelo": "extra_trees",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 45,
+      "categorias_previstas": 5,
+      "entropia_previsoes": 1.6507,
+      "entropia_normalizada": 0.7109,
+      "categorias_efetivas": 3.1399,
+      "top_1_previsto": "Climatização > Ar condicionado split",
+      "top_1_pct": 0.5333,
+      "top_2_previsto": "Climatização > Ar condicionado central",
+      "top_2_pct": 0.3111,
+      "concordancia_historico": 0.3111,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1559,6 +1559,21 @@
     },
     {
       "modelo": "linear_svc",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 44,
+      "categorias_previstas": 6,
+      "entropia_previsoes": 1.5137,
+      "entropia_normalizada": 0.5856,
+      "categorias_efetivas": 2.8554,
+      "top_1_previsto": "Climatização > Ar condicionado central",
+      "top_1_pct": 0.6818,
+      "top_2_previsto": "Climatização > Ar condicionado split",
+      "top_2_pct": 0.1591,
+      "concordancia_historico": 0.6818,
+      "risco": "ambiguidade_moderada"
+    },
+    {
+      "modelo": "linear_svc",
       "categoria_historica": "Instalação de Acessórios e Mobiliário > Instalação/reparo de equipamentos (Suportes de TV, acessórios de banheiro e quadro branco)",
       "suporte": 360,
       "categorias_previstas": 18,
@@ -1573,18 +1588,18 @@
       "risco": "alta_ambiguidade"
     },
     {
-      "modelo": "linear_svc",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 43,
+      "modelo": "naive_bayes",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 128,
       "categorias_previstas": 6,
-      "entropia_previsoes": 1.4851,
-      "entropia_normalizada": 0.5745,
-      "categorias_efetivas": 2.7993,
-      "top_1_previsto": "Climatização > Ar condicionado central",
-      "top_1_pct": 0.6977,
-      "top_2_previsto": "Climatização > Ar condicionado split",
-      "top_2_pct": 0.1395,
-      "concordancia_historico": 0.6977,
+      "entropia_previsoes": 1.4635,
+      "entropia_normalizada": 0.5661,
+      "categorias_efetivas": 2.7577,
+      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
+      "top_1_pct": 0.625,
+      "top_2_previsto": "Hidrossanitária > Hidráulica",
+      "top_2_pct": 0.2031,
+      "concordancia_historico": 0.0,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -1620,32 +1635,17 @@
     {
       "modelo": "random_forest",
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 127,
+      "suporte": 128,
       "categorias_previstas": 11,
-      "entropia_previsoes": 1.9452,
-      "entropia_normalizada": 0.5623,
-      "categorias_efetivas": 3.851,
+      "entropia_previsoes": 1.937,
+      "entropia_normalizada": 0.5599,
+      "categorias_efetivas": 3.8292,
       "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.5354,
+      "top_1_pct": 0.5391,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2598,
-      "concordancia_historico": 0.5354,
+      "top_2_pct": 0.2578,
+      "concordancia_historico": 0.5391,
       "risco": "alta_ambiguidade"
-    },
-    {
-      "modelo": "naive_bayes",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 127,
-      "categorias_previstas": 6,
-      "entropia_previsoes": 1.4531,
-      "entropia_normalizada": 0.5621,
-      "categorias_efetivas": 2.7379,
-      "top_1_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_1_pct": 0.6299,
-      "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.2047,
-      "concordancia_historico": 0.0,
-      "risco": "ambiguidade_moderada"
     },
     {
       "modelo": "naive_bayes",
@@ -1665,16 +1665,16 @@
     {
       "modelo": "extra_trees",
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 127,
+      "suporte": 128,
       "categorias_previstas": 11,
-      "entropia_previsoes": 1.8848,
-      "entropia_normalizada": 0.5448,
-      "categorias_efetivas": 3.6929,
+      "entropia_previsoes": 1.8772,
+      "entropia_normalizada": 0.5426,
+      "categorias_efetivas": 3.6736,
       "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.5276,
+      "top_1_pct": 0.5312,
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
-      "top_2_pct": 0.2913,
-      "concordancia_historico": 0.5276,
+      "top_2_pct": 0.2891,
+      "concordancia_historico": 0.5312,
       "risco": "alta_ambiguidade"
     },
     {
@@ -1918,6 +1918,21 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "sgd",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 44,
+      "categorias_previstas": 5,
+      "entropia_previsoes": 1.1563,
+      "entropia_normalizada": 0.498,
+      "categorias_efetivas": 2.2288,
+      "top_1_previsto": "Climatização > Ar condicionado central",
+      "top_1_pct": 0.7727,
+      "top_2_previsto": "Climatização > Ar condicionado split",
+      "top_2_pct": 0.1136,
+      "concordancia_historico": 0.7727,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "lstm",
       "categoria_historica": "Elétrica > Nobreak",
       "suporte": 132,
@@ -2054,21 +2069,6 @@
     },
     {
       "modelo": "naive_bayes",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 43,
-      "categorias_previstas": 4,
-      "entropia_previsoes": 0.9546,
-      "entropia_normalizada": 0.4773,
-      "categorias_efetivas": 1.9381,
-      "top_1_previsto": "Climatização > Ar condicionado split",
-      "top_1_pct": 0.814,
-      "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
-      "top_2_pct": 0.093,
-      "concordancia_historico": 0.0,
-      "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "naive_bayes",
       "categoria_historica": "Manutenção Preventiva > Vistoria em Instalações",
       "suporte": 284,
       "categorias_previstas": 6,
@@ -2080,21 +2080,6 @@
       "top_2_previsto": "Estrutura Predial > Alvenaria / Pisos / Estrutura",
       "top_2_pct": 0.1373,
       "concordancia_historico": 0.7535,
-      "risco": "ambiguidade_moderada"
-    },
-    {
-      "modelo": "sgd",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 43,
-      "categorias_previstas": 5,
-      "entropia_previsoes": 1.107,
-      "entropia_normalizada": 0.4768,
-      "categorias_efetivas": 2.154,
-      "top_1_previsto": "Climatização > Ar condicionado central",
-      "top_1_pct": 0.7907,
-      "top_2_previsto": "Climatização > Ar condicionado split",
-      "top_2_pct": 0.093,
-      "concordancia_historico": 0.7907,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2128,6 +2113,21 @@
       "risco": "ambiguidade_moderada"
     },
     {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 45,
+      "categorias_previstas": 6,
+      "entropia_previsoes": 1.219,
+      "entropia_normalizada": 0.4716,
+      "categorias_efetivas": 2.3278,
+      "top_1_previsto": "Climatização > Ar condicionado central",
+      "top_1_pct": 0.7778,
+      "top_2_previsto": "Climatização > Ar condicionado split",
+      "top_2_pct": 0.0889,
+      "concordancia_historico": 0.7778,
+      "risco": "ambiguidade_moderada"
+    },
+    {
       "modelo": "random_forest",
       "categoria_historica": "TI / Dados / Rede > Ponto de rede / fibra ótica / Wi-fi",
       "suporte": 448,
@@ -2158,33 +2158,33 @@
       "risco": "ambiguidade_moderada"
     },
     {
-      "modelo": "regressao_logistica",
+      "modelo": "naive_bayes",
       "categoria_historica": "Climatização > Ar condicionado central",
       "suporte": 44,
-      "categorias_previstas": 5,
-      "entropia_previsoes": 1.0894,
-      "entropia_normalizada": 0.4692,
-      "categorias_efetivas": 2.1279,
-      "top_1_previsto": "Climatização > Ar condicionado central",
-      "top_1_pct": 0.7955,
-      "top_2_previsto": "Climatização > Ar condicionado split",
+      "categorias_previstas": 4,
+      "entropia_previsoes": 0.9396,
+      "entropia_normalizada": 0.4698,
+      "categorias_efetivas": 1.918,
+      "top_1_previsto": "Climatização > Ar condicionado split",
+      "top_1_pct": 0.8182,
+      "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
       "top_2_pct": 0.0909,
-      "concordancia_historico": 0.7955,
+      "concordancia_historico": 0.0,
       "risco": "ambiguidade_moderada"
     },
     {
       "modelo": "linear_svc",
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 127,
+      "suporte": 128,
       "categorias_previstas": 11,
-      "entropia_previsoes": 1.6181,
-      "entropia_normalizada": 0.4678,
-      "categorias_efetivas": 3.0698,
+      "entropia_previsoes": 1.609,
+      "entropia_normalizada": 0.4651,
+      "categorias_efetivas": 3.0504,
       "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.7323,
+      "top_1_pct": 0.7344,
       "top_2_previsto": "Hidrossanitária > Hidráulica",
-      "top_2_pct": 0.063,
-      "concordancia_historico": 0.7323,
+      "top_2_pct": 0.0625,
+      "concordancia_historico": 0.7344,
       "risco": "ambiguidade_moderada"
     },
     {
@@ -2400,16 +2400,16 @@
     {
       "modelo": "sgd",
       "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 130,
+      "suporte": 131,
       "categorias_previstas": 13,
-      "entropia_previsoes": 1.4303,
-      "entropia_normalizada": 0.3865,
-      "categorias_efetivas": 2.6949,
+      "entropia_previsoes": 1.4219,
+      "entropia_normalizada": 0.3842,
+      "categorias_efetivas": 2.6794,
       "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.7923,
+      "top_1_pct": 0.7939,
       "top_2_previsto": "Suprimentos / Apoio Técnico > Materiais",
-      "top_2_pct": 0.0308,
-      "concordancia_historico": 0.7923,
+      "top_2_pct": 0.0305,
+      "concordancia_historico": 0.7939,
       "risco": "estavel"
     },
     {
@@ -2473,21 +2473,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "regressao_logistica",
-      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "suporte": 127,
-      "categorias_previstas": 13,
-      "entropia_previsoes": 1.3946,
-      "entropia_normalizada": 0.3769,
-      "categorias_efetivas": 2.6291,
-      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
-      "top_1_pct": 0.7953,
-      "top_2_previsto": "Hidrossanitária > ETA / ETE",
-      "top_2_pct": 0.0394,
-      "concordancia_historico": 0.7953,
-      "risco": "estavel"
-    },
-    {
       "modelo": "sgd",
       "categoria_historica": "Estrutura Predial > Pintura",
       "suporte": 62,
@@ -2500,6 +2485,21 @@
       "top_2_previsto": "Projetos e Reformas > Projeto",
       "top_2_pct": 0.0323,
       "concordancia_historico": 0.8226,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "regressao_logistica",
+      "categoria_historica": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "suporte": 128,
+      "categorias_previstas": 13,
+      "entropia_previsoes": 1.3862,
+      "entropia_normalizada": 0.3746,
+      "categorias_efetivas": 2.614,
+      "top_1_previsto": "Área Externa e Ambiental > Manutenção área externa / meio ambiente / Poda de árvore / Roçagem",
+      "top_1_pct": 0.7969,
+      "top_2_previsto": "Hidrossanitária > ETA / ETE",
+      "top_2_pct": 0.0391,
+      "concordancia_historico": 0.7969,
       "risco": "estavel"
     },
     {
@@ -2533,21 +2533,6 @@
       "risco": "estavel"
     },
     {
-      "modelo": "etapa1_oficial",
-      "categoria_historica": "Climatização > Ar condicionado central",
-      "suporte": 44,
-      "categorias_previstas": 2,
-      "entropia_previsoes": 0.3591,
-      "entropia_normalizada": 0.3591,
-      "categorias_efetivas": 1.2826,
-      "top_1_previsto": "Climatização > Ar condicionado central",
-      "top_1_pct": 0.9318,
-      "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
-      "top_2_pct": 0.0682,
-      "concordancia_historico": 0.9318,
-      "risco": "estavel"
-    },
-    {
       "modelo": "regressao_logistica",
       "categoria_historica": "Hidrossanitária > Bomba",
       "suporte": 40,
@@ -2575,6 +2560,21 @@
       "top_2_previsto": "Segurança contra Incêndio > Sistemas de combate a incêndio (extintores, hidrantes)",
       "top_2_pct": 0.0606,
       "concordancia_historico": 0.8485,
+      "risco": "estavel"
+    },
+    {
+      "modelo": "etapa1_oficial",
+      "categoria_historica": "Climatização > Ar condicionado central",
+      "suporte": 45,
+      "categorias_previstas": 2,
+      "entropia_previsoes": 0.3534,
+      "entropia_normalizada": 0.3534,
+      "categorias_efetivas": 1.2775,
+      "top_1_previsto": "Climatização > Ar condicionado central",
+      "top_1_pct": 0.9333,
+      "top_2_previsto": "Manutenção Preventiva > Ar condicionado central",
+      "top_2_pct": 0.0667,
+      "concordancia_historico": 0.9333,
       "risco": "estavel"
     },
     {
