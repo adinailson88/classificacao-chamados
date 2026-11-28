@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "trilha": "B",
+  "k_folds": 5,
+  "natureza": "acuracia contra a referencia humana revisada",
+  "duplicatas_textuais": {
+    "n_linhas": 14357,
+    "n_grupos_textuais": 10596,
+    "proporcao_com_duplicata": 0.262
+  },
+  "resultados": [
+    {
+      "modelo": "naive_bayes",
+      "kfold": {
+        "modelo": "naive_bayes",
+        "acuracia": 0.7229,
+        "macro_f1": 0.3669,
+        "balanced_accuracy": 0.3667
+      },
+      "groupkfold": {
+        "modelo": "naive_bayes",
+        "acuracia": 0.7218,
+        "macro_f1": 0.3663,
+        "balanced_accuracy": 0.365
+      },
+      "delta_acuracia_kfold_menos_groupkfold": 0.0011
+    },
+    {
+      "modelo": "regressao_logistica",
+      "kfold": {
+        "modelo": "regressao_logistica",
+        "acuracia": 0.8077,
+        "macro_f1": 0.6828,
+        "balanced_accuracy": 0.7193
+      },
+      "groupkfold": {
+        "modelo": "regressao_logistica",
+        "acuracia": 0.8068,
+        "macro_f1": 0.6726,
+        "balanced_accuracy": 0.7076
+      },
+      "delta_acuracia_kfold_menos_groupkfold": 0.0009
+    },
+    {
+      "modelo": "linear_svc",
+      "kfold": {
+        "modelo": "linear_svc",
+        "acuracia": 0.827,
+        "macro_f1": 0.6901,
+        "balanced_accuracy": 0.7023
+      },
+      "groupkfold": {
+        "modelo": "linear_svc",
+        "acuracia": 0.825,
+        "macro_f1": 0.6795,
+        "balanced_accuracy": 0.6946
+      },
+      "delta_acuracia_kfold_menos_groupkfold": 0.002
+    },
+    {
+      "modelo": "sgd",
+      "kfold": {
+        "modelo": "sgd",
+        "acuracia": 0.809,
+        "macro_f1": 0.6773,
+        "balanced_accuracy": 0.7126
+      },
+      "groupkfold": {
+        "modelo": "sgd",
+        "acuracia": 0.8095,
+        "macro_f1": 0.6641,
+        "balanced_accuracy": 0.6994
+      },
+      "delta_acuracia_kfold_menos_groupkfold": -0.0005
+    },
+    {
+      "modelo": "extra_trees",
+      "kfold": {
+        "modelo": "extra_trees",
+        "acuracia": 0.8067,
+        "macro_f1": 0.6561,
+        "balanced_accuracy": 0.6284
+      },
+      "groupkfold": {
+        "modelo": "extra_trees",
+        "acuracia": 0.8059,
+        "macro_f1": 0.644,
+        "balanced_accuracy": 0.6232
+      },
+      "delta_acuracia_kfold_menos_groupkfold": 0.0008
+    },
+    {
+      "modelo": "random_forest",
+      "kfold": {
+        "modelo": "random_forest",
+        "acuracia": 0.7956,
+        "macro_f1": 0.6376,
+        "balanced_accuracy": 0.6103
+      },
+      "groupkfold": {
+        "modelo": "random_forest",
+        "acuracia": 0.7931,
+        "macro_f1": 0.6117,
+        "balanced_accuracy": 0.5945
+      },
+      "delta_acuracia_kfold_menos_groupkfold": 0.0025
+    },
+    {
+      "modelo": "lstm",
+      "kfold": {
+        "modelo": "lstm",
+        "acuracia": 0.7233,
+        "macro_f1": 0.5436,
+        "balanced_accuracy": 0.6038
+      },
+      "groupkfold": {
+        "modelo": "lstm",
+        "acuracia": 0.7314,
+        "macro_f1": 0.55,
+        "balanced_accuracy": 0.6007
+      },
+      "delta_acuracia_kfold_menos_groupkfold": -0.0081
+    }
+  ],
+  "ranking_kfold": [
+    "linear_svc",
+    "sgd",
+    "regressao_logistica",
+    "extra_trees",
+    "random_forest",
+    "lstm",
+    "naive_bayes"
+  ],
+  "ranking_groupkfold": [
+    "linear_svc",
+    "sgd",
+    "regressao_logistica",
+    "extra_trees",
+    "random_forest",
+    "lstm",
+    "naive_bayes"
+  ],
+  "ranking_preservado": true,
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 11:37",
+  "script_origem": "src/trilha_b.py"
+}

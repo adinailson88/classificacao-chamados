@@ -1,0 +1,693 @@
+{
+  "n_amostra": 1500,
+  "por_divisao": {
+    "Ar condicionado": 300,
+    "Instalações Elétricas e Telecomunicações": 300,
+    "Instalações Hidráulicas e Sanitárias": 300,
+    "Serviços Gerais": 300,
+    "Viário": 300
+  },
+  "correspondencia_proposta": {
+    "eletrica": "instalacoes eletricas e telecomunicacoes",
+    "ti / dados / rede": "instalacoes eletricas e telecomunicacoes",
+    "hidrossanitaria": "instalacoes hidraulicas e sanitarias",
+    "climatizacao": "ar condicionado",
+    "estrutura predial": "servicos gerais",
+    "instalacao de acessorios e mobiliario": "servicos gerais",
+    "posto de trabalho": "servicos gerais",
+    "projetos e reformas": "servicos gerais",
+    "area externa e ambiental": "viario"
+  },
+  "modelos": {
+    "tfidf_embedding": {
+      "previsoes_sem_correspondencia": 78,
+      "concordancia_com_correspondencia": 0.6737,
+      "n_com_correspondencia": 1422,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 290,
+          "concordancia": 0.7138
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 296,
+          "concordancia": 0.8514
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 282,
+          "concordancia": 0.8617
+        },
+        "servicos gerais": {
+          "n": 282,
+          "concordancia": 0.844
+        },
+        "viario": {
+          "n": 272,
+          "concordancia": 0.0662
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 207,
+          "estrutura predial": 37,
+          "eletrica": 21,
+          "hidrossanitaria": 14,
+          "instalacao de acessorios e mobiliario": 8,
+          "suprimentos / apoio tecnico": 4,
+          "outros": 4,
+          "ti / dados / rede": 2,
+          "manutencao preventiva": 2,
+          "area externa e ambiental": 1
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 251,
+          "estrutura predial": 19,
+          "climatizacao": 15,
+          "hidrossanitaria": 6,
+          "instalacao de acessorios e mobiliario": 4,
+          "outros": 2,
+          "suprimentos / apoio tecnico": 1,
+          "ti / dados / rede": 1,
+          "manutencao preventiva": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 243,
+          "estrutura predial": 20,
+          "manutencao preventiva": 11,
+          "eletrica": 10,
+          "instalacao de acessorios e mobiliario": 6,
+          "outros": 4,
+          "climatizacao": 3,
+          "suprimentos / apoio tecnico": 2,
+          "seguranca contra incendio": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 222,
+          "hidrossanitaria": 20,
+          "instalacao de acessorios e mobiliario": 15,
+          "eletrica": 13,
+          "manutencao preventiva": 8,
+          "climatizacao": 7,
+          "outros": 7,
+          "area externa e ambiental": 3,
+          "seguranca contra incendio": 2,
+          "projetos e reformas": 1,
+          "ti / dados / rede": 1,
+          "suprimentos / apoio tecnico": 1
+        },
+        "viario": {
+          "estrutura predial": 192,
+          "eletrica": 25,
+          "instalacao de acessorios e mobiliario": 20,
+          "area externa e ambiental": 18,
+          "outros": 17,
+          "hidrossanitaria": 11,
+          "suprimentos / apoio tecnico": 6,
+          "ti / dados / rede": 2,
+          "projetos e reformas": 2,
+          "climatizacao": 2,
+          "seguranca contra incendio": 2,
+          "manutencao preventiva": 2,
+          "equipamentos de transporte": 1
+        }
+      }
+    },
+    "linear_svc": {
+      "previsoes_sem_correspondencia": 73,
+      "concordancia_com_correspondencia": 0.6706,
+      "n_com_correspondencia": 1427,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 293,
+          "concordancia": 0.727
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 294,
+          "concordancia": 0.7993
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 283,
+          "concordancia": 0.8834
+        },
+        "servicos gerais": {
+          "n": 279,
+          "concordancia": 0.8781
+        },
+        "viario": {
+          "n": 278,
+          "concordancia": 0.0504
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 213,
+          "estrutura predial": 45,
+          "eletrica": 17,
+          "hidrossanitaria": 10,
+          "suprimentos / apoio tecnico": 6,
+          "instalacao de acessorios e mobiliario": 5,
+          "ti / dados / rede": 3,
+          "manutencao preventiva": 1
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 233,
+          "estrutura predial": 26,
+          "climatizacao": 19,
+          "hidrossanitaria": 9,
+          "instalacao de acessorios e mobiliario": 4,
+          "suprimentos / apoio tecnico": 4,
+          "ti / dados / rede": 2,
+          "manutencao preventiva": 1,
+          "outros": 1,
+          "projetos e reformas": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 250,
+          "estrutura predial": 19,
+          "manutencao preventiva": 12,
+          "eletrica": 6,
+          "instalacao de acessorios e mobiliario": 4,
+          "outros": 3,
+          "climatizacao": 3,
+          "suprimentos / apoio tecnico": 1,
+          "ti / dados / rede": 1,
+          "seguranca contra incendio": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 231,
+          "hidrossanitaria": 16,
+          "instalacao de acessorios e mobiliario": 11,
+          "manutencao preventiva": 9,
+          "climatizacao": 7,
+          "eletrica": 7,
+          "outros": 6,
+          "suprimentos / apoio tecnico": 4,
+          "projetos e reformas": 3,
+          "seguranca contra incendio": 2,
+          "area externa e ambiental": 2,
+          "ti / dados / rede": 2
+        },
+        "viario": {
+          "estrutura predial": 203,
+          "eletrica": 22,
+          "hidrossanitaria": 17,
+          "instalacao de acessorios e mobiliario": 16,
+          "area externa e ambiental": 14,
+          "suprimentos / apoio tecnico": 10,
+          "outros": 6,
+          "manutencao preventiva": 3,
+          "projetos e reformas": 3,
+          "climatizacao": 2,
+          "seguranca contra incendio": 2,
+          "equipamentos de transporte": 1,
+          "ti / dados / rede": 1
+        }
+      }
+    },
+    "naive_bayes": {
+      "previsoes_sem_correspondencia": 15,
+      "concordancia_com_correspondencia": 0.6404,
+      "n_com_correspondencia": 1485,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 295,
+          "concordancia": 0.8034
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 299,
+          "concordancia": 0.6756
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 299,
+          "concordancia": 0.9331
+        },
+        "servicos gerais": {
+          "n": 297,
+          "concordancia": 0.7845
+        },
+        "viario": {
+          "n": 295,
+          "concordancia": 0.0
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 237,
+          "estrutura predial": 37,
+          "hidrossanitaria": 13,
+          "eletrica": 8,
+          "manutencao preventiva": 5
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 202,
+          "estrutura predial": 42,
+          "climatizacao": 33,
+          "hidrossanitaria": 22,
+          "manutencao preventiva": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 279,
+          "estrutura predial": 11,
+          "climatizacao": 8,
+          "eletrica": 1,
+          "manutencao preventiva": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 233,
+          "hidrossanitaria": 37,
+          "climatizacao": 24,
+          "manutencao preventiva": 3,
+          "eletrica": 3
+        },
+        "viario": {
+          "estrutura predial": 252,
+          "hidrossanitaria": 25,
+          "climatizacao": 13,
+          "eletrica": 5,
+          "manutencao preventiva": 5
+        }
+      }
+    },
+    "regressao_logistica": {
+      "previsoes_sem_correspondencia": 100,
+      "concordancia_com_correspondencia": 0.6586,
+      "n_com_correspondencia": 1400,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 285,
+          "concordancia": 0.6632
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 290,
+          "concordancia": 0.7759
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 269,
+          "concordancia": 0.8439
+        },
+        "servicos gerais": {
+          "n": 281,
+          "concordancia": 0.9146
+        },
+        "viario": {
+          "n": 275,
+          "concordancia": 0.0873
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 189,
+          "estrutura predial": 56,
+          "eletrica": 15,
+          "suprimentos / apoio tecnico": 12,
+          "instalacao de acessorios e mobiliario": 12,
+          "hidrossanitaria": 9,
+          "manutencao preventiva": 3,
+          "ti / dados / rede": 2,
+          "area externa e ambiental": 2
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 221,
+          "estrutura predial": 32,
+          "climatizacao": 17,
+          "hidrossanitaria": 8,
+          "suprimentos / apoio tecnico": 5,
+          "instalacao de acessorios e mobiliario": 5,
+          "manutencao preventiva": 4,
+          "ti / dados / rede": 4,
+          "projetos e reformas": 2,
+          "seguranca contra incendio": 1,
+          "area externa e ambiental": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 227,
+          "estrutura predial": 31,
+          "manutencao preventiva": 26,
+          "instalacao de acessorios e mobiliario": 5,
+          "suprimentos / apoio tecnico": 4,
+          "eletrica": 3,
+          "climatizacao": 1,
+          "projetos e reformas": 1,
+          "seguranca contra incendio": 1,
+          "area externa e ambiental": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 243,
+          "hidrossanitaria": 14,
+          "instalacao de acessorios e mobiliario": 13,
+          "manutencao preventiva": 12,
+          "climatizacao": 5,
+          "suprimentos / apoio tecnico": 4,
+          "eletrica": 3,
+          "area externa e ambiental": 2,
+          "seguranca contra incendio": 2,
+          "projetos e reformas": 1,
+          "outros": 1
+        },
+        "viario": {
+          "estrutura predial": 205,
+          "area externa e ambiental": 24,
+          "instalacao de acessorios e mobiliario": 19,
+          "suprimentos / apoio tecnico": 16,
+          "hidrossanitaria": 13,
+          "eletrica": 8,
+          "manutencao preventiva": 6,
+          "projetos e reformas": 4,
+          "climatizacao": 2,
+          "seguranca contra incendio": 2,
+          "equipamentos de transporte": 1
+        }
+      }
+    },
+    "sgd": {
+      "previsoes_sem_correspondencia": 98,
+      "concordancia_com_correspondencia": 0.6655,
+      "n_com_correspondencia": 1402,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 284,
+          "concordancia": 0.6937
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 291,
+          "concordancia": 0.7595
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 271,
+          "concordancia": 0.8635
+        },
+        "servicos gerais": {
+          "n": 281,
+          "concordancia": 0.8826
+        },
+        "viario": {
+          "n": 275,
+          "concordancia": 0.12
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 197,
+          "estrutura predial": 50,
+          "eletrica": 16,
+          "suprimentos / apoio tecnico": 13,
+          "hidrossanitaria": 12,
+          "instalacao de acessorios e mobiliario": 6,
+          "area externa e ambiental": 3,
+          "manutencao preventiva": 3
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 215,
+          "estrutura predial": 33,
+          "climatizacao": 18,
+          "hidrossanitaria": 12,
+          "ti / dados / rede": 6,
+          "suprimentos / apoio tecnico": 5,
+          "manutencao preventiva": 3,
+          "area externa e ambiental": 3,
+          "projetos e reformas": 2,
+          "instalacao de acessorios e mobiliario": 2,
+          "seguranca contra incendio": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 234,
+          "estrutura predial": 26,
+          "manutencao preventiva": 25,
+          "instalacao de acessorios e mobiliario": 3,
+          "suprimentos / apoio tecnico": 3,
+          "eletrica": 3,
+          "climatizacao": 2,
+          "ti / dados / rede": 1,
+          "projetos e reformas": 1,
+          "seguranca contra incendio": 1,
+          "area externa e ambiental": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 240,
+          "hidrossanitaria": 19,
+          "manutencao preventiva": 11,
+          "instalacao de acessorios e mobiliario": 7,
+          "climatizacao": 5,
+          "suprimentos / apoio tecnico": 5,
+          "eletrica": 5,
+          "area externa e ambiental": 4,
+          "seguranca contra incendio": 2,
+          "projetos e reformas": 1,
+          "outros": 1
+        },
+        "viario": {
+          "estrutura predial": 190,
+          "area externa e ambiental": 33,
+          "hidrossanitaria": 21,
+          "instalacao de acessorios e mobiliario": 18,
+          "suprimentos / apoio tecnico": 15,
+          "manutencao preventiva": 7,
+          "eletrica": 7,
+          "projetos e reformas": 4,
+          "climatizacao": 2,
+          "seguranca contra incendio": 2,
+          "equipamentos de transporte": 1
+        }
+      }
+    },
+    "extra_trees": {
+      "previsoes_sem_correspondencia": 8,
+      "concordancia_com_correspondencia": 0.6119,
+      "n_com_correspondencia": 1492,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 300,
+          "concordancia": 0.6667
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 300,
+          "concordancia": 0.6933
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 298,
+          "concordancia": 0.802
+        },
+        "servicos gerais": {
+          "n": 295,
+          "concordancia": 0.8814
+        },
+        "viario": {
+          "n": 299,
+          "concordancia": 0.0201
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 200,
+          "estrutura predial": 84,
+          "hidrossanitaria": 11,
+          "eletrica": 4,
+          "instalacao de acessorios e mobiliario": 1
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 206,
+          "estrutura predial": 56,
+          "climatizacao": 22,
+          "hidrossanitaria": 12,
+          "ti / dados / rede": 2,
+          "area externa e ambiental": 1,
+          "instalacao de acessorios e mobiliario": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 239,
+          "estrutura predial": 53,
+          "eletrica": 3,
+          "climatizacao": 2,
+          "manutencao preventiva": 1,
+          "posto de trabalho": 1,
+          "seguranca contra incendio": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 259,
+          "hidrossanitaria": 24,
+          "climatizacao": 8,
+          "eletrica": 3,
+          "manutencao preventiva": 3,
+          "seguranca contra incendio": 2,
+          "instalacao de acessorios e mobiliario": 1
+        },
+        "viario": {
+          "estrutura predial": 272,
+          "hidrossanitaria": 11,
+          "area externa e ambiental": 6,
+          "instalacao de acessorios e mobiliario": 4,
+          "eletrica": 4,
+          "climatizacao": 2,
+          "seguranca contra incendio": 1
+        }
+      }
+    },
+    "random_forest": {
+      "previsoes_sem_correspondencia": 11,
+      "concordancia_com_correspondencia": 0.5984,
+      "n_com_correspondencia": 1489,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 300,
+          "concordancia": 0.66
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 300,
+          "concordancia": 0.6567
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 298,
+          "concordancia": 0.7886
+        },
+        "servicos gerais": {
+          "n": 297,
+          "concordancia": 0.8552
+        },
+        "viario": {
+          "n": 294,
+          "concordancia": 0.0238
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 198,
+          "estrutura predial": 79,
+          "hidrossanitaria": 19,
+          "eletrica": 4
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 196,
+          "estrutura predial": 62,
+          "climatizacao": 23,
+          "hidrossanitaria": 16,
+          "posto de trabalho": 1,
+          "ti / dados / rede": 1,
+          "instalacao de acessorios e mobiliario": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 235,
+          "estrutura predial": 58,
+          "eletrica": 2,
+          "climatizacao": 2,
+          "suprimentos / apoio tecnico": 1,
+          "posto de trabalho": 1,
+          "seguranca contra incendio": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 251,
+          "hidrossanitaria": 33,
+          "climatizacao": 7,
+          "instalacao de acessorios e mobiliario": 3,
+          "eletrica": 3,
+          "seguranca contra incendio": 2,
+          "manutencao preventiva": 1
+        },
+        "viario": {
+          "estrutura predial": 238,
+          "hidrossanitaria": 34,
+          "instalacao de acessorios e mobiliario": 7,
+          "area externa e ambiental": 7,
+          "eletrica": 6,
+          "suprimentos / apoio tecnico": 5,
+          "climatizacao": 2,
+          "seguranca contra incendio": 1
+        }
+      }
+    },
+    "tfidf_caracteres": {
+      "previsoes_sem_correspondencia": 62,
+      "concordancia_com_correspondencia": 0.678,
+      "n_com_correspondencia": 1438,
+      "por_divisao": {
+        "ar condicionado": {
+          "n": 291,
+          "concordancia": 0.7216
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "n": 297,
+          "concordancia": 0.8418
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "n": 285,
+          "concordancia": 0.8877
+        },
+        "servicos gerais": {
+          "n": 284,
+          "concordancia": 0.8556
+        },
+        "viario": {
+          "n": 281,
+          "concordancia": 0.0676
+        }
+      },
+      "matriz_nivel1_por_divisao": {
+        "ar condicionado": {
+          "climatizacao": 210,
+          "estrutura predial": 42,
+          "eletrica": 18,
+          "hidrossanitaria": 12,
+          "suprimentos / apoio tecnico": 6,
+          "instalacao de acessorios e mobiliario": 5,
+          "ti / dados / rede": 3,
+          "manutencao preventiva": 2,
+          "area externa e ambiental": 1,
+          "outros": 1
+        },
+        "instalacoes eletricas e telecomunicacoes": {
+          "eletrica": 249,
+          "estrutura predial": 23,
+          "climatizacao": 15,
+          "hidrossanitaria": 6,
+          "instalacao de acessorios e mobiliario": 3,
+          "suprimentos / apoio tecnico": 2,
+          "manutencao preventiva": 1,
+          "ti / dados / rede": 1
+        },
+        "instalacoes hidraulicas e sanitarias": {
+          "hidrossanitaria": 253,
+          "estrutura predial": 20,
+          "manutencao preventiva": 12,
+          "eletrica": 4,
+          "climatizacao": 4,
+          "instalacao de acessorios e mobiliario": 3,
+          "suprimentos / apoio tecnico": 2,
+          "area externa e ambiental": 1,
+          "seguranca contra incendio": 1
+        },
+        "servicos gerais": {
+          "estrutura predial": 232,
+          "hidrossanitaria": 20,
+          "eletrica": 12,
+          "instalacao de acessorios e mobiliario": 10,
+          "manutencao preventiva": 7,
+          "climatizacao": 5,
+          "outros": 4,
+          "suprimentos / apoio tecnico": 3,
+          "area externa e ambiental": 3,
+          "seguranca contra incendio": 2,
+          "projetos e reformas": 1,
+          "ti / dados / rede": 1
+        },
+        "viario": {
+          "estrutura predial": 198,
+          "eletrica": 28,
+          "area externa e ambiental": 19,
+          "instalacao de acessorios e mobiliario": 15,
+          "hidrossanitaria": 12,
+          "outros": 7,
+          "suprimentos / apoio tecnico": 6,
+          "ti / dados / rede": 4,
+          "manutencao preventiva": 3,
+          "projetos e reformas": 3,
+          "climatizacao": 2,
+          "seguranca contra incendio": 2,
+          "equipamentos de transporte": 1
+        }
+      }
+    }
+  },
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 13:25",
+  "fonte": "https://dados.ufrn.br/dataset/a163b02e-dd02-4c40-bf2e-79b4858c1c80/resource/1ec4e5c7-d3d4-4741-a58e-d66ce49c04d2/download/requisicaomaterialservico.csv",
+  "fonte_sha256": "e12c05e03c0291ec2a79958f9fe9e3a22ee7499687e3b6dea298b648e527da0d",
+  "script_origem": "src/trilha_b.py"
+}

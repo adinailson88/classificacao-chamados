@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "status": "concluido",
+  "protocolo": "comparacoes contra a categoria historica da coluna C, sobre as predicoes out-of-fold da rodada canonica; a referencia humana arbitra quem acerta em cada divergencia",
+  "nota_sobre_o_kappa": "aqui o Kappa e legitimo porque modelo e categoria historica sao fontes independentes; o mesmo nao valeria entre a referencia humana e a categoria historica, que o revisor viu ao decidir",
+  "corpus": {
+    "registros": 14357,
+    "categorias_na_referencia": 39,
+    "categorias_no_historico": 42
+  },
+  "modelos": [
+    {
+      "modelo": "embedding_e5",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.7276,
+        "kappa": 0.7093
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 3911,
+        "corrigidos": 449,
+        "prejudicados": 3376,
+        "neutros": 86,
+        "ganho_liquido": -2927
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.8343,
+        "js_contra_o_historico": 0.0418,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "extra_trees",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.7832,
+        "kappa": 0.7654
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 3112,
+        "corrigidos": 415,
+        "prejudicados": 2624,
+        "neutros": 73,
+        "ganho_liquido": -2209
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.751,
+        "js_contra_o_historico": 0.0087,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "linear_svc",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.7976,
+        "kappa": 0.7822
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 2906,
+        "corrigidos": 457,
+        "prejudicados": 2397,
+        "neutros": 52,
+        "ganho_liquido": -1940
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.7925,
+        "js_contra_o_historico": 0.0046,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "lstm",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.6848,
+        "kappa": 0.6631
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 4525,
+        "corrigidos": 376,
+        "prejudicados": 4002,
+        "neutros": 147,
+        "ganho_liquido": -3626
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.8378,
+        "js_contra_o_historico": 0.0221,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "naive_bayes",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.7083,
+        "kappa": 0.6805
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 4188,
+        "corrigidos": 320,
+        "prejudicados": 3723,
+        "neutros": 145,
+        "ganho_liquido": -3403
+      },
+      "dispersao": {
+        "categorias_previstas": 21,
+        "entropia_normalizada": 0.6424,
+        "js_contra_o_historico": 0.0555,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "random_forest",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.771,
+        "kappa": 0.752
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 3288,
+        "corrigidos": 406,
+        "prejudicados": 2803,
+        "neutros": 79,
+        "ganho_liquido": -2397
+      },
+      "dispersao": {
+        "categorias_previstas": 37,
+        "entropia_normalizada": 0.7464,
+        "js_contra_o_historico": 0.0104,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "regressao_logistica",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.7806,
+        "kappa": 0.7646
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 3150,
+        "corrigidos": 461,
+        "prejudicados": 2634,
+        "neutros": 55,
+        "ganho_liquido": -2173
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.8067,
+        "js_contra_o_historico": 0.0096,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "sgd",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.7822,
+        "kappa": 0.766
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 3127,
+        "corrigidos": 460,
+        "prejudicados": 2609,
+        "neutros": 58,
+        "ganho_liquido": -2149
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.8052,
+        "js_contra_o_historico": 0.0073,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "tfidf_caracteres",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.8027,
+        "kappa": 0.7876
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 2832,
+        "corrigidos": 450,
+        "prejudicados": 2334,
+        "neutros": 48,
+        "ganho_liquido": -1884
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.7883,
+        "js_contra_o_historico": 0.0036,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    },
+    {
+      "modelo": "tfidf_embedding",
+      "concordancia": {
+        "n": 14357,
+        "acordo_bruto": 0.8057,
+        "kappa": 0.7907
+      },
+      "reclassificacao": {
+        "divergencias_com_o_historico": 2790,
+        "corrigidos": 448,
+        "prejudicados": 2294,
+        "neutros": 48,
+        "ganho_liquido": -1846
+      },
+      "dispersao": {
+        "categorias_previstas": 39,
+        "entropia_normalizada": 0.7869,
+        "js_contra_o_historico": 0.004,
+        "base_da_normalizacao": "logaritmo natural do numero de categorias da referencia"
+      }
+    }
+  ],
+  "trilha": "B",
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 19:45",
+  "script_origem": "src/trilha_b.py"
+}

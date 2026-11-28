@@ -1,0 +1,610 @@
+{
+  "schema_version": 1,
+  "status": "concluido",
+  "hash_corpus": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "protocolo": {
+    "bootstrap": "reamostragem de grupos textuais com reposicao, bootstrap de conglomerados; a linha nao e a unidade de reamostragem porque registros do mesmo grupo nao sao independentes",
+    "repeticoes": 1000,
+    "semente": 42,
+    "ordem_dos_testes": "Cochran Q global primeiro; McNemar pareado apenas se o Q rejeitar, com Holm sobre os 21 pares",
+    "alfa": 0.05
+  },
+  "corpus": {
+    "registros": 14357,
+    "grupos_textuais": 10596,
+    "categorias": 39,
+    "modelos": 7
+  },
+  "grandezas_reportadas": {
+    "acuracia_pontual": "estimativa observada na amostra inteira",
+    "macro_f1_pontual": "estimativa observada na amostra inteira",
+    "acuracia.media": "media das reamostragens do bootstrap",
+    "macro_f1.media": "media das reamostragens do bootstrap",
+    "ic95_min/ic95_max": "percentis 2,5 e 97,5 das reamostragens",
+    "regra": "o artigo reporta a estimativa observada ao lado do intervalo do bootstrap; a media das reamostragens nao ocupa a coluna da estimativa"
+  },
+  "contagem_de_grupos": {
+    "grupos_congelados_no_recorte_avaliado": 10596,
+    "grupos_no_mapa_de_particoes": 10596,
+    "registros_com_grupo_divergente_do_congelado": 0,
+    "nota": "as contagens divergem quando o texto de um chamado e editado na aba viva depois do congelamento; a contagem congelada e a reproduzivel e e a usada como unidade de reamostragem"
+  },
+  "consenso_entre_modelos": {
+    "criterio_unanimidade": "os sete modelos preveem a mesma categoria",
+    "criterio_desacordo_estrutural": "tres ou mais categorias distintas entre as sete predicoes",
+    "base_da_entropia": "logaritmo do numero de modelos",
+    "registros": 14357,
+    "modelos": 7,
+    "unanimes": 8653,
+    "proporcao_unanimes": 0.6027,
+    "com_desacordo_estrutural": 2486,
+    "proporcao_com_desacordo_estrutural": 0.1732,
+    "entropia_media_normalizada": 0.1449,
+    "categorias_distintas_por_registro": {
+      "1": 8653,
+      "2": 3218,
+      "3": 1781,
+      "4": 551,
+      "5": 139,
+      "6": 15
+    }
+  },
+  "correlacao_confianca_acerto": {
+    "definicao": "correlacao entre o escore bruto do proprio modelo, sem calibracao, e o indicador binario de acerto contra a referencia humana",
+    "modelos": [
+      {
+        "modelo": "extra_trees",
+        "n": 14357,
+        "spearman_r": 0.5143,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.5359,
+        "pointbiserial_p": 0.0
+      },
+      {
+        "modelo": "linear_svc",
+        "n": 14357,
+        "spearman_r": 0.4831,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.4546,
+        "pointbiserial_p": 0.0
+      },
+      {
+        "modelo": "lstm",
+        "n": 14357,
+        "spearman_r": 0.6393,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.6741,
+        "pointbiserial_p": 0.0
+      },
+      {
+        "modelo": "naive_bayes",
+        "n": 14357,
+        "spearman_r": 0.6059,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.6308,
+        "pointbiserial_p": 0.0
+      },
+      {
+        "modelo": "random_forest",
+        "n": 14357,
+        "spearman_r": 0.5354,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.5506,
+        "pointbiserial_p": 0.0
+      },
+      {
+        "modelo": "regressao_logistica",
+        "n": 14357,
+        "spearman_r": 0.4583,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.4619,
+        "pointbiserial_p": 0.0
+      },
+      {
+        "modelo": "sgd",
+        "n": 14357,
+        "spearman_r": 0.4743,
+        "spearman_p": 0.0,
+        "pointbiserial_r": 0.4686,
+        "pointbiserial_p": 0.0
+      }
+    ],
+    "spearman_min": 0.4583,
+    "spearman_max": 0.6393,
+    "pointbiserial_min": 0.4546,
+    "pointbiserial_max": 0.6741,
+    "todos_positivos_e_significativos": true
+  },
+  "pressupostos": {
+    "amostra_do_shapiro": 5000,
+    "semente_da_subamostra": 42,
+    "modelos": [
+      {
+        "modelo": "extra_trees",
+        "shapiro_w": 0.8589,
+        "shapiro_p": 3.557161865357043e-55,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.07321,
+        "vif": 22.442
+      },
+      {
+        "modelo": "linear_svc",
+        "shapiro_w": 0.9315,
+        "shapiro_p": 4.728221879794203e-43,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.00557,
+        "vif": 5.116
+      },
+      {
+        "modelo": "lstm",
+        "shapiro_w": 0.8164,
+        "shapiro_p": 5.481873130989475e-60,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.09435,
+        "vif": 3.103
+      },
+      {
+        "modelo": "naive_bayes",
+        "shapiro_w": 0.8314,
+        "shapiro_p": 2.101439565403308e-58,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.07843,
+        "vif": 3.68
+      },
+      {
+        "modelo": "random_forest",
+        "shapiro_w": 0.8621,
+        "shapiro_p": 9.094645072921427e-55,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.07955,
+        "vif": 26.474
+      },
+      {
+        "modelo": "regressao_logistica",
+        "shapiro_w": 0.8733,
+        "shapiro_p": 2.8498945396348025e-53,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.10481,
+        "vif": 22.991
+      },
+      {
+        "modelo": "sgd",
+        "shapiro_w": 0.9074,
+        "shapiro_p": 6.281795403344052e-48,
+        "rejeita_normalidade": true,
+        "variancia_da_confianca": 0.08843,
+        "vif": 28.344
+      }
+    ],
+    "modelos_que_rejeitam_normalidade": 7,
+    "levene": {
+      "estatistica": 4186.61,
+      "p": 0.0,
+      "rejeita_homogeneidade": true
+    },
+    "limiar_de_vif_elevado": 10.0,
+    "modelos_com_vif_elevado": [
+      "extra_trees",
+      "random_forest",
+      "regressao_logistica",
+      "sgd"
+    ]
+  },
+  "intervalos": [
+    {
+      "modelo": "linear_svc",
+      "acuracia_pontual": 0.8241,
+      "macro_f1_pontual": 0.6859,
+      "acuracia": {
+        "media": 0.824,
+        "ic95_min": 0.8116,
+        "ic95_max": 0.8366
+      },
+      "macro_f1": {
+        "media": 0.684,
+        "ic95_min": 0.6693,
+        "ic95_max": 0.6989
+      }
+    },
+    {
+      "modelo": "sgd",
+      "acuracia_pontual": 0.8096,
+      "macro_f1_pontual": 0.6659,
+      "acuracia": {
+        "media": 0.8095,
+        "ic95_min": 0.7975,
+        "ic95_max": 0.8222
+      },
+      "macro_f1": {
+        "media": 0.6648,
+        "ic95_min": 0.6513,
+        "ic95_max": 0.678
+      }
+    },
+    {
+      "modelo": "regressao_logistica",
+      "acuracia_pontual": 0.8079,
+      "macro_f1_pontual": 0.6743,
+      "acuracia": {
+        "media": 0.8079,
+        "ic95_min": 0.7957,
+        "ic95_max": 0.8214
+      },
+      "macro_f1": {
+        "media": 0.6735,
+        "ic95_min": 0.6599,
+        "ic95_max": 0.6863
+      }
+    },
+    {
+      "modelo": "extra_trees",
+      "acuracia_pontual": 0.8054,
+      "macro_f1_pontual": 0.6411,
+      "acuracia": {
+        "media": 0.8053,
+        "ic95_min": 0.7925,
+        "ic95_max": 0.8189
+      },
+      "macro_f1": {
+        "media": 0.6396,
+        "ic95_min": 0.6255,
+        "ic95_max": 0.6542
+      }
+    },
+    {
+      "modelo": "random_forest",
+      "acuracia_pontual": 0.7923,
+      "macro_f1_pontual": 0.6189,
+      "acuracia": {
+        "media": 0.7921,
+        "ic95_min": 0.7793,
+        "ic95_max": 0.8065
+      },
+      "macro_f1": {
+        "media": 0.6173,
+        "ic95_min": 0.6036,
+        "ic95_max": 0.6312
+      }
+    },
+    {
+      "modelo": "naive_bayes",
+      "acuracia_pontual": 0.7222,
+      "macro_f1_pontual": 0.3618,
+      "acuracia": {
+        "media": 0.722,
+        "ic95_min": 0.7041,
+        "ic95_max": 0.7403
+      },
+      "macro_f1": {
+        "media": 0.3612,
+        "ic95_min": 0.3543,
+        "ic95_max": 0.3675
+      }
+    },
+    {
+      "modelo": "lstm",
+      "acuracia_pontual": 0.7067,
+      "macro_f1_pontual": 0.5173,
+      "acuracia": {
+        "media": 0.7064,
+        "ic95_min": 0.6889,
+        "ic95_max": 0.7253
+      },
+      "macro_f1": {
+        "media": 0.5158,
+        "ic95_min": 0.5034,
+        "ic95_max": 0.5287
+      }
+    }
+  ],
+  "cochran_q": {
+    "estatistica": 2875.1751,
+    "p": 0.0,
+    "graus_de_liberdade": 6,
+    "rejeita_igualdade": true,
+    "hipotese_nula": "todos os modelos tem a mesma taxa de acerto"
+  },
+  "mcnemar_pareado": [
+    {
+      "discordantes": 1323,
+      "so_o_primeiro_acerta": 527,
+      "so_o_segundo_acerta": 796,
+      "estatistica": 54.2887,
+      "p": 1.7309102970836688e-13,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "extra_trees",
+        "linear_svc"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2597,
+      "so_o_primeiro_acerta": 2007,
+      "so_o_segundo_acerta": 590,
+      "estatistica": 772.0662,
+      "p": 6.389992514033596e-170,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "extra_trees",
+        "lstm"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2234,
+      "so_o_primeiro_acerta": 1714,
+      "so_o_segundo_acerta": 520,
+      "estatistica": 637.0855,
+      "p": 1.4381502873616857e-140,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "extra_trees",
+        "naive_bayes"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 594,
+      "so_o_primeiro_acerta": 391,
+      "so_o_segundo_acerta": 203,
+      "estatistica": 58.8704,
+      "p": 1.684092105893636e-14,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "extra_trees",
+        "random_forest"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2396,
+      "so_o_primeiro_acerta": 2041,
+      "so_o_segundo_acerta": 355,
+      "estatistica": 1184.9854,
+      "p": 1.1179163939464716e-259,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "linear_svc",
+        "lstm"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2613,
+      "so_o_primeiro_acerta": 2038,
+      "so_o_segundo_acerta": 575,
+      "estatistica": 818.0038,
+      "p": 6.572929312785114e-180,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "linear_svc",
+        "naive_bayes"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 1507,
+      "so_o_primeiro_acerta": 982,
+      "so_o_segundo_acerta": 525,
+      "estatistica": 137.9801,
+      "p": 7.361103746260079e-32,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "linear_svc",
+        "random_forest"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 897,
+      "so_o_primeiro_acerta": 565,
+      "so_o_segundo_acerta": 332,
+      "estatistica": 60.0045,
+      "p": 9.464270371574214e-15,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "linear_svc",
+        "regressao_logistica"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 851,
+      "so_o_primeiro_acerta": 530,
+      "so_o_segundo_acerta": 321,
+      "estatistica": 50.839,
+      "p": 1.0026093864628063e-12,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "linear_svc",
+        "sgd"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2609,
+      "so_o_primeiro_acerta": 690,
+      "so_o_segundo_acerta": 1919,
+      "estatistica": 577.9931,
+      "p": 1.024763018896143e-127,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "lstm",
+        "random_forest"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2295,
+      "so_o_primeiro_acerta": 421,
+      "so_o_segundo_acerta": 1874,
+      "estatistica": 918.651,
+      "p": 8.657002195330151e-202,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "lstm",
+        "regressao_logistica"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2303,
+      "so_o_primeiro_acerta": 413,
+      "so_o_segundo_acerta": 1890,
+      "estatistica": 945.9731,
+      "p": 9.956317805696806e-208,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "lstm",
+        "sgd"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2260,
+      "so_o_primeiro_acerta": 627,
+      "so_o_segundo_acerta": 1633,
+      "estatistica": 446.9137,
+      "p": 3.3867355225210644e-99,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "naive_bayes",
+        "random_forest"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2842,
+      "so_o_primeiro_acerta": 806,
+      "so_o_segundo_acerta": 2036,
+      "estatistica": 531.4711,
+      "p": 1.3517414615429373e-117,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "naive_bayes",
+        "regressao_logistica"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 2684,
+      "so_o_primeiro_acerta": 715,
+      "so_o_segundo_acerta": 1969,
+      "estatistica": 584.9512,
+      "p": 3.141256922730281e-129,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "naive_bayes",
+        "sgd"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 1602,
+      "so_o_primeiro_acerta": 689,
+      "so_o_segundo_acerta": 913,
+      "estatistica": 31.0418,
+      "p": 2.525279805034e-08,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "random_forest",
+        "regressao_logistica"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 1504,
+      "so_o_primeiro_acerta": 628,
+      "so_o_segundo_acerta": 876,
+      "estatistica": 40.5645,
+      "p": 1.9023211994538864e-10,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "random_forest",
+        "sgd"
+      ],
+      "p_ajustado": 0.0,
+      "significativo": true
+    },
+    {
+      "discordantes": 3135,
+      "so_o_primeiro_acerta": 1456,
+      "so_o_segundo_acerta": 1679,
+      "estatistica": 15.7206,
+      "p": 7.342120479470311e-05,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "lstm",
+        "naive_bayes"
+      ],
+      "p_ajustado": 0.000294,
+      "significativo": true
+    },
+    {
+      "discordantes": 1394,
+      "so_o_primeiro_acerta": 667,
+      "so_o_segundo_acerta": 727,
+      "estatistica": 2.4971,
+      "p": 0.11405393534884803,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "extra_trees",
+        "sgd"
+      ],
+      "p_ajustado": 0.342162,
+      "significativo": false
+    },
+    {
+      "discordantes": 294,
+      "so_o_primeiro_acerta": 135,
+      "so_o_segundo_acerta": 159,
+      "estatistica": 1.7993,
+      "p": 0.1797947582207586,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "regressao_logistica",
+        "sgd"
+      ],
+      "p_ajustado": 0.35959,
+      "significativo": false
+    },
+    {
+      "discordantes": 1504,
+      "so_o_primeiro_acerta": 734,
+      "so_o_segundo_acerta": 770,
+      "estatistica": 0.8145,
+      "p": 0.3667947247276938,
+      "metodo": "qui-quadrado com correcao de continuidade",
+      "par": [
+        "extra_trees",
+        "regressao_logistica"
+      ],
+      "p_ajustado": 0.366795,
+      "significativo": false
+    }
+  ],
+  "problemas": {
+    "modelos_com_observacao_faltante": 0,
+    "registros_sem_grupo_congelado": 0
+  },
+  "nota_sobre_a_contagem_de_grupos": "a unidade de reamostragem e o grupo CONGELADO no Passo 2, e nao o grupo recalculado sobre o texto vivo; os dois podem divergir se algum texto tiver sido editado depois do congelamento, e o congelado e o reproduzivel",
+  "gerado_em": "30/10/2026 01:35",
+  "script_origem": "src/inferencia_canonica.py"
+}

@@ -1,0 +1,963 @@
+{
+  "schema_version": 1,
+  "trilha": "B",
+  "modelo": "tfidf_embedding",
+  "semente": 42,
+  "alfas": [
+    0.05,
+    0.1
+  ],
+  "delta": 0.05,
+  "fracao_calibracao": 0.2,
+  "reamostragens": 200,
+  "metodo": "Learn-then-Test com Bonferroni (grade de 20 niveis de cobertura) e teste binomial exato; calibracao com um representante por grupo textual",
+  "cenarios": [
+    {
+      "cenario": "iid_grupos",
+      "tipo": "iid",
+      "treino": 8666,
+      "calibracao": 2799,
+      "teste": 2892,
+      "n_calibracao_grupos": 2119,
+      "n_teste": 2892,
+      "acuracia_teste": 0.842,
+      "acuracia_calibracao": 0.7659,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 2892,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 9,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0168
+          },
+          "ingenuo": {
+            "limiar": 0.147347,
+            "n": 2892,
+            "automatizados": 1594,
+            "cobertura": 0.5512,
+            "erro": 0.0213,
+            "erros": 34,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.035,
+            "erro_limite_superior_cp95": 0.0283
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.111544,
+            "n": 2892,
+            "automatizados": 1923,
+            "cobertura": 0.6649,
+            "erro": 0.0426,
+            "erros": 82,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0549,
+            "erro_limite_superior_cp95": 0.051
+          },
+          "ingenuo": {
+            "limiar": 0.092082,
+            "n": 2892,
+            "automatizados": 2147,
+            "cobertura": 0.7424,
+            "erro": 0.0638,
+            "erros": 137,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.08,
+            "erro_limite_superior_cp95": 0.0732
+          }
+        }
+      }
+    },
+    {
+      "cenario": "prospectivo",
+      "tipo": "temporal",
+      "treino": 11124,
+      "calibracao": 2746,
+      "teste": 487,
+      "n_calibracao_grupos": 2040,
+      "n_teste": 487,
+      "acuracia_teste": 0.77,
+      "acuracia_calibracao": 0.7877,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": 0.183354,
+            "n": 487,
+            "automatizados": 175,
+            "cobertura": 0.3593,
+            "erro": 0.0114,
+            "erros": 2,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 44,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0215,
+            "erro_limite_superior_cp95": 0.0355
+          },
+          "ingenuo": {
+            "limiar": 0.125,
+            "n": 487,
+            "automatizados": 238,
+            "cobertura": 0.4887,
+            "erro": 0.021,
+            "erros": 5,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0456,
+            "erro_limite_superior_cp95": 0.0437
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.113923,
+            "n": 487,
+            "automatizados": 259,
+            "cobertura": 0.5318,
+            "erro": 0.0425,
+            "erros": 11,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0601,
+            "erro_limite_superior_cp95": 0.0693
+          },
+          "ingenuo": {
+            "limiar": 0.095965,
+            "n": 487,
+            "automatizados": 299,
+            "cobertura": 0.614,
+            "erro": 0.0702,
+            "erros": 21,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0959,
+            "erro_limite_superior_cp95": 0.0996
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_rolante_2022",
+      "tipo": "temporal",
+      "treino": 5311,
+      "calibracao": 1355,
+      "teste": 1378,
+      "n_calibracao_grupos": 953,
+      "n_teste": 1378,
+      "acuracia_teste": 0.8208,
+      "acuracia_calibracao": 0.7702,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 1378,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 5,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0292
+          },
+          "ingenuo": {
+            "limiar": 0.142078,
+            "n": 1378,
+            "automatizados": 734,
+            "cobertura": 0.5327,
+            "erro": 0.0327,
+            "erros": 24,
+            "violacoes_nas_reamostragens": 10,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.05,
+            "erro_maximo_nas_reamostragens": 0.0587,
+            "erro_limite_superior_cp95": 0.0457
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.121004,
+            "n": 1378,
+            "automatizados": 810,
+            "cobertura": 0.5878,
+            "erro": 0.0457,
+            "erros": 37,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 193,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0561,
+            "erro_limite_superior_cp95": 0.0597
+          },
+          "ingenuo": {
+            "limiar": 0.089616,
+            "n": 1378,
+            "automatizados": 976,
+            "cobertura": 0.7083,
+            "erro": 0.0686,
+            "erros": 67,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0917,
+            "erro_limite_superior_cp95": 0.0835
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_rolante_2023",
+      "tipo": "temporal",
+      "treino": 6494,
+      "calibracao": 1550,
+      "teste": 1624,
+      "n_calibracao_grupos": 1157,
+      "n_teste": 1624,
+      "acuracia_teste": 0.8073,
+      "acuracia_calibracao": 0.7571,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": 0.193821,
+            "n": 1624,
+            "automatizados": 406,
+            "cobertura": 0.25,
+            "erro": 0.0197,
+            "erros": 8,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 37,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.025,
+            "erro_limite_superior_cp95": 0.0353
+          },
+          "ingenuo": {
+            "limiar": 0.136467,
+            "n": 1624,
+            "automatizados": 787,
+            "cobertura": 0.4846,
+            "erro": 0.0305,
+            "erros": 24,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0413,
+            "erro_limite_superior_cp95": 0.0426
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.123953,
+            "n": 1624,
+            "automatizados": 878,
+            "cobertura": 0.5406,
+            "erro": 0.041,
+            "erros": 36,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0424,
+            "erro_limite_superior_cp95": 0.0538
+          },
+          "ingenuo": {
+            "limiar": 0.104631,
+            "n": 1624,
+            "automatizados": 1110,
+            "cobertura": 0.6835,
+            "erro": 0.0486,
+            "erros": 54,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0847,
+            "erro_limite_superior_cp95": 0.0606
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_rolante_2024",
+      "tipo": "temporal",
+      "treino": 7700,
+      "calibracao": 1968,
+      "teste": 1569,
+      "n_calibracao_grupos": 1407,
+      "n_teste": 1569,
+      "acuracia_teste": 0.7909,
+      "acuracia_calibracao": 0.7846,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": 0.195034,
+            "n": 1569,
+            "automatizados": 554,
+            "cobertura": 0.3531,
+            "erro": 0.0181,
+            "erros": 10,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 38,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0248,
+            "erro_limite_superior_cp95": 0.0304
+          },
+          "ingenuo": {
+            "limiar": 0.123956,
+            "n": 1569,
+            "automatizados": 901,
+            "cobertura": 0.5743,
+            "erro": 0.0477,
+            "erros": 43,
+            "violacoes_nas_reamostragens": 44,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.22,
+            "erro_maximo_nas_reamostragens": 0.0966,
+            "erro_limite_superior_cp95": 0.0611
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.100807,
+            "n": 1569,
+            "automatizados": 1060,
+            "cobertura": 0.6756,
+            "erro": 0.0925,
+            "erros": 98,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0975,
+            "erro_limite_superior_cp95": 0.1084
+          },
+          "ingenuo": {
+            "limiar": 0.091739,
+            "n": 1569,
+            "automatizados": 1120,
+            "cobertura": 0.7138,
+            "erro": 0.1018,
+            "erros": 114,
+            "violacoes_nas_reamostragens": 137,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.685,
+            "erro_maximo_nas_reamostragens": 0.1366,
+            "erro_limite_superior_cp95": 0.1179
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_rolante_2025",
+      "tipo": "temporal",
+      "treino": 8648,
+      "calibracao": 2589,
+      "teste": 1618,
+      "n_calibracao_grupos": 1645,
+      "n_teste": 1618,
+      "acuracia_teste": 0.7998,
+      "acuracia_calibracao": 0.7878,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 1618,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 1,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0056
+          },
+          "ingenuo": {
+            "limiar": 0.14184,
+            "n": 1618,
+            "automatizados": 860,
+            "cobertura": 0.5315,
+            "erro": 0.0116,
+            "erros": 10,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 196,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0237,
+            "erro_limite_superior_cp95": 0.0196
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.103403,
+            "n": 1618,
+            "automatizados": 1041,
+            "cobertura": 0.6434,
+            "erro": 0.0346,
+            "erros": 36,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 198,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0427,
+            "erro_limite_superior_cp95": 0.0454
+          },
+          "ingenuo": {
+            "limiar": 0.085372,
+            "n": 1618,
+            "automatizados": 1162,
+            "cobertura": 0.7182,
+            "erro": 0.0602,
+            "erros": 70,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0851,
+            "erro_limite_superior_cp95": 0.073
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_rolante_2026",
+      "tipo": "temporal",
+      "treino": 10164,
+      "calibracao": 2691,
+      "teste": 1502,
+      "n_calibracao_grupos": 1882,
+      "n_teste": 1502,
+      "acuracia_teste": 0.7663,
+      "acuracia_calibracao": 0.7859,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 1502,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 13,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0287
+          },
+          "ingenuo": {
+            "limiar": 0.150999,
+            "n": 1502,
+            "automatizados": 711,
+            "cobertura": 0.4734,
+            "erro": 0.0408,
+            "erros": 29,
+            "violacoes_nas_reamostragens": 65,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.325,
+            "erro_maximo_nas_reamostragens": 0.0686,
+            "erro_limite_superior_cp95": 0.0552
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.10253,
+            "n": 1502,
+            "automatizados": 1003,
+            "cobertura": 0.6678,
+            "erro": 0.0828,
+            "erros": 83,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0969,
+            "erro_limite_superior_cp95": 0.0985
+          },
+          "ingenuo": {
+            "limiar": 0.085096,
+            "n": 1502,
+            "automatizados": 1122,
+            "cobertura": 0.747,
+            "erro": 0.1096,
+            "erros": 123,
+            "violacoes_nas_reamostragens": 104,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.52,
+            "erro_maximo_nas_reamostragens": 0.1298,
+            "erro_limite_superior_cp95": 0.1262
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_para_Campus Jorge Amado",
+      "tipo": "entre_campi",
+      "treino": 1943,
+      "calibracao": 410,
+      "teste": 3905,
+      "n_calibracao_grupos": 398,
+      "n_teste": 3905,
+      "acuracia_teste": 0.7662,
+      "acuracia_calibracao": 0.7663,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 3905,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 0,
+            "taxa_de_violacao": null,
+            "erro_maximo_nas_reamostragens": null
+          },
+          "ingenuo": {
+            "limiar": 0.115583,
+            "n": 3905,
+            "automatizados": 1827,
+            "cobertura": 0.4679,
+            "erro": 0.0263,
+            "erros": 48,
+            "violacoes_nas_reamostragens": 4,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.02,
+            "erro_maximo_nas_reamostragens": 0.0638,
+            "erro_limite_superior_cp95": 0.0333
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.126211,
+            "n": 3905,
+            "automatizados": 1655,
+            "cobertura": 0.4238,
+            "erro": 0.0199,
+            "erros": 33,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 43,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0376,
+            "erro_limite_superior_cp95": 0.0266
+          },
+          "ingenuo": {
+            "limiar": 0.084531,
+            "n": 3905,
+            "automatizados": 2424,
+            "cobertura": 0.6207,
+            "erro": 0.0606,
+            "erros": 147,
+            "violacoes_nas_reamostragens": 5,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.025,
+            "erro_maximo_nas_reamostragens": 0.1387,
+            "erro_limite_superior_cp95": 0.0692
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_para_Campus Paulo Freire",
+      "tipo": "entre_campi",
+      "treino": 1943,
+      "calibracao": 410,
+      "teste": 3866,
+      "n_calibracao_grupos": 398,
+      "n_teste": 3866,
+      "acuracia_teste": 0.7827,
+      "acuracia_calibracao": 0.7663,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 3866,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 0,
+            "taxa_de_violacao": null,
+            "erro_maximo_nas_reamostragens": null
+          },
+          "ingenuo": {
+            "limiar": 0.115583,
+            "n": 3866,
+            "automatizados": 2082,
+            "cobertura": 0.5385,
+            "erro": 0.0274,
+            "erros": 57,
+            "violacoes_nas_reamostragens": 7,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.035,
+            "erro_maximo_nas_reamostragens": 0.07,
+            "erro_limite_superior_cp95": 0.034
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.126211,
+            "n": 3866,
+            "automatizados": 1902,
+            "cobertura": 0.492,
+            "erro": 0.0221,
+            "erros": 42,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 43,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0397,
+            "erro_limite_superior_cp95": 0.0285
+          },
+          "ingenuo": {
+            "limiar": 0.084531,
+            "n": 3866,
+            "automatizados": 2587,
+            "cobertura": 0.6692,
+            "erro": 0.0634,
+            "erros": 164,
+            "violacoes_nas_reamostragens": 5,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.025,
+            "erro_maximo_nas_reamostragens": 0.1371,
+            "erro_limite_superior_cp95": 0.0718
+          }
+        }
+      }
+    },
+    {
+      "cenario": "origem_para_Campus Sosígenes Costa",
+      "tipo": "entre_campi",
+      "treino": 1943,
+      "calibracao": 410,
+      "teste": 4222,
+      "n_calibracao_grupos": 398,
+      "n_teste": 4222,
+      "acuracia_teste": 0.7617,
+      "acuracia_calibracao": 0.7663,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 4222,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 0,
+            "taxa_de_violacao": null,
+            "erro_maximo_nas_reamostragens": null
+          },
+          "ingenuo": {
+            "limiar": 0.115583,
+            "n": 4222,
+            "automatizados": 2242,
+            "cobertura": 0.531,
+            "erro": 0.0205,
+            "erros": 46,
+            "violacoes_nas_reamostragens": 4,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.02,
+            "erro_maximo_nas_reamostragens": 0.0642,
+            "erro_limite_superior_cp95": 0.0262
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.126211,
+            "n": 4222,
+            "automatizados": 2072,
+            "cobertura": 0.4908,
+            "erro": 0.0135,
+            "erros": 28,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 43,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.035,
+            "erro_limite_superior_cp95": 0.0185
+          },
+          "ingenuo": {
+            "limiar": 0.084531,
+            "n": 4222,
+            "automatizados": 2745,
+            "cobertura": 0.6502,
+            "erro": 0.0601,
+            "erros": 165,
+            "violacoes_nas_reamostragens": 10,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.05,
+            "erro_maximo_nas_reamostragens": 0.166,
+            "erro_limite_superior_cp95": 0.0681
+          }
+        }
+      }
+    },
+    {
+      "cenario": "deixa_um_campus_fora_Reitoria",
+      "tipo": "entre_campi",
+      "treino": 9627,
+      "calibracao": 2377,
+      "teste": 2353,
+      "n_calibracao_grupos": 1722,
+      "n_teste": 2353,
+      "acuracia_teste": 0.802,
+      "acuracia_calibracao": 0.7683,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 2353,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 19,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0358
+          },
+          "ingenuo": {
+            "limiar": 0.125684,
+            "n": 2353,
+            "automatizados": 1299,
+            "cobertura": 0.5521,
+            "erro": 0.0408,
+            "erros": 53,
+            "violacoes_nas_reamostragens": 33,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.165,
+            "erro_maximo_nas_reamostragens": 0.0562,
+            "erro_limite_superior_cp95": 0.051
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.102149,
+            "n": 2353,
+            "automatizados": 1514,
+            "cobertura": 0.6434,
+            "erro": 0.0667,
+            "erros": 101,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0772,
+            "erro_limite_superior_cp95": 0.0782
+          },
+          "ingenuo": {
+            "limiar": 0.093962,
+            "n": 2353,
+            "automatizados": 1607,
+            "cobertura": 0.683,
+            "erro": 0.0772,
+            "erros": 124,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0996,
+            "erro_limite_superior_cp95": 0.089
+          }
+        }
+      }
+    },
+    {
+      "cenario": "deixa_um_campus_fora_Campus Jorge Amado",
+      "tipo": "entre_campi",
+      "treino": 8496,
+      "calibracao": 1956,
+      "teste": 3905,
+      "n_calibracao_grupos": 1474,
+      "n_teste": 3905,
+      "acuracia_teste": 0.7992,
+      "acuracia_calibracao": 0.7741,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 3905,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 5,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0227
+          },
+          "ingenuo": {
+            "limiar": 0.141136,
+            "n": 3905,
+            "automatizados": 1857,
+            "cobertura": 0.4755,
+            "erro": 0.021,
+            "erros": 39,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0361,
+            "erro_limite_superior_cp95": 0.0273
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.119362,
+            "n": 3905,
+            "automatizados": 2143,
+            "cobertura": 0.5488,
+            "erro": 0.0345,
+            "erros": 74,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 196,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0563,
+            "erro_limite_superior_cp95": 0.0417
+          },
+          "ingenuo": {
+            "limiar": 0.087535,
+            "n": 3905,
+            "automatizados": 2674,
+            "cobertura": 0.6848,
+            "erro": 0.0643,
+            "erros": 172,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0888,
+            "erro_limite_superior_cp95": 0.0727
+          }
+        }
+      }
+    },
+    {
+      "cenario": "deixa_um_campus_fora_Campus Paulo Freire",
+      "tipo": "entre_campi",
+      "treino": 8456,
+      "calibracao": 2035,
+      "teste": 3866,
+      "n_calibracao_grupos": 1595,
+      "n_teste": 3866,
+      "acuracia_teste": 0.807,
+      "acuracia_calibracao": 0.7837,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 3866,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 21,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0267
+          },
+          "ingenuo": {
+            "limiar": 0.135504,
+            "n": 3866,
+            "automatizados": 2233,
+            "cobertura": 0.5776,
+            "erro": 0.0255,
+            "erros": 57,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0465,
+            "erro_limite_superior_cp95": 0.0317
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.112296,
+            "n": 3866,
+            "automatizados": 2503,
+            "cobertura": 0.6474,
+            "erro": 0.0439,
+            "erros": 110,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0668,
+            "erro_limite_superior_cp95": 0.0513
+          },
+          "ingenuo": {
+            "limiar": 0.091999,
+            "n": 3866,
+            "automatizados": 2783,
+            "cobertura": 0.7199,
+            "erro": 0.064,
+            "erros": 178,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.091,
+            "erro_limite_superior_cp95": 0.0721
+          }
+        }
+      }
+    },
+    {
+      "cenario": "deixa_um_campus_fora_Campus Sosígenes Costa",
+      "tipo": "entre_campi",
+      "treino": 8195,
+      "calibracao": 1940,
+      "teste": 4222,
+      "n_calibracao_grupos": 1570,
+      "n_teste": 4222,
+      "acuracia_teste": 0.7939,
+      "acuracia_calibracao": 0.758,
+      "alvos": {
+        "0.05": {
+          "controlado": {
+            "limiar": null,
+            "n": 4222,
+            "automatizados": 0,
+            "cobertura": 0.0,
+            "erro": null,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 4,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0267
+          },
+          "ingenuo": {
+            "limiar": 0.137801,
+            "n": 4222,
+            "automatizados": 2411,
+            "cobertura": 0.5711,
+            "erro": 0.0278,
+            "erros": 67,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 194,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0476,
+            "erro_limite_superior_cp95": 0.0339
+          }
+        },
+        "0.1": {
+          "controlado": {
+            "limiar": 0.11388,
+            "n": 4222,
+            "automatizados": 2730,
+            "cobertura": 0.6466,
+            "erro": 0.0443,
+            "erros": 121,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 198,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0584,
+            "erro_limite_superior_cp95": 0.0514
+          },
+          "ingenuo": {
+            "limiar": 0.093251,
+            "n": 4222,
+            "automatizados": 3018,
+            "cobertura": 0.7148,
+            "erro": 0.0673,
+            "erros": 203,
+            "violacoes_nas_reamostragens": 0,
+            "reamostragens_com_limiar": 200,
+            "taxa_de_violacao": 0.0,
+            "erro_maximo_nas_reamostragens": 0.0809,
+            "erro_limite_superior_cp95": 0.0752
+          }
+        }
+      }
+    }
+  ],
+  "hash_corte": "67812136fc0868862717280daeb85590d48d56779f4f5e4e28651920be6a57cb",
+  "gerado_em": "30/10/2026 20:09",
+  "script_origem": "src/trilha_b.py"
+}

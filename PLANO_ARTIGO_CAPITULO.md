@@ -2,7 +2,7 @@
 
 Este documento registra somente a estrutura, os critérios editoriais e o estado atual do artigo/capítulo. O plano operacional vigente, os critérios de aceite e o ponto de continuidade estão em [`PLANO_EXECUCAO_ATUAL.md`](PLANO_EXECUCAO_ATUAL.md). Os dois documentos têm finalidades distintas e não devem acumular versões concorrentes do mesmo estado.
 
-Atualizado em 16/08/2026, no fuso America/Bahia (Rodada 15, consolidação e renumeração contínua do material suplementar — item 13 do parecer).
+Atualizado em 30/10/2026, no fuso America/Bahia (atualização do artigo para a Trilha B).
 
 ## Regra de uso
 
@@ -95,102 +95,21 @@ artigo.
 
 ## Estado desta rodada
 
-**Rodada canônica:** `1e476243` (hash completo
-`1e4762438a7e3627d3e32c1025f6bcb169e786881d8e86207806fdf98846409a`). Os oito
-artefatos derivados e os três do congelamento conferem esse hash,
-verificável por `python src/matriz_proveniencia.py`; a Rodada 14 não
-alterou nenhum artefato de dados, e a matriz seguiu sem divergências.
+**Rodada:** Trilha B, texto de trabalho no Google Doc `ARTIGO (TRILHA B - VERSÃO DE TRABALHO 2026-10-30)` (copia do rascunho, editada direto; o original `ARTIGO (QUASE PRONTO)` segue intacto). Modelo principal: `tfidf_embedding` (acurácia 0,8307; +0,65 pp sobre o LinearSVC, significativo e pequeno). Corte B: 14.559 chamados, 14.357 avaliados, 39 categorias, 10.596 grupos, 10 modelos.
 
-**Onde está:** os Passos 0 a 10 estão concluídos, o 9 encerrado como não
-aplicável, e os Passos 11 e 12 (redução/reescrita editorial e integração
-do ensemble) estão concluídos. A Rodada 14 (branch
-`docs/correcoes-parecer-artigo-projeto`) tratou exclusivamente os itens 1
-a 12 de um parecer científico confrontado com o projeto de doutorado —
-reconciliação 598/593, decomposição do custo do BERTimbau, definição de
-"neutros", distinção entre curva ABC global e interna ao tipo, otimismo
-da seleção do LinearSVC, redação do alvo de 0,95 no Resumo/Abstract,
-ausência de busca de hiperparâmetros, renderização `p ≤ 0,0005`,
-"biossistema construído" como definição operacional autoral,
-harmonização de Capra/Odum/Grimm com o projeto, meia frase sobre
-o Naive Bayes e a introdução do Apêndice A, e identificação do Ticket-BERT
-como preprint — sem reabrir decisões científicas, sem retreinar modelo
-algum e sem consolidar/renumerar o material suplementar (item 13, fora do
-escopo, tratado na Rodada 15 em PR separada — ver abaixo). Em microcorreção subsequente na mesma
-branch, o bloqueio do item 10 (Odum) foi resolvido a partir do acervo do
-projeto (Eugene P. Odum, *Fundamentos de ecologia*, 6. ed., 1996, em vez
-de Howard T. Odum), com ressalva bibliográfica apenas sobre a confirmação
-do ano na página de créditos do exemplar. Após a terceira microcorreção,
-o PDF final de 21 páginas foi inspecionado integralmente; a divergência de
-contagem no estado atual de `04_artigo/README.md` foi reconciliada para
-8.961 palavras. Detalhe completo em
-`docs/AUDITORIA_PARECER_ARTIGO_PROJETO.md`. Zero fits de modelo-base, zero
-fits de stacking, zero execuções de LSTM ou BERTimbau.
+**Feito no Doc:** corpo do artigo reescrito para o corte B: Resumo, Abstract, Introdução (seis elementos, 10 modelos), 2.1 (cinco referências novas) a 2.4, Método 3.1 a 3.8 (novas 3.6 controle de risco e 3.7 validação na UFRN), Resultados 4.1 a 4.8 (novas 4.6 controle de risco, 4.7 UFRN com kappa, 4.8 temporal e entre campi), Tabelas 1 a 4, Discussão 5.1 a 5.4 e Considerações Finais. Referências acrescentadas: Angelopoulos, Clopper e Pearson, Cohen, UFRN, Chen, Khalid, Lutz, Sammani, Wang. Removidos por falta de reexecução no corte B: BERTimbau, ensemble/stacking (Tabela 5), sensibilidade de denominador, vocabulário por categoria e as Figuras 2 a 7.
 
-**Divergência de documentação encontrada e corrigida nesta rodada:** este
-documento e `PLANO_EXECUCAO_ATUAL.md` ainda descreviam, no início da
-Rodada 14, o estado da Rodada 11 (título "Classificação auditável...",
-Subseção 3.6 com declarações institucionais completas), desatualizado
-frente a `main`, que já havia recebido as Rodadas 12 (revisão editorial
-v4: título, Tabela 5, Subseção 3.6, figuras) e 13 (correção bibliográfica
-NBR 6023:2025/NBR 10520:2023). A Rodada 14 trabalhou sobre o artigo real
-em `main` e reconcilia aqui a documentação.
+**Feito nesta rodada:** Apêndice A refeito para o corte B (A1 a A3, conferido célula a célula; A4 e A5 removidas por serem do corpus vivo). Figuras 2 a 4 (`src/figuras_trilha_b.py`), figuras de pesos por categoria 5 (`src/figuras_pesos_trilha_b.py`, sete páginas, termos revisados) e esquemas 6 a 9 (`src/figuras_esquemas_trilha_b.py`: estrutura do modelo, tokens, cálculo da categoria, ciclo de aprendizado) em `docs/trilha_b/figuras/`. No Doc de trabalho já estão, com legenda e citação no texto, a Figura 2 (estrutura do modelo, 3.3), 3 (ciclo, 3.9), 4 (custo × acurácia, 4.1), 5 (confiabilidade, 4.3) e 6 (controle de risco, 4.6), inseridas pela URL do GitHub; ficaram de fora as de pesos (5) e os esquemas 7 e 8. Simulação cronológica de aprendizado contínuo (`src/aprendizado_continuo.py`; `docs/dados/trilha_b/aprendizado_continuo*.json`; linear_svc, treino até 2021, 20 trimestres, 7.691 chamados): estático 0,7673 (cai de 0,81 em 2022 a 0,70 em 2026); só auditoria aleatória de 100 por trimestre 0,7977 (+3,0 pontos, IC95% [1,45; 4,86], melhor em 15 de 20 trimestres), cerca de 70% do ganho de 0,8109 com tudo confirmado; revisões extras acrescentam 0,3 a 0,9 ponto; ativo × aleatório: +0,3, +0,7 e +0,3 ponto com 20, 40 e 100 revisões, só o de 40 exclui o zero. Teste de LLM zero-shot local (qwen2.5:7b, 100 chamados de baixa confiança) deu 34% contra 61% do modelo; GitHub Models não respondeu do runner; não entra no artigo. No Doc de trabalho: resumo reescrito (mais curto, sem dois-pontos, com a simulação), nova 3.9 (método da simulação), nova 4.9 (resultados), nova 5.5 (contribuição de cada etapa do protocolo, a partir de resultados já existentes, sem ablação experimental) e uma frase nas Considerações Finais. Revisão a partir da avaliação por revisor (nota estimada 5,5): resumo e Abstract reescritos com a validação prospectiva em destaque (0,7680, vantagem sobre o LinearSVC desaparece) e "controle de risco" no lugar de "garantia"; nota em 3.6 de que a garantia vale sob trocabilidade e sob deriva é verificada empiricamente; meta de 10% qualificada em 4.6; achado novo em 4.4 (fusão dos sete pares de mesmo nome eleva a acurácia de 0,8307 a 0,8380 e remove 105 de 2.431 erros, 4,3%, de modo que a duplicação taxonômica é fonte menor); teste exploratório de LLM local em 2.4; declaração de dados e código em 3.8; candidato a piloto em 6 passa a citar o LinearSVC; períodos longos da Introdução e de 3.4 desmembrados. Em andamento ou pendente de pessoa: BERTimbau ajustado nas mesmas dobras (`src/bertimbau_corte_b.py`, roda em CPU, retomável, perto de 1,5 a 2 horas por dobra; pode ir ao Colab) e segunda avaliação cega de 300 chamados (`src/segunda_avaliacao.py`, excluídos os 222 chamados pré-triados; planilha e chave em `TRILHA_B/SEGUNDA_AVALIACAO` no Drive; a chave não deve ser aberta pelo avaliador).
 
-**Estrutura vigente.** Seis figuras e **cinco** tabelas principais no
-corpo (Tabela 5, comparação confirmatória do ensemble, Subseção 4.5);
-apêndice com as Tabelas A1 a A3, floats não divisíveis em `\footnotesize`
-com numeração própria (A1/A2/A3, independente da sequência 1–5 do corpo),
-com parágrafo introdutório do Apêndice A ampliado na Rodada 14 para
-distinguir a base de rótulo de A1 (categoria histórica) da usada em A2/A3
-(referência revisada); material suplementar em sequência contínua S1 a S16 (Rodada 15). Discussão em quatro
-subseções (5.1 a 5.4); Considerações Finais em cinco parágrafos curtos.
-Lista de referências com 44 entradas, todas citadas no corpo, sem
-duplicatas nem citação órfã; nesta rodada, Capra passou a 1997, Grimm
-*et al.* passou de 2008 (*Science*) para 2000 (*BioScience*), Odum passou
-de H. T. Odum (1971) para E. P. Odum, *Fundamentos de ecologia*, 6. ed.,
-Gulbenkian, 1996 (microcorreção posterior, a partir do acervo do
-projeto), e a entrada de Liu; Benge; Jiang (Ticket-BERT) passou a se
-declarar explicitamente como preprint sem publicação revisada por pares
-localizada.
+**Falta no Doc:** decidir e inserir as figuras de pesos por categoria (quais das sete páginas ao corpo) e os esquemas de tokens e de cálculo (apêndice), com legendas (Figuras 7 e 8 ilustrativas); seção 5.4 e Figura 1 conferidas apenas por varredura de números; ordem alfabética e ABNT das referências; arXiv do Angelopoulos; atualizar o Abstract e traduzir para inglês; revisão estilística final com `meu-estilo-textual`.
 
-**Título vigente:** "Classificação de chamados de manutenção predial com
-aprendizado de máquina: desempenho e limites da automação" (reformulado na
-Rodada 12); o corpus é descrito como o de uma instituição federal de
-ensino superior (IFES), sem nomear a UFSB fora do bloco de afiliação dos
-autores.
+**Números-chave de B:** controle de risco (`controle_risco.json`): meta 10% sem violação em 14 cenários, cobertura 42 a 68%; limiar ingênuo excede em 2024 e 2026. Meta 5%: certificado em 3 de 14. UFRN (`avaliacao_cruzada_manual.json`): 73,3% e 84,0% (modelo principal), segunda avaliação kappa 0,70 e 0,52. LAI: pedidos de 30/10/2026, prazo 23/11/2026 (Ifes, UFPB, UFRB, UFERSA, UFS).
 
-**Corpo científico: 8.961 palavras**, medidas pela mesma rotina única
-(contagem de palavras do Markdown-fonte desde "**1. INTRODUÇÃO**",
-inclusive, até "**REFERÊNCIAS**", exclusive). Partiu de 8.855 (estado de `main` no início
-da Rodada 14), recebeu as adições textuais dos itens 1 a 12 do parecer
-científico, compensadas por cortes locais de redundância nas mesmas
-subseções tocadas, chegando a 8.999; a remoção subsequente da seção
-"Disponibilidade de dados e código" (promessa de disponibilização futura
-sem conteúdo científico) levou o corpo a 8.972 palavras; a substituição da
-formulação defensiva das Considerações Finais levou o corpo a 8.961
-palavras, sem nenhum texto acrescentado para compensar a remoção.
-Permanece dentro da faixa-meta de 8.850 a 9.000.
+**Divisão em capítulo e artigo (02/11/2026).** O Doc de trabalho foi renomeado `RASCUNHO - CAPITULO 2` (texto integral, cerca de 13.100 palavras, preservado). A cópia `ARTIGO - CORTES PROPOSTOS` traz 2.709 palavras de cortes como sugestões do Docs (2.4, parte da 3.8, 3.9 e 4.9 com a Figura 3, partes da 4.4, 4.5 inteira, 5.4 e 5.5, trechos das Considerações Finais); restam cerca de 10.400 palavras, e a meta de 7.500 a 8.500 exige ainda condensar Introdução, 2.1 a 2.3, 3.1 a 3.4, 4.1 a 4.3 e 5.1 a 5.3. Revista-alvo ainda por decidir (ver análise na conversa); depois dela, ajustar o layout.
 
-**Material suplementar: S1 a S16**, sequência contínua desde a Rodada 15
-(branch `docs/consolidacao-material-suplementar`), que resolveu o item 13
-do parecer — renumerou S5–S17 para S4–S16 (sem recriar a antiga tabela
-legada S4, sem alterar conteúdo de nenhum CSV) e consolidou as 16 tabelas
-em `04_artigo/material_suplementar_classificacao_chamados.md`, publicado
-em `docs/material_suplementar_classificacao_chamados.pdf`. Ver
-`docs/AUDITORIA_MATERIAL_SUPLEMENTAR.md` para o detalhamento completo,
-`docs/AUDITORIA_PARECER_ARTIGO_PROJETO.md` para os itens 1 a 12 e
-`docs/AUDITORIA_REFERENCIAS_2025.md` para a auditoria bibliográfica da
-Rodada 13.
+**Artigo para a RAP (02/11/2026).** Revistas-alvo sem taxa: Revista de Administração Pública (primeira) e Cadernos EBAPE.BR (segunda); ambas pedem 6.000 a 8.000 palavras contando tudo, APA 7, revisão duplo-cega, resumo de até 250 palavras. Texto-fonte em `docs/trilha_b/artigo_rap/artigo_rap.txt` (marcadores simples) e gerador em `src/gerar_docx_artigo_rap.py`; saída `ARTIGO_RAP.docx` na pasta do Drive (6.003 palavras, A4, TNR 12, espaçamento 1,5, 3 tabelas). Eixo: auditoria do rótulo, triagem em vez de reescrita, controle de risco e segunda avaliação cega; aprendizado contínuo ficou para um segundo artigo. Terceira versão (02/11/2026): taxa de rejeição por período (2018 com 18,8%, 2023 a 2025 com 0,4%, 2026 até outubro com 6,1%; o texto não atribui causa ao aumento de 2026 por decisão do autor), decomposição da queda prospectiva (LinearSVC 0,7842 onde histórico e referência coincidem, 0,6899 contra o histórico), 594 rejeições das quais 588 com outra categoria, fluxo da categoria e POP DINFRA.CM.28 (anonimizado), 7.854 palavras; gerar com `cd docs/trilha_b/artigo_rap && python ../../../src/gerar_docx_artigo_rap.py saida.docx`. Segunda versão (02/11/2026): título novo, subseções 2.2 e 3.1, apêndice estatístico, referências brasileiras da RAP, discussão com rotina prática; 7.330 palavras. Lista de downloads e itens a confirmar em `docs/trilha_b/artigo_rap/REFERENCIAS_PARA_BAIXAR.md`. Pendências: conferir limites e modelo no site da RAP; anonimizar propriedades do arquivo antes de submeter.
 
-O detalhamento rodada a rodada de como o estado anterior a este foi
-alcançado — reestruturação da Discussão, conversão das tabelas em floats,
-correções das duas auditorias independentes da PR #202, auditoria visual e
-paginação da Rodada 9, auditoria final de submissão da Rodada 10,
-integração editorial do ensemble na Rodada 11, revisão editorial v4 na
-Rodada 12, correção bibliográfica ABNT na Rodada 13, consolidação do
-material suplementar na Rodada 15 — está nos commits e nas Pull Requests
-(#202, #203, #209, #210) e não é repetido aqui, conforme a regra de uso
-deste documento. O relatório completo da Rodada 12 está em
-`verificacao/relatorio_revisao_v4.md`.
+**Próximo passo.** (0) BERTimbau já no Doc (2.4, 4.1, 5.1; acurácia 0,8151, macro-F1 0,6419, 1,56 pp abaixo do tfidf_embedding, IC 1,09 a 2,08; `bertimbau_comparacao.json`), avaliado à parte, fora da Tabela 2 e dos testes dos dez modelos; (a segunda avaliação cega já está no Doc: 3.1, 4.2, 5.3, 5.5 e resumo; concordância ponderada com a referência 81,7%, com o histórico 78,9%, kappa 0,64 na amostra estratificada; resultado em `segunda_avaliacao.json`; avaliador da mesma unidade, ressalva declarada). (1) Decidir as figuras de pesos e os esquemas restantes. (2) Testar auditorias menores que 100 por trimestre e repetir a simulação com o tfidf_embedding; estimar a correção por erro de rótulo; repetir o controle de risco com o linear_svc e a transferência entre campi com o tfidf_embedding. (3) Ablação experimental do protocolo, se a revista exigir. (4) Avaliar as bases que chegarem por LAI (prazo 23/11/2026) com o mesmo protocolo da UFRN. (5) Referências conferidas (ordem alfabética, todas as citações com entrada, Angelopoulos com arXiv:2110.01052 verificado) e varredura de estilo sem travessão nem frases de remate; resta a leitura final do texto inteiro com `meu-estilo-textual` e a conferência visual do Doc. Decisões do autor pendentes: revista-alvo com rota gratuita (Journal of Facilities Management, Automation in Construction, Advanced Engineering Informatics ou Journal of Building Engineering), categoria Elevador preventivo fora das partições.
 
 ## Critérios para novo fechamento científico
 
@@ -202,7 +121,7 @@ A nova rodada científica somente poderá ser considerada fechada quando:
 4. a camada de regras preventivas tiver comparação pareada com os modelos puros;
 5. o BERTimbau estiver no mesmo protocolo ou explicitamente classificado como exploratório;
 6. calibração, intervalos e testes estatísticos derivarem da mesma execução;
-7. a ausência de segunda avaliação humana estiver declarada no texto, com a limitação correspondente;
+7. a segunda avaliação (217 pré-triados ancorados e 300 chamados cegos estratificados) e a ausência dela no restante do corpus estiverem declaradas no texto, com a limitação correspondente;
 8. cada número, tabela e figura tiver proveniência rastreável;
 9. Resumo, Abstract, tabelas, figuras, discussão e conclusões estiverem coerentes;
 10. o PDF final tiver sido gerado e revisado visualmente;
